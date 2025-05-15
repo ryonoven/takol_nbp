@@ -1,0 +1,1622 @@
+INFO - 2025-04-20 04:57:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:57:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:57:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:57:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:57:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:57:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:57:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:58:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 04:58:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$session is deprecated in APPPATH\Controllers\user.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$auth is deprecated in APPPATH\Controllers\user.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:58:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$session is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$auth is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:58:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\paketkebijakandirdekom::$session is deprecated in APPPATH\Controllers\paketkebijakandirdekom.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\paketkebijakandirdekom->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\paketkebijakandirdekom::$auth is deprecated in APPPATH\Controllers\paketkebijakandirdekom.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\paketkebijakandirdekom->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:58:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\rasiogaji::$session is deprecated in APPPATH\Controllers\rasiogaji.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\rasiogaji->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\rasiogaji::$auth is deprecated in APPPATH\Controllers\rasiogaji.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\rasiogaji->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:58:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\rapat::$session is deprecated in APPPATH\Controllers\rapat.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\rapat->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\rapat::$auth is deprecated in APPPATH\Controllers\rapat.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\rapat->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:58:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\kehadirandekom::$session is deprecated in APPPATH\Controllers\kehadirandekom.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\kehadirandekom->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\kehadirandekom::$auth is deprecated in APPPATH\Controllers\kehadirandekom.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\kehadirandekom->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:58:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\fraudinternal::$session is deprecated in APPPATH\Controllers\fraudinternal.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\fraudinternal->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\fraudinternal::$auth is deprecated in APPPATH\Controllers\fraudinternal.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\fraudinternal->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:58:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:58:55 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$session is deprecated in APPPATH\Controllers\masalahhukum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:58:55 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$auth is deprecated in APPPATH\Controllers\masalahhukum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:03 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$session is deprecated in APPPATH\Controllers\masalahhukum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:03 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$auth is deprecated in APPPATH\Controllers\masalahhukum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:04 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$session is deprecated in APPPATH\Controllers\masalahhukum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:04 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$auth is deprecated in APPPATH\Controllers\masalahhukum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$session is deprecated in APPPATH\Controllers\masalahhukum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$auth is deprecated in APPPATH\Controllers\masalahhukum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$session is deprecated in APPPATH\Controllers\masalahhukum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$auth is deprecated in APPPATH\Controllers\masalahhukum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$session is deprecated in APPPATH\Controllers\masalahhukum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$auth is deprecated in APPPATH\Controllers\masalahhukum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$session is deprecated in APPPATH\Controllers\masalahhukum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\masalahhukum::$auth is deprecated in APPPATH\Controllers\masalahhukum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\masalahhukum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:31 --> [DEPRECATED] Creation of dynamic property App\Controllers\transaksikepentingan::$session is deprecated in APPPATH\Controllers\transaksikepentingan.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\transaksikepentingan->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:31 --> [DEPRECATED] Creation of dynamic property App\Controllers\transaksikepentingan::$auth is deprecated in APPPATH\Controllers\transaksikepentingan.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\transaksikepentingan->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 04:59:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 04:59:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\danasosial::$session is deprecated in APPPATH\Controllers\danasosial.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\danasosial->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 04:59:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\danasosial::$auth is deprecated in APPPATH\Controllers\danasosial.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\danasosial->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 06:40:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 06:40:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 07:12:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$session is deprecated in APPPATH\Controllers\user.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 07:12:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$auth is deprecated in APPPATH\Controllers\user.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 07:12:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 07:12:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 09:08:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 09:08:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 09:08:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$session is deprecated in APPPATH\Controllers\user.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 09:08:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$auth is deprecated in APPPATH\Controllers\user.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 09:09:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-04-20 09:09:06 --> mysqli_sql_exception: MySQL server has gone away in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Models\M_keuangandirdekompshm.php(31): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\app\Controllers\keuangandirdekompshm.php(39): App\Models\M_keuangandirdekompshm->getAllData()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#9 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#11 {main}
+CRITICAL - 2025-04-20 09:09:06 --> MySQL server has gone away
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 5 APPPATH\Models\M_keuangandirdekompshm.php(31): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\keuangandirdekompshm.php(39): App\Models\M_keuangandirdekompshm->getAllData()
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 09:09:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-04-20 09:09:10 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2025-04-20 09:09:10 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 09:09:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:14:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:15:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:21:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:21:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:22:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:24:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:27:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:32:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:37:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:37:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:37:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:38:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:38:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:38:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:38:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:38:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:41:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:43:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:44:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:45:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:46:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:46:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-04-20 10:46:59 --> Call to undefined method App\Models\M_keuangandirdekompshm::ubahpshm
+in SYSTEMPATH\Model.php on line 838.
+ 1 APPPATH\Controllers\keuangandirdekompshm.php(497): CodeIgniter\Model->__call()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->ubahpshm()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 10:47:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:48:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:48:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:48:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:49:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:49:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:49:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:49:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:49:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-04-20 10:49:53 --> Undefined array key "hubdekomdekom	"
+in APPPATH\Views\keuangandirdekompshm\index.php on line 162.
+ 1 APPPATH\Views\keuangandirdekompshm\index.php(162): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\nbp\\app\\Views\\keuangandirdekompshm\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render()
+ 5 APPPATH\Controllers\keuangandirdekompshm.php(48): view()
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 10:50:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:50:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:50:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:50:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:50:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:50:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:53:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:53:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-04-20 10:53:25 --> mysqli_sql_exception: Column 'hubdirdir' cannot be null in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2309): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Models\M_keuangandirdekompshm.php(36): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\xampp\htdocs\nbp\app\Controllers\keuangandirdekompshm.php(114): App\Models\M_keuangandirdekompshm->tambahuangdir()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->tambahuangdir()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#9 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#11 {main}
+CRITICAL - 2025-04-20 10:53:25 --> Column 'hubdirdir' cannot be null
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2309): CodeIgniter\Database\BaseConnection->query()
+ 5 APPPATH\Models\M_keuangandirdekompshm.php(36): CodeIgniter\Database\BaseBuilder->insert()
+ 6 APPPATH\Controllers\keuangandirdekompshm.php(114): App\Models\M_keuangandirdekompshm->tambahuangdir()
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->tambahuangdir()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 10:53:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:54:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-04-20 10:54:22 --> mysqli_sql_exception: Column 'hubdirdir' cannot be null in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2309): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Models\M_keuangandirdekompshm.php(36): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\xampp\htdocs\nbp\app\Controllers\keuangandirdekompshm.php(114): App\Models\M_keuangandirdekompshm->tambahuangdir()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->tambahuangdir()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#9 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#11 {main}
+CRITICAL - 2025-04-20 10:54:22 --> Column 'hubdirdir' cannot be null
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2309): CodeIgniter\Database\BaseConnection->query()
+ 5 APPPATH\Models\M_keuangandirdekompshm.php(36): CodeIgniter\Database\BaseBuilder->insert()
+ 6 APPPATH\Controllers\keuangandirdekompshm.php(114): App\Models\M_keuangandirdekompshm->tambahuangdir()
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->tambahuangdir()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 10:54:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:54:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 10:54:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:01:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:02:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:02:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:02:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:03:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:03:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:03:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:04:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:04:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:04:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:04:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:04:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:05:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:05:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:05:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:05:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:05:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:06:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:06:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:06:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:06:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:07:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:08:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:08:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:08:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 11:08:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$session is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 11:08:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$auth is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 11:08:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 11:08:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$session is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 11:08:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$auth is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 11:09:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 11:09:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 11:09:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$session is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 11:09:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\keluargadirdekompshm::$auth is deprecated in APPPATH\Controllers\keluargadirdekompshm.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\keluargadirdekompshm->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 11:19:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:16:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:34:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:34:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-04-20 12:34:28 --> Call to undefined method App\Models\M_keluargadirdekompshm::tambahkeldir
+in SYSTEMPATH\Model.php on line 838.
+ 1 APPPATH\Controllers\keluargadirdekompshm.php(114): CodeIgniter\Model->__call()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keluargadirdekompshm->tambahkeldir()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 12:34:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:34:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:37:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:37:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:37:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:38:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:39:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:39:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:39:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:39:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:39:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:40:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:41:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:41:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:41:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:42:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:42:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:42:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:42:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:42:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:42:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:42:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-04-20 12:43:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 12:43:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\kehadirandekom::$session is deprecated in APPPATH\Controllers\kehadirandekom.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\kehadirandekom->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 12:43:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\kehadirandekom::$auth is deprecated in APPPATH\Controllers\kehadirandekom.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\kehadirandekom->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 12:43:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 12:43:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\fraudinternal::$session is deprecated in APPPATH\Controllers\fraudinternal.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\fraudinternal->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 12:43:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\fraudinternal::$auth is deprecated in APPPATH\Controllers\fraudinternal.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\fraudinternal->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:01:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:01:43 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:01:43 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:05:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:05:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:05:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:05:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:05:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:05:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:10:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:10:06 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:10:06 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-04-20 13:10:06 --> Undefined array key 0
+in APPPATH\Views\infobpr\index.php on line 99.
+ 1 APPPATH\Views\infobpr\index.php(99): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\nbp\\app\\Views\\infobpr\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render()
+ 5 APPPATH\Controllers\infobpr.php(34): view()
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\infobpr->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:10:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:10:55 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:10:55 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:11:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:11:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:11:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:11:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:11:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:11:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:16:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:16:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:16:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:16:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:16:25 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:16:25 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:16:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:16:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:16:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:16:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:16:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:16:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:18:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:18:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:18:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:18:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:18:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:18:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:18:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:18:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:18:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:18:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:18:51 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:18:51 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:18:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:18:54 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:18:54 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:19:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:19:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:19:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:30:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:30:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:30:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:31:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:31:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:31:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:31:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:31:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:31:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:31:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:31:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:31:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:31:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:31:31 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:31:31 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:31:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:31:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:31:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:32:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:32:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:32:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:33:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-04-20 13:33:06 --> Class "App\Models\InfobprModel" not found
+in APPPATH\Controllers\infobpr.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Infobpr->simpaninfo()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:33:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-04-20 13:33:44 --> Class "App\Models\InfobprModel" not found
+in APPPATH\Controllers\infobpr.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Infobpr->simpaninfo()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:33:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-04-20 13:33:52 --> Class "App\Models\InfobprModel" not found
+in APPPATH\Controllers\infobpr.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Infobpr->simpaninfo()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:33:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-04-20 13:33:57 --> Class "App\Models\InfobprModel" not found
+in APPPATH\Controllers\infobpr.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Infobpr->index()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:34:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:34:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:34:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:37:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:37:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:37:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:37:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:37:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:37:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:37:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:37:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:37:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:37:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:37:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:37:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+ERROR - 2025-04-20 13:37:53 --> mysqli_sql_exception: Unknown column 'peringkatkomposit' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2309): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(330): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(782): CodeIgniter\Model->doInsert()
+#6 C:\xampp\htdocs\nbp\system\Model.php(730): CodeIgniter\BaseModel->insert()
+#7 C:\xampp\htdocs\nbp\app\Models\M_infobpr.php(19): CodeIgniter\Model->insert()
+#8 C:\xampp\htdocs\nbp\app\Controllers\infobpr.php(125): App\Models\M_infobpr->tambahinfo()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\infobpr->simpaninfo()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+CRITICAL - 2025-04-20 13:37:53 --> Unknown column 'peringkatkomposit' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2309): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(330): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(782): CodeIgniter\Model->doInsert()
+ 7 SYSTEMPATH\Model.php(730): CodeIgniter\BaseModel->insert()
+ 8 APPPATH\Models\M_infobpr.php(19): CodeIgniter\Model->insert()
+ 9 APPPATH\Controllers\infobpr.php(125): App\Models\M_infobpr->tambahinfo()
+10 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\infobpr->simpaninfo()
+11 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+12 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+13 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:37:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:37:57 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:37:57 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:38:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:38:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:38:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:38:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:38:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:38:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:38:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:38:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:38:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:38:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:38:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:38:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:38:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:38:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:38:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:39:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:39:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:39:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:39:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:39:58 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:39:58 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:39:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:39:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:39:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:40:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Inv::$session is deprecated in APPPATH\Controllers\inv.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Inv->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Inv::$auth is deprecated in APPPATH\Controllers\inv.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Inv->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:40:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Inv::$session is deprecated in APPPATH\Controllers\inv.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Inv->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Inv::$auth is deprecated in APPPATH\Controllers\inv.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Inv->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:40:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:40:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:40:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:44:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:44:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:44:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:45:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:45:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:45:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:45:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:45:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:45:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:45:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:45:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:45:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:46:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:46:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:46:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:46:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:46:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:46:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:47:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:47:35 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:47:35 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:47:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:47:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:47:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:50:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:50:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:50:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:51:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:51:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:51:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:52:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:52:01 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:52:01 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:52:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:52:01 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:52:01 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:52:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:52:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:52:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:52:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:52:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:52:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:54:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:54:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:54:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:56:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:56:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:56:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:56:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:56:14 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:56:14 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:56:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:56:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:56:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 13:58:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 13:58:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 13:58:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:03:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:03:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:03:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:04:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:04:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:04:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:04:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:04:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:04:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:05:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:05:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:05:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:05:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:05:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:05:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:05:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:05:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:05:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:06:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:06:49 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:06:49 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:07:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:07:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\penjelasanumum::$session is deprecated in APPPATH\Controllers\penjelasanumum.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\penjelasanumum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:07:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\penjelasanumum::$auth is deprecated in APPPATH\Controllers\penjelasanumum.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\penjelasanumum->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:07:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:07:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:07:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:39:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:39:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:39:08 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 14:40:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 14:40:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Faktor::$session is deprecated in APPPATH\Controllers\Faktor.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Faktor->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 14:40:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Faktor::$auth is deprecated in APPPATH\Controllers\Faktor.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Faktor->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-04-20 15:19:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-04-20 15:19:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$session is deprecated in APPPATH\Controllers\infobpr.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-04-20 15:19:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\infobpr::$auth is deprecated in APPPATH\Controllers\infobpr.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\infobpr->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')

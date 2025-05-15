@@ -1,0 +1,1526 @@
+INFO - 2023-08-02 06:49:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-08-02 06:49:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-08-02 06:49:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-08-02 06:49:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 06:49:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 06:49:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 06:49:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 06:49:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Inv::$session is deprecated in APPPATH\Controllers\inv.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Inv->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 06:49:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Inv::$auth is deprecated in APPPATH\Controllers\inv.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Inv->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 06:49:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 06:49:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 06:49:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 06:49:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 06:49:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 06:49:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 06:49:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 06:55:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 06:55:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 06:55:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:00:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:00:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:00:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:00:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:00:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:00:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:00:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:00:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:00:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:00:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:00:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:00:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:00:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:00:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:00:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:00:40 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 158.
+ 1 APPPATH\Views\Bisnis\index.php(158): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 158)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(36): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:01:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:01:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:01:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:01:50 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 159.
+ 1 APPPATH\Views\Bisnis\index.php(159): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 159)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(36): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:03:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:03:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:03:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:04:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:04:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:04:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:05:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:05:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:05:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:05:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:05:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:05:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:05:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:05:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:05:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:05:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:05:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:05:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:07:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:07:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:07:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:07:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:07:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:07:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:07:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:07:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:07:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:07:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:07:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:07:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:07:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:07:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:07:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:07:53 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:10:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:10:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:10:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:10:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:10:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:10:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:10:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:10:48 --> Undefined array key "ordinat"
+in APPPATH\Views\bia\index.php on line 126.
+ 1 APPPATH\Views\bia\index.php(126): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ordinat"', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\bia\\index.php', 126)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\bia\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bia/index', [], true)
+ 5 APPPATH\Controllers\bia.php(39): view('bia/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bia->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bia))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:13:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:13:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:13:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:13:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:13:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:13:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:13:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:13:17 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('1')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:14:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:14:05 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:14:05 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:14:05 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('1')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:14:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:14:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:14:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:14:07 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('1')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:14:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:14:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:14:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:14:48 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('1')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:15:28 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:15:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:15:28 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:15:28 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:15:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:15:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:15:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:15:33 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:17:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:17:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:17:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:17:44 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:17:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:17:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:17:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:17:45 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:18:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:18:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:18:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:18:45 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:19:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:19:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:19:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:19:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:19:24 --> Undefined array key "ordinat"
+in APPPATH\Views\bia\index.php on line 126.
+ 1 APPPATH\Views\bia\index.php(126): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ordinat"', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\bia\\index.php', 126)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\bia\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bia/index', [], true)
+ 5 APPPATH\Controllers\bia.php(39): view('bia/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bia->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bia))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:20:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:20:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:20:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:20:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:20:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:20:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:20:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:20:32 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:23:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:23:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:23:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:23:18 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:23:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:23:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:23:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+CRITICAL - 2023-08-02 07:23:20 --> Undefined array key 0
+in APPPATH\Models\M_Bisnis.php on line 45.
+ 1 APPPATH\Models\M_Bisnis.php(45): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 45)
+ 2 APPPATH\Controllers\Bisnis.php(147): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:23:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:23:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:23:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:23:22 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:23:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:23:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:23:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:23:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:25:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:25:49 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:25:49 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:26:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:26:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:27:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:27:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:27:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:27:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:27:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:27:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:27:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:27:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:39 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:27:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:27:39 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:39 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:27:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:27:43 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:43 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:27:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:27:43 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:27:43 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:28:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:28:09 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:28:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:28:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:28:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:28:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:28:14 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:28:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:28:14 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:28:14 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:21 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:21 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:21 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:54 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:29:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:29:54 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:29:54 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:40:09 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:40:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:40:09 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:40:09 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:40:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:40:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:40:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:40:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:40:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:40:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:40:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:40:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:40:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:04 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:04 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:10 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:39 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:39 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:39 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:58 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:58 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:47:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:47:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:47:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:54:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:54:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:54:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:54:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:54:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:54:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:54:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:54:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:54:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:54:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:55:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:55:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:55:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 07:55:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 07:55:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 07:55:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 11:13:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 11:13:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 11:13:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 11:13:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 11:13:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-08-02 11:13:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-08-02 11:13:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 11:13:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 11:13:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 11:13:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$bisnis is deprecated in APPPATH\Controllers\bia.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-08-02 11:13:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-08-02 11:13:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$session is deprecated in APPPATH\Controllers\bia.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-08-02 11:13:36 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bia::$auth is deprecated in APPPATH\Controllers\bia.php on line 17.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bia->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')

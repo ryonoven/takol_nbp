@@ -1,0 +1,1361 @@
+INFO - 2023-07-26 03:06:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 03:06:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 03:07:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 03:07:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 03:07:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 03:07:16 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(29): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 03:08:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 03:08:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 03:08:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 03:08:35 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(29): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 03:08:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 03:46:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 03:46:42 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(29): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 03:48:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 03:48:28 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(29): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:44:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:44:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:44:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:44:42 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(29): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:48:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:48:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:48:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:48:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:52:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:52:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:52:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:52:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:52:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:52:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:53:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 06:53:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:53:00 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(29): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:55:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:55:30 --> Object of class CodeIgniter\Database\MySQLi\Result could not be converted to string
+in APPPATH\Controllers\Bisnis.php on line 26.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:55:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:55:45 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:58:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:58:59 --> Call to a member function getResultArray() on array
+in APPPATH\Views\Bisnis\index.php on line 48.
+ 1 SYSTEMPATH\View\View.php(224): include()
+ 2 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 4 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 7 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:59:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:59:17 --> Call to a member function getResultArray() on array
+in APPPATH\Views\Bisnis\index.php on line 48.
+ 1 SYSTEMPATH\View\View.php(224): include()
+ 2 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 4 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 7 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:59:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:59:18 --> Call to a member function getResultArray() on array
+in APPPATH\Views\Bisnis\index.php on line 48.
+ 1 SYSTEMPATH\View\View.php(224): include()
+ 2 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 4 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 7 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 06:59:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 06:59:51 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 86.
+ 1 APPPATH\Views\Bisnis\index.php(86): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 86)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:03:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:03:35 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 57.
+ 1 APPPATH\Views\Bisnis\index.php(57): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 57)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:03:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:03:37 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 57.
+ 1 APPPATH\Views\Bisnis\index.php(57): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 57)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:03:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:03:40 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 57.
+ 1 APPPATH\Views\Bisnis\index.php(57): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 57)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:03:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:03:43 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 57.
+ 1 APPPATH\Views\Bisnis\index.php(57): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 57)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:04:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:04:25 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 97.
+ 1 APPPATH\Views\Bisnis\index.php(97): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 97)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(30): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:05:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:05:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:05:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:05:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:05:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:05:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:16:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:16:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:16:42 --> Call to undefined function App\Models\getAllData()
+in APPPATH\Models\M_Bisnis.php on line 17.
+ 1 APPPATH\Controllers\Bisnis.php(97): App\Models\M_Bisnis->checkIncrement()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->tambah()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:17:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:17:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:17:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 07:17:35 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '1 = 1 + 1' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('UPDATE `form_bi...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `form_bi...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `form_bi...')
+#3 C:\xampp\htdocs\sibia\system\Database\BaseBuilder.php(2926): CodeIgniter\Database\BaseConnection->query('UPDATE `form_bi...', Array, false)
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(18): CodeIgniter\Database\BaseBuilder->increment('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(97): App\Models\M_Bisnis->checkIncrement()
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->tambah()
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 07:17:35 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '1 = 1 + 1' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('UPDATE `form_bisnis` SET 1 = 1 + 1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `form_bisnis` SET 1 = 1 + 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `form_bisnis` SET 1 = 1 + 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2926): CodeIgniter\Database\BaseConnection->query('UPDATE `form_bisnis` SET 1 = 1 + 1', [], false)
+ 5 APPPATH\Models\M_Bisnis.php(18): CodeIgniter\Database\BaseBuilder->increment('1')
+ 6 APPPATH\Controllers\Bisnis.php(97): App\Models\M_Bisnis->checkIncrement()
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->tambah()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:18:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:18:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:19:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:19:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:20:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:21:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:21:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:21:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:21:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:21:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:21:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:22:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:23:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:23:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:23:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:23:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:23:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:24:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:24:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:24:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:24:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:24:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:54:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:54:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:54:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:54:08 --> Call to undefined method CodeIgniter\Database\MySQLi\Result::orderBy()
+in APPPATH\Models\M_Bisnis.php on line 41.
+ 1 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:55:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:55:27 --> Undefined array key "id"
+in APPPATH\Models\M_Bisnis.php on line 42.
+ 1 APPPATH\Models\M_Bisnis.php(42): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id"', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 42)
+ 2 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:55:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 07:55:45 --> Array to string conversion
+in APPPATH\Models\M_Bisnis.php on line 42.
+ 1 APPPATH\Models\M_Bisnis.php(42): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Array to string conversion', 'C:\\xampp\\htdocs\\sibia\\app\\Models\\M_Bisnis.php', 42)
+ 2 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:55:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:55:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:56:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:56:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:56:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:57:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:57:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:57:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 07:57:53 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''3'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...')
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(42): App\Models\M_Bisnis->setIncrement(3)
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('2')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 07:57:53 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''3'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'3\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT = \'3\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT = \'3\'')
+ 4 APPPATH\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'3\'')
+ 5 APPPATH\Models\M_Bisnis.php(42): App\Models\M_Bisnis->setIncrement(3)
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('2')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 07:58:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:58:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:58:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:58:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:58:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:58:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:58:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:58:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 07:59:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:00:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:00:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:00:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:00:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:00:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:00:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:01:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:01:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:03:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:03:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:03:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:03:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:03:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:03:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:05:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:05:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:05:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:05:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:06:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:06:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:07:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:07:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:07:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:07:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:07:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:08:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:08:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:08:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:09:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:11:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 08:11:11 --> Call to a member function transComplete() on bool
+in APPPATH\Models\M_Bisnis.php on line 26.
+ 1 APPPATH\Models\M_Bisnis.php(44): App\Models\M_Bisnis->setIncrement('2')
+ 2 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('2')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:11:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:12:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:16:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:17:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:17:47 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '$value' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(23): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...')
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(42): App\Models\M_Bisnis->setIncrement('2')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('2')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:17:47 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '$value' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT $value', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT $value')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT $value')
+ 4 APPPATH\Models\M_Bisnis.php(23): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT $value')
+ 5 APPPATH\Models\M_Bisnis.php(42): App\Models\M_Bisnis->setIncrement('2')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('2')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('2')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:18:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:18:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:18:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:18:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:18:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:18:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:20:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:20:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:20:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:21:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:21:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:21:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:21:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:21:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:21:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:21:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:23:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:25:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:25:47 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...', '1')
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:25:47 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 4 APPPATH\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT = ?', '1')
+ 5 APPPATH\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:26:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:26:29 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...', Array)
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:26:29 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 4 APPPATH\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT = ?', [...])
+ 5 APPPATH\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:26:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:26:34 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...', '1')
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:26:34 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 4 APPPATH\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT = ?', '1')
+ 5 APPPATH\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:27:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:27:32 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''form_bisnis' AUTO_INCREMENT = '1'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE 'fo...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE 'fo...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE 'fo...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE ? A...', Array)
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:27:32 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''form_bisnis' AUTO_INCREMENT = '1'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE \'form_bisnis\' AUTO_INCREMENT = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE \'form_bisnis\' AUTO_INCREMENT = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE \'form_bisnis\' AUTO_INCREMENT = \'1\'')
+ 4 APPPATH\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE ? AUTO_INCREMENT = ?', [...])
+ 5 APPPATH\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:31:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:31:05 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...', '1')
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:31:05 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 4 APPPATH\Models\M_Bisnis.php(24): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT = ?', '1')
+ 5 APPPATH\Models\M_Bisnis.php(43): App\Models\M_Bisnis->setIncrement('1')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:34:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:34:17 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(25): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...', '1')
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(44): App\Models\M_Bisnis->setIncrement('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:34:17 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 4 APPPATH\Models\M_Bisnis.php(25): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT = ?', '1')
+ 5 APPPATH\Models\M_Bisnis.php(44): App\Models\M_Bisnis->setIncrement('1')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:35:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2023-07-26 08:35:03 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1 in C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\sibia\system\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE for...', 0)
+#1 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE for...')
+#2 C:\xampp\htdocs\sibia\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE for...')
+#3 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(25): CodeIgniter\Database\BaseConnection->query('ALTER TABLE for...', '1')
+#4 C:\xampp\htdocs\sibia\app\Models\M_Bisnis.php(44): App\Models\M_Bisnis->setIncrement('1')
+#5 C:\xampp\htdocs\sibia\app\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+#6 C:\xampp\htdocs\sibia\system\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+#7 C:\xampp\htdocs\sibia\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+#8 C:\xampp\htdocs\sibia\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\sibia\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\sibia\system\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+CRITICAL - 2023-07-26 08:35:03 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1'' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE form_bisnis AUTO_INCREMENT = \'1\'')
+ 4 APPPATH\Models\M_Bisnis.php(25): CodeIgniter\Database\BaseConnection->query('ALTER TABLE form_bisnis AUTO_INCREMENT = ?', '1')
+ 5 APPPATH\Models\M_Bisnis.php(44): App\Models\M_Bisnis->setIncrement('1')
+ 6 APPPATH\Controllers\Bisnis.php(113): App\Models\M_Bisnis->hapus('1')
+ 7 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->hapus('1')
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 9 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:35:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:35:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:36:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:36:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:36:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:36:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:36:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:36:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:41:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:49:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:49:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:49:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:49:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:50:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:50:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:50:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:50:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:50:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:50:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:51:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:51:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:51:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:51:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:51:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-07-26 08:51:59 --> Undefined variable $row
+in APPPATH\Views\Bisnis\index.php on line 97.
+ 1 APPPATH\Views\Bisnis\index.php(97): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $row', 'C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php', 97)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\sibia\\app\\Views\\Bisnis\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('bisnis/index', [], true)
+ 5 APPPATH\Controllers\Bisnis.php(29): view('bisnis/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Bisnis->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Bisnis))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 08:52:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:52:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:52:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 08:53:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:23:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:23:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:23:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:23:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:23:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:23:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:23:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:23:26 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:23:26 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:23:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:23:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:23:31 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:23:31 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:23:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:23:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:23:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:23:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:23:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:23:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:23:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:23:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:23:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:23:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:23:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:23:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:57 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:57 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:25:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:25:57 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:25:57 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:26:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:26:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:26:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:26:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:26:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:26:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:36:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:36:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:36:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:37:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:37:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:37:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:37:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:37:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:37:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:37:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:45:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:45:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:45:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:45:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:45:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:45:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:45:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:47:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:47:58 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:47:58 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:49:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:49:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:49:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:49:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:49:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:49:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:49:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$config is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:49:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 16.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:50:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:50:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:50:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:53:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:53:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:53:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:53:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:53:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:53:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:53:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:53:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:55:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:55:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:55:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:55:48 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:56:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:56:26 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:56:26 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:56:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:56:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:56:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:56:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:56:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:56:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:56:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:56:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:56:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:56:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:56:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:56:32 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:57:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:57:35 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:57:35 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:57:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:57:35 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:57:35 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:57:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:57:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:57:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 09:57:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 09:57:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 09:59:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:59:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:59:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 09:59:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:00:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:00:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:06:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:06:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:06:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:07:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:07:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:11:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:11:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:11:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:15:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:15:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:15:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:25:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:25:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:25:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:26:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:26:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:26:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:26:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:27:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 10:27:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 11:25:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 11:25:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:25:55 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:25:55 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 11:25:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 11:26:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 11:26:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 11:26:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:26:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:26:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 11:26:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:26:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:26:13 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 11:26:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:26:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:26:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 11:26:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 11:26:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:26:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:26:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 11:26:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:26:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:26:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 11:26:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:26:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:26:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+INFO - 2023-07-26 11:26:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-07-26 11:26:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-07-26 11:26:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$session is deprecated in APPPATH\Controllers\Bisnis.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
+WARNING - 2023-07-26 11:26:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Bisnis::$auth is deprecated in APPPATH\Controllers\Bisnis.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Bisnis->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\sibia\\public\\index.php')
