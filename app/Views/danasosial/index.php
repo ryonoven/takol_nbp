@@ -221,11 +221,11 @@
                         <div class="mb-3">
                             <label for="tanggalpelaksanaan">Ubah Tanggal Pelaksanaan:</label>
                             <input class="form-control" type="text" name="tanggalpelaksanaan" id="tanggalpelaksanaan"
-                                value="<?= $row['tanggalpelaksanaan'] ?>" placeholder="<?= $row['tanggalpelaksanaan'] ?>">
+                                value="<?= $row['tanggalpelaksanaan'] ?>" placeholder="<?= $row['tanggalpelaksanaan'] ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="jeniskegiatan" class="form-label">Ubah Jenis Kegiatan: </label>
-                            <select class="form-control" name="jeniskegiatan" id="jeniskegiatan">
+                            <select class="form-control" name="jeniskegiatan" id="jeniskegiatan" required>
                                 <option value="">-- Pilih Jenis Kegiatan --</option>
                                 <option value="01" <?= ($row['jeniskegiatan'] == '01') ? 'selected' : '' ?>>01. Kegiatan Sosial
                                 </option>
@@ -237,17 +237,17 @@
                         <div class="form-group">
                             <label for="penerimadana" class="form-label">Ubah Penerima Dana: </label>
                             <input class="form-control" type="text" name="penerimadana" id="penerimadana"
-                                placeholder="<?= $row['penerimadana'] ?>"></input>
+                                placeholder="<?= $row['penerimadana'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="penjelasankegiatan" class="form-label">Ubah Penjelasan Kegiatan: </label>
                             <textarea class="form-control" type="text" name="penjelasankegiatan" id="penjelasankegiatan"
-                                style="height: 150px" placeholder="<?= $row['penjelasankegiatan'] ?>"></textarea>
+                                style="height: 150px" placeholder="<?= $row['penjelasankegiatan'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="jumlah" class="form-label">Ubah Jumlah Dana: </label>
                             <input class="form-control" type="text" name="jumlah" id="jumlah"
-                                placeholder="<?= $row['jumlah'] ?>"></input>
+                                placeholder="<?= $row['jumlah'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -302,12 +302,12 @@
                 <form action="<?= base_url('danasosial/tambahdanasosial'); ?>" method="post">
                     <div class="form-group">
                         <label for="tanggalpelaksanaan">Input Tanggal Pelaksanaan:</label>
-                        <input type="text" name="tanggalpelaksanaan" id="tanggalpelaksanaan" class="form-control">
+                        <input type="text" name="tanggalpelaksanaan" id="tanggalpelaksanaan" class="form-control" required>
                         <small>Note: Template inputan yyyymmdd</small>
                     </div>
                     <div class="form-group">
                         <label for="jeniskegiatan">Input Jenis Kegiatan: </label>
-                        <select name="jeniskegiatan" id="jeniskegiatan" class="form-control">
+                        <select name="jeniskegiatan" id="jeniskegiatan" class="form-control" required>
                             <option value="">-- Pilih Kegiatan --</option>
                             <option value="01">01. Kegiatan Sosial</option>
                             <option value="02">02. Kegiatan Politik</option>
@@ -315,15 +315,15 @@
                     </div>
                     <div class="form-group">
                         <label for="penerimadana">Input Penerima Dana: </label>
-                        <input type="text" name="penerimadana" id="penerimadana" class="form-control">
+                        <input type="text" name="penerimadana" id="penerimadana" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="penjelasankegiatan">Input Penjelasan Kegiatan: </label>
-                        <input type="text" name="penjelasankegiatan" id="penjelasankegiatan" class="form-control">
+                        <input type="text" name="penjelasankegiatan" id="penjelasankegiatan" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="jumlah">Input Jumlah Dana: </label>
-                        <input type="text" name="jumlah" id="jumlah" class="form-control" oninput="formatRupiah(this)">
+                        <input type="text" name="jumlah" id="jumlah" class="form-control" oninput="formatRupiah(this)" required>
                     </div>
             </div>
             <div class="modal-footer">

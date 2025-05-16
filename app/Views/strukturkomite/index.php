@@ -294,21 +294,21 @@
                         <div class="mb-3">
                             <label for="anggotakomite" class="form-label">Input Nama Anggota Komisaris:</label>
                             <input class="form-control" type="text" name="anggotakomite" id="anggotakomite"
-                                value="<?= $row['anggotakomite'] ?>">
+                                value="<?= $row['anggotakomite'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nikkomite" class="form-label">Input NIK:</label>
                             <input class="form-control" type="text" name="nikkomite" id="nikkomite"
-                                value="<?= $row['nikkomite'] ?>">
+                                value="<?= $row['nikkomite'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="keahlian" class="form-label">Input Keahlian:</label>
                             <input class="form-control" type="text" name="keahlian" id="keahlian"
-                                value="<?= $row['keahlian'] ?>">
+                                value="<?= $row['keahlian'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="jbtaudit" class="form-label">Pilih Jabatan Dalam Komite Audit:</label>
-                            <select name="jbtaudit" id="jbtaudit" class="form-control">
+                            <select name="jbtaudit" id="jbtaudit" class="form-control" required>
                                 <option value="">-- Pilih Komite --</option>
                                 <option value="00" <?= ($row['jbtaudit'] == '00') ? 'selected' : ''; ?>>Tidak Menjabat</option>
                                 <option value="01" <?= ($row['jbtaudit'] == '01') ? 'selected' : ''; ?>>Ketua</option>
@@ -318,7 +318,7 @@
                         <div class="mb-3">
                             <label for="jbtpantauresiko" class="form-label">Pilih Jabatan Dalam Komite Pemantau
                                 Risiko:</label>
-                            <select name="jbtpantauresiko" id="jbtpantauresiko" class="form-control">
+                            <select name="jbtpantauresiko" id="jbtpantauresiko" class="form-control" required>
                                 <option value="">-- Pilih Komite --</option>
                                 <option value="00" <?= ($row['jbtpantauresiko'] == '00') ? 'selected' : ''; ?>>Tidak Menjabat
                                 </option>
@@ -329,7 +329,7 @@
                         <div class="mb-3">
                             <label for="jbtremunerasi" class="form-label">Pilih Jabatan Dalam Komite Remunerasi dan
                                 Nominasi:</label>
-                            <select name="jbtremunerasi" id="jbtremunerasi" class="form-control">
+                            <select name="jbtremunerasi" id="jbtremunerasi" class="form-control" required>
                                 <option value="">-- Pilih Komite --</option>
                                 <option value="00" <?= ($row['jbtremunerasi'] == '00') ? 'selected' : ''; ?>>Tidak Menjabat
                                 </option>
@@ -339,7 +339,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="jbtmanrisk" class="form-label">Pilih Jabatan Dalam Komite Manajemen Risiko:</label>
-                            <select name="jbtmanrisk" id="jbtmanrisk" class="form-control">
+                            <select name="jbtmanrisk" id="jbtmanrisk" class="form-control" required>
                                 <option value="">-- Pilih Komite --</option>
                                 <option value="00" <?= ($row['jbtmanrisk'] == '00') ? 'selected' : ''; ?>>Tidak Menjabat
                                 </option>
@@ -349,7 +349,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="jbtlain" class="form-label">Pilih Jabatan Dalam Komite Lainnya:</label>
-                            <select name="jbtlain" id="jbtlain" class="form-control">
+                            <select name="jbtlain" id="jbtlain" class="form-control" required>
                                 <option value="">-- Pilih Komite --</option>
                                 <option value="00" <?= ($row['jbtlain'] == '00') ? 'selected' : ''; ?>>Tidak Menjabat</option>
                                 <option value="01" <?= ($row['jbtlain'] == '01') ? 'selected' : ''; ?>>Ketua</option>
@@ -358,7 +358,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="independen" class="form-label">Pilih Merupakan Pihak Independen:</label>
-                            <select name="independen" id="independen" class="form-control">
+                            <select name="independen" id="independen" class="form-control" required>
                                 <option value="">-- Pilih Komite --</option>
                                 <option value="1" <?= ($row['jbtlain'] == '1') ? 'selected' : ''; ?>>Ya</option>
                                 <option value="2" <?= ($row['jbtlain'] == '2') ? 'selected' : ''; ?>>Tidak</option>
@@ -420,19 +420,19 @@
                 <form action="<?= base_url('strukturkomite/tambahstrukturkomite'); ?>" method="post">
                     <div class="mb-3">
                         <label for="anggotakomite" class="form-label">Input Nama Anggota Komite:</label>
-                        <input class="form-control" type="text" name="anggotakomite" id="anggotakomite">
+                        <input class="form-control" type="text" name="anggotakomite" id="anggotakomite" required>
                     </div>
                     <div class="mb-3">
                         <label for="nikkomite" class="form-label">Input NIK:</label>
-                        <input class="form-control" type="text" name="nikkomite" id="nikkomite">
+                        <input class="form-control" type="text" name="nikkomite" id="nikkomite" required>
                     </div>
                     <div class="mb-3">
                         <label for="keahlian" class="form-label">Input Keahlian:</label>
-                        <input class="form-control" type="text" name="keahlian" id="keahlian">
+                        <input class="form-control" type="text" name="keahlian" id="keahlian" required>
                     </div>
                     <div class="form-group">
                         <label for="jbtaudit">Pilih Jabatan Dalam Komite Audit:</label>
-                        <select name="jbtaudit" id="jbtaudit" class="form-control">
+                        <select name="jbtaudit" id="jbtaudit" class="form-control" required>
                             <option value="">-- Pilih Jabatan --</option>
                             <option value="00">Tidak Menjabat</option>
                             <option value="01">Ketua</option>
@@ -441,7 +441,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jbtpantauresiko">Pilih Jabatan Dalam Komite Pemantau Risiko:</label>
-                        <select name="jbtpantauresiko" id="jbtpantauresiko" class="form-control">
+                        <select name="jbtpantauresiko" id="jbtpantauresiko" class="form-control" required>
                             <option value="">-- Pilih Jabatan --</option>
                             <option value="00">Tidak Menjabat</option>
                             <option value="01">Ketua</option>
@@ -450,7 +450,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jbtremunerasi">Pilih Jabatan Dalam Komite Komite Remunerasi dan Nominasi:</label>
-                        <select name="jbtremunerasi" id="jbtremunerasi" class="form-control">
+                        <select name="jbtremunerasi" id="jbtremunerasi" class="form-control" required>
                             <option value="">-- Pilih Jabatan --</option>
                             <option value="00">Tidak Menjabat</option>
                             <option value="01">Ketua</option>
@@ -459,7 +459,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jbtmanrisk">Pilih Jabatan Dalam Komite Komite Manajemen Risiko:</label>
-                        <select name="jbtmanrisk" id="jbtmanrisk" class="form-control">
+                        <select name="jbtmanrisk" id="jbtmanrisk" class="form-control" required>
                             <option value="">-- Pilih Jabatan --</option>
                             <option value="00">Tidak Menjabat</option>
                             <option value="01">Ketua</option>
@@ -468,7 +468,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jbtlain">Pilih Jabatan Dalam Komite Komite Lainnya:</label>
-                        <select name="jbtlain" id="jbtlain" class="form-control">
+                        <select name="jbtlain" id="jbtlain" class="form-control" required>
                             <option value="">-- Pilih Jabatan --</option>
                             <option value="00">Tidak Menjabat</option>
                             <option value="01">Ketua</option>
@@ -477,7 +477,7 @@
                     </div>
                     <div class="form-group">
                         <label for="independen">Apakah anggota independen?:</label>
-                        <select name="independen" id="independen" class="form-control">
+                        <select name="independen" id="independen" class="form-control" required>
                             <option value="">-- Apakah anggota independen? --</option>
                             <option value="1">Ya</option>
                             <option value="2">Tidak</option>

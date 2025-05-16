@@ -219,32 +219,32 @@
                         <div class="mb-3">
                             <label for="namabpr" class="form-label">Input Nama BPR:</label>
                             <input class="form-control" type="text" name="namabpr" id="namabpr"
-                                value="<?= $row['namabpr'] ?>">
+                                value="<?= $row['namabpr'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="alamat" class="form-label">Input Alamat BPR: </label>
-                            <input class="form-control" type="text" name="alamat" id="alamat" value="<?= $row['alamat'] ?>">
+                            <input class="form-control" type="text" name="alamat" id="alamat" value="<?= $row['alamat'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nomor">Input Nomor Telepon BPR: </label>
-                            <input class="form-control" type="text" name="nomor" id="nomor" value="<?= $row['nomor'] ?>">
+                            <input class="form-control" type="text" name="nomor" id="nomor" value="<?= $row['nomor'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="penjelasan" class="form-label">Input Penjelasan Umum: </label>
                             <textarea class="form-control" type="text" name="penjelasan" id="penjelasan"
                                 style="height: 150px"
-                                placeholder="<?= $row['penjelasan'] ?>"><?= $row['penjelasan'] ?></textarea>
+                                placeholder="<?= $row['penjelasan'] ?>" required><?= $row['penjelasan'] ?></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="peringkatkomposit">Peringkat Komposit: </label>
                             <input class="form-control" type="text" name="peringkatkomposit" id="peringkatkomposit"
-                                value="<?= $row['peringkatkomposit'] ?>">
+                                value="<?= $row['peringkatkomposit'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="penjelasankomposit">Penjelasan Peringkat Komposit: </label>
                             <textarea class="form-control" type="text" name="penjelasankomposit" id="penjelasankomposit"
                                 placeholder="<?= $row['penjelasankomposit'] ?>"
-                                style="height: 150px"><?= $row['penjelasankomposit'] ?></textarea>
+                                style="height: 150px" required><?= $row['penjelasankomposit'] ?></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -270,27 +270,27 @@
                 <form action="<?= base_url('penjelasanumum/tambahpenjelas'); ?>" method="post">
                     <div class="form-group">
                         <label for="namabpr">Input Nama BPR:</label>
-                        <input type="text" name="namabpr" id="namabpr" class="form-control">
+                        <input type="text" name="namabpr" id="namabpr" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="alamat">Input Alamat BPR: </label>
-                        <input type="text" name="alamat" id="alamat" class="form-control">
+                        <input type="text" name="alamat" id="alamat" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nomor">Input Nomor Telepon BPR: </label>
-                        <input type="text" name="nomor" id="nomor" class="form-control">
+                        <input type="text" name="nomor" id="nomor" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="penjelasan">Input Penjelasan Umum: </label>
-                        <input type="text" name="penjelasan" id="penjelasan" class="form-control">
+                        <input type="text" name="penjelasan" id="penjelasan" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="peringkatkomposit">Input Peringkat Komposit: </label>
-                        <input type="text" name="peringkatkomposit" id="peringkatkomposit" class="form-control">
+                        <input type="text" name="peringkatkomposit" id="peringkatkomposit" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="penjelasankomposit">Input Penjelasan Komposit: </label>
-                        <input type="text" name="penjelasankomposit" id="penjelasankomposit" class="form-control">
+                        <input type="text" name="penjelasankomposit" id="penjelasankomposit" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">

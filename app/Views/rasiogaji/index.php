@@ -459,33 +459,33 @@
                         <div class="mb-3">
                             <label for="pegawaitinggi" class="form-label">Ubah Gaji Pegawai Tertinggi:</label>
                             <input class="form-control" type="text" name="pegawaitinggi" id="pegawaitinggi"
-                                value="<?= $row['pegawaitinggi'] ?>">
+                                value="<?= $row['pegawaitinggi'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="pegawairendah" class="form-label">Ubah Gaji Pegawai Terendah:</label>
                             <input class="form-control" type="text" name="pegawairendah" id="pegawairendah"
-                                value="<?= $row['pegawairendah'] ?>">
+                                value="<?= $row['pegawairendah'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="dirtinggi" class="form-label">Ubah Gaji Direksi Tertinggi: </label>
                             <input class="form-control" type="text" name="dirtinggi" id="dirtinggi"
-                                value="<?= $row['dirtinggi'] ?>">
+                                value="<?= $row['dirtinggi'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="dirrendah">Ubah Gaji DirekSi Terendah: </label>
                             <input class="form-control" type="text" name="dirrendah" id="dirrendah"
-                                value="<?= $row['dirrendah'] ?>">
+                                value="<?= $row['dirrendah'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="dekomtinggi" class="form-label">Ubah Gaji Anggota Dewan Komisaris Tertinggi:
                             </label>
                             <input class="form-control" type="text" name="dekomtinggi" id="dekomtinggi"
-                                value="<?= $row['dekomtinggi'] ?>" placeholder="<?= $row['dekomtinggi'] ?>">
+                                value="<?= $row['dekomtinggi'] ?>" placeholder="<?= $row['dekomtinggi'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="dekomrendah">Ubah Gaji Anggota Dewan Komisaris Terendah: </label>
                             <input class="form-control" type="text" name="dekomrendah" id="dekomrendah"
-                                value="<?= $row['dekomrendah'] ?>" placeholder="<?= $row['dekomrendah'] ?>">
+                                value="<?= $row['dekomrendah'] ?>" placeholder="<?= $row['dekomrendah'] ?>" required>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -513,32 +513,32 @@
                     <div class="form-group">
                         <label for="pegawaitinggi">Input Nominal Gaji Pegawai Tertinggi:</label>
                         <input type="text" name="pegawaitinggi" id="pegawaitinggi" class="form-control"
-                            oninput="formatRupiah(this)">
+                            oninput="formatRupiah(this)" required>
                     </div>
                     <div class="form-group">
                         <label for="pegawairendah">Input Nominal Gaji Pegawai Terendah:</label>
                         <input type="text" name="pegawairendah" id="pegawairendah" class="form-control"
-                            oninput="formatRupiah(this)">
+                            oninput="formatRupiah(this)" required>
                     </div>
                     <div class="form-group">
                         <label for="dirtinggi">Input Nominal Gaji Direksi Tertinggi:</label>
                         <input type="text" name="dirtinggi" id="dirtinggi" class="form-control"
-                            oninput="formatRupiah(this)">
+                            oninput="formatRupiah(this)" required>
                     </div>
                     <div class="form-group">
                         <label for="dirrendah">Input Nominal Gaji Direksi Terendah:</label>
                         <input type="text" name="dirrendah" id="dirrendah" class="form-control"
-                            oninput="formatRupiah(this)">
+                            oninput="formatRupiah(this)" required>
                     </div>
                     <div class="form-group">
                         <label for="dekomtinggi">Input Nominal Gaji Dewan Komisaris Tertinggi:</label>
                         <input type="text" name="dekomtinggi" id="dekomtinggi" class="form-control"
-                            oninput="formatRupiah(this)">
+                            oninput="formatRupiah(this)" required>
                     </div>
                     <div class="form-group">
                         <label for="dekomrendah">Input Nominal Gaji Dewan Komisaris Terendah:</label>
                         <input type="text" name="dekomrendah" id="dekomrendah" class="form-control"
-                            oninput="formatRupiah(this)">
+                            oninput="formatRupiah(this)" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -600,7 +600,7 @@
                         <div class="form-group">
                             <label for="komentar">Input Komentar Direksi dan Dewan Komisaris:</label>
                             <textarea type="komentar" name="komentar" id="komentar" class="form-control"
-                                style="height: 150px;"></textarea>
+                                style="height: 150px;" required></textarea>
                         </div>
                         <div class="col-md d-flex justify-content-center align-items-center" style="margin-top: 20px;">
                             <a href="<?= base_url('rasiogaji/approveSemua') ?>"

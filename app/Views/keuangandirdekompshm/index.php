@@ -370,19 +370,19 @@
                             <label for="hubdirdir" class="form-label">Hubungan Keuangan Dengan Anggota Direksi Lain di
                                 BPR: </label>
                             <input class="form-control" type="text" name="hubdirdir" id="hubdirdir"
-                                placeholder="<?= $row['hubdirdir'] ?>"></input>
+                                placeholder="<?= $row['hubdirdir'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="hubdirdekom" class="form-label">Hubungan Keuangan Dengan Anggota Dewan Komisaris
                                 Lain di BPR: </label>
                             <input class="form-control" type="text" name="hubdirdekom" id="hubdirdekom"
-                                placeholder="<?= $row['hubdirdekom'] ?>"></input>
+                                placeholder="<?= $row['hubdirdekom'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="hubdirpshm" class="form-label">Hubungan Keuangan Dengan Pemegang Saham Lain di
                                 BPR: </label>
                             <input class="form-control" type="text" name="hubdirpshm" id="hubdirpshm"
-                                placeholder="<?= $row['hubdirpshm'] ?>"></input>
+                                placeholder="<?= $row['hubdirpshm'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -418,19 +418,19 @@
                             <label for="hubdekomdir" class="form-label">Keuangan Dengan Anggota Direksi Lain di BPR:
                             </label>
                             <input class="form-control" type="text" name="hubdekomdir" id="hubdekomdir"
-                                placeholder="<?= $row['hubdekomdir'] ?>"></input>
+                                placeholder="<?= $row['hubdekomdir'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="hubdekomdekom" class="form-label">Keuangan Dengan Anggota Dewan Komisaris Lain
                                 di BPR: </label>
                             <input class="form-control" type="text" name="hubdekomdekom" id="hubdekomdekom"
-                                placeholder="<?= $row['hubdekomdekom'] ?>"></input>
+                                placeholder="<?= $row['hubdekomdekom'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="hubdekompshm" class="form-label">Keuangan Dengan Pemegang Saham Lain di BPR:
                             </label>
                             <input class="form-control" type="text" name="hubdekompshm" id="hubdekompshm"
-                                placeholder="<?= $row['hubdekompshm'] ?>"></input>
+                                placeholder="<?= $row['hubdekompshm'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -466,21 +466,21 @@
                             <label for="hubpshmdir" class="form-label">Keuangan Dengan Anggota Direksi Lain di BPR:
                             </label>
                             <input class="form-control" type="text" name="hubpshmdir" id="hubpshmdir"
-                                placeholder="<?= $row['hubpshmdir'] ?>"></input>
+                                placeholder="<?= $row['hubpshmdir'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                         </div>
                         <div class="form-group">
                             <label for="hubpshmdekom" class="form-label">Keuangan Dengan Anggota Dewan Komisaris Lain di
                                 BPR: </label>
                             <input class="form-control" type="text" name="hubpshmdekom" id="hubpshmdekom"
-                                placeholder="<?= $row['hubpshmdekom'] ?>"></input>
+                                placeholder="<?= $row['hubpshmdekom'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                         </div>
                         <div class="form-group">
                             <label for="hubpshmpshm" class="form-label">Keuangan Dengan Pemegang Saham Lain di
                                 BPR:</label>
                             <input class="form-control" type="text" name="hubpshmpshm" id="hubpshmpshm"
-                                placeholder="<?= $row['hubpshmpshm'] ?>"></input>
+                                placeholder="<?= $row['hubpshmpshm'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                         </div>
                 </div>
@@ -552,17 +552,17 @@
                     </div>
                     <div class="form-group">
                         <label for="hubdirdir">Input Keuangan Dengan Anggota Direksi Lain di BPR </label>
-                        <input type="text" name="hubdirdir" id="hubdirdir" class="form-control">
+                        <input type="text" name="hubdirdir" id="hubdirdir" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubdirdekom">Input Keuangan Dengan Anggota Dewan Komisaris Lain di BPR: </label>
-                        <input type="text" name="hubdirdekom" id="hubdirdekom" class="form-control">
+                        <input type="text" name="hubdirdekom" id="hubdirdekom" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubdirpshm">Input Keuangan Dengan Pemegang Saham Lain di BPR: </label>
-                        <input type="text" name="hubdirpshm" id="hubdirpshm" class="form-control">
+                        <input type="text" name="hubdirpshm" id="hubdirpshm" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
             </div>
@@ -590,7 +590,7 @@
                     <div class="form-group">
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
-                        <select name="dekom" id="dekom" class="form-control">
+                        <select name="dekom" id="dekom" class="form-control" required>
                             <?php if (isset($tgjwbdekom) && is_array($tgjwbdekom)): ?>
                                 <option value="">Pilih Dewan Komisaris</option>
                                 <?php foreach ($tgjwbdekom as $row): ?>
@@ -605,18 +605,18 @@
                     </div>
                     <div class="form-group">
                         <label for="hubdekomdir">Input Keuangan Dengan Anggota Direksi Lain di BPR: </label>
-                        <input type="text" name="hubdekomdir" id="hubdekomdir" class="form-control">
+                        <input type="text" name="hubdekomdir" id="hubdekomdir" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubdekomdekom">Input Keuangan Dengan Anggota Dewan Komisaris Lain di
                             BPR:</label>
-                        <input type="text" name="hubdekomdekom" id="hubdekomdekom" class="form-control">
+                        <input type="text" name="hubdekomdekom" id="hubdekomdekom" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubdekompshm">Input Keuangan Dengan Pemegang Saham Lain di BPR: </label>
-                        <input type="text" name="hubdekompshm" id="hubdekompshm" class="form-control">
+                        <input type="text" name="hubdekompshm" id="hubdekompshm" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
             </div>
@@ -647,7 +647,7 @@
                                 <option value="">Pilih Pemegang Saham</option>
                                 <?php foreach ($shmusahadirdekom as $row): ?>
                                     <?php if (!empty($row['pshm'])): ?>
-                                        <option value="<?= $row['pshm']; ?>"><?= $row['pshm']; ?></option>
+                                        <option value="<?= $row['pshm']; ?>" required><?= $row['pshm']; ?></option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -657,18 +657,18 @@
                     </div>
                     <div class="form-group">
                         <label for="hubpshmdir">Input Hubungan Keuangan Dengan Anggota Direksi Lain di BPR: </label>
-                        <input type="text" name="hubpshmdir" id="hubpshmdir" class="form-control">
+                        <input type="text" name="hubpshmdir" id="hubpshmdir" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubpshmdekom">Input Hubungan Keuangan Dengan Anggota Dewan Komisaris Lain di
                             BPR:</label>
-                        <input type="text" name="hubpshmdekom" id="hubpshmdekom" class="form-control">
+                        <input type="text" name="hubpshmdekom" id="hubpshmdekom" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubpshmpshm">Input Hubungan Keuangan Dengan Pemegang Saham Lain di BPR: </label>
-                        <input type="text" name="hubpshmpshm" id="hubpshmpshm" class="form-control">
+                        <input type="text" name="hubpshmpshm" id="hubpshmpshm" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keuangan / Tidak Ada</small>
                     </div>
             </div>

@@ -699,42 +699,42 @@
                 <form action="<?= base_url('fraudinternal/tambahfrauddir'); ?>" method="post">
                     <div class="form-group">
                         <label for="fraudtahunlaporandir">Input Total Fraud Pada Tahun Laporan:</label>
-                        <input type="text" name="fraudtahunlaporandir" id="fraudtahunlaporandir" class="form-control">
+                        <input type="text" name="fraudtahunlaporandir" id="fraudtahunlaporandir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="fraudtahunsebelumdir">Input Total Fraud Pada Tahun Sebelumnya: </label>
-                        <input type="text" name="fraudtahunsebelumdir" id="fraudtahunsebelumdir" class="form-control">
+                        <input type="text" name="fraudtahunsebelumdir" id="fraudtahunsebelumdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="selesaitahunlaporandir">Input Telah Diselesaikan Pada Tahun Laporan : </label>
                         <input type="text" name="selesaitahunlaporandir" id="selesaitahunlaporandir"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunlaporandir">Input Proses Penyelesaian Pada Tahun Laporan: </label>
-                        <input type="text" name="prosestahunlaporandir" id="prosestahunlaporandir" class="form-control">
+                        <input type="text" name="prosestahunlaporandir" id="prosestahunlaporandir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunsebelumdir">Input Dalam Proses Penyelesaian Pada Tahun Sebelumnya:
                         </label>
-                        <input type="text" name="prosestahunsebelumdir" id="prosestahunsebelumdir" class="form-control">
+                        <input type="text" name="prosestahunsebelumdir" id="prosestahunsebelumdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunlaporandir">Input Belum Diupayakan Penyelesaiannya Pada Tahun Laporan:
                         </label>
-                        <input type="text" name="belumtahunlaporandir" id="belumtahunlaporandir" class="form-control">
+                        <input type="text" name="belumtahunlaporandir" id="belumtahunlaporandir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunsebelumdir">Input Belum Diupayakan Penyelesaiannya Pada Tahun
                             Sebelumnya:
                         </label>
-                        <input type="text" name="belumtahunsebelumdir" id="belumtahunsebelumdir" class="form-control">
+                        <input type="text" name="belumtahunsebelumdir" id="belumtahunsebelumdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hukumtahunlaporandir">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
                             Tahun
                             Laporan: </label>
-                        <input type="text" name="hukumtahunlaporandir" id="hukumtahunlaporandir" class="form-control">
+                        <input type="text" name="hukumtahunlaporandir" id="hukumtahunlaporandir" class="form-control" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -763,47 +763,47 @@
                         <div class="mb-3">
                             <label for="fraudtahunlaporandir">Ubah Total Fraud Pada Tahun Laporan:</label>
                             <input class="form-control" type="text" name="fraudtahunlaporandir" id="fraudtahunlaporandir"
-                                placeholder="<?= $row['fraudtahunlaporandir'] ?>">
+                                placeholder="<?= $row['fraudtahunlaporandir'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="fraudtahunsebelumdir">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
                             <input class="form-control" type="text" name="fraudtahunsebelumdir" id="fraudtahunsebelumdir"
-                                placeholder="<?= $row['fraudtahunsebelumdir'] ?>">
+                                placeholder="<?= $row['fraudtahunsebelumdir'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="selesaitahunlaporandir">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
                             <input class="form-control" type="text" name="selesaitahunlaporandir"
-                                id="selesaitahunlaporandir" placeholder="<?= $row['selesaitahunlaporandir'] ?>">
+                                id="selesaitahunlaporandir" placeholder="<?= $row['selesaitahunlaporandir'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunlaporandir">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="prosestahunlaporandir" id="prosestahunlaporandir"
-                                placeholder="<?= $row['prosestahunlaporandir'] ?>">
+                                placeholder="<?= $row['prosestahunlaporandir'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunsebelumdir">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="prosestahunsebelumdir" id="prosestahunsebelumdir"
-                                placeholder="<?= $row['prosestahunsebelumdir'] ?>">
+                                placeholder="<?= $row['prosestahunsebelumdir'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunlaporandir">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="belumtahunlaporandir" id="belumtahunlaporandir"
-                                placeholder="<?= $row['belumtahunlaporandir'] ?>">
+                                placeholder="<?= $row['belumtahunlaporandir'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunsebelumdir">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="belumtahunsebelumdir" id="belumtahunsebelumdir"
-                                placeholder="<?= $row['belumtahunsebelumdir'] ?>">
+                                placeholder="<?= $row['belumtahunsebelumdir'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="hukumtahunlaporandir">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="hukumtahunlaporandir" id="hukumtahunlaporandir"
-                                placeholder="<?= $row['hukumtahunlaporandir'] ?>">
+                                placeholder="<?= $row['hukumtahunlaporandir'] ?>" required>
                         </div>
 
                         <div class="modal-footer">
@@ -831,49 +831,49 @@
                     <div class="form-group">
                         <label for="fraudtahunlaporandekom">Input Total Fraud Pada Tahun Laporan:</label>
                         <input type="text" name="fraudtahunlaporandekom" id="fraudtahunlaporandekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="fraudtahunsebelumdekom">Input Total Fraud Pada Tahun Sebelumnya: </label>
                         <input type="text" name="fraudtahunsebelumdekom" id="fraudtahunsebelumdekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="selesaitahunlaporandekom">Input Telah Diselesaikan Pada Tahun Laporan : </label>
                         <input type="text" name="selesaitahunlaporandekom" id="selesaitahunlaporandekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunlaporandekom">Input Proses Penyelesaian Pada Tahun Laporan: </label>
                         <input type="text" name="prosestahunlaporandekom" id="prosestahunlaporandekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunsebelumdekom">Input Dalam Proses Penyelesaian Pada Tahun Sebelumnya:
                         </label>
                         <input type="text" name="prosestahunsebelumdekom" id="prosestahunsebelumdekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunlaporandekom">Input Belum Diupayakan Penyelesaiannya Pada Tahun
                             Laporan:
                         </label>
                         <input type="text" name="belumtahunlaporandekom" id="belumtahunlaporandekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunsebelumdekom">Input Belum Diupayakan Penyelesaiannya Pada Tahun
                             Sebelumnya:
                         </label>
                         <input type="text" name="belumtahunsebelumdekom" id="belumtahunsebelumdekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hukumtahunlaporandekom">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
                             Tahun
                             Laporan: </label>
                         <input type="text" name="hukumtahunlaporandekom" id="hukumtahunlaporandekom"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -902,47 +902,47 @@
                             <label for="fraudtahunlaporandekom">Ubah Total Fraud Pada Tahun Laporan:</label>
                             <input class="form-control" type="text" name="fraudtahunlaporandekom"
                                 id="fraudtahunlaporandekom"
-                                placeholder="<?= isset($row['fraudtahunlaporandekom']) ? $row['fraudtahunlaporandekom'] : '' ?>">
+                                placeholder="<?= isset($row['fraudtahunlaporandekom']) ? $row['fraudtahunlaporandekom'] : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="fraudtahunsebelumdekom">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
                             <input class="form-control" type="text" name="fraudtahunsebelumdekom"
                                 id="fraudtahunsebelumdekom"
-                                placeholder="<?= isset($row['fraudtahunsebelumdekom']) ? $row['fraudtahunsebelumdekom'] : '' ?>">
+                                placeholder="<?= isset($row['fraudtahunsebelumdekom']) ? $row['fraudtahunsebelumdekom'] : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="selesaitahunlaporandekom">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
                             <input class="form-control" type="text" name="selesaitahunlaporandekom"
                                 id="selesaitahunlaporandekom"
-                                placeholder="<?= isset($row['selesaitahunlaporandekom']) ? $row['selesaitahunlaporandekom'] : '' ?>">
+                                placeholder="<?= isset($row['selesaitahunlaporandekom']) ? $row['selesaitahunlaporandekom'] : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunlaporandekom">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="prosestahunlaporandekom"
                                 id="prosestahunlaporandekom"
-                                placeholder="<?= isset($row['prosestahunlaporandekom']) ? $row['prosestahunlaporandekom'] : '' ?>">
+                                placeholder="<?= isset($row['prosestahunlaporandekom']) ? $row['prosestahunlaporandekom'] : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunsebelumdekom">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="prosestahunsebelumdekom"
                                 id="prosestahunsebelumdekom"
-                                placeholder="<?= isset($row['prosestahunsebelumdekom']) ? $row['prosestahunsebelumdekom'] : '' ?>">
+                                placeholder="<?= isset($row['prosestahunsebelumdekom']) ? $row['prosestahunsebelumdekom'] : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunlaporandekom">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="belumtahunlaporandekom"
                                 id="belumtahunlaporandekom"
-                                placeholder="<?= isset($row['belumtahunlaporandekom']) ? $row['belumtahunlaporandekom'] : '' ?>">
+                                placeholder="<?= isset($row['belumtahunlaporandekom']) ? $row['belumtahunlaporandekom'] : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunsebelumdekom">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="belumtahunsebelumdekom"
                                 id="belumtahunsebelumdekom"
-                                placeholder="<?= isset($row['belumtahunsebelumdekom']) ? $row['belumtahunsebelumdekom'] : '' ?>">
+                                placeholder="<?= isset($row['belumtahunsebelumdekom']) ? $row['belumtahunsebelumdekom'] : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="hukumtahunlaporandekom">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada
@@ -950,7 +950,7 @@
                                 Laporan:</label>
                             <input class="form-control" type="text" name="hukumtahunlaporandekom"
                                 id="hukumtahunlaporandekom"
-                                placeholder="<?= isset($row['hukumtahunlaporandekom']) ? $row['hukumtahunlaporandekom'] : '' ?>">
+                                placeholder="<?= isset($row['hukumtahunlaporandekom']) ? $row['hukumtahunlaporandekom'] : '' ?>" required>
                         </div>
 
                         <div class="modal-footer">
@@ -978,50 +978,50 @@
                     <div class="form-group">
                         <label for="fraudtahunlaporankartap">Input Total Fraud Pada Tahun Laporan:</label>
                         <input type="text" name="fraudtahunlaporankartap" id="fraudtahunlaporankartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="fraudtahunsebelumkartap">Input Total Fraud Pada Tahun Sebelumnya: </label>
                         <input type="text" name="fraudtahunsebelumkartap" id="fraudtahunsebelumkartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="selesaitahunlaporankartap">Input Telah Diselesaikan Pada Tahun Laporan :
                         </label>
                         <input type="text" name="selesaitahunlaporankartap" id="selesaitahunlaporankartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunlaporankartap">Input Proses Penyelesaian Pada Tahun Laporan: </label>
                         <input type="text" name="prosestahunlaporankartap" id="prosestahunlaporankartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunsebelumkartap">Input Dalam Proses Penyelesaian Pada Tahun Sebelumnya:
                         </label>
                         <input type="text" name="prosestahunsebelumkartap" id="prosestahunsebelumkartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunlaporankartap">Input Belum Diupayakan Penyelesaiannya Pada Tahun
                             Laporan:
                         </label>
                         <input type="text" name="belumtahunlaporankartap" id="belumtahunlaporankartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunsebelumkartap">Input Belum Diupayakan Penyelesaiannya Pada Tahun
                             Laporan:
                         </label>
                         <input type="text" name="belumtahunsebelumkartap" id="belumtahunsebelumkartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hukumtahunlaporankartap">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
                             Tahun
                             Laporan: </label>
                         <input type="text" name="hukumtahunlaporankartap" id="hukumtahunlaporankartap"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1049,48 +1049,48 @@
                         <div class="mb-3">
                             <label for="fraudtahunlaporankartap">Ubah Total Fraud Pada Tahun Laporan:</label>
                             <input class="form-control" type="text" name="fraudtahunlaporankartap"
-                                id="fraudtahunlaporankartap" placeholder="<?= $row['fraudtahunlaporankartap'] ?>">
+                                id="fraudtahunlaporankartap" placeholder="<?= $row['fraudtahunlaporankartap'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="fraudtahunsebelumkartap">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
                             <input class="form-control" type="text" name="fraudtahunsebelumkartap"
-                                id="fraudtahunsebelumkartap" placeholder="<?= $row['fraudtahunsebelumkartap'] ?>">
+                                id="fraudtahunsebelumkartap" placeholder="<?= $row['fraudtahunsebelumkartap'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="selesaitahunlaporankartap">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
                             <input class="form-control" type="text" name="selesaitahunlaporankartap"
-                                id="selesaitahunlaporankartap" placeholder="<?= $row['selesaitahunlaporankartap'] ?>">
+                                id="selesaitahunlaporankartap" placeholder="<?= $row['selesaitahunlaporankartap'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunlaporankartap">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="prosestahunlaporankartap"
-                                id="prosestahunlaporankartap" placeholder="<?= $row['prosestahunlaporankartap'] ?>">
+                                id="prosestahunlaporankartap" placeholder="<?= $row['prosestahunlaporankartap'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunsebelumkartap">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="prosestahunsebelumkartap"
-                                id="prosestahunsebelumkartap" placeholder="<?= $row['prosestahunsebelumkartap'] ?>">
+                                id="prosestahunsebelumkartap" placeholder="<?= $row['prosestahunsebelumkartap'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunlaporankartap">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="belumtahunlaporankartap"
-                                id="belumtahunlaporankartap" placeholder="<?= $row['belumtahunlaporankartap'] ?>">
+                                id="belumtahunlaporankartap" placeholder="<?= $row['belumtahunlaporankartap'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunsebelumkartap">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="belumtahunsebelumkartap"
-                                id="belumtahunsebelumkartap" placeholder="<?= $row['belumtahunsebelumkartap'] ?>">
+                                id="belumtahunsebelumkartap" placeholder="<?= $row['belumtahunsebelumkartap'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="hukumtahunlaporankartap">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada
                                 Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="hukumtahunlaporankartap"
-                                id="hukumtahunlaporankartap" placeholder="<?= $row['hukumtahunlaporankartap'] ?>">
+                                id="hukumtahunlaporankartap" placeholder="<?= $row['hukumtahunlaporankartap'] ?>" required>
                         </div>
 
                         <div class="modal-footer">
@@ -1118,52 +1118,52 @@
                     <div class="form-group">
                         <label for="fraudtahunlaporankontrak">Input Total Fraud Pada Tahun Laporan:</label>
                         <input type="text" name="fraudtahunlaporankontrak" id="fraudtahunlaporankontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="fraudtahunsebelumkontrak">Input Total Fraud Pada Tahun Sebelumnya: </label>
                         <input type="text" name="fraudtahunsebelumkontrak" id="fraudtahunsebelumkontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="selesaitahunlaporankontrak">Input Telah Diselesaikan Pada Tahun Laporan :
                         </label>
                         <input type="text" name="selesaitahunlaporankontrak" id="selesaitahunlaporankontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunlaporankontrak">Input Proses Penyelesaian Pada Tahun Laporan:
                         </label>
                         <input type="text" name="prosestahunlaporankontrak" id="prosestahunlaporankontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="prosestahunsebelumkontrak">Input Dalam Proses Penyelesaian Pada Tahun
                             Sebelumnya:
                         </label>
                         <input type="text" name="prosestahunsebelumkontrak" id="prosestahunsebelumkontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunlaporankontrak">Input Belum Diupayakan Penyelesaiannya Pada Tahun
                             Laporan:
                         </label>
                         <input type="text" name="belumtahunlaporankontrak" id="belumtahunlaporankontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="belumtahunsebelumkontrak">Input Belum Diupayakan Penyelesaiannya Pada Tahun
                             Laporan:
                         </label>
                         <input type="text" name="belumtahunsebelumkontrak" id="belumtahunsebelumkontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hukumtahunlaporankontrak">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
                             Tahun
                             Laporan: </label>
                         <input type="text" name="hukumtahunlaporankontrak" id="hukumtahunlaporankontrak"
-                            class="form-control">
+                            class="form-control" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1191,48 +1191,48 @@
                         <div class="mb-3">
                             <label for="fraudtahunlaporankontrak">Ubah Total Fraud Pada Tahun Laporan:</label>
                             <input class="form-control" type="text" name="fraudtahunlaporankontrak"
-                                id="fraudtahunlaporankontrak" placeholder="">
+                                id="fraudtahunlaporankontrak" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="fraudtahunsebelumkontrak">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
                             <input class="form-control" type="text" name="fraudtahunsebelumkontrak"
-                                id="fraudtahunsebelumkontrak" placeholder="">
+                                id="fraudtahunsebelumkontrak" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="selesaitahunlaporankontrak">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
                             <input class="form-control" type="text" name="selesaitahunlaporankontrak"
-                                id="selesaitahunlaporankontrak" placeholder="">
+                                id="selesaitahunlaporankontrak" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunlaporankontrak">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="prosestahunlaporankontrak"
-                                id="prosestahunlaporankontrak" placeholder="">
+                                id="prosestahunlaporankontrak" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="prosestahunsebelumkontrak">Ubah Dalam Proses Penyelesaian Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="prosestahunsebelumkontrak"
-                                id="prosestahunsebelumkontrak" placeholder="">
+                                id="prosestahunsebelumkontrak" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunlaporankontrak">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="belumtahunlaporankontrak"
-                                id="belumtahunlaporankontrak" placeholder="">
+                                id="belumtahunlaporankontrak" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="belumtahunsebelumkontrak">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
                                 Sebelumnya:</label>
                             <input class="form-control" type="text" name="belumtahunsebelumkontrak"
-                                id="belumtahunsebelumkontrak" placeholder="">
+                                id="belumtahunsebelumkontrak" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="hukumtahunlaporankontrak">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada
                                 Tahun
                                 Laporan:</label>
                             <input class="form-control" type="text" name="hukumtahunlaporankontrak"
-                                id="hukumtahunlaporankontrak" placeholder="">
+                                id="hukumtahunlaporankontrak" placeholder="" required>
                         </div>
 
                         <div class="modal-footer">

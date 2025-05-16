@@ -939,7 +939,7 @@
                 <form action="<?= base_url('paketkebijakandirdekom/tambahgaji'); ?>" method="post">
                     <div class="form-group">
                         <label for="penerimagajidir">Input Jumlah Direksi Penerima Gaji:</label>
-                        <input type="text" name="penerimagajidir" id="penerimagajidir" class="form-control">
+                        <input type="text" name="penerimagajidir" id="penerimagajidir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalgajidir">Input Jumlah Nominal Keseluruhan Gaji Direksi (Rp): </label>
@@ -947,13 +947,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rp</span>
                             </div>
-                            <input type="text" id="formatted_nominalgajidir" class="form-control rupiah">
+                            <input type="text" id="formatted_nominalgajidir" class="form-control rupiah" required>
                             <input type="hidden" name="nominalgajidir" id="nominalgajidir_hidden">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="penerimagajidekom">Input Jumlah Komisaris Penerima Gaji: </label>
-                        <input type="text" name="penerimagajidekom" id="penerimagajidekom" class="form-control">
+                        <input type="text" name="penerimagajidekom" id="penerimagajidekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalgajidekom">Input Jumlah Nominal Keseluruhan Gaji Komisaris (Rp): </label>
@@ -961,7 +961,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rp</span>
                             </div>
-                            <input type="text" id="formatted_nominalgajidekom" class="form-control rupiah">
+                            <input type="text" id="formatted_nominalgajidekom" class="form-control rupiah" required>
                             <input type="hidden" name="nominalgajidekom" id="nominalgajidekom_hidden">
                         </div>
                     </div>
@@ -1023,7 +1023,7 @@
                 <form action="<?= base_url('paketkebijakandirdekom/tambahtunjangan'); ?>" method="post">
                     <div class="form-group">
                         <label for="terimatunjangandir">Input Jumlah Direksi Penerima Tunjangan:</label>
-                        <input type="text" name="terimatunjangandir" id="terimatunjangandir" class="form-control">
+                        <input type="text" name="terimatunjangandir" id="terimatunjangandir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominaltunjangandir">Input Jumlah Nominal Keseluruhan Tunjangan Direksi (Rp):
@@ -1033,13 +1033,13 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominaltunjangandir"
-                                class="form-control rupiah_tambah_tampilan">
+                                class="form-control rupiah_tambah_tampilan" required>
                             <input type="hidden" name="nominaltunjangandir" id="nominaltunjangandir">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="terimatunjangandekom">Input Jumlah Komisaris Penerima Tunjangan : </label>
-                        <input type="text" name="terimatunjangandekom" id="terimatunjangandekom" class="form-control">
+                        <input type="text" name="terimatunjangandekom" id="terimatunjangandekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominaltunjangandekom">Input Jumlah Nominal Keseluruhan Tunjangan Komisaris
@@ -1049,7 +1049,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominaltunjangandekom"
-                                class="form-control rupiah_tambah_tampilan">
+                                class="form-control rupiah_tambah_tampilan" required>
                             <input type="hidden" name="nominaltunjangandekom" id="nominaltunjangandekom">
                         </div>
                     </div>
@@ -1125,13 +1125,13 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominaltantiemdir"
-                                class="form-control rupiah_tambah_tampilan_tantiem">
+                                class="form-control rupiah_tambah_tampilan_tantiem" required>
                             <input type="hidden" name="nominaltantiemdir" id="nominaltantiemdir">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="terimatantiemdekom">Input Jumlah Komisaris Penerima Tantiem: </label>
-                        <input type="text" name="terimatantiemdekom" id="terimatantiemdekom" class="form-control">
+                        <input type="text" name="terimatantiemdekom" id="terimatantiemdekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominaltantiemdekom">Input Jumlah Nominal Keseluruhan Tantiem Komisaris (Rp):
@@ -1141,7 +1141,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominaltantiemdekom"
-                                class="form-control rupiah_tambah_tampilan_tantiem">
+                                class="form-control rupiah_tambah_tampilan_tantiem" required>
                             <input type="hidden" name="nominaltantiemdekom" id="nominaltantiemdekom">
                         </div>
                     </div>
@@ -1207,7 +1207,7 @@
                 <form action="<?= base_url('paketkebijakandirdekom/tambahsaham'); ?>" method="post">
                     <div class="form-group">
                         <label for="terimashmdir">Input Jumlah Direksi Penerima Kompensasi berbasis saham:</label>
-                        <input type="text" name="terimashmdir" id="terimashmdir" class="form-control">
+                        <input type="text" name="terimashmdir" id="terimashmdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalshmdir">Input Jumlah Nominal Keseluruhan Kompensasi berbasis saham
@@ -1217,14 +1217,14 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalshmdir"
-                                class="form-control rupiah_tambah_tampilan_saham">
+                                class="form-control rupiah_tambah_tampilan_saham" required>
                             <input type="hidden" name="nominalshmdir" id="nominalshmdir">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="terimashmdekom">Input Jumlah Komisaris Penerima Kompensasi berbasis saham :
                         </label>
-                        <input type="text" name="terimashmdekom" id="terimashmdekom" class="form-control">
+                        <input type="text" name="terimashmdekom" id="terimashmdekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalshmdekom">Input Jumlah Nominal Keseluruhan Kompensasi berbasis saham
@@ -1234,7 +1234,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalshmdekom"
-                                class="form-control rupiah_tambah_tampilan_saham">
+                                class="form-control rupiah_tambah_tampilan_saham" required>
                             <input type="hidden" name="nominalshmdekom" id="nominalshmdekom">
                         </div>
                     </div>
@@ -1300,7 +1300,7 @@
                 <form action="<?= base_url('paketkebijakandirdekom/tambahremun'); ?>" method="post">
                     <div class="form-group">
                         <label for="terimaremunlaindir">Input Jumlah Direksi Penerima Remunerasi lainnya:</label>
-                        <input type="text" name="terimaremunlaindir" id="terimaremunlaindir" class="form-control">
+                        <input type="text" name="terimaremunlaindir" id="terimaremunlaindir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalremunlaindir">Input Jumlah Nominal Keseluruhan Remunerasi lainnya Direksi
@@ -1310,14 +1310,14 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalremunlaindir"
-                                class="form-control rupiah_tambah_tampilan_remun">
+                                class="form-control rupiah_tambah_tampilan_remun" required>
                             <input type="hidden" name="nominalremunlaindir" id="nominalremunlaindir">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="terimaremunlaindekom">Input Jumlah Komisaris Penerima Remunerasi lainnya :
                         </label>
-                        <input type="text" name="terimaremunlaindekom" id="terimaremunlaindekom" class="form-control">
+                        <input type="text" name="terimaremunlaindekom" id="terimaremunlaindekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalremunlaindekom">Input Jumlah Nominal Keseluruhan Remunerasi lainnya
@@ -1327,7 +1327,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalremunlaindekom"
-                                class="form-control rupiah_tambah_tampilan_remun">
+                                class="form-control rupiah_tambah_tampilan_remun" required>
                             <input type="hidden" name="nominalremunlaindekom" id="nominalremunlaindekom">
                         </div>
                     </div>
@@ -1395,7 +1395,7 @@
                 <form action="<?= base_url('paketkebijakandirdekom/tambahrumah'); ?>" method="post">
                     <div class="form-group">
                         <label for="terimarumahdir">Input Jumlah Direksi Penerima Perumahan (Orang):</label>
-                        <input type="text" name="terimarumahdir" id="terimarumahdir" class="form-control">
+                        <input type="text" name="terimarumahdir" id="terimarumahdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalrumahdir">Input Jumlah Nominal Perumahan Direksi (Rp): </label>
@@ -1404,13 +1404,13 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalrumahdir"
-                                class="form-control rupiah_tambah_tampilan_rumah">
+                                class="form-control rupiah_tambah_tampilan_rumah" required>
                             <input type="hidden" name="nominalrumahdir" id="nominalrumahdir">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="terimarumahdekom">Input Jumlah Komisaris Penerima Perumahan (Orang) : </label>
-                        <input type="text" name="terimarumahdekom" id="terimarumahdekom" class="form-control">
+                        <input type="text" name="terimarumahdekom" id="terimarumahdekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalrumahdekom">Input Jumlah Nominal Perumahan Komisaris (Rp): </label>
@@ -1419,7 +1419,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalrumahdekom"
-                                class="form-control rupiah_tambah_tampilan_rumah">
+                                class="form-control rupiah_tambah_tampilan_rumah" required>
                             <input type="hidden" name="nominalrumahdekom" id="nominalrumahdekom">
                         </div>
                     </div>
@@ -1485,7 +1485,7 @@
                 <form action="<?= base_url('paketkebijakandirdekom/tambahtransport'); ?>" method="post">
                     <div class="form-group">
                         <label for="terimatransportdir">Input Jumlah Direksi Penerima Transportasi (Orang):</label>
-                        <input type="text" name="terimatransportdir" id="terimatransportdir" class="form-control">
+                        <input type="text" name="terimatransportdir" id="terimatransportdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominaltransportdir">Input Jumlah Nominal Transportasi Direksi (Rp): </label>
@@ -1494,14 +1494,14 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominaltransportdir"
-                                class="form-control rupiah_tambah_tampilan_transport">
+                                class="form-control rupiah_tambah_tampilan_transport" required>
                             <input type="hidden" name="nominaltransportdir" id="nominaltransportdir">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="terimatransportdekom">Input Jumlah Komisaris Penerima Transportasi (Orang) :
                         </label>
-                        <input type="text" name="terimatransportdekom" id="terimatransportdekom" class="form-control">
+                        <input type="text" name="terimatransportdekom" id="terimatransportdekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominaltransportdekom">Input Jumlah Nominal Transportasi Komisaris (Rp):
@@ -1511,7 +1511,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominaltransportdekom"
-                                class="form-control rupiah_tambah_tampilan_transport">
+                                class="form-control rupiah_tambah_tampilan_transport" required>
                             <input type="hidden" name="nominaltransportdekom" id="nominaltransportdekom">
                         </div>
                     </div>
@@ -1580,7 +1580,7 @@
                     <div class="form-group">
                         <label for="terimaasuransidir">Input Jumlah Direksi Penerima Asuransi Kesehatan
                             (Orang):</label>
-                        <input type="text" name="terimaasuransidir" id="terimaasuransidir" class="form-control">
+                        <input type="text" name="terimaasuransidir" id="terimaasuransidir" class="form-control" required> 
                     </div>
                     <div class="form-group">
                         <label for="nominalasuransidir">Input Jumlah Nominal Asuransi Kesehatan Direksi (Rp):
@@ -1590,7 +1590,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalasuransidir"
-                                class="form-control rupiah_tambah_tampilan_asuransi">
+                                class="form-control rupiah_tambah_tampilan_asuransi" required>
                             <input type="hidden" name="nominalasuransidir" id="nominalasuransidir">
                         </div>
                     </div>
@@ -1607,7 +1607,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalasuransidekom"
-                                class="form-control rupiah_tambah_tampilan_asuransi">
+                                class="form-control rupiah_tambah_tampilan_asuransi" required>
                             <input type="hidden" name="nominalasuransidekom" id="nominalasuransidekom">
                         </div>
                     </div>
@@ -1674,7 +1674,7 @@
                     <div class="form-group">
                         <label for="terimafasilitasdir">Input Jumlah Direksi Penerima Fasilitas Lain-Lainnya
                             (Orang):</label>
-                        <input type="text" name="terimafasilitasdir" id="terimafasilitasdir" class="form-control">
+                        <input type="text" name="terimafasilitasdir" id="terimafasilitasdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalfasilitasdir">Input Jumlah Nominal Fasilitas Lain-Lainnya Direksi (Rp):
@@ -1684,14 +1684,14 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalfasilitasdir"
-                                class="form-control rupiah_tambah_tampilan_fasilitas">
+                                class="form-control rupiah_tambah_tampilan_fasilitas" required>
                             <input type="hidden" name="nominalfasilitasdir" id="nominalfasilitasdir">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="terimafasilitasdekom">Input Jumlah Komisaris Penerima Fasilitas Lain-Lainnya
                             (Orang) : </label>
-                        <input type="text" name="terimafasilitasdekom" id="terimafasilitasdekom" class="form-control">
+                        <input type="text" name="terimafasilitasdekom" id="terimafasilitasdekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nominalfasilitasdekom">Input Jumlah Nominal Fasilitas Lain-Lainnya Komisaris
@@ -1701,7 +1701,7 @@
                                 <span class="input-group-text">Rp</span>
                             </div>
                             <input type="text" id="formatted_nominalfasilitasdekom"
-                                class="form-control rupiah_tambah_tampilan_fasilitas">
+                                class="form-control rupiah_tambah_tampilan_fasilitas" required>
                             <input type="hidden" name="nominalfasilitasdekom" id="nominalfasilitasdekom">
                         </div>
                     </div>
@@ -1799,7 +1799,7 @@
                     <div class="mb-3">
                         <label for="penerimagajidir">Ubah Jumlah Direksi Penerima Gaji:</label>
                         <input class="form-control" type="number" name="penerimagajidir" id="penerimagajidir" min="0"
-                            value="<?= isset($row['penerimagajidir']) ? htmlspecialchars($row['penerimagajidir']) : '' ?>">
+                            value="<?= isset($row['penerimagajidir']) ? htmlspecialchars($row['penerimagajidir']) : '' ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="nominalgajidir">Ubah Jumlah Nominal Keseluruhan Gaji Direksi (Rp):</label>
@@ -1809,14 +1809,14 @@
                             </div>
                             <input class="form-control rupiah-input" type="text" name="nominalgajidir"
                                 id="nominalgajidir"
-                                value="<?= isset($row['nominalgajidir']) ? number_format($row['nominalgajidir'], 0, ',', '.') : '' ?>">
+                                value="<?= isset($row['nominalgajidir']) ? number_format($row['nominalgajidir'], 0, ',', '.') : '' ?>" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="penerimagajidekom">Ubah Jumlah Komisaris Penerima Gaji :</label>
                         <input class="form-control" type="number" name="penerimagajidekom" id="penerimagajidekom"
                             min="0"
-                            value="<?= isset($row['penerimagajidekom']) ? htmlspecialchars($row['penerimagajidekom']) : '' ?>">
+                            value="<?= isset($row['penerimagajidekom']) ? htmlspecialchars($row['penerimagajidekom']) : '' ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="nominalgajidekom">Ubah Jumlah Nominal Keseluruhan Gaji Komisaris (Rp):</label>
@@ -1826,7 +1826,7 @@
                             </div>
                             <input class="form-control rupiah-input" type="text" name="nominalgajidekom"
                                 id="nominalgajidekom"
-                                value="<?= isset($row['nominalgajidekom']) ? number_format($row['nominalgajidekom'], 0, ',', '.') : '' ?>">
+                                value="<?= isset($row['nominalgajidekom']) ? number_format($row['nominalgajidekom'], 0, ',', '.') : '' ?>" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -1921,7 +1921,7 @@
                             <label for="terimatunjangandir">Ubah Jumlah Direksi Penerima Tunjangan:</label>
                             <input class="form-control" type="number" name="terimatunjangandir" id="terimatunjangandir"
                                 min="0"
-                                value="<?= isset($row['terimatunjangandir']) ? htmlspecialchars($row['terimatunjangandir']) : '' ?>">
+                                value="<?= isset($row['terimatunjangandir']) ? htmlspecialchars($row['terimatunjangandir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominaltunjangandir">Ubah Jumlah Nominal Keseluruhan Tunjangan Direksi (Rp):</label>
@@ -1931,14 +1931,14 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominaltunjangandir"
                                     id="nominaltunjangandir"
-                                    value="<?= isset($row['nominaltunjangandir']) ? number_format($row['nominaltunjangandir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominaltunjangandir']) ? number_format($row['nominaltunjangandir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="terimatunjangandekom">Ubah Jumlah Komisaris Penerima Tunjangan:</label>
                             <input class="form-control" type="number" name="terimatunjangandekom" id="terimatunjangandekom"
                                 min="0"
-                                value="<?= isset($row['terimatunjangandekom']) ? htmlspecialchars($row['terimatunjangandekom']) : '' ?>">
+                                value="<?= isset($row['terimatunjangandekom']) ? htmlspecialchars($row['terimatunjangandekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominaltunjangandekom">Ubah Jumlah Nominal Keseluruhan Tunjangan Komisaris
@@ -1949,7 +1949,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominaltunjangandekom"
                                     id="nominaltunjangandekom"
-                                    value="<?= isset($row['nominaltunjangandekom']) ? number_format($row['nominaltunjangandekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominaltunjangandekom']) ? number_format($row['nominaltunjangandekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2019,7 +2019,7 @@
                         <div class="mb-3">
                             <label for="terimatantiemdir">Ubah Jumlah Direksi Penerima Tantiem:</label>
                             <input class="form-control" type="number" name="terimatantiemdir" id="terimatantiemdir" min="0"
-                                value="<?= isset($row['terimatantiemdir']) ? htmlspecialchars($row['terimatantiemdir']) : '' ?>">
+                                value="<?= isset($row['terimatantiemdir']) ? htmlspecialchars($row['terimatantiemdir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominaltantiemdir">Ubah Jumlah Nominal Keseluruhan Tantiem Direksi (Rp):</label>
@@ -2029,14 +2029,14 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominaltantiemdir"
                                     id="nominaltantiemdir"
-                                    value="<?= isset($row['nominaltantiemdir']) ? number_format($row['nominaltantiemdir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominaltantiemdir']) ? number_format($row['nominaltantiemdir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="terimatantiemdekom">Ubah Jumlah Komisaris Penerima Tantiem:</label>
                             <input class="form-control" type="number" name="terimatantiemdekom" id="terimatantiemdekom"
                                 min="0"
-                                value="<?= isset($row['terimatantiemdekom']) ? htmlspecialchars($row['terimatantiemdekom']) : '' ?>">
+                                value="<?= isset($row['terimatantiemdekom']) ? htmlspecialchars($row['terimatantiemdekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominaltantiemdekom">Ubah Jumlah Nominal Keseluruhan Tantiem Komisaris (Rp):</label>
@@ -2046,7 +2046,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominaltantiemdekom"
                                     id="nominaltantiemdekom"
-                                    value="<?= isset($row['nominaltantiemdekom']) ? number_format($row['nominaltantiemdekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominaltantiemdekom']) ? number_format($row['nominaltantiemdekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2116,7 +2116,7 @@
                         <div class="mb-3">
                             <label for="terimashmdir">Ubah Jumlah Direksi Penerima Kompensasi Berbasis Saham:</label>
                             <input class="form-control" type="number" name="terimashmdir" id="terimashmdir" min="0"
-                                value="<?= isset($row['terimashmdir']) ? htmlspecialchars($row['terimashmdir']) : '' ?>">
+                                value="<?= isset($row['terimashmdir']) ? htmlspecialchars($row['terimashmdir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalshmdir">Ubah Jumlah Nominal Keseluruhan Kompensasi Berbasis Saham Direksi
@@ -2126,13 +2126,13 @@
                                     <span class="input-group-text">Rp</span>
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalshmdir" id="nominalshmdir"
-                                    value="<?= isset($row['nominalshmdir']) ? number_format($row['nominalshmdir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalshmdir']) ? number_format($row['nominalshmdir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="terimashmdekom">Ubah Jumlah Komisaris Penerima Kompensasi Berbasis Saham:</label>
                             <input class="form-control" type="number" name="terimashmdekom" id="terimashmdekom" min="0"
-                                value="<?= isset($row['terimashmdekom']) ? htmlspecialchars($row['terimashmdekom']) : '' ?>">
+                                value="<?= isset($row['terimashmdekom']) ? htmlspecialchars($row['terimashmdekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalshmdekom">Ubah Jumlah Nominal Keseluruhan Kompensasi Berbasis Saham Komisaris
@@ -2143,7 +2143,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalshmdekom"
                                     id="nominalshmdekom"
-                                    value="<?= isset($row['nominalshmdekom']) ? number_format($row['nominalshmdekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalshmdekom']) ? number_format($row['nominalshmdekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2214,7 +2214,7 @@
                             <label for="terimaremunlaindir">Ubah Jumlah Direksi Penerima Remunerasi Lainnya:</label>
                             <input class="form-control" type="number" name="terimaremunlaindir" id="terimaremunlaindir"
                                 min="0"
-                                value="<?= isset($row['terimaremunlaindir']) ? htmlspecialchars($row['terimaremunlaindir']) : '' ?>">
+                                value="<?= isset($row['terimaremunlaindir']) ? htmlspecialchars($row['terimaremunlaindir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalremunlaindir">Ubah Jumlah Nominal Keseluruhan Remunerasi Lainnya Direksi
@@ -2225,14 +2225,14 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalremunlaindir"
                                     id="nominalremunlaindir"
-                                    value="<?= isset($row['nominalremunlaindir']) ? number_format($row['nominalremunlaindir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalremunlaindir']) ? number_format($row['nominalremunlaindir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="terimaremunlaindekom">Ubah Jumlah Komisaris Penerima Remunerasi Lainnya:</label>
                             <input class="form-control" type="number" name="terimaremunlaindekom" id="terimaremunlaindekom"
                                 min="0"
-                                value="<?= isset($row['terimaremunlaindekom']) ? htmlspecialchars($row['terimaremunlaindekom']) : '' ?>">
+                                value="<?= isset($row['terimaremunlaindekom']) ? htmlspecialchars($row['terimaremunlaindekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalremunlaindekom">Ubah Jumlah Nominal Keseluruhan Remunerasi Lainnya Komisaris
@@ -2243,7 +2243,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalremunlaindekom"
                                     id="nominalremunlaindekom"
-                                    value="<?= isset($row['nominalremunlaindekom']) ? number_format($row['nominalremunlaindekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalremunlaindekom']) ? number_format($row['nominalremunlaindekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2313,7 +2313,7 @@
                         <div class="mb-3">
                             <label for="terimarumahdir">Ubah Jumlah Direksi Penerima Perumahan (Orang):</label>
                             <input class="form-control" type="number" name="terimarumahdir" id="terimarumahdir" min="0"
-                                value="<?= isset($row['terimarumahdir']) ? htmlspecialchars($row['terimarumahdir']) : '' ?>">
+                                value="<?= isset($row['terimarumahdir']) ? htmlspecialchars($row['terimarumahdir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalrumahdir">Ubah Jumlah Nominal Perumahan Direksi (Rp):</label>
@@ -2323,13 +2323,13 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalrumahdir"
                                     id="nominalrumahdir"
-                                    value="<?= isset($row['nominalrumahdir']) ? number_format($row['nominalrumahdir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalrumahdir']) ? number_format($row['nominalrumahdir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="terimarumahdekom">Ubah Jumlah Komisaris Penerima Perumahan (Orang):</label>
                             <input class="form-control" type="number" name="terimarumahdekom" id="terimarumahdekom" min="0"
-                                value="<?= isset($row['terimarumahdekom']) ? htmlspecialchars($row['terimarumahdekom']) : '' ?>">
+                                value="<?= isset($row['terimarumahdekom']) ? htmlspecialchars($row['terimarumahdekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalrumahdekom">Ubah Jumlah Nominal Perumahan Komisaris (Rp):</label>
@@ -2339,7 +2339,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalrumahdekom"
                                     id="nominalrumahdekom"
-                                    value="<?= isset($row['nominalrumahdekom']) ? number_format($row['nominalrumahdekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalrumahdekom']) ? number_format($row['nominalrumahdekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2411,7 +2411,7 @@
                             <label for="terimatransportdir">Ubah Jumlah Direksi Penerima Transportasi (Orang):</label>
                             <input class="form-control" type="number" name="terimatransportdir" id="terimatransportdir"
                                 min="0"
-                                value="<?= isset($row['terimatransportdir']) ? htmlspecialchars($row['terimatransportdir']) : '' ?>">
+                                value="<?= isset($row['terimatransportdir']) ? htmlspecialchars($row['terimatransportdir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominaltransportdir">Ubah Jumlah Nominal Transportasi Direksi (Rp):</label>
@@ -2421,14 +2421,14 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominaltransportdir"
                                     id="nominaltransportdir"
-                                    value="<?= isset($row['nominaltransportdir']) ? number_format($row['nominaltransportdir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominaltransportdir']) ? number_format($row['nominaltransportdir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="terimatransportdekom">Ubah Jumlah Komisaris Penerima Transportasi (Orang):</label>
                             <input class="form-control" type="number" name="terimatransportdekom" id="terimatransportdekom"
                                 min="0"
-                                value="<?= isset($row['terimatransportdekom']) ? htmlspecialchars($row['terimatransportdekom']) : '' ?>">
+                                value="<?= isset($row['terimatransportdekom']) ? htmlspecialchars($row['terimatransportdekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominaltransportdekom">Ubah Jumlah Nominal Transportasi Komisaris (Rp):</label>
@@ -2438,7 +2438,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominaltransportdekom"
                                     id="nominaltransportdekom"
-                                    value="<?= isset($row['nominaltransportdekom']) ? number_format($row['nominaltransportdekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominaltransportdekom']) ? number_format($row['nominaltransportdekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2509,7 +2509,7 @@
                             <label for="terimaasuransidir">Ubah Jumlah Direksi Penerima Asuransi Kesehatan (Orang):</label>
                             <input class="form-control" type="number" name="terimaasuransidir" id="terimaasuransidir"
                                 min="0"
-                                value="<?= isset($row['terimaasuransidir']) ? htmlspecialchars($row['terimaasuransidir']) : '' ?>">
+                                value="<?= isset($row['terimaasuransidir']) ? htmlspecialchars($row['terimaasuransidir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalasuransidir">Ubah Jumlah Nominal Asuransi Kesehatan Direksi (Rp):</label>
@@ -2519,7 +2519,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalasuransidir"
                                     id="nominalasuransidir"
-                                    value="<?= isset($row['nominalasuransidir']) ? number_format($row['nominalasuransidir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalasuransidir']) ? number_format($row['nominalasuransidir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -2527,7 +2527,7 @@
                                 (Orang):</label>
                             <input class="form-control" type="number" name="terimaasuransidekom" id="terimaasuransidekom"
                                 min="0"
-                                value="<?= isset($row['terimaasuransidekom']) ? htmlspecialchars($row['terimaasuransidekom']) : '' ?>">
+                                value="<?= isset($row['terimaasuransidekom']) ? htmlspecialchars($row['terimaasuransidekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalasuransidekom">Ubah Jumlah Nominal Asuransi Kesehatan Komisaris (Rp):</label>
@@ -2537,7 +2537,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalasuransidekom"
                                     id="nominalasuransidekom"
-                                    value="<?= isset($row['nominalasuransidekom']) ? number_format($row['nominalasuransidekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalasuransidekom']) ? number_format($row['nominalasuransidekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -2610,7 +2610,7 @@
                                 (Orang):</label>
                             <input class="form-control" type="number" name="terimafasilitasdir" id="terimafasilitasdir"
                                 min="0"
-                                value="<?= isset($row['terimafasilitasdir']) ? htmlspecialchars($row['terimafasilitasdir']) : '' ?>">
+                                value="<?= isset($row['terimafasilitasdir']) ? htmlspecialchars($row['terimafasilitasdir']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalfasilitasdir">Ubah Jumlah Nominal Fasilitas Lain-Lain Direksi (Rp):</label>
@@ -2620,7 +2620,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalfasilitasdir"
                                     id="nominalfasilitasdir"
-                                    value="<?= isset($row['nominalfasilitasdir']) ? number_format($row['nominalfasilitasdir'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalfasilitasdir']) ? number_format($row['nominalfasilitasdir'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -2628,7 +2628,7 @@
                                 (Orang):</label>
                             <input class="form-control" type="number" name="terimafasilitasdekom" id="terimafasilitasdekom"
                                 min="0"
-                                value="<?= isset($row['terimafasilitasdekom']) ? htmlspecialchars($row['terimafasilitasdekom']) : '' ?>">
+                                value="<?= isset($row['terimafasilitasdekom']) ? htmlspecialchars($row['terimafasilitasdekom']) : '' ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="nominalfasilitasdekom">Ubah Jumlah Nominal Fasilitas Lain-Lain Komisaris
@@ -2639,7 +2639,7 @@
                                 </div>
                                 <input class="form-control rupiah-input" type="text" name="nominalfasilitasdekom"
                                     id="nominalfasilitasdekom"
-                                    value="<?= isset($row['nominalfasilitasdekom']) ? number_format($row['nominalfasilitasdekom'], 0, ',', '.') : '' ?>">
+                                    value="<?= isset($row['nominalfasilitasdekom']) ? number_format($row['nominalfasilitasdekom'], 0, ',', '.') : '' ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">

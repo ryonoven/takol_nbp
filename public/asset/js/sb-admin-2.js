@@ -302,6 +302,18 @@
     window.location.href = "danasosial/hapus/" + idDataHapus20;
   });
 
+  $(document).on("click", "#btn-komentar", function () {
+    // Mengambil faktor_id dari tombol yang membuka modal
+    var faktorId = $(this).data("id");
+
+    // Mengatur nilai faktor_id di input modal tambah komentar
+    $(".modal-body #id-faktor").val(faktorId);
+
+    // Anda dapat menambahkan pengaturan lainnya sesuai kebutuhan, seperti:
+    $(".modal-body #komentar").val($(this).data("komentar"));
+  });
+
+
   // //Hide and show data collapse
   // $(document).ready(function() {
   //   $('.collapse-link').click(function(e) {

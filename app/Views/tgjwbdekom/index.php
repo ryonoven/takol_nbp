@@ -200,17 +200,17 @@
                         <input type="hidden" name="id" id="id-tgjwbdekom">
                         <div class="mb-3">
                             <label for="dekom" class="form-label">Input Nama Dewan Komisaris:</label>
-                            <input class="form-control" type="text" name="dekom" id="dekom" value="<?= $row['dekom'] ?>">
+                            <input class="form-control" type="text" name="dekom" id="dekom" value="<?= $row['dekom'] ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="nik" class="form-label">Input NIK: </label>
                             <input class="form-control" type="text" name="nik" id="nik"
-                                placeholder="<?= $row['nik'] ?>"></input>
+                                placeholder="<?= $row['nik'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="tugastgjwbdekom" class="form-label">Input Tugas dan Tanggung Jawab BPR: </label>
                             <textarea class="form-control" type="text" name="tugastgjwbdekom" id="tugastgjwbdekom"
-                                style="height: 150px" placeholder="<?= $row['tugastgjwbdekom'] ?>"></textarea>
+                                style="height: 150px" placeholder="<?= $row['tugastgjwbdekom'] ?>" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -266,16 +266,16 @@
                 <form action="<?= base_url('tgjwbdekom/tambahtgjwbdekom'); ?>" method="post">
                     <div class="form-group">
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
-                        <input type="text" name="dekom" id="dekom" class="form-control">
+                        <input type="text" name="dekom" id="dekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nik">Input NIK:</label>
-                        <input type="text" name="nik" id="nik" class="form-control">
+                        <input type="text" name="nik" id="nik" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="tugastgjwbdekom">Input Penjelasan Tugas dan tanggung jawab: </label>
                         <textarea class="form-control" type="text" name="tugastgjwbdekom" id="tugastgjwbdekom"
-                            style="height: 150px;"></textarea>
+                            style="height: 150px;" required></textarea>
                     </div>
             </div>
             <div class="modal-footer">

@@ -200,16 +200,16 @@
                         <div class="mb-3">
                             <label for="direksi" class="form-label">Input Nama Direksi:</label>
                             <input class="form-control" type="text" name="direksi" id="direksi"
-                                value="<?= $row['direksi'] ?>">
+                                value="<?= $row['direksi'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="direksi" class="form-label">Input NIK:</label>
-                            <input class="form-control" type="text" name="nik" id="nik" value="<?= $row['nik'] ?>">
+                            <input class="form-control" type="text" name="nik" id="nik" value="<?= $row['nik'] ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="tugastgjwbdir" class="form-label">Input Tugas dan Tanggung Jawab BPR: </label>
                             <textarea class="form-control" type="text" name="tugastgjwbdir" id="tugastgjwbdir"
-                                style="height: 150px" placeholder="<?= $row['tugastgjwbdir'] ?>"></textarea>
+                                style="height: 150px" placeholder="<?= $row['tugastgjwbdir'] ?>" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -265,15 +265,15 @@
                 <form action="<?= base_url('tgjwbdir/tambahtgjwbdir'); ?>" method="post">
                     <div class="form-group">
                         <label for="direksi">Input Nama Direksi:</label>
-                        <input type="text" name="direksi" id="direksi" class="form-control">
+                        <input type="text" name="direksi" id="direksi" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nik">Input NIK:</label>
-                        <input type="text" name="nik" id="nik" class="form-control">
+                        <input type="text" name="nik" id="nik" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="tugastgjwbdir">Input Penjelasan Tugas dan tanggung jawab: </label>
-                        <input type="text" name="tugastgjwbdir" id="tugastgjwbdir" class="form-control">
+                        <input type="text" name="tugastgjwbdir" id="tugastgjwbdir" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">

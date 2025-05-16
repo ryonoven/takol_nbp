@@ -205,17 +205,17 @@
                         <div class="form-group">
                             <label for="hadirfisik" class="form-label">Frekuensi Kehadiran (Fisik): </label>
                             <input class="form-control" type="text" name="hadirfisik" id="hadirfisik"
-                                value="<?= $row['hadirfisik'] ?>"></input>
+                                value="<?= $row['hadirfisik'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="hadironline" class="form-label">Frekuensi Kehadiran (Telekonferensi): </label>
                             <input class="form-control" type="text" name="hadironline" id="hadironline"
-                                value="<?= $row['hadironline'] ?>"></input>
+                                value="<?= $row['hadironline'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persen" class="form-label">Tingkat Kehadiran (dalam %): </label>
                             <input class="form-control" type="text" name="persen" id="persen"
-                                value="<?= $row['persen'] ?>"></input>
+                                value="<?= $row['persen'] ?>" required></input>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -272,7 +272,7 @@
                 <form action="<?= base_url('kehadirandekom/tambahdekom'); ?>" method="post">
                     <div class="form-group">
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
-                        <select name="dekom" id="dekom" class="form-control">
+                        <select name="dekom" id="dekom" class="form-control" required>
                             <?php foreach ($tgjwbdekom as $row): ?>
                                 <option value="<?= $row['dekom']; ?>"><?= $row['dekom']; ?></option>
                             <?php endforeach; ?>
@@ -280,15 +280,15 @@
                     </div>
                     <div class="form-group">
                         <label for="hadirfisik">Frekuensi Kehadiran (Fisik): </label>
-                        <input type="text" name="hadirfisik" id="hadirfisik" class="form-control">
+                        <input type="text" name="hadirfisik" id="hadirfisik" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hadironline">Frekuensi Kehadiran (Telekonferensi): </label>
-                        <input type="text" name="hadironline" id="hadironline" class="form-control">
+                        <input type="text" name="hadironline" id="hadironline" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persen">Tingkat Kehadiran (dalam %): </label>
-                        <input type="text" name="persen" id="persen" class="form-control">
+                        <input type="text" name="persen" id="persen" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">

@@ -212,49 +212,49 @@
                         <div class="mb-3">
                             <label for="namapihakbenturan">Ubah Nama Pihak yang Memiliki Benturan Kepentingan:</label>
                             <input class="form-control" type="text" name="namapihakbenturan" id="namapihakbenturan"
-                                value="<?= $row['namapihakbenturan'] ?>" placeholder="<?= $row['namapihakbenturan'] ?>">
+                                value="<?= $row['namapihakbenturan'] ?>" placeholder="<?= $row['namapihakbenturan'] ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="jbtbenturan" class="form-label">Ubah Jabatan Pihak yang Memiliki Benturan
                                 Kepentingan: </label>
                             <textarea class="form-control" type="text" name="jbtbenturan" id="jbtbenturan"
-                                placeholder="<?= $row['jbtbenturan'] ?>"></textarea>
+                                placeholder="<?= $row['jbtbenturan'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="nikbenturan" class="form-label">Ubah NIK Pihak yang Memiliki Benturan Kepentingan:
                             </label>
                             <textarea class="form-control" type="text" name="nikbenturan" id="nikbenturan"
-                                placeholder="<?= $row['nikbenturan'] ?>"></textarea>
+                                placeholder="<?= $row['nikbenturan'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="pengambilkeputusan" class="form-label">Ubah Nama Pengambil Keputusan: </label>
                             <textarea class="form-control" type="text" name="pengambilkeputusan" id="pengambilkeputusan"
-                                style="height: 150px" placeholder="<?= $row['pengambilkeputusan'] ?>"></textarea>
+                                style="height: 150px" placeholder="<?= $row['pengambilkeputusan'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="jbtpengambilkeputusan" class="form-label">Ubah Jabatan Pengambil Keputusan: </label>
                             <textarea class="form-control" type="text" name="jbtpengambilkeputusan"
-                                id="jbtpengambilkeputusan" placeholder="<?= $row['jbtpengambilkeputusan'] ?>"></textarea>
+                                id="jbtpengambilkeputusan" placeholder="<?= $row['jbtpengambilkeputusan'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="nikpengambilkeputusan" class="form-label">Ubah NIK Pengambil Keputusan: </label>
                             <textarea class="form-control" type="text" name="nikpengambilkeputusan"
-                                id="nikpengambilkeputusan" placeholder="<?= $row['nikpengambilkeputusan'] ?>"></textarea>
+                                id="nikpengambilkeputusan" placeholder="<?= $row['nikpengambilkeputusan'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="jenistransaksi" class="form-label">Ubah Jenis Transaksi: </label>
                             <textarea class="form-control" type="text" name="jenistransaksi" id="jenistransaksi"
-                                placeholder="<?= $row['jenistransaksi'] ?>"></textarea>
+                                placeholder="<?= $row['jenistransaksi'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="nilaitransaksi" class="form-label">Ubah Nilai Transaksi: </label>
                             <textarea class="form-control" type="text" name="nilaitransaksi" id="nilaitransaksi"
-                                placeholder="<?= $row['nilaitransaksi'] ?>"></textarea>
+                                placeholder="<?= $row['nilaitransaksi'] ?>" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="keterangan" class="form-label">Ubah Keterangan: </label>
                             <textarea class="form-control" type="text" name="keterangan" id="keterangan"
-                                placeholder="<?= $row['keterangan'] ?>"></textarea>
+                                placeholder="<?= $row['keterangan'] ?>" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -280,42 +280,42 @@
                 <form action="<?= base_url('transaksikepentingan/tambahtransaksikepentingan'); ?>" method="post">
                     <div class="mb-3">
                         <label for="namapihakbenturan">Input Nama Pihak yang Memiliki Benturan Kepentingan:</label>
-                        <input class="form-control" type="text" name="namapihakbenturan" id="namapihakbenturan">
+                        <input class="form-control" type="text" name="namapihakbenturan" id="namapihakbenturan" required>
                     </div>
                     <div class="form-group">
                         <label for="jbtbenturan" class="form-label">Input Jabatan Pihak yang Memiliki Benturan
                             Kepentingan:</label>
-                        <input class="form-control" type="text" name="jbtbenturan" id="jbtbenturan">
+                        <input class="form-control" type="text" name="jbtbenturan" id="jbtbenturan" required>
                     </div>
                     <div class="form-group">
                         <label for="nikbenturan" class="form-label">Input NIK Pihak yang Memiliki Benturan
                             Kepentingan:</label>
-                        <input class="form-control" type="text" name="nikbenturan" id="nikbenturan">
+                        <input class="form-control" type="text" name="nikbenturan" id="nikbenturan" required>
                     </div>
                     <div class="form-group">
                         <label for="pengambilkeputusan" class="form-label">Input Nama Pengambil Keputusan:</label>
-                        <input class="form-control" type="text" name="pengambilkeputusan" id="pengambilkeputusan">
+                        <input class="form-control" type="text" name="pengambilkeputusan" id="pengambilkeputusan" required>
                     </div>
                     <div class="form-group">
                         <label for="jbtpengambilkeputusan" class="form-label">Input Jabatan Pengambil Keputusan:</label>
-                        <input class="form-control" type="text" name="jbtpengambilkeputusan" id="jbtpengambilkeputusan">
+                        <input class="form-control" type="text" name="jbtpengambilkeputusan" id="jbtpengambilkeputusan" required>
                     </div>
                     <div class="form-group">
                         <label for="nikpengambilkeputusan" class="form-label">Input NIK Pengambil Keputusan:</label>
-                        <input class="form-control" type="text" name="nikpengambilkeputusan" id="nikpengambilkeputusan">
+                        <input class="form-control" type="text" name="nikpengambilkeputusan" id="nikpengambilkeputusan" required>
                     </div>
                     <div class="form-group">
                         <label for="jenistransaksi" class="form-label">Input Jenis Transaksi:</label>
-                        <input class="form-control" type="text" name="jenistransaksi" id="jenistransaksi">
+                        <input class="form-control" type="text" name="jenistransaksi" id="jenistransaksi" required>
                     </div>
                     <div class="form-group">
                         <label for="nilaitransaksi" class="form-label">Input Nilai Transaksi:</label>
                         <input class="form-control" type="text" name="nilaitransaksi" id="nilaitransaksi"
-                            oninput="formatRupiah(this)">
+                            oninput="formatRupiah(this)" required>
                     </div>
                     <div class="form-group">
                         <label for="keterangan" class="form-label">Input Keterangan:</label>
-                        <input class="form-control" type="text" name="keterangan" id="keterangan">
+                        <input class="form-control" type="text" name="keterangan" id="keterangan" required>
                     </div>
             </div>
             <div class="modal-footer">

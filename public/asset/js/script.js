@@ -35,6 +35,7 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #puncak").val($(this).data("puncak"));
 
   $(".modal-body #id-faktor").val($(this).data("id"));
+  // $(".modal-body #id_faktor").val($(this).data("id"));
   $(".modal-body #number").val($(this).data("number"));
   $(".modal-body #sph").val($(this).data("sph"));
   $(".modal-body #category").val($(this).data("category"));

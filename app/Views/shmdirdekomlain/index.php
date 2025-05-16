@@ -305,7 +305,7 @@
                         </div>
                         <div class="form-group">
                             <label for="jenisdir" class="form-label">Pilih Jenis Bank/Perusahaan Lain</label>
-                            <select class="form-control" name="jenisdir" id="jenisdir">
+                            <select class="form-control" name="jenisdir" id="jenisdir" required>
                                 <option value="">-- Pilih --</option>
                                 <option value="Bank">Bank</option>
                                 <option value="Perusahaan Lain">Perusahaan Lain</option>
@@ -313,15 +313,15 @@
                         </div>
                         <div class="form-group" id="kodeBankDirUbahGroup" style="display: none;">
                             <label for="kodedir" class="form-label">Input Kode Bank</label>
-                            <input type="text" name="kodedir" id="kodedir" class="form-control">
+                            <input type="text" name="kodedir" id="kodedir" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="perusahaandir" class="form-label">Nama Bank/Perusahaan Lain: </label>
-                            <input class="form-control" type="text" name="perusahaandir" id="perusahaandir">
+                            <input class="form-control" type="text" name="perusahaandir" id="perusahaandir" required>
                         </div>
                         <div class="form-group">
                             <label for="persenshmdirlain" class="form-label">Persentase Kepemilikan (%): </label>
-                            <input class="form-control" type="text" name="persenshmdirlain" id="persenshmdirlain">
+                            <input class="form-control" type="text" name="persenshmdirlain" id="persenshmdirlain" required>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -376,12 +376,12 @@
                         <div class="form-group">
                             <label for="perusahaandekom" class="form-label">Nama Bank/Perusahaan Lain: </label>
                             <input class="form-control" type="text" name="perusahaandekom" id="perusahaandekom"
-                                placeholder="<?= $row['perusahaandekom'] ?>"></input>
+                                placeholder="<?= $row['perusahaandekom'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persenshmdekomlain" class="form-label">Persentase Kepemilikan (%): </label>
                             <input class="form-control" type="text" name="persenshmdekomlain" id="persenshmdekomlain"
-                                placeholder="<?= $row['persenshmdekomlain'] ?>"></input>
+                                placeholder="<?= $row['persenshmdekomlain'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -436,7 +436,7 @@
                 <form action="<?= base_url('shmdirdekomlain/tambahsahamdir'); ?>" method="post">
                     <div class="form-group">
                         <label for="direksi">Input Nama Direksi:</label>
-                        <select name="direksi" id="direksi" class="form-control">
+                        <select name="direksi" id="direksi" class="form-control" required>
                             <?php if (isset($tgjwbdir) && is_array($tgjwbdir)): ?>
                                 <?php foreach ($tgjwbdir as $row): ?>
                                     <option value="<?= $row['direksi']; ?>"><?= $row['direksi']; ?></option>
@@ -448,7 +448,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jenisdir">Pilih Jenis Bank/Perusahaan Lain</label>
-                        <select class="form-control" name="jenisdir" id="jenisdir">
+                        <select class="form-control" name="jenisdir" id="jenisdir" required>
                             <option value="">-- Pilih Jenis Bank/Perusahaan Lain --</option>
                             <option value="Bank">Bank</option>
                             <option value="Perusahaan Lain">Perusahaan Lain</option>
@@ -456,16 +456,16 @@
                     </div>
                     <div class="form-group" id="kodeBankGroup" style="display: none;">
                         <label for="kodedir">Input Kode Bank</label>
-                        <input type="text" name="kodedir" id="kodedir" class="form-control">
+                        <input type="text" name="kodedir" id="kodedir" class="form-control" required>
                         <small>Note: Input angkanya saja</small>
                     </div>
                     <div class="form-group">
                         <label for="perusahaandir">Input Nama Bank/Perusahaan Lain </label>
-                        <input type="text" name="perusahaandir" id="perusahaandir" class="form-control">
+                        <input type="text" name="perusahaandir" id="perusahaandir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenshmdir">Input Persentase Kepemilikan (%): </label>
-                        <input type="text" name="persenshmdirlain" id="persenshmdirlain" class="form-control">
+                        <input type="text" name="persenshmdirlain" id="persenshmdirlain" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">
@@ -504,7 +504,7 @@
                 <form action="<?= base_url('shmdirdekomlain/tambahsahamdekom'); ?>" method="post">
                     <div class="form-group">
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
-                        <select name="dekom" id="dekom" class="form-control">
+                        <select name="dekom" id="dekom" class="form-control" required>
                             <?php if (isset($tgjwbdekom) && is_array($tgjwbdekom)): ?>
                                 <?php foreach ($tgjwbdekom as $row): ?>
                                     <option value="<?= $row['dekom']; ?>"><?= $row['dekom']; ?></option>
@@ -516,7 +516,7 @@
                     </div>
                     <div class="form-group">
                         <label for="jenisdekom">Pilih Jenis Bank/Perusahaan Lain</label>
-                        <select class="form-control" name="jenisdekom" id="jenisdekom">
+                        <select class="form-control" name="jenisdekom" id="jenisdekom" required>
                             <option value="">-- Pilih Bank/Perusahaan Lain --</option>
                             <option value="Bank">Bank</option>
                             <option value="Perusahaan Lain">Perusahaan Lain</option>
@@ -524,15 +524,15 @@
                     </div>
                     <div class="form-group" id="kodeBankDekomGroup" style="display: none;">
                         <label for="kodedekom">Input Kode Bank</label>
-                        <input type="text" name="kodedekom" id="kodedekom" class="form-control">
+                        <input type="text" name="kodedekom" id="kodedekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="perusahaandekom">Input Nama Bank/Perusahaan Lain: </label>
-                        <input type="text" name="perusahaandekom" id="perusahaandekom" class="form-control">
+                        <input type="text" name="perusahaandekom" id="perusahaandekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenshmdekomlain">Input Persentase Kepemilikan (%): </label>
-                        <input type="text" name="persenshmdekomlain" id="persenshmdekomlain" class="form-control">
+                        <input type="text" name="persenshmdekomlain" id="persenshmdekomlain" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">

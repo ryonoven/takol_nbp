@@ -47,10 +47,10 @@ class M_Faktor extends Model
         return $this->builder->update($data, ['id' => $id]);
     }
 
-    public function getKomentarByFaktor($faktorId)
+    public function getKomentarByFaktor($faktor1Id)
     {
-        return $this->db->table('komentar')
-            ->where('faktor_id', $faktorId)
+        return $this->db->table('faktor_comments')
+            ->where('faktor1id', $faktor1Id)
             ->orderBy('date', 'DESC')
             ->get()
             ->getResultArray();

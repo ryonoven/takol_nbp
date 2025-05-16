@@ -4,6 +4,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use App\Models\M_faktor;
 use App\Models\M_user;
+use App\Models\M_faktorkomentar;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Faktor extends Controller
@@ -12,13 +13,16 @@ class Faktor extends Controller
     protected $usermodel;
     protected $auth;
     protected $faktorModel;
+    protected $komentarModel;
     protected $session;
 
     public function __construct()
     {
+        date_default_timezone_set('Asia/Jakarta');
         $this->model = new M_faktor();
         $this->faktorModel = new M_faktor();
         $this->userModel = new M_user();
+        $this->komentarModel = new M_faktorkomentar();
         $this->session = service('session');
         $this->auth = service('authentication');
         $auth = AuthServices::authentication();
@@ -37,19 +41,22 @@ class Faktor extends Controller
 
     public function index()
     {
+        date_default_timezone_set('Asia/Jakarta');
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
             return redirect()->to($redirectURL);
         }
 
         $userId = $this->auth->id(); // ambil ID user yang login
         $user = $this->userModel->find($userId); // ambil data user
-
         $fullname = $user['fullname'] ?? 'Unknown';
 
+        // Ambil semua data faktor
         $faktorData = $this->faktorModel->getAllData();
+
+        // Ambil semua komentar untuk faktor yang terkait
+        $komentarList = $this->komentarModel->getAllData();
 
         $authorize = AuthServices::authorization();
         $userInGroupPE = $authorize->inGroup('pe', $this->auth->id());
@@ -57,10 +64,12 @@ class Faktor extends Controller
         $userInGroupDekom = $authorize->inGroup('dekom', $this->auth->id());
         $userInGroupDireksi = $authorize->inGroup('direksi', $this->auth->id());
 
+        // Mengirimkan semua variabel ke view
         $data = [
             'judul' => 'Faktor 1',
             'faktor' => $faktorData,
-            // 'faktor' => $this->faktorModel->getAllData(),
+            'userId' => $userId, // Pastikan ini sudah ada
+            'komentarList' => $komentarList,
             'userInGroupPE' => $userInGroupPE,
             'userInGroupAdmin' => $userInGroupAdmin,
             'userInGroupDekom' => $userInGroupDekom,
@@ -68,28 +77,24 @@ class Faktor extends Controller
             'fullname' => $fullname,
         ];
 
+        // Pastikan $data dikirimkan ke view
         echo view('templates/v_header', $data);
         echo view('templates/v_sidebar');
         echo view('templates/v_topbar');
-        echo view('faktor/index', $data);
+        echo view('faktor/index', $data);  // Pastikan $data dikirim ke view
         echo view('templates/v_footer');
-        $userId = service('authentication')->id();
-        $data['userInGroupPE'] = service('authorization')->inGroup('pe', $userId);
-        $data['userInGroupAdmin'] = service('authorization')->inGroup('admin', $userId);
-        $data['userInGroupDekom'] = service('authorization')->inGroup('dekom', $userId);
-        $data['userInGroupDireksi'] = service('authorization')->inGroup('direksi', $userId);
-
     }
+
 
     public function tambahKomentar()
     {
+        date_default_timezone_set('Asia/Jakarta');
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
+            return redirect()->to($redirectURL);
         }
+
         if (isset($_POST['tambahKomentar'])) {
             $val = $this->validate([
                 'komentar' => [
@@ -100,46 +105,40 @@ class Faktor extends Controller
                     ]
                 ],
             ]);
+
             if (!$val) {
                 session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Faktor',
-                    'faktor' => $this->model->getAllData(),
-                    'user' => $this->model->getAllData(),
-                ];
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('faktor/index', $data);
-                echo view('templates/v_footer');
+                return redirect()->back(); // Kembali ke form jika validasi gagal
             } else {
+                // Ambil data dari form
+                $userId = service('authentication')->id();
+                $faktor1Id = service('authentication')->id();
                 $data = [
-                    'fullname' => $this->request->getPost('fullname'),
-                    'date' => $this->request->getPost('date'),
+                    'faktor1id' => $faktor1Id,
+                    //'user_id' => $this->request->getPost('user_id'), // Ambil user_id yang dikirimkan
                     'komentar' => $this->request->getPost('komentar'),
+                    'user_id' => $userId,
+                    'created_at' => date('Y-m-d H:i:s'), // Timestamp saat komentar ditambahkan
                 ];
 
-                // Insert Data
-                $this->model->checkIncrement();
-                $success = $this->model->tambahKomentar($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
-                    return redirect()->to(base_url('faktor'));
-                }
+                $this->komentarModel->insertKomentar($data); // Menyimpan data komentar
+
+                session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
+                return redirect()->to(base_url('faktor')); // Redirect setelah komentar ditambahkan
             }
         } else {
-            return redirect()->to(base_url('faktor'));
+            return redirect()->to(base_url('faktor')); // Kembali ke halaman faktor jika tidak ada data POST
         }
     }
+
+
 
     public function ubah()
     {
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
+            return redirect()->to($redirectURL);
         }
 
         if (isset($_POST['ubah'])) {
@@ -159,6 +158,7 @@ class Faktor extends Controller
                     ]
                 ]
             ]);
+
             if (!$val) {
                 session()->setFlashdata('err', \Config\Services::validation()->listErrors());
                 $data = [
@@ -171,7 +171,6 @@ class Faktor extends Controller
                 echo view('templates/v_topbar');
                 echo view('faktor/index', $data);
                 echo view('templates/v_footer');
-
             } else {
                 $id = $this->request->getPost('id');
 
@@ -180,7 +179,7 @@ class Faktor extends Controller
                     'keterangan' => $this->request->getPost('keterangan')
                 ];
 
-                //Update data
+                // Update data
                 $success = $this->model->ubah($data, $id);
                 if ($success) {
                     session()->setFlashdata('message', 'Faktor berhasil diubah');
@@ -190,8 +189,8 @@ class Faktor extends Controller
         } else {
             return redirect()->to(base_url('faktor'));
         }
-
     }
+
     public function excel()
     {
         $data = [
@@ -199,7 +198,6 @@ class Faktor extends Controller
         ];
 
         echo view('faktor/excel', $data);
-
     }
 
     public function approve($idFaktor)
@@ -216,7 +214,6 @@ class Faktor extends Controller
         }
 
         date_default_timezone_set('Asia/Jakarta');
-
         $userId = service('authentication')->id();
 
         $dataUpdate = [
@@ -249,7 +246,6 @@ class Faktor extends Controller
         }
 
         date_default_timezone_set('Asia/Jakarta');
-
         $userId = service('authentication')->id();
 
         $dataUpdate = [
@@ -286,7 +282,6 @@ class Faktor extends Controller
 
     public function unapproveSemua()
     {
-
         date_default_timezone_set('Asia/Jakarta');
         $userId = service('authentication')->id();
         $dataUpdate = [
@@ -321,22 +316,3 @@ class Faktor extends Controller
         return redirect()->to(base_url('faktor'));
     }
 }
-
-// function menghapus data
-// public function hapus($id)
-// {
-//     if (!$this->auth->check()) {
-//         $redirectURL = session('redirect_url') ?? '/login';
-//         unset($_SESSION['redirect_url']);
-
-//         return redirect()->to($redirectURL);
-//     }
-
-//     // Memanggil fungsi hapus pada model dan menyimpan hasilnya dalam variabel $success
-//     $this->model->hapus($id);
-//     session()->setFlashdata('message', 'Data berhasil dihapus');
-
-//     // Redirect pengguna ke halaman "/faktor"
-//     return redirect()->to(base_url('faktor'));
-
-// }

@@ -273,7 +273,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nilai">Nilai: </label>
-                            <select name="nilai" id="nilai" class="form-control">
+                            <select name="nilai" id="nilai" class="form-control" required>
                                 <option>Pilih nilai faktor</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -406,7 +406,7 @@
                         <div class="form-group">
                             <label for="keterangan">Keterangan: </label>
                             <input class="form-control" type="text" name="keterangan" id="keterangan"
-                                value="<?= $row['keterangan'] ?? '' ?>"></input>
+                                value="<?= $row['keterangan'] ?? '' ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">

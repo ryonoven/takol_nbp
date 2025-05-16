@@ -219,7 +219,7 @@
                         <div class="form-group">
                             <label for="persensahamdir" class="form-label">Persentase Kepemilikan (%): </label>
                             <input class="form-control" type="text" name="persensahamdir" id="persensahamdir"
-                                placeholder="<?= $row['persensahamdir'] ?>"></input>
+                                placeholder="<?= $row['persensahamdir'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -253,7 +253,7 @@
                         <div class="form-group">
                             <label for="persensahamdekom" class="form-label">Persentase Kepemilikan (%): </label>
                             <input class="form-control" type="text" name="persensahamdekom" id="persensahamdekom"
-                                value="<?= $row['persensahamdekom'] ?>"></input>
+                                value="<?= $row['persensahamdekom'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -280,7 +280,7 @@
                 <form action="<?= base_url('sahamdirdekom/tambahsahamdir'); ?>" method="post">
                     <div class="form-group">
                         <label for="direksi">Input Nama Direksi:</label>
-                        <select name="direksi" id="direksi" class="form-control">
+                        <select name="direksi" id="direksi" class="form-control" required>
                             <option value="">-- Pilih Direksi --</option>
                             <?php foreach ($tgjwbdir as $row): ?>
                                 <option value="<?= $row['direksi']; ?>"><?= $row['direksi']; ?></option>
@@ -289,7 +289,7 @@
                     </div>
                     <div class="form-group">
                         <label for="persensahamdir">Input Persentase Kepemilikan (%): </label>
-                        <input type="text" name="persensahamdir" id="persensahamdir" class="form-control">
+                        <input type="text" name="persensahamdir" id="persensahamdir" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">
@@ -315,7 +315,7 @@
                 <form action="<?= base_url('sahamdirdekom/tambahsahamdekom'); ?>" method="post">
                     <div class="form-group">
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
-                        <select name="dekom" id="dekom" class="form-control">
+                        <select name="dekom" id="dekom" class="form-control" required>
                             <option value="">-- Pilih Dewan Komisaris --</option>
                             <?php foreach ($tgjwbdekom as $row): ?>
                                 <option value="<?= $row['dekom']; ?>"><?= $row['dekom']; ?></option>
@@ -324,7 +324,7 @@
                     </div>
                     <div class="form-group">
                         <label for="persensahamdekom">Input Persentase Kepemilikan (%): </label>
-                        <input type="text" name="persensahamdekom" id="persensahamdekom" class="form-control">
+                        <input type="text" name="persensahamdekom" id="persensahamdekom" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">

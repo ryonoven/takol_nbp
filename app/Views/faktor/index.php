@@ -90,8 +90,7 @@
                                                     data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
                                                     data-keterangan="<?= $row['keterangan']; ?>"
                                                     data-komentar="<?= $row['komentar']; ?>" data-date="<?= $row['date']; ?>"><i
-                                                        class="fa fa-edit"></i>&nbsp;
-                                                </button>
+                                                        class="fa fa-edit"></i>&nbsp;</button>
                                                 <button type="button" class="btn btn-sm" style="font-weight: 600;"
                                                     data-id="<?= $row['id']; ?>" id="btn-set-null"><i
                                                         class="fas fa-trash-alt"></i>&nbsp;
@@ -99,8 +98,7 @@
                                             <?php endif; ?>
                                             <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
                                                 id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                data-id="<?= $row['komentar']; ?>"> <i class="fas fa-comment"></i>&nbsp;
-                                            </button>
+                                                data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -157,7 +155,8 @@
                                             <?php endif; ?>
                                             <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
                                                 id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                data-id="<?= $row['komentar']; ?>"><i class="fas fa-comment"> </i>&nbsp;
+                                                data-id="<?= $row['id']; ?>" data-id="<?= $row['komentar']; ?>"><i
+                                                    class="fas fa-comment"> </i>&nbsp;
                                             </button>
                                         </td>
                                     </tr>
@@ -221,7 +220,8 @@
                                             <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
                                                 <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
                                                     id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['komentar']; ?>"> <i class="fas fa-comment"></i>&nbsp;
+                                                    data-id="<?= $row['id']; ?>" data-id="<?= $row['komentar']; ?>"> <i
+                                                        class="fas fa-comment"></i>&nbsp;
                                                 </button>
                                             <?php endif; ?>
                                         </td>
@@ -269,7 +269,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nilai">Nilai: </label>
-                            <select name="nilai" id="nilai" class="form-control">
+                            <select name="nilai" id="nilai" class="form-control" required>
                                 <option>Pilih nilai faktor</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -418,7 +418,7 @@
                             <label for="keterangan" class="form-label">Keterangan: </label>
                             <textarea class="form-control" type="text" name="keterangan" id="keterangan"
                                 style="height: 120px" value="<?= $row['keterangan'] ?? '' ?>"
-                                placeholder="<?= $row['keterangan'] ?? '' ?>"></textarea>
+                                placeholder="<?= $row['keterangan'] ?? '' ?>" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -447,6 +447,7 @@
 
 
 <!-- Add your modaltambahKomentar code here -->
+<!-- Modal untuk Tambah Komentar -->
 <div class="modal fade" id="modaltambahKomentar">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -461,12 +462,23 @@
                 <div class="modal-body">
                     <?php date_default_timezone_set('Asia/Jakarta'); ?>
 
-                    <input type="hidden" name="id" id="id-faktor">
+                    <!-- Input faktor_id -->
+                    <input type="hidden" name="faktor_id" id="id-faktor">
 
                     <div class="form-group">
                         <label for="komentarLama">Komentar Saat Ini:</label>
-                        <textarea class="form-control" id="komentarLama" style="height: 150px"
-                            readonly><?= $row['fullname'] ?> - <?= $row['komentar'] ?> - <?= $row['date'] ?></textarea>
+                        <textarea class="input-group mb-3" id="komentarLama" style="height: 150px" readonly>
+                            <?php
+                            // Loop untuk menampilkan seluruh komentar
+                            if (!empty($komentarList)) {
+                                foreach ($komentarList as $komentar) {
+                                    echo $komentar['komentar'] . " - " . " (". $fullname . " - " . $komentar['created_at'] . ") " ."\n";
+                                }
+                            } else {
+                                echo "Tidak ada komentar.";
+                            }
+                            ?>
+                        </textarea>
                     </div>
                     <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
                         <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
@@ -478,7 +490,6 @@
                         </div>
                     <?php endif; ?>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                     <button type="submit" name="tambahKomentar" class="btn btn-primary">Simpan Komentar</button>
@@ -487,6 +498,26 @@
         </div>
     </div>
 </div>
+<script>
+    // Script untuk menangani pengaturan id-faktor di modal tambah komentar
+    document.addEventListener('DOMContentLoaded', function () {
+        // Menangani event saat modal tambah komentar dibuka
+        $('#modaltambahKomentar').on('show.bs.modal', function (e) {
+            var faktorId = $(e.relatedTarget).data('id'); // Ambil faktor_id dari tombol yang membuka modal
+            // Set faktor_id ke modal tambah komentar
+            $('#id-faktor').val(faktorId);
+        });
+
+        // Menangani event saat modal ubah dibuka
+        $('#modalUbah').on('show.bs.modal', function (e) {
+            var faktorId = $(e.relatedTarget).data('id'); // Ambil faktor_id dari tombol yang membuka modal
+            // Set faktor_id ke modal ubah
+            $('#id-faktor').val(faktorId);
+        });
+    });
+
+</script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

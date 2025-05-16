@@ -87,22 +87,34 @@
                     </tr>
                     <tr>
                         <th style="width: 30%;">Penjelasan Tugas dan Tanggung Jawab :</th>
+                    </tr>
+                    <tr>
                         <td colspan="2">Data tidak tersedia</td>
                     </tr>
-                    <tr
-                        style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
-                        <th colspan="2">Program Kerja Komite :</th>
+                    <tr>
+                        <th
+                            style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
+                            Program Kerja Komite</th>
                     </tr>
-                    <tr
-                        style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
+                    <tr>
+                        <th
+                            style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
+                            Data tidak tersedia</th>
+                    </tr>
+                    <tr>
+                        <th
+                            style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
+                        </th>
                         <td colspan="2">Data tidak tersedia</td>
                     </tr>
-                    <tr
-                        style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
+                    <tr>
+                        <th
+                            style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
                         <th colspan="2">Hasil Program Kerja Komite :</th>
                     </tr>
-                    <tr
-                        style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
+                    <tr>
+                        <th
+                            style="background-color: white; border-bottom-style: hidden; border-left-style: hidden; border-right-style: hidden;">
                         <td colspan="2">Data tidak tersedia</td>
                     </tr>
                 <?php } else { ?>
@@ -167,8 +179,8 @@
                         </tr>
                         <tr>
                             <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-                                style="background-color: white; border-bottom-style: hidden; border-left-style: hidden;
-                                border-right-style: hidden;">
+                                <td style="background-color: white; border-bottom-style: hidden; border-left-style: hidden;
+                                border-right-style: hidden;"></td>
                                 <td colspan="3">
                                     <button type="button" data-toggle="modal" class="btn" data-target="#modalUbah" id="btn-edit"
                                         style="font-weight: 600;" data-id="<?= $row['id']; ?>" data-komite="<?= $row['komite']; ?>"
@@ -249,7 +261,7 @@
                             <input type="hidden" name="id" id="id-tgjwbkomite">
                             <div class="mb-3">
                                 <label for="komite" class="form-label">Pilih Komite:</label>
-                                <select name="komite" id="komite" class="form-control">
+                                <select name="komite" id="komite" class="form-control" required>
                                     <option value="">-- Pilih Komite --</option>
                                     <option value="01. Komite Audit" <?= ($row['komite'] == '01. Komite Audit') ? 'selected' : ''; ?>>01. Komite Audit</option>
                                     <option value="02. Komite Pemantau Risiko" <?= ($row['komite'] == '02. Komite Pemantau Risiko') ? 'selected' : ''; ?>>02. Komite Pemantau
@@ -266,23 +278,24 @@
                                 <label for="tugastgjwbkomite" class="form-label">Input Penjelasan Tugas dan Tanggung Jawab:
                                 </label>
                                 <textarea class="form-control" type="text" name="tugastgjwbkomite" id="tugastgjwbkomite"
-                                    style="height: 100px" placeholder="<?= $row['tugastgjwbkomite'] ?>"></textarea>
+                                    style="height: 100px" placeholder="<?= $row['tugastgjwbkomite'] ?>" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="jumlahrapat" class="form-label">Input Jumlah Rapat:</label>
                                 <input class="form-control" type="text" name="jumlahrapat" id="jumlahrapat"
-                                    placeholder="<?= $row['jumlahrapat'] ?>">
+                                    placeholder="<?= $row['jumlahrapat'] ?>" required>
                                 <small> Note: Isi menggunakan angka saja</small>
                             </div>
                             <div class="form-group">
                                 <label for="prokerkomite" class="form-label">Program Kerja Komite: </label>
                                 <textarea class="form-control" type="text" name="prokerkomite" id="prokerkomite"
-                                    style="height: 100px" placeholder="<?= $row['prokerkomite'] ?>"></textarea>
+                                    style="height: 100px" placeholder="<?= $row['prokerkomite'] ?>" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="hasilprokerkomite" class="form-label">Realisasi: </label>
                                 <textarea class="form-control" type="text" name="hasilprokerkomite" id="hasilprokerkomite"
-                                    style="height: 100px" placeholder="<?= $row['hasilprokerkomite'] ?>"></textarea>
+                                    style="height: 100px" placeholder="<?= $row['hasilprokerkomite'] ?>"
+                                    required></textarea>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -314,7 +327,7 @@
                                     dan
                                     Realisasi Program Kerja Komite:</label>
                                 <textarea class="form-control" type="text" name="tindakkomite" id="tindakkomite"
-                                    style="height: 150px" placeholder="<?= $row['tindakkomite'] ?>"></textarea>
+                                    style="height: 150px" placeholder="<?= $row['tindakkomite'] ?>" required></textarea>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -343,7 +356,7 @@
                     <form action="<?= base_url('tgjwbkomite/tambahtgjwbkomite'); ?>" method="post">
                         <div class="form-group">
                             <label for="komite">Pilih Nama Komite:</label>
-                            <select name="komite" id="komite" class="form-control">
+                            <select name="komite" id="komite" class="form-control" required>
                                 <option value="">-- Pilih Komite --</option>
                                 <option value="01. Komite Audit">01. Komite Audit</option>
                                 <option value="02. Komite Pemantau Risiko">02. Komite Pemantau Risiko</option>
@@ -356,22 +369,23 @@
                         <div class="form-group">
                             <label for="tugastgjwbkomite">Input Penjelasan Tugas dan tanggung jawab: </label>
                             <textarea class="form-control" type="text" name="tugastgjwbkomite" id="tugastgjwbkomite"
-                                style="height: 100px;"></textarea>
+                                style="height: 100px;" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="jumlahrapat">Input Jumlah Rapat: </label>
-                            <input type="text" name="jumlahrapat" id="jumlahrapat" class="form-control"></input>
+                            <input type="text" name="jumlahrapat" id="jumlahrapat" class="form-control"
+                                required></input>
                             <small> Note: Isi menggunakan angka saja</small>
                         </div>
                         <div class="form-group">
                             <label for="prokerkomite">Input Program Kerja Komite: </label>
                             <textarea class="form-control" type="text" name="prokerkomite" id="prokerkomite"
-                                style="height: 100px;"></textarea>
+                                style="height: 100px;" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="hasilprokerkomite">Realisasi: </label>
                             <textarea class="form-control" type="text" name="hasilprokerkomite" id="hasilprokerkomite"
-                                style="height: 100px;"></textarea>
+                                style="height: 100px;" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">

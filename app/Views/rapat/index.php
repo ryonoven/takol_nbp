@@ -192,17 +192,17 @@
                         <div class="mb-3">
                             <label for="tanggalrapat" class="form-label">Input Tanggal Rapat:</label>
                             <input class="form-control" type="text" name="tanggalrapat" id="tanggalrapat"
-                                value="<?= $row['tanggalrapat'] ?>">
+                                value="<?= $row['tanggalrapat'] ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="jumlahpeserta" class="form-label">Input Jumlah Peserta Rapat: </label>
                             <input class="form-control" type="text" name="jumlahpeserta" id="jumlahpeserta"
-                                placeholder="<?= $row['jumlahpeserta'] ?>"></input>
+                                placeholder="<?= $row['jumlahpeserta'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="topikrapat" class="form-label">Input Topik Rapat: </label>
                             <textarea class="form-control" type="text" name="topikrapat" id="topikrapat"
-                                style="height: 100px" placeholder="<?= $row['topikrapat'] ?>"></textarea>
+                                style="height: 100px" placeholder="<?= $row['topikrapat'] ?>" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -258,17 +258,17 @@
                 <form action="<?= base_url('rapat/tambahrapat'); ?>" method="post">
                     <div class="form-group">
                         <label for="tanggalrapat">Input Tanggal Rapat:</label>
-                        <input type="text" name="tanggalrapat" id="tanggalrapat" class="form-control">
+                        <input type="text" name="tanggalrapat" id="tanggalrapat" class="form-control" required>
                         <small>Note: yyyymmdd</small>
                     </div>
                     <div class="form-group">
                         <label for="jumlahpeserta">Input Jumlah Peserta: </label>
-                        <input type="text" name="jumlahpeserta" id="jumlahpeserta" class="form-control">
+                        <input type="text" name="jumlahpeserta" id="jumlahpeserta" class="form-control" required>
                         <small>Note: Hanya input angka saja</small>
                     </div>
                     <div class="form-group">
                         <label for="topikrapat">Input Topik Peserta: </label>
-                        <input type="text" name="topikrapat" id="topikrapat" class="form-control">
+                        <input type="text" name="topikrapat" id="topikrapat" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">

@@ -183,7 +183,7 @@
             </div>
             <div style="display: flex; align-items;">
                 <span class="label" style="flex: 3; margin-right: 10px;">
-                <strong>C. Hasil Penerapan Tata Kelola (H)</strong>
+                    <strong>C. Hasil Penerapan Tata Kelola (H)</strong>
                 </span>
             </div>
             <div class="card-body">
@@ -282,7 +282,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nilai">Nilai: </label>
-                            <select name="nilai" id="nilai" class="form-control">
+                            <select name="nilai" id="nilai" class="form-control" required>
                                 <option>Pilih nilai faktor</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -479,7 +479,7 @@
                             <label for="keterangan" class="form-label">Keterangan: </label>
                             <textarea class="form-control" type="text" name="keterangan" id="keterangan"
                                 style="height: 120px" value="<?= $row['keterangan'] ?? '' ?>"
-                                placeholder="<?= $row['keterangan'] ?? '' ?>"></textarea>
+                                placeholder="<?= $row['keterangan'] ?? '' ?>" required></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -531,11 +531,6 @@
                         <textarea class="form-control" type="text" name="komentar" id="komentar" style="height: 150px"
                             value="<?= $row['komentar'] ?>" placeholder="<?= $row['komentar'] ?>"></textarea>
                     </div>
-                    <div style="overflow: auto; text-align: center; padding: 6px;">
-                        <button type="button" class="btn btn-success btn-sm">Approve</button>
-                        <button type="button" class="btn btn-danger btn-sm ml-2">Decline</button>
-                    </div>
-
             </div>
 
             <div class="modal-footer">

@@ -372,7 +372,7 @@
                                 di
                                 BPR: </label>
                             <input class="form-control" type="text" name="hubkeldirdir" id="hubkeldirdir"
-                                placeholder="<?= $row['hubkeldirdir'] ?>"></input>
+                                placeholder="<?= $row['hubkeldirdir'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                         <div class="form-group">
@@ -380,7 +380,7 @@
                                 Komisaris
                                 Lain di BPR: </label>
                             <input class="form-control" type="text" name="hubkeldirdekom" id="hubkeldirdekom"
-                                placeholder="<?= $row['hubkeldirdekom'] ?>"></input>
+                                placeholder="<?= $row['hubkeldirdekom'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                         <div class="form-group">
@@ -388,7 +388,7 @@
                                 di
                                 BPR: </label>
                             <input class="form-control" type="text" name="hubkeldirpshm" id="hubkeldirpshm"
-                                placeholder="<?= $row['hubkeldirpshm'] ?>"></input>
+                                placeholder="<?= $row['hubkeldirpshm'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                 </div>
@@ -426,7 +426,7 @@
                                 Lain di BPR:
                             </label>
                             <input class="form-control" type="text" name="hubkeldekomdir" id="hubkeldekomdir"
-                                placeholder="<?= $row['hubkeldekomdir'] ?>"></input>
+                                placeholder="<?= $row['hubkeldekomdir'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                         <div class="form-group">
@@ -434,7 +434,7 @@
                                 Komisaris Lain
                                 di BPR: </label>
                             <input class="form-control" type="text" name="hubkeldekomdekom" id="hubkeldekomdekom"
-                                placeholder="<?= $row['hubkeldekomdekom'] ?>"></input>
+                                placeholder="<?= $row['hubkeldekomdekom'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                         <div class="form-group">
@@ -442,7 +442,7 @@
                                 Lain di BPR:
                             </label>
                             <input class="form-control" type="text" name="hubkeldekompshm" id="hubkeldekompshm"
-                                placeholder="<?= $row['hubkeldekompshm'] ?>"></input>
+                                placeholder="<?= $row['hubkeldekompshm'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                 </div>
@@ -480,7 +480,7 @@
                                 Lain di BPR:
                             </label>
                             <input class="form-control" type="text" name="hubkelpshmdir" id="hubkelpshmdir"
-                                placeholder="<?= $row['hubkelpshmdir'] ?>"></input>
+                                placeholder="<?= $row['hubkelpshmdir'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                         <div class="form-group">
@@ -488,7 +488,7 @@
                                 Komisaris Lain di
                                 BPR: </label>
                             <input class="form-control" type="text" name="hubkelpshmdekom" id="hubkelpshmdekom"
-                                placeholder="<?= $row['hubkelpshmdekom'] ?>"></input>
+                                placeholder="<?= $row['hubkelpshmdekom'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                         <div class="form-group">
@@ -496,7 +496,7 @@
                                 Lain di BPR:
                             </label>
                             <input class="form-control" type="text" name="hubkelpshmpshm" id="hubkelpshmpshm"
-                                placeholder="<?= $row['hubkelpshmpshm'] ?>"></input>
+                                placeholder="<?= $row['hubkelpshmpshm'] ?>" required></input>
                             <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                         </div>
                 </div>
@@ -550,10 +550,9 @@
             </div>
             <div class="modal-body">
                 <form action="<?= base_url('keluargadirdekompshm/tambahkeldir'); ?>" method="post">
-                    <div class="form-group">
+                    <div class="form-group">                        
                         <label for="direksi">Input Nama Direksi:</label>
-                        <label for="direksi">Input Nama Direksi:</label>
-                        <select name="direksi" id="direksi" class="form-control">
+                        <select name="direksi" id="direksi" class="form-control" required>
                             <?php if (isset($tgjwbdir) && is_array($tgjwbdir)): ?>
                                 <option value="">Pilih Direksi</option>
                                 <?php foreach ($tgjwbdir as $row): ?>
@@ -568,18 +567,18 @@
                     </div>
                     <div class="form-group">
                         <label for="hubkeldirdir">Input Keluarga Dengan Anggota Direksi Lain di BPR </label>
-                        <input type="text" name="hubkeldirdir" id="hubkeldirdir" class="form-control">
+                        <input type="text" name="hubkeldirdir" id="hubkeldirdir" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubkeldirdekom">Input Keluarga Dengan Anggota Dewan Komisaris Lain di BPR:
                         </label>
-                        <input type="text" name="hubkeldirdekom" id="hubkeldirdekom" class="form-control">
+                        <input type="text" name="hubkeldirdekom" id="hubkeldirdekom" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubkeldirpshm">Input Keluarga Dengan Pemegang Saham Lain di BPR: </label>
-                        <input type="text" name="hubkeldirpshm" id="hubkeldirpshm" class="form-control">
+                        <input type="text" name="hubkeldirpshm" id="hubkeldirpshm" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
             </div>
@@ -606,7 +605,7 @@
                 <form action="<?= base_url('keluargadirdekompshm/tambahkeldekom'); ?>" method="post">
                     <div class="form-group">
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
-                        <select name="dekom" id="dekom" class="form-control">
+                        <select name="dekom" id="dekom" class="form-control" required>
                             <?php if (isset($tgjwbdekom) && is_array($tgjwbdekom)): ?>
                                 <option value="">Pilih Dewan Komisaris</option>
                                 <?php foreach ($tgjwbdekom as $row): ?>
@@ -621,18 +620,18 @@
                     </div>
                     <div class="form-group">
                         <label for="hubkeldekomdir">Input Keluarga Dengan Anggota Direksi Lain di BPR: </label>
-                        <input type="text" name="hubkeldekomdir" id="hubkeldekomdir" class="form-control">
+                        <input type="text" name="hubkeldekomdir" id="hubkeldekomdir" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubkeldekomdekom">Input Keluarga Dengan Anggota Dewan Komisaris Lain di BPR:
                         </label>
-                        <input type="text" name="hubkeldekomdekom" id="hubkeldekomdekom" class="form-control">
+                        <input type="text" name="hubkeldekomdekom" id="hubkeldekomdekom" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubkeldekompshm">Input Keluarga Dengan Pemegang Saham Lain di BPR: </label>
-                        <input type="text" name="hubkeldekompshm" id="hubkeldekompshm" class="form-control">
+                        <input type="text" name="hubkeldekompshm" id="hubkeldekompshm" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
             </div>
@@ -658,7 +657,7 @@
                 <form action="<?= base_url('keluargadirdekompshm/tambahkelpshm'); ?>" method="post">
                     <div class="form-group">
                         <label for="pshm">Input Nama Pemegang Saham:</label>
-                        <select name="pshm" id="pshm" class="form-control">
+                        <select name="pshm" id="pshm" class="form-control" required>
                             <?php if (isset($shmusahadirdekom) && is_array($shmusahadirdekom)): ?>
                                 <option value="">Pilih Pemegang Saham</option>
                                 <?php foreach ($shmusahadirdekom as $row): ?>
@@ -673,18 +672,18 @@
                     </div>
                     <div class="form-group">
                         <label for="hubkelpshmdir">Input Keluarga Dengan Anggota Direksi Lain di BPR: </label>
-                        <input type="text" name="hubkelpshmdir" id="hubkelpshmdir" class="form-control">
+                        <input type="text" name="hubkelpshmdir" id="hubkelpshmdir" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubkelpshmdekom">Input Keluarga Dengan Anggota Dewan Komisaris Lain di BPR:
                         </label>
-                        <input type="text" name="hubkelpshmdekom" id="hubkelpshmdekom" class="form-control">
+                        <input type="text" name="hubkelpshmdekom" id="hubkelpshmdekom" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
                     <div class="form-group">
                         <label for="hubkelpshmpshm">Input Keluarga Dengan Pemegang Saham Lain di BPR: </label>
-                        <input type="text" name="hubkelpshmpshm" id="hubkelpshmpshm" class="form-control">
+                        <input type="text" name="hubkelpshmpshm" id="hubkelpshmpshm" class="form-control" required>
                         <small>Note: Diisi dengan format Nama - Hubungan Keluarga / Tidak Ada</small>
                     </div>
             </div>

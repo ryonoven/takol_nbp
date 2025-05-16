@@ -381,18 +381,18 @@
                         <div class="form-group">
                             <label for="usahadir" class="form-label">Nama Kelompok Usaha BPR: </label>
                             <input class="form-control" type="text" name="usahadir" id="usahadir"
-                                placeholder="<?= $row['usahadir'] ?>"></input>
+                                placeholder="<?= $row['usahadir'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persenshmdir" class="form-label">Persentase Kepemilikan (%): </label>
                             <input class="form-control" type="text" name="persenshmdir" id="persenshmdir"
-                                placeholder="<?= $row['persenshmdir'] ?>"></input>
+                                placeholder="<?= $row['persenshmdir'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persenshmdirlalu" class="form-label">Persentase Kepemilikan (%) Tahun Sebelumnya:
                             </label>
                             <input class="form-control" type="text" name="persenshmdirlalu" id="persenshmdirlalu"
-                                placeholder="<?= $row['persenshmdirlalu'] ?>"></input>
+                                placeholder="<?= $row['persenshmdirlalu'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -426,18 +426,18 @@
                         <div class="form-group">
                             <label for="usahadekom" class="form-label">Nama Kelompok Usaha BPR (%): </label>
                             <input class="form-control" type="text" name="usahadekom" id="usahadekom"
-                                placeholder="<?= $row['usahadekom'] ?>"></input>
+                                placeholder="<?= $row['usahadekom'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persenshmdekom" class="form-label">Persentase Kepemilikan (%): </label>
                             <input class="form-control" type="text" name="persenshmdekom" id="persenshmdekom"
-                                placeholder="<?= $row['persenshmdekom'] ?>"></input>
+                                placeholder="<?= $row['persenshmdekom'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persenshmdekomlalu" class="form-label">Persentase Kepemilikan (%) Tahun Sebelumnya:
                             </label>
                             <input class="form-control" type="text" name="persenshmdekomlalu" id="persenshmdekomlalu"
-                                placeholder="<?= $row['persenshmdekomlalu'] ?>"></input>
+                                placeholder="<?= $row['persenshmdekomlalu'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -471,23 +471,23 @@
                         <div class="form-group">
                             <label for="nikpshm" class="form-label">Nama NIK: </label>
                             <input class="form-control" type="text" name="nikpshm" id="nikpshm"
-                                placeholder="<?= $row['nikpshm'] ?>"></input>
+                                placeholder="<?= $row['nikpshm'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="usahapshm" class="form-label">Nama Kelompok Usaha BPR: </label>
                             <input class="form-control" type="text" name="usahapshm" id="usahapshm"
-                                placeholder="<?= $row['usahapshm'] ?>"></input>
+                                placeholder="<?= $row['usahapshm'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persenpshm" class="form-label">Persentase Kepemilikan (%): </label>
                             <input class="form-control" type="text" name="persenpshm" id="persenpshm"
-                                placeholder="<?= $row['persenpshm'] ?>"></input>
+                                placeholder="<?= $row['persenpshm'] ?>" required></input>
                         </div>
                         <div class="form-group">
                             <label for="persenpshmlalu" class="form-label">Persentase Kepemilikan (%) Tahun Sebelumnya:
                             </label>
                             <input class="form-control" type="text" name="persenpshmlalu" id="persenpshmlalu"
-                                placeholder="<?= $row['persenpshmlalu'] ?>"></input>
+                                placeholder="<?= $row['persenpshmlalu'] ?>" required></input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -542,7 +542,7 @@
                 <form action="<?= base_url('shmusahadirdekom/tambahsahamdir'); ?>" method="post">
                     <div class="form-group">
                         <label for="direksi">Input Nama Direksi:</label>
-                        <select name="direksi" id="direksi" class="form-control">
+                        <select name="direksi" id="direksi" class="form-control" required>
                             <?php if (isset($shmusahadirdekom) && is_array($shmusahadirdekom)): ?>
                                 <?php foreach ($shmusahadirdekom as $row): ?>
                                     <option value="<?= $row['direksi']; ?>"><?= $row['direksi']; ?></option>
@@ -554,15 +554,15 @@
                     </div>
                     <div class="form-group">
                         <label for="usahadir">Input Nama Kelompok Usaha BPR: </label>
-                        <input type="text" name="usahadir" id="usahadir" class="form-control">
+                        <input type="text" name="usahadir" id="usahadir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenshmdir">Input Persentase Kepemilikan (%): </label>
-                        <input type="text" name="persenshmdir" id="persenshmdir" class="form-control">
+                        <input type="text" name="persenshmdir" id="persenshmdir" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenshmdirlalu">Persentase Kepemilikan (%) Tahun Sebelumnya: </label>
-                        <input type="text" name="persenshmdirlalu" id="persenshmdirlalu" class="form-control">
+                        <input type="text" name="persenshmdirlalu" id="persenshmdirlalu" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">
@@ -588,7 +588,7 @@
                 <form action="<?= base_url('shmusahadirdekom/tambahsahamdekom'); ?>" method="post">
                     <div class="form-group">
                         <label for="dekom">Input Nama Dewan Komisaris:</label>
-                        <select name="dekom" id="dekom" class="form-control">
+                        <select name="dekom" id="dekom" class="form-control" required>
                             <?php if (isset($tgjwbdekom) && is_array($tgjwbdekom)): ?>
                                 <?php foreach ($tgjwbdekom as $row): ?>
                                     <option value="<?= $row['dekom']; ?>"><?= $row['dekom']; ?></option>
@@ -600,15 +600,15 @@
                     </div>
                     <div class="form-group">
                         <label for="usahadekom">Input Nama Kelompok Usaha BPR: </label>
-                        <input type="text" name="usahadekom" id="usahadekom" class="form-control">
+                        <input type="text" name="usahadekom" id="usahadekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenshmdekom">Input Persentase Kepemilikan (%): </label>
-                        <input type="text" name="persenshmdekom" id="persenshmdekom" class="form-control">
+                        <input type="text" name="persenshmdekom" id="persenshmdekom" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenshmdekomlalu">Persentase Kepemilikan (%) Tahun Sebelumnya: </label>
-                        <input type="text" name="persenshmdekomlalu" id="persenshmdekomlalu" class="form-control">
+                        <input type="text" name="persenshmdekomlalu" id="persenshmdekomlalu" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">
@@ -634,23 +634,23 @@
                 <form action="<?= base_url('shmusahadirdekom/tambahsahampshm'); ?>" method="post">
                     <div class="form-group">
                         <label for="pshm">Input Nama Pemegang Saham:</label>
-                        <input type="text" name="pshm" id="pshm" class="form-control">
+                        <input type="text" name="pshm" id="pshm" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="nikpshm">Input NIK:</label>
-                        <input type="text" name="nikpshm" id="nikpshm" class="form-control">
+                        <input type="text" name="nikpshm" id="nikpshm" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="usahapshm">Input Nama Kelompok Usaha BPR: </label>
-                        <input type="text" name="usahapshm" id="usahapshm" class="form-control">
+                        <input type="text" name="usahapshm" id="usahapshm" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenpshm">Input Persentase Kepemilikan (%): </label>
-                        <input type="text" name="persenpshm" id="persenpshm" class="form-control">
+                        <input type="text" name="persenpshm" id="persenpshm" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="persenpshmlalu">Persentase Kepemilikan (%) Tahun Sebelumnya: </label>
-                        <input type="text" name="persenpshmlalu" id="persenpshmlalu" class="form-control">
+                        <input type="text" name="persenpshmlalu" id="persenpshmlalu" class="form-control" required>
                     </div>
 
                     <div class="modal-footer">

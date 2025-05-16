@@ -230,13 +230,13 @@
                             <label for="hukumperdataselesai" class="form-label">Input Permasalahan Hukum Perdata yang Telah
                                 Selesai (telah mempunyai kekuatan hukum yang tetap):</label>
                             <input class="form-control" type="text" name="hukumperdataselesai" id="hukumperdataselesai"
-                                value="<?= $row['hukumperdataselesai'] ?>">
+                                value="<?= $row['hukumperdataselesai'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="hukumpidanaselesai" class="form-label">Input Permasalahan Hukum Pidana yang Telah
                                 Selesai (telah mempunyai kekuatan hukum yang tetap):</label>
                             <input class="form-control" type="text" name="hukumpidanaselesai" id="hukumpidanaselesai"
-                                value="<?= $row['hukumpidanaselesai'] ?>">
+                                value="<?= $row['hukumpidanaselesai'] ?>" required>
                         </div>
 
                 </div>
@@ -267,13 +267,13 @@
                             <label for="hukumperdataproses" class="form-label">Input Permasalahan Hukum Perdata yang Telah
                                 Selesai (telah mempunyai kekuatan hukum yang tetap):</label>
                             <input class="form-control" type="text" name="hukumperdataproses" id="hukumperdataproses"
-                                value="<?= $row['hukumperdataproses'] ?>">
+                                value="<?= $row['hukumperdataproses'] ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="hukumpidanaproses" class="form-label">Input Permasalahan Hukum Pidana yang Telah
                                 Selesai (telah mempunyai kekuatan hukum yang tetap):</label>
                             <input class="form-control" type="text" name="hukumpidanaproses" id="hukumpidanaproses"
-                                value="<?= $row['hukumpidanaproses'] ?>">
+                                value="<?= $row['hukumpidanaproses'] ?>" required>
                         </div>
 
                 </div>
@@ -331,22 +331,22 @@
                     <div class="form-group">
                         <label for="hukumperdataselesai">Input Permasalahan Hukum Perdata yang Telah Selesai (telah
                             mempunyai kekuatan hukum yang tetap):</label>
-                        <input type="text" name="hukumperdataselesai" id="hukumperdataselesai" class="form-control">
+                        <input type="text" name="hukumperdataselesai" id="hukumperdataselesai" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hukumpidanaselesai">Input Permasalahan Hukum Pidana yang Telah Selesai (telah
                             mempunyai kekuatan hukum yang tetap): </label>
-                        <input type="text" name="hukumpidanaselesai" id="hukumpidanaselesai" class="form-control">
+                        <input type="text" name="hukumpidanaselesai" id="hukumpidanaselesai" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hukumperdataproses">Input Permasalahan Hukum Perdata yang Dalam Proses Penyelesaian:
                         </label>
-                        <input type="text" name="hukumperdataproses" id="hukumperdataproses" class="form-control">
+                        <input type="text" name="hukumperdataproses" id="hukumperdataproses" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="hukumpidanaproses">Input Permasalahan Hukum Pidana yang Dalam Proses Penyelesaian:
                         </label>
-                        <input type="text" name="hukumpidanaproses" id="hukumpidanaproses" class="form-control">
+                        <input type="text" name="hukumpidanaproses" id="hukumpidanaproses" class="form-control" required>
                     </div>
             </div>
             <div class="modal-footer">
