@@ -445,8 +445,6 @@
     });
 </script>
 
-
-<!-- Add your modaltambahKomentar code here -->
 <!-- Modal untuk Tambah Komentar -->
 <div class="modal fade" id="modaltambahKomentar">
     <div class="modal-dialog" role="document">
@@ -462,24 +460,23 @@
                 <div class="modal-body">
                     <?php date_default_timezone_set('Asia/Jakarta'); ?>
 
-                    <!-- Input faktor_id -->
                     <input type="hidden" name="faktor_id" id="id-faktor">
 
                     <div class="form-group">
                         <label for="komentarLama">Komentar Saat Ini:</label>
-                        <textarea class="input-group mb-3" id="komentarLama" style="height: 150px" readonly>
+                        <ul style="list-style-type: none; padding-left: 0;">
                             <?php
-                            // Loop untuk menampilkan seluruh komentar
                             if (!empty($komentarList)) {
                                 foreach ($komentarList as $komentar) {
-                                    echo $komentar['komentar'] . " - " . " (". $fullname . " - " . $komentar['created_at'] . ") " ."\n";
+                                    echo "<li>" . $komentar['komentar'] . " - " . "( " . $komentar['fullname'] . " - " . $komentar['created_at'] . " )</li>";
                                 }
                             } else {
-                                echo "Tidak ada komentar.";
+                                echo "<li>Tidak ada komentar.</li>";
                             }
                             ?>
-                        </textarea>
+                        </ul>
                     </div>
+
                     <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
                         <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
                         <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s') ?>">
@@ -499,19 +496,14 @@
     </div>
 </div>
 <script>
-    // Script untuk menangani pengaturan id-faktor di modal tambah komentar
     document.addEventListener('DOMContentLoaded', function () {
-        // Menangani event saat modal tambah komentar dibuka
+
         $('#modaltambahKomentar').on('show.bs.modal', function (e) {
-            var faktorId = $(e.relatedTarget).data('id'); // Ambil faktor_id dari tombol yang membuka modal
-            // Set faktor_id ke modal tambah komentar
+            var faktorId = $(e.relatedTarget).data('id');
             $('#id-faktor').val(faktorId);
         });
-
-        // Menangani event saat modal ubah dibuka
         $('#modalUbah').on('show.bs.modal', function (e) {
-            var faktorId = $(e.relatedTarget).data('id'); // Ambil faktor_id dari tombol yang membuka modal
-            // Set faktor_id ke modal ubah
+            var faktorId = $(e.relatedTarget).data('id');
             $('#id-faktor').val(faktorId);
         });
     });

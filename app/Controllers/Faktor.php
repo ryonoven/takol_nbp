@@ -112,11 +112,12 @@ class Faktor extends Controller
             } else {
                 // Ambil data dari form
                 $userId = service('authentication')->id();
-                $faktor1Id = service('authentication')->id();
+                $faktor1Id = $this->request->getPost('faktor_id');
                 $data = [
                     'faktor1id' => $faktor1Id,
                     //'user_id' => $this->request->getPost('user_id'), // Ambil user_id yang dikirimkan
                     'komentar' => $this->request->getPost('komentar'),
+                    'fullname' => $this->request->getPost('fullname'),
                     'user_id' => $userId,
                     'created_at' => date('Y-m-d H:i:s'), // Timestamp saat komentar ditambahkan
                 ];

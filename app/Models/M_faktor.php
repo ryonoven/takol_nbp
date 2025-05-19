@@ -47,6 +47,12 @@ class M_Faktor extends Model
         return $this->builder->update($data, ['id' => $id]);
     }
 
+    public function resetAutoIncrement()
+    {
+        $this->db->query('ALTER TABLE faktor_comments AUTO_INCREMENT = 1');
+    }
+
+
     public function getKomentarByFaktor($faktor1Id)
     {
         return $this->db->table('faktor_comments')
