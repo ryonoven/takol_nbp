@@ -58,7 +58,7 @@
             <span>Laporan Transparansi Tahunan</span>
             <i class="fas fa-angle-down ml-auto"></i>
         </a>
-        <div class="collapse" id="pagesCollapseTransparansi" data-parent="#accordionSidebar">
+        <div class="collapse" id="pagesCollapseTransparansi" data-parent="#accordionSidebar">  
             <nav class="sidenav-menu-nested nav">
                 <a class="nav-link" href="<?= base_url('penjelasanumum'); ?>" style="font-size: 14px;">1. Penjelasan
                     Umum</a>
@@ -137,7 +137,6 @@
                 <a class="nav-link" href="<?= base_url('faktor10'); ?>" style="font-size: 14px;">Faktor 10</a>
                 <a class="nav-link" href="<?= base_url('faktor11'); ?>" style="font-size: 14px;">Faktor 11</a>
                 <a class="nav-link" href="<?= base_url('faktor12'); ?>" style="font-size: 14px;">Faktor 12</a>
-                <a class="nav-link" href="<?= base_url('showFaktor'); ?>" style="font-size: 14px;">Tampilkan seluruh
                     faktor</a>
             </nav>
         </div>
@@ -147,6 +146,7 @@
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
+    
 
     <!-- Nav Item - Pages Form Bisnis Menu -->
     <!-- <li class="nav-item">

@@ -398,3 +398,5 @@ $(document).on("click", "#btn-edit", function () {
 $(document).ready(function () {
   $('.dropify').dropify();
 });
+
+

@@ -232,20 +232,8 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div class="card-body d-flex justify-content-center">
-                <button type="button" class="btn btn-primary ml-3 mt-3" data-toggle="modal" data-target="#modalUbah">
-                    <i class="fas fa-save"> Simpan Data </i>
-                </button>
-            </div> -->
-            <!-- <div class="card-body d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary ml-2 mt-2" data-toggle="modal"
-                            data-target="#modalUbah">
-                            <i class="fas fa-edit"> Edit Data </i>
-                        </button>
-                    </div> -->
         </div>
     </div>
-</div>
 </div>
 
 <?php if (!empty($faktor)) { ?>
@@ -278,7 +266,6 @@
                                 <option value="5">5</option>
                             </select>
                         </div>
-
                         <div class="mt-3">
                             <button type="button" class="btn btn-outline-info btn-sm" id="lihatPanduanFaktorUmum">Lihat
                                 Panduan</button>
@@ -451,12 +438,11 @@
         <div class="modal-content">
             <form action="<?= base_url('faktor/tambahKomentar'); ?>" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title">Beri Komentar</h5>
+                    <h5 class="modal-title">Komentar Direksi dan Dewan Komisaris</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
                 <div class="modal-body">
                     <?php date_default_timezone_set('Asia/Jakarta'); ?>
 
@@ -464,16 +450,8 @@
 
                     <div class="form-group">
                         <label for="komentarLama">Komentar Saat Ini:</label>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <?php
-                            if (!empty($komentarList)) {
-                                foreach ($komentarList as $komentar) {
-                                    echo "<li>" . $komentar['komentar'] . " - " . "( " . $komentar['fullname'] . " - " . $komentar['created_at'] . " )</li>";
-                                }
-                            } else {
-                                echo "<li>Tidak ada komentar.</li>";
-                            }
-                            ?>
+                        <ul id="komentarLamaList" style="list-style-type: none; padding-left: 0;">
+                            <li>Memuat komentar...</li>
                         </ul>
                     </div>
 
@@ -495,21 +473,38 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
 
-        $('#modaltambahKomentar').on('show.bs.modal', function (e) {
-            var faktorId = $(e.relatedTarget).data('id');
-            $('#id-faktor').val(faktorId);
-        });
-        $('#modalUbah').on('show.bs.modal', function (e) {
-            var faktorId = $(e.relatedTarget).data('id');
-            $('#id-faktor').val(faktorId);
+<script>
+    $(document).ready(function () {
+
+        $('#formTambahKomentar').on('submit', function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: '<?= base_url('faktor/save_komentar'); ?>', 
+                method: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        $('#komentarText').val('');
+                        var currentFaktorId = $('#inputFaktorId').val();
+                        $(`button[data-id="${currentFaktorId}"]`).click();
+
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                    alert('Terjadi kesalahan saat menyimpan komentar.');
+                }
+            });
         });
     });
-
 </script>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -524,5 +519,131 @@
                 }
             });
         });
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#modaltambahKomentar').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var faktorId = button.data('id');
+
+            var modal = $(this);
+            modal.find('#id-faktor').val(faktorId);
+            modal.find('#komentarLamaList').html('<li>Memuat komentar...</li>');
+            $.ajax({
+                url: '<?= base_url('faktor/getKomentarByFaktorId'); ?>/' + faktorId,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    var komentarListHtml = '';
+                    if (response.length > 0) {
+                        response.forEach(function (komentar) {
+                            komentarListHtml += '<li>' + htmlspecialchars(komentar.komentar) + ' - (' + htmlspecialchars(komentar.fullname) + ' - ' + htmlspecialchars(komentar.created_at) + ')</li>';
+                        });
+                    } else {
+                        komentarListHtml = '<li>Tidak ada komentar.</li>';
+                    }
+                    modal.find('#komentarLamaList').html(komentarListHtml);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading comments:', status, error);
+                    modal.find('#komentarLamaList').html('<li>Gagal memuat komentar.</li>');
+                }
+            });
+
+            var urlParams = new URLSearchParams(window.location.search);
+
+            urlParams.delete('modaltambahKomentar'); 
+            urlParams.delete('modal_komentar');
+
+            urlParams.set('modal_komentar', faktorId);
+
+            var newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+
+            history.pushState({ modalId: faktorId }, '', newUrl);
+        });
+
+        $('#modaltambahKomentar').on('hide.bs.modal', function (event) {
+            var urlParams = new URLSearchParams(window.location.search);
+
+            if (urlParams.has('modal_komentar')) {
+                urlParams.delete('modal_komentar');
+                var newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                history.pushState({}, '', newUrl);
+            }
+            $(this).find('#komentarLamaList').html('');
+        });
+
+        window.addEventListener('popstate', function (event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const modalKomentarId = urlParams.get('modal_komentar');
+
+            if (modalKomentarId) {
+                $('#modaltambahKomentar').modal('show');
+                $('#modaltambahKomentar').find('#id-faktor').val(modalKomentarId);
+                $.ajax({
+                    url: '<?= base_url('faktor/getKomentarByFaktorId'); ?>/' + modalKomentarId,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        var komentarListHtml = '';
+                        if (response.length > 0) {
+                            response.forEach(function (komentar) {
+                                komentarListHtml += '<li>' + htmlspecialchars(komentar.komentar) + ' - (' + htmlspecialchars(komentar.fullname) + ' - ' + htmlspecialchars(komentar.created_at) + ')</li>';
+                            });
+                        } else {
+                            komentarListHtml = '<li>Tidak ada komentar.</li>';
+                        }
+                        $('#modaltambahKomentar').find('#komentarLamaList').html(komentarListHtml);
+                    },
+                    error: function () {
+                        console.log('Error loading comments via popstate.');
+                        $('#modaltambahKomentar').find('#komentarLamaList').html('<li>Gagal memuat komentar.</li>');
+                    }
+                });
+            } else {
+                $('#modaltambahKomentar').modal('hide');
+            }
+        });
+        const initialUrlParams = new URLSearchParams(window.location.search); 
+        const initialModalKomentarId = initialUrlParams.get('modal_komentar'); 
+        if (initialModalKomentarId) {
+            $('#modaltambahKomentar').modal('show');
+            $('#modaltambahKomentar').find('#id-faktor').val(initialModalKomentarId);
+            $.ajax({
+                url: '<?= base_url('faktor/getKomentarByFaktorId'); ?>/' + initialModalKomentarId,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    var komentarListHtml = '';
+                    if (response.length > 0) {
+                        response.forEach(function (komentar) {
+                            komentarListHtml += '<li>' + htmlspecialchars(komentar.komentar) + ' - (' + htmlspecialchars(komentar.fullname) + ' - ' + htmlspecialchars(komentar.created_at) + ')</li>';
+                        });
+                    } else {
+                        komentarListHtml = '<li>Tidak ada komentar.</li>';
+                    }
+                    $('#modaltambahKomentar').find('#komentarLamaList').html(komentarListHtml);
+                },
+                error: function () {
+                    console.log('Error loading comments on page load.');
+                    $('#modaltambahKomentar').find('#komentarLamaList').html('<li>Gagal memuat komentar.</li>');
+                }
+            });
+        }
+
+        function htmlspecialchars(str) {
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return str.replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
     });
 </script>

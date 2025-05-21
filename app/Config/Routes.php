@@ -13,9 +13,11 @@ $routes = Services::routes();
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
-$routes->setTranslateURIDashes(false);
+$routes->setTranslateURIDashes(false); 
 $routes->set404Override();
 $routes->setAutoRoute('true');
+// $routes->get('/faktor/getKomentarByFaktorId', 'FaktorController::getKomentarByFaktorId');
+
 
 
 // The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
@@ -37,7 +39,11 @@ $routes->group('', ['filter' => 'login'], function ($routes) {
     $routes->get('/admin', 'Admin::index', ['filter' => 'role:admin']);
     $routes->get('/admin/index', 'Admin::index', ['filter' => 'role:admin']);
     $routes->get('/admin/(:num)', 'Admin::detail/$1', ['filter' => 'role:admin']);
+    
+    
+    
 });
+
 
 /*
  * --------------------------------------------------------------------

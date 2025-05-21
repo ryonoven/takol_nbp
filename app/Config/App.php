@@ -149,7 +149,9 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$driver instead.
      */
-    public string $sessionDriver = FileHandler::class;
+    // public string $sessionDriver = FileHandler::class; --> default
+    public $sessionDriver         = 'CodeIgniter\Session\Handlers\DatabaseSessionHandler';
+    public $sessionSavePath = 'ci_session'; 
 
     /**
      * --------------------------------------------------------------------------
@@ -160,7 +162,8 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$cookieName  instead.
      */
-    public string $sessionCookieName = 'ci_session';
+    // public string $sessionCookieName = 'ci_session'; --> default
+    public $sessionCookieName     = 'ci_session';
 
     /**
      * --------------------------------------------------------------------------
@@ -172,7 +175,8 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$expiration instead.
      */
-    public int $sessionExpiration = 7200;
+    // public int $sessionExpiration = 7200; --> default
+    public $sessionExpiration     = 7200;
 
     /**
      * --------------------------------------------------------------------------
@@ -191,7 +195,7 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$savePath instead.
      */
-    public string $sessionSavePath = WRITEPATH . 'session';
+    // public string $sessionSavePath = WRITEPATH . 'session'; --> default
 
     /**
      * --------------------------------------------------------------------------
@@ -205,7 +209,9 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$matchIP instead.
      */
-    public bool $sessionMatchIP = false;
+    // public bool $sessionMatchIP = false; --> default
+    public $sessionMatchIP        = true;
+    
 
     /**
      * --------------------------------------------------------------------------
@@ -216,7 +222,8 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$timeToUpdate instead.
      */
-    public int $sessionTimeToUpdate = 300;
+    // public int $sessionTimeToUpdate = 300; --> default
+    public $sessionTimeToUpdate   = 300;
 
     /**
      * --------------------------------------------------------------------------
@@ -229,7 +236,8 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Session::$regenerateDestroy instead.
      */
-    public bool $sessionRegenerateDestroy = false;
+    // public bool $sessionRegenerateDestroy = false; --> default
+    public $sessionRegenerateDestroy = true;
 
     /**
      * --------------------------------------------------------------------------
@@ -295,7 +303,7 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Cookie::$httponly property instead.
      */
-    public bool $cookieHTTPOnly = true;
+    public bool $cookieHTTPOnly = false;
 
     /**
      * --------------------------------------------------------------------------

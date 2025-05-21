@@ -45,6 +45,8 @@
     <script src="/asset/js/jquery-3.4.1.min.js"></script>
     <script src="/asset/vendor/jquery/jquery.min.js"></script>
     <script src="/asset/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="/asset/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -53,10 +55,12 @@
     <script src="/asset/js/sb-admin-2.js"></script>
 
     <script src="/asset/js/script.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.js' integrity='sha512-hJsxoiLoVRkwHNvA5alz/GVA+eWtVxdQ48iy4sFRQLpDrBPn6BFZeUcW4R4kU+Rj2ljM9wHwekwVtsb0RY/46Q==' crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.js'
+        integrity='sha512-hJsxoiLoVRkwHNvA5alz/GVA+eWtVxdQ48iy4sFRQLpDrBPn6BFZeUcW4R4kU+Rj2ljM9wHwekwVtsb0RY/46Q=='
+        crossorigin='anonymous'></script>
 
 
-    
+
 
 </body>
 
