@@ -5,14 +5,20 @@ use CodeIgniter\Controller;
 use App\Models\M_faktor;
 use App\Models\M_user;
 use App\Models\M_faktorkomentar;
+use App\Models\M_nilaifaktor;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Faktor extends Controller
 {
+    // Variabel yang dihapus karena tidak digunakan atau diganti dengan yang lebih spesifik
+    // protected $model; 
+    // protected $usermodel; // Diganti dengan $this->userModel
+
     protected $auth;
     protected $faktorModel; // Ini sudah benar
     protected $userModel;   // Tambahkan ini jika belum ada
     protected $komentarModel;
+    protected $nilaiModel;
     protected $session;
 
     // Tambahkan properti untuk grup pengguna di sini agar bisa diakses di semua method tanpa redeklarasi
@@ -28,14 +34,13 @@ class Faktor extends Controller
         $this->faktorModel = new M_faktor();
         $this->userModel = new M_user(); // Pastikan inisialisasi M_user
         $this->komentarModel = new M_faktorkomentar();
+        $this->nilaiModel = new M_nilaifaktor();
         helper('url');
         $this->session = service('session');
         $this->auth = service('authentication');
 
-        // Pastikan service AuthServices di-instansiasi hanya sekali jika diperlukan
         $authorize = AuthServices::authorization();
 
-        // Inisialisasi status grup pengguna di constructor
         $this->userInGroupPE = $authorize->inGroup('pe', $this->auth->id());
         $this->userInGroupAdmin = $authorize->inGroup('admin', $this->auth->id());
         $this->userInGroupDekom = $authorize->inGroup('dekom', $this->auth->id());
@@ -44,8 +49,6 @@ class Faktor extends Controller
 
     public function index()
     {
-        // date_default_timezone_set('Asia/Jakarta'); // Sudah di constructor
-
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
@@ -57,13 +60,38 @@ class Faktor extends Controller
         $fullname = $user['fullname'] ?? 'Unknown';
 
         $faktorData = $this->faktorModel->getAllData();
+        // $nilaiData = $this->nilaiModel->getAllData();
 
+        $factorsWithDetails = [];
+        foreach ($faktorData as $faktorItem) {
+            $faktorId = $faktorItem['id'];
+            // Ambil data nilai TERBARU yang terkait dengan faktor ini.
+            // Anda mungkin perlu method khusus di M_nilaifaktor untuk ini.
+            $associatedNilai = $this->nilaiModel->where('faktor1id', $faktorId)
+                ->orderBy('created_at', 'DESC') // Urutkan untuk mendapatkan yang terbaru
+                ->first(); // Ambil hanya 1 record (yang terbaru)
+
+            // Buat array baru yang berisi gabungan data
+            $factorsWithDetails[] = [
+                'id' => $faktorItem['id'],
+                'sph' => $faktorItem['sph'],
+                'category' => $faktorItem['category'],
+                'sub_category' => $faktorItem['sub_category'],
+                'nilai' => $associatedNilai['nilai'] ?? null,         // Ambil nilai, atau null jika tidak ada
+                'keterangan' => $associatedNilai['keterangan'] ?? null,    // Ambil keterangan, atau null jika tidak ada
+                'is_approved' => $associatedNilai['is_approved'] ?? null,   // Ambil is_approved, atau null jika tidak ada
+                // Tambahkan kolom lain dari faktorItem jika dibutuhkan
+                // 'nama_kolom_lain_faktor' => $faktorItem['nama_kolom_lain_faktor'],
+            ];
+        }
         $data = [
             'judul' => 'Faktor 1',
             'faktor' => $faktorData,
             'userId' => $userId,
+            'faktor' => $factorsWithDetails,
             // 'komentarList' => $komentarList, // Hapus ini atau set ke array kosong
-            'komentarList' => [], // Untuk memastikan tidak ada komentar statis yang terkirim ke modal
+            'komentarList' => [],
+            // 'nilaiList' => $nilaiData,
             'userInGroupPE' => $this->userInGroupPE, // Gunakan properti yang sudah diinisialisasi
             'userInGroupAdmin' => $this->userInGroupAdmin,
             'userInGroupDekom' => $this->userInGroupDekom,
@@ -77,7 +105,7 @@ class Faktor extends Controller
         echo view('templates/v_sidebar');
         echo view('templates/v_topbar');
         echo view('faktor/index', $data);
-        // echo view('templates/v_footer');
+        echo view('templates/v_footer');
     }
 
     // Fungsi untuk AJAX request komentar
@@ -92,6 +120,72 @@ class Faktor extends Controller
 
         // log_message('debug', 'Comments returned for faktorId ' . $faktorId . ': ' . json_encode($komentarList)); // Tambahkan log untuk debug
         return $this->response->setJSON($komentarList);
+    }
+
+    public function getNilaiByFaktorId($faktorId)
+    {
+        if (!$this->request->isAJAX() || !is_numeric($faktorId)) {
+            // log_message('debug', 'Invalid AJAX or faktorId: ' . $faktorId); // Tambahkan log untuk debug
+            return $this->response->setStatusCode(404)->setBody('Not Found');
+        }
+
+        $nilaiList = $this->nilaiModel->getNilaiByFaktorId($faktorId);
+
+        // log_message('debug', 'Comments returned for faktorId ' . $faktorId . ': ' . json_encode($komentarList)); // Tambahkan log untuk debug
+        return $this->response->setJSON($nilaiList);
+    }
+
+    public function tambahNilai()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        if (!$this->auth->check()) {
+            $redirectURL = session('redirect_url') ?? '/login';
+            unset($_SESSION['redirect_url']);
+            return redirect()->to($redirectURL);
+        }
+
+        if (isset($_POST['tambahNilai'])) {
+            $val = $this->validate([
+                'nilai' => [
+                    'label' => 'Nilai',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong.'
+                    ]
+                ],
+                'keterangan' => [
+                    'label' => 'Keterangan',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong.'
+                    ]
+                ],
+            ]);
+
+            if (!$val) {
+                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+                return redirect()->back();
+            } else {
+                $userId = service('authentication')->id();
+                $faktor1Id = $this->request->getPost('faktor_id');
+                $data = [
+                    'faktor1id' => $faktor1Id,
+                    'nilai' => $this->request->getPost('nilai'),
+                    'keterangan' => $this->request->getPost('keterangan'),
+                    'fullname' => $this->request->getPost('fullname'),
+                    'user_id' => $userId,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+
+                $this->nilaiModel->insertNilai($data);
+
+                session()->setFlashdata('message', 'Nilai berhasil ditambahkan');
+                // Redirect kembali ke halaman dengan ID faktor yang sama agar modal bisa dibuka lagi
+                return redirect()->to(base_url('faktor') . '?modal_nilai=' . $faktor1Id);
+            }
+        } else {
+            return redirect()->to(base_url('faktor'));
+        }
     }
 
     public function tambahKomentar()
@@ -169,7 +263,7 @@ class Faktor extends Controller
                 session()->setFlashdata('err', \Config\Services::validation()->listErrors());
                 $data = [
                     'judul' => 'Faktor',
-                    'faktor' => $this->faktorModel->getAllData() // <<< PERBAIKI DI SINI: $this->model -> $this->faktorModel
+                    'faktor' => $this->faktorModel->getAllData()
                 ];
 
                 echo view('templates/v_header', $data);
@@ -185,7 +279,7 @@ class Faktor extends Controller
                     'keterangan' => $this->request->getPost('keterangan')
                 ];
 
-                $success = $this->faktorModel->ubah($data, $id); // <<< PERBAIKI DI SINI: $this->model -> $this->faktorModel
+                $success = $this->faktorModel->ubah($data, $id);
                 if ($success) {
                     session()->setFlashdata('message', 'Faktor berhasil diubah');
                     return redirect()->to(base_url('faktor'));
@@ -225,16 +319,17 @@ class Faktor extends Controller
     }
 
     // Fungsi approve dan unapprove sudah menggunakan $this->faktorModel dengan benar
-    public function approve($idFaktor)
+    public function approve($idNilai = null)
     {
-        if (!is_numeric($idFaktor) || $idFaktor <= 0) {
+        if ($idNilai === null) {
             session()->setFlashdata('err', 'ID Faktor tidak valid.');
             return redirect()->back();
         }
 
-        $faktor = $this->faktorModel->find($idFaktor);
-        if (!$faktor) {
-            session()->setFlashdata('err', 'Data Faktor dengan ID tersebut tidak ditemukan.');
+        // Ambil data dari tabel nilaifaktor berdasarkan faktor_id
+        $nilaiFaktor = $this->nilaiModel->find($idNilai);
+        if (!$nilaiFaktor) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
             return redirect()->back();
         }
 
@@ -242,14 +337,14 @@ class Faktor extends Controller
         $userId = service('authentication')->id();
 
         $dataUpdate = [
-            'id' => $idFaktor,
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            'is_approved' => 1,  // Status disetujui
+            'approved_by' => $userId,  // Menyimpan siapa yang memberikan approval
+            'approved_at' => date('Y-m-d H:i:s'),  // Waktu persetujuan
         ];
 
-        if ($this->faktorModel->save($dataUpdate)) {
-            session()->setFlashdata('message', 'Faktor berhasil disetujui.');
+        // Update status approval di tabel nilaifaktor
+        if ($this->nilaiModel->update($idNilai, $dataUpdate)) {
+            session()->setFlashdata('message', 'Data berhasil disetujui.');
             return redirect()->back();
         } else {
             session()->setFlashdata('err', 'Terjadi kesalahan saat melakukan approval.');
@@ -257,31 +352,33 @@ class Faktor extends Controller
         }
     }
 
-    public function unapprove($idFaktor)
+    public function unapprove($idNilai)
     {
-        if (!is_numeric($idFaktor) || $idFaktor <= 0) {
+        if (!is_numeric($idNilai) || $idNilai <= 0) {
             session()->setFlashdata('err', 'ID Faktor tidak valid.');
             return redirect()->back();
         }
 
-        $faktor = $this->faktorModel->find($idFaktor);
-        if (!$faktor) {
-            session()->setFlashdata('err', 'Data Faktor dengan ID tersebut tidak ditemukan.');
+        // Ambil data dari tabel nilaifaktor berdasarkan faktor_id
+        $nilaiFaktor = $this->nilaiModel->find($idNilai);
+        if (!$nilaiFaktor) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
             return redirect()->back();
         }
 
         date_default_timezone_set('Asia/Jakarta');
         $userId = service('authentication')->id();
 
+        // Data untuk diupdate
         $dataUpdate = [
-            'id' => $idFaktor,
-            'is_approved' => 2,
+            'is_approved' => 2,  // Status tidak disetujui
             'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            'approved_at' => date('Y-m-d H:i:s')
         ];
 
-        if ($this->faktorModel->save($dataUpdate)) {
-            session()->setFlashdata('err', 'Approval faktor dibatalkan.');
+        // Update status approval di tabel nilaifaktor
+        if ($this->nilaiModel->update($idNilai, $dataUpdate)) {
+            session()->setFlashdata('message', 'Data approval dibatalkan.');
             return redirect()->back();
         } else {
             session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan approval.');
@@ -299,7 +396,7 @@ class Faktor extends Controller
             'approved_at' => date('Y-m-d H:i:s'),
         ];
 
-        $this->faktorModel->builder()->update($dataUpdate);
+        $this->nilaiModel->builder()->update($dataUpdate);
 
         session()->setFlashdata('message', 'Semua faktor berhasil disetujui.');
         return redirect()->back();
@@ -315,7 +412,7 @@ class Faktor extends Controller
             'approved_at' => date('Y-m-d H:i:s'),
         ];
 
-        $this->faktorModel->builder()->update($dataUpdate);
+        $this->nilaiModel->builder()->update($dataUpdate);
 
         session()->setFlashdata('err', 'Semua approval faktor dibatalkan.');
         return redirect()->back();

@@ -19,7 +19,7 @@
                     <?php
                     $allApproved = true;
                     foreach ($faktor as $item) {
-                        if ($item['is_approved'] != 1) {
+                        if (!isset($item['is_approved']) || $item['is_approved'] != 1) {
                             $allApproved = false;
                             break;
                         }
@@ -80,16 +80,18 @@
                                     <tr>
                                         <td scope="row"><?= $row['id']; ?></td>
                                         <td><?= $row['sub_category'] ?></td>
-                                        <td><?= $row['nilai'] ?></td>
-                                        <td><?= $row['keterangan'] ?></td>
+                                        <td><?= $row['nilai'] ?? 'N/A' ?></td>
+                                        <td><?= $row['keterangan'] ?? 'N/A' ?></td>
                                         <td>
                                             <?php if ($userInGroupPE || $userInGroupAdmin): ?>
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
+                                                    id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
+                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-plus"></i>&nbsp;</button>
                                                 <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
                                                     data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
                                                     data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>"
-                                                    data-komentar="<?= $row['komentar']; ?>" data-date="<?= $row['date']; ?>"><i
+                                                    data-keterangan="<?= $row['keterangan']; ?>"><i
                                                         class="fa fa-edit"></i>&nbsp;</button>
                                                 <button type="button" class="btn btn-sm" style="font-weight: 600;"
                                                     data-id="<?= $row['id']; ?>" id="btn-set-null"><i
@@ -155,9 +157,7 @@
                                             <?php endif; ?>
                                             <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
                                                 id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                data-id="<?= $row['id']; ?>" data-id="<?= $row['komentar']; ?>"><i
-                                                    class="fas fa-comment"> </i>&nbsp;
-                                            </button>
+                                                data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -208,9 +208,7 @@
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
                                                     data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
                                                     data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>"
-                                                    data-komentar="<?= $row['komentar']; ?>" data-date="<?= $row['date']; ?>"><i
-                                                        class="fa fa-edit"></i>&nbsp;
+                                                    data-keterangan="<?= $row['keterangan']; ?>"><i class="fa fa-edit"></i>&nbsp;
                                                 </button>
                                                 <button type="button" class="btn btn-sm" style="font-weight: 600;"
                                                     data-id="<?= $row['id']; ?>" id="btn-set-null"><i
@@ -220,9 +218,7 @@
                                             <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
                                                 <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
                                                     id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>" data-id="<?= $row['komentar']; ?>"> <i
-                                                        class="fas fa-comment"></i>&nbsp;
-                                                </button>
+                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;</button>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -432,6 +428,48 @@
     });
 </script>
 
+<div class="modal fade" id="modaltambahNilai">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="<?= base_url('faktor/tambahNilai'); ?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Komentar Direksi dan Dewan Komisaris</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php date_default_timezone_set('Asia/Jakarta'); ?>
+
+                    <input type="hidden" name="faktor_id" id="id-faktor">
+                    <div class="form-group">
+                        <label for="nilai">Nilai: </label>
+                        <select name="nilai" id="nilai" class="form-control" required>
+                            <option>Pilih nilai faktor</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
+                    <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s') ?>">
+                    <div class="form-group">
+                        <label for="komentar">Tambah Nilai Faktor 1:</label>
+                        <textarea class="form-control" name="komentar" id="komentar" style="height: 100px"
+                            required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" name="tambahNilai" class="btn btn-primary">Simpan Komentar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Modal untuk Tambah Komentar -->
 <div class="modal fade" id="modaltambahKomentar">
     <div class="modal-dialog" role="document">
@@ -482,7 +520,7 @@
             var formData = $(this).serialize();
 
             $.ajax({
-                url: '<?= base_url('faktor/save_komentar'); ?>', 
+                url: '<?= base_url('faktor/save_komentar'); ?>',
                 method: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -556,7 +594,7 @@
 
             var urlParams = new URLSearchParams(window.location.search);
 
-            urlParams.delete('modaltambahKomentar'); 
+            urlParams.delete('modaltambahKomentar');
             urlParams.delete('modal_komentar');
 
             urlParams.set('modal_komentar', faktorId);
@@ -608,8 +646,8 @@
                 $('#modaltambahKomentar').modal('hide');
             }
         });
-        const initialUrlParams = new URLSearchParams(window.location.search); 
-        const initialModalKomentarId = initialUrlParams.get('modal_komentar'); 
+        const initialUrlParams = new URLSearchParams(window.location.search);
+        const initialModalKomentarId = initialUrlParams.get('modal_komentar');
         if (initialModalKomentarId) {
             $('#modaltambahKomentar').modal('show');
             $('#modaltambahKomentar').find('#id-faktor').val(initialModalKomentarId);
