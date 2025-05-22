@@ -18,7 +18,7 @@
                 <span>
                     <?php
                     $allApproved = true;
-                    foreach ($faktor as $item) {
+                    foreach ($faktors as $item) {
                         if (!isset($item['is_approved']) || $item['is_approved'] != 1) {
                             $allApproved = false;
                             break;
@@ -28,7 +28,7 @@
                     <?php if ($allApproved): ?>
                         <span class="badge badge-success" style="font-size: 14px;">
                             Disetujui oleh <strong><?= esc($fullname ?? '-') ?></strong><br>
-                            <?= esc($faktor[0]['approved_at'] ?? '-') ?>
+                            <?= esc($faktors[0]['approved_at'] ?? '-') ?>
                         </span>
                     <?php else: ?>
                         <span class="badge badge-secondary" style="font-size: 14px;">
@@ -67,7 +67,7 @@
                     </thead>
                     <!-- Table body -->
                     <tbody>
-                        <?php if (empty($faktor)) { ?>
+                        <?php if (empty($faktors)) { ?>
                             <tr>
                                 <td scope="row"></td>
                                 <td></td>
@@ -75,32 +75,37 @@
                                 <td></td>
                             </tr>
                         <?php } else { ?>
-                            <?php foreach ($faktor as $row): ?>
+                            <?php foreach ($faktors as $row): ?>
                                 <?php if ($row['sph'] == 'Struktur'): ?>
                                     <tr>
                                         <td scope="row"><?= $row['id']; ?></td>
                                         <td><?= $row['sub_category'] ?></td>
-                                        <td><?= $row['nilai'] ?? 'N/A' ?></td>
-                                        <td><?= $row['keterangan'] ?? 'N/A' ?></td>
+                                        <td><?= $row['nilai'] ?? '' ?></td>
+                                        <td><?= $row['keterangan'] ?? '' ?></td>
                                         <td>
-                                            <?php if ($userInGroupPE || $userInGroupAdmin): ?>
+                                            <?php if (empty($row['nilai']) && empty($row['keterangan'])): ?>
                                                 <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
-                                                    id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-plus"></i>&nbsp;</button>
+                                                    id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
+                                                    data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
+                                                    <i class="fas fa-plus"></i>&nbsp;
+                                                </button>
+                                            <?php else: ?>
                                                 <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
                                                     data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
                                                     data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>"><i
-                                                        class="fa fa-edit"></i>&nbsp;</button>
-                                                <button type="button" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>" id="btn-set-null"><i
+                                                    data-keterangan="<?= $row['keterangan']; ?>">
+                                                    <i class="fa fa-edit"></i>&nbsp;
+                                                </button>
+                                                <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
+                                                    class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>"> <i
                                                         class="fas fa-trash-alt"></i>&nbsp;
                                                 </button>
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
+                                                    id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
+                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;
+                                                </button>
                                             <?php endif; ?>
-                                            <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
-                                                id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;</button>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
@@ -127,7 +132,7 @@
                     </thead>
                     <!-- Table body -->
                     <tbody>
-                        <?php if (empty($faktor)) { ?>
+                        <?php if (empty($faktors)) { ?>
                             <tr>
                                 <td scope="row"></td>
                                 <td></td>
@@ -136,7 +141,7 @@
                                 <td></td>
                             </tr>
                         <?php } else { ?>
-                            <?php foreach ($faktor as $row): ?>
+                            <?php foreach ($faktors as $row): ?>
                                 <?php if ($row['sph'] == 'Proses'): ?>
                                     <tr>
                                         <td scope="row"><?= $row['id']; ?></td>
@@ -144,21 +149,29 @@
                                         <td><?= $row['nilai'] ?></td>
                                         <td><?= $row['keterangan'] ?></td>
                                         <td>
-                                            <?php if ($userInGroupPE || $userInGroupAdmin): ?>
+                                            <?php if (empty($row['nilai']) && empty($row['keterangan'])): ?>
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
+                                                    id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
+                                                    data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
+                                                    <i class="fas fa-plus"></i>&nbsp;
+                                                </button>
+                                            <?php else: ?>
                                                 <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
+                                                    data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
                                                     data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>"><i class="fa fa-edit"></i>&nbsp;
+                                                    data-keterangan="<?= $row['keterangan']; ?>">
+                                                    <i class="fa fa-edit"></i>&nbsp;
                                                 </button>
-                                                <button type="button" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>" id="btn-set-null"><i
+                                                <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
+                                                    class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>"> <i
                                                         class="fas fa-trash-alt"></i>&nbsp;
                                                 </button>
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
+                                                    id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
+                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;
+                                                </button>
                                             <?php endif; ?>
-                                            <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
-                                                id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;</button>
-                                        </td>
                                     </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -184,7 +197,7 @@
                     </thead>
                     <!-- Table body -->
                     <tbody>
-                        <?php if (empty($faktor)) { ?>
+                        <?php if (empty($faktors)) { ?>
                             <tr>
                                 <td scope="row"></td>
                                 <td></td>
@@ -194,7 +207,7 @@
                                 <td></td>
                             </tr>
                         <?php } else { ?>
-                            <?php foreach ($faktor as $row): ?>
+                            <?php foreach ($faktors as $row): ?>
                                 <?php if ($row['sph'] == 'Hasil'): ?>
                                     <tr>
                                         <td scope="row"><?= $row['id']; ?></td>
@@ -202,23 +215,28 @@
                                         <td><?= $row['nilai'] ?></td>
                                         <td><?= $row['keterangan'] ?></td>
                                         <td>
-                                            <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-                                                <!-- Button to trigger confirmation modal -->
+                                            <?php if (empty($row['nilai']) && empty($row['keterangan'])): ?>
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
+                                                    id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
+                                                    data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
+                                                    <i class="fas fa-plus"></i>&nbsp;
+                                                </button>
+                                            <?php else: ?>
                                                 <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
                                                     data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
                                                     data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>"><i class="fa fa-edit"></i>&nbsp;
+                                                    data-keterangan="<?= $row['keterangan']; ?>">
+                                                    <i class="fa fa-edit"></i>&nbsp;
                                                 </button>
-                                                <button type="button" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>" id="btn-set-null"><i
+                                                <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
+                                                    class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>"> <i
                                                         class="fas fa-trash-alt"></i>&nbsp;
                                                 </button>
-                                            <?php endif; ?>
-                                            <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
                                                 <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
                                                     id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;</button>
+                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;
+                                                </button>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -232,7 +250,7 @@
     </div>
 </div>
 
-<?php if (!empty($faktor)) { ?>
+<?php if (!empty($faktors)) { ?>
     <div class="modal fade" id="modalUbah">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -243,14 +261,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <!-- Form untuk ubah data -->
                     <form action="<?= base_url('faktor/ubah'); ?>" method="post">
-                        <input type="hidden" name="id" id="id-faktor">
+                        <!-- Hidden field untuk faktor1id -->
+                        <input type="hidden" name="faktor1id" id="id-faktor" value="">
+
                         <div class="mb-3">
                             <label for="sub_category" class="form-label">Sub Kategori: </label>
-                            <textarea class="form-control" type="text" name="sub_category" id="sub_category"
-                                style="height: 100px" value="<?= $row['sub_category'] ?? '' ?>"
-                                placeholder="<?= $row['sub_category'] ?? '' ?>" readonly></textarea>
+                            <textarea class="form-control" name="sub_category" id="sub_category" style="height: 100px"
+                                readonly></textarea>
                         </div>
+
                         <div class="form-group">
                             <label for="nilai">Nilai: </label>
                             <select name="nilai" id="nilai" class="form-control" required>
@@ -399,20 +420,21 @@
 
                         <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan: </label>
-                            <textarea class="form-control" type="text" name="keterangan" id="keterangan"
-                                style="height: 120px" value="<?= $row['keterangan'] ?? '' ?>"
-                                placeholder="<?= $row['keterangan'] ?? '' ?>" required></textarea>
+                            <textarea class="form-control" name="keterangan" id="keterangan" style="height: 120px"
+                                required></textarea>
                         </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" name="ubah" class="btn btn-primary">Ubah Data</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="ubah" class="btn btn-primary">Ubah Data</button>
-                </div>
-                </form>
             </div>
         </div>
     </div>
 <?php } ?>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -441,7 +463,13 @@
                 <div class="modal-body">
                     <?php date_default_timezone_set('Asia/Jakarta'); ?>
 
-                    <input type="hidden" name="faktor_id" id="id-faktor">
+                    <input type="hidden" name="faktor_id" id="id-faktor" readonly>
+                    <div class="form-group">
+                        <label for="sub_category" class="form-label">Sub Kategori: </label>
+                        <textarea class="form-control" type="text" name="sub_category" id="sub_category"
+                            style="height: 100px" value="<?= $row['sub_category'] ?? '' ?>"
+                            placeholder="<?= $row['sub_category'] ?? '' ?>" readonly></textarea>
+                    </div>
                     <div class="form-group">
                         <label for="nilai">Nilai: </label>
                         <select name="nilai" id="nilai" class="form-control" required>
@@ -456,8 +484,8 @@
                     <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
                     <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s') ?>">
                     <div class="form-group">
-                        <label for="komentar">Tambah Nilai Faktor 1:</label>
-                        <textarea class="form-control" name="komentar" id="komentar" style="height: 100px"
+                        <label for="keterangan">Tambah Keterangan:</label>
+                        <textarea class="form-control" name="keterangan" id="keterangan" style="height: 100px"
                             required></textarea>
                     </div>
                 </div>
@@ -469,6 +497,24 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        // When the "Tambah Nilai" button is clicked, populate the id-faktor input field
+        $('#modaltambahNilai').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var faktorId = button.data('id'); // Extract the faktor_id from data-id attribute
+
+            var modal = $(this);
+            modal.find('#id-faktor').val(faktorId); // Set the value of #id-faktor input
+        });
+
+        // Optional: if you need to clear the value of #id-faktor when closing the modal
+        $('#modaltambahNilai').on('hidden.bs.modal', function () {
+            $(this).find('#id-faktor').val('');
+        });
+    });
+</script>
 
 <!-- Modal untuk Tambah Komentar -->
 <div class="modal fade" id="modaltambahKomentar">
@@ -508,6 +554,20 @@
                     <button type="submit" name="tambahKomentar" class="btn btn-primary">Simpan Komentar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalHapusnilai">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                Apakah anda yakin ingin menghapus data?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnHapusnilai">Yakin</button>
+            </div>
         </div>
     </div>
 </div>

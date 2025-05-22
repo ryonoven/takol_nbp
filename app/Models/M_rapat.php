@@ -38,8 +38,6 @@ class M_rapat extends Model
 
     public function hapus($id)
     {
-        // Menghapus data siswa berdasar    an ID yang diberikan
-        // Menggunakan metode delete() pada tabel "" dengan kondisi ID = $id
         $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
         $this->builder->delete(['id' => $id]);
         $this->setIncrement($lastData[0]['id']);

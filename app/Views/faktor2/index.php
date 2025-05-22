@@ -278,7 +278,7 @@
                             <label for="sub_category" class="form-label">Sub Kategori: </label>
                             <textarea class="form-control" type="text" name="sub_category" id="sub_category"
                                 style="height: 100px" value="<?= $row['sub_category'] ?? '' ?>"
-                                placeholder="<?= $row['sub_category'] ?? '' ?>" disabled></textarea>
+                                placeholder="<?= $row['sub_category'] ?? '' ?>" readonly></textarea>
                         </div>
                         <div class="form-group">
                             <label for="nilai">Nilai: </label>

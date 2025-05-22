@@ -35,6 +35,11 @@ class M_Faktor extends Model
         return $this->builder->get()->getResultArray();
     }
 
+    public function tambahNilai($data)
+    {
+        return $this->builder->insert($data);
+    }
+
     public function tambahKomentar($data)
     {
         return $this->builder->insert($data);

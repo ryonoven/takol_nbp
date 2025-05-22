@@ -6,6 +6,7 @@ use App\Models\M_faktor;
 use App\Models\M_user;
 use App\Models\M_faktorkomentar;
 use App\Models\M_nilaifaktor;
+use App\Models\M_infobpr;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Faktor extends Controller
@@ -19,6 +20,7 @@ class Faktor extends Controller
     protected $userModel;   // Tambahkan ini jika belum ada
     protected $komentarModel;
     protected $nilaiModel;
+    protected $infobprModel;
     protected $session;
 
     // Tambahkan properti untuk grup pengguna di sini agar bisa diakses di semua method tanpa redeklarasi
@@ -35,6 +37,7 @@ class Faktor extends Controller
         $this->userModel = new M_user(); // Pastikan inisialisasi M_user
         $this->komentarModel = new M_faktorkomentar();
         $this->nilaiModel = new M_nilaifaktor();
+        $this->infobprModel = new M_infobpr();
         helper('url');
         $this->session = service('session');
         $this->auth = service('authentication');
@@ -57,6 +60,8 @@ class Faktor extends Controller
 
         $userId = $this->auth->id();
         $user = $this->userModel->find($userId);
+        $infobprId = $this->auth->id();
+        $infobpr = $this->infobprModel->find($infobprId);
         $fullname = $user['fullname'] ?? 'Unknown';
 
         $faktorData = $this->faktorModel->getAllData();
@@ -78,7 +83,8 @@ class Faktor extends Controller
                 'category' => $faktorItem['category'],
                 'sub_category' => $faktorItem['sub_category'],
                 'nilai' => $associatedNilai['nilai'] ?? null,         // Ambil nilai, atau null jika tidak ada
-                'keterangan' => $associatedNilai['keterangan'] ?? null,    // Ambil keterangan, atau null jika tidak ada
+                'keterangan' => $associatedNilai['keterangan'] ?? null,
+                'bpr_id' => $associatedNilai['id'] ?? null,    // Ambil keterangan, atau null jika tidak ada
                 'is_approved' => $associatedNilai['is_approved'] ?? null,   // Ambil is_approved, atau null jika tidak ada
                 // Tambahkan kolom lain dari faktorItem jika dibutuhkan
                 // 'nama_kolom_lain_faktor' => $faktorItem['nama_kolom_lain_faktor'],
@@ -88,7 +94,7 @@ class Faktor extends Controller
             'judul' => 'Faktor 1',
             'faktor' => $faktorData,
             'userId' => $userId,
-            'faktor' => $factorsWithDetails,
+            'faktors' => $factorsWithDetails,
             // 'komentarList' => $komentarList, // Hapus ini atau set ke array kosong
             'komentarList' => [],
             // 'nilaiList' => $nilaiData,
@@ -168,19 +174,21 @@ class Faktor extends Controller
             } else {
                 $userId = service('authentication')->id();
                 $faktor1Id = $this->request->getPost('faktor_id');
+                $infobprId = service('authentication')->id();
+                $id = $this->request->getPost('id');
                 $data = [
                     'faktor1id' => $faktor1Id,
                     'nilai' => $this->request->getPost('nilai'),
                     'keterangan' => $this->request->getPost('keterangan'),
                     'fullname' => $this->request->getPost('fullname'),
                     'user_id' => $userId,
+                    'bpr_id' => $infobprId,
                     'created_at' => date('Y-m-d H:i:s'),
                 ];
 
-                $this->nilaiModel->insertNilai($data);
+                $this->nilaiModel->tambahNilai($data);
 
                 session()->setFlashdata('message', 'Nilai berhasil ditambahkan');
-                // Redirect kembali ke halaman dengan ID faktor yang sama agar modal bisa dibuka lagi
                 return redirect()->to(base_url('faktor') . '?modal_nilai=' . $faktor1Id);
             }
         } else {
@@ -235,59 +243,28 @@ class Faktor extends Controller
 
     public function ubah()
     {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
+        // Cek apakah ada faktor1id
+        $faktor1id = $this->request->getPost('faktor1id');
 
-        if (isset($_POST['ubah'])) {
-            $val = $this->validate([
-                'nilai' => [
-                    'label' => 'Nilai',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'keterangan' => [
-                    'label' => 'Keterangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Faktor',
-                    'faktor' => $this->faktorModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('faktor/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
-                    'nilai' => $this->request->getPost('nilai'),
-                    'keterangan' => $this->request->getPost('keterangan')
-                ];
-
-                $success = $this->faktorModel->ubah($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Faktor berhasil diubah');
-                    return redirect()->to(base_url('faktor'));
-                }
-            }
-        } else {
+        if (!$faktor1id) {
+            session()->setFlashdata('err', 'ID Faktor tidak ditemukan.');
             return redirect()->to(base_url('faktor'));
         }
+
+        // Ambil data yang akan diubah
+        $data = [
+            'nilai' => $this->request->getPost('nilai'),
+            'keterangan' => $this->request->getPost('keterangan'),
+        ];
+
+        // Update data berdasarkan faktor1id
+        if ($this->nilaiModel->ubahBerdasarkanFaktor1Id($data, $faktor1id)) {
+            session()->setFlashdata('message', 'Data berhasil diubah');
+        } else {
+            session()->setFlashdata('err', 'Gagal mengubah data');
+        }
+
+        return redirect()->to(base_url('faktor'));
     }
 
     public function excel()
@@ -299,6 +276,23 @@ class Faktor extends Controller
         echo view('faktor/excel', $data);
     }
 
+    public function hapus($id)
+    {
+        if (!$this->auth->check()) {
+            $redirectURL = session('redirect_url') ?? '/login';
+            unset($_SESSION['redirect_url']);
+
+            return redirect()->to($redirectURL);
+        }
+
+        // Memanggil fungsi hapus pada model dan menyimpan hasilnya dalam variabel $success
+        $this->nilaiModel->hapus($id);
+        session()->setFlashdata('message', 'Data berhasil dihapus');
+
+        return redirect()->to(base_url('faktor'));
+
+    }
+
     public function setNullKolom($id)
     {
         if (!$this->auth->check()) {
@@ -307,7 +301,7 @@ class Faktor extends Controller
             return redirect()->to($redirectURL);
         }
 
-        $success = $this->faktorModel->setNullKolom($id); // <<< PERBAIKI DI SINI: $this->model -> $this->faktorModel
+        $success = $this->faktorModel->setNullKolom($id);
 
         if ($success) {
             session()->setFlashdata('message', 'Data berhasil dihapus');

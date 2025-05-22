@@ -45,6 +45,10 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #komentar").val($(this).data("komentar"));
   $(".modal-body #created_at").val($(this).data("created_at"));
 
+  $(".modal-body #id-nilaifaktor").val($(this).data("id"));
+  $(".modal-body #nilai").val($(this).data("nilai"));
+  $(".modal-body #keterangan").val($(this).data("keterangan"));
+
   $(".modal-body #id-faktor2").val($(this).data("id"));
   $(".modal-body #number").val($(this).data("number"));
   $(".modal-body #sph").val($(this).data("sph"));
@@ -327,7 +331,7 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #terimashmdir").val($(this).data("terimashmdir"));
   $(".modal-body #nominalshmdir").val($(this).data("nominalshmdir"));
   $(".modal-body #terimashmdekom").val($(this).data("terimashmdekom"));
-  $(".modal-body #nominalshmdekom").val($(this).data("nominalshmdekom"));  
+  $(".modal-body #nominalshmdekom").val($(this).data("nominalshmdekom"));
   $(".modal-body #terimaremunlaindir").val($(this).data("terimaremunlaindir"));
   $(".modal-body #nominalremunlaindir").val($(this).data("nominalremunlaindir"));
   $(".modal-body #terimaremunlaindekom").val($(this).data("terimaremunlaindekom"));
@@ -397,6 +401,12 @@ $(document).on("click", "#btn-edit", function () {
 //imagepreview
 $(document).ready(function () {
   $('.dropify').dropify();
+});
+
+$(document).on("click", "#btn-tambah", function () {
+  $(".modal-body #id-faktor").val($(this).data("id"));
+  $(".modal-body #sub_category").val($(this).data("sub_category"));
+
 });
 
 

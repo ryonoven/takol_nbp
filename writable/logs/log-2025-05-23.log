@@ -1,0 +1,19 @@
+INFO - 2025-05-23 00:05:27 --> Data yang akan diubah: {"nilai":"4","keterangan":"Cek2"}
+INFO - 2025-05-23 00:05:31 --> Data yang akan diubah: {"nilai":"5","keterangan":"Cek1"}
+INFO - 2025-05-23 00:09:19 --> Data yang akan diubah: {"nilai":"4","keterangan":"Cek1"}
+INFO - 2025-05-23 00:09:24 --> Data yang akan diubah: {"nilai":"5","keterangan":"Cek2"}
+INFO - 2025-05-23 00:17:25 --> ID yang diterima untuk penghapusan: 2
+INFO - 2025-05-23 00:17:29 --> ID yang diterima untuk penghapusan: 2
+INFO - 2025-05-23 00:17:32 --> ID yang diterima untuk penghapusan: 2
+CRITICAL - 2025-05-23 00:45:18 --> Undefined variable $faktorItem
+in APPPATH\Views\faktor\index.php on line 408.
+ 1 APPPATH\Views\faktor\index.php(408): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\nbp\\app\\Views\\faktor\\index.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render()
+ 5 APPPATH\Controllers\Faktor.php(113): view()
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 9 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')

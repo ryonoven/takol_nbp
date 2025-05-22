@@ -302,6 +302,18 @@
     window.location.href = "danasosial/hapus/" + idDataHapus20;
   });
 
+  var idDataHapusNilai;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai = $(this).data("id");
+    console.log(idDataHapusNilai);
+    $("#idDatanilaifaktor").text(idDataHapusNilai);
+    $("#modalHapusnilai").modal("show");
+  });
+
+  $("#btnHapusnilai").click(function () {
+    window.location.href = "faktor/hapus/" + idDataHapusNilai;
+  });
+
   $(document).on("click", "#btn-komentar", function () {
     // Mengambil faktor_id dari tombol yang membuka modal
     var faktorId = $(this).data("id");
