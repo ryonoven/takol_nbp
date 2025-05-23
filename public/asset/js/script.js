@@ -46,6 +46,7 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #created_at").val($(this).data("created_at"));
 
   $(".modal-body #id-nilaifaktor").val($(this).data("id"));
+  $(".modal-body #sub_category").val($(this).data("sub_category"));
   $(".modal-body #nilai").val($(this).data("nilai"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
 

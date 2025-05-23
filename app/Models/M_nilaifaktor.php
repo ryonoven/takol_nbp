@@ -78,11 +78,50 @@ class M_nilaifaktor extends Model
         return $updateResult;
     }
 
+    public function hitungRataRata($faktorId)
+    {
+        // Ambil semua nilai untuk faktor dengan faktor1id
+        $query = $this->builder->select('nilai')
+            ->where('faktor1id >=', 1)
+            ->where('faktor1id <=', 11) // Sesuaikan jika perlu
+            ->get();
 
+        $results = $query->getResultArray();
+
+        if (count($results) > 0) {
+            $totalNilai = 0;
+            $count = 0;
+
+            // Penjumlahan nilai
+            foreach ($results as $row) {
+                $totalNilai += $row['nilai'];
+                $count++;
+            }
+
+            // Hitung rata-rata
+            $rataRata = $totalNilai / $count;
+
+            // Membulatkan ke atas atau bawah (ceil, floor) jika dibutuhkan
+            return round($rataRata); // Membulatkan ke bilangan bulat terdekat
+        } else {
+            return 0; // Jika tidak ada nilai
+        }
+    }
+
+
+    public function updateRataRata($faktor1id, $rataRata)
+    {
+        // Update nilai rata-rata di tabel nilaifaktor
+        return $this->builder
+            ->where('faktor1id', $faktor1id)
+            ->update(['nilai' => $rataRata]); // Asumsikan kolom 'nilai' menyimpan rata-rata
+    }
 
     public function ubah($data, $id)
     {
         return $this->builder->update($data, ['id' => $id]);
     }
+
+
 
 }

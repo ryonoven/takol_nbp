@@ -13,7 +13,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span class="label" style="flex: 3; margin-right: 10px; text-align: center;">
                     <h3>Faktor 1</h3>
-                    <h4>Pelaksanaan Aspek Pemegang Saham</h4>
+                    <h4>Aspek Pemegang Saham</h4>
                 </span>
                 <span>
                     <?php
@@ -92,9 +92,8 @@
                                             <?php else: ?>
                                                 <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                                    data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
-                                                    data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>">
+                                                    data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
+                                                    data-nilai="<?= $row['nilai']; ?>" data-keterangan="<?= $row['keterangan']; ?>">
                                                     <i class="fa fa-edit"></i>&nbsp;
                                                 </button>
                                                 <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
@@ -158,9 +157,8 @@
                                             <?php else: ?>
                                                 <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                                    data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
-                                                    data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>">
+                                                    data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
+                                                    data-nilai="<?= $row['nilai']; ?>" data-keterangan="<?= $row['keterangan']; ?>">
                                                     <i class="fa fa-edit"></i>&nbsp;
                                                 </button>
                                                 <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
@@ -224,9 +222,8 @@
                                             <?php else: ?>
                                                 <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
                                                     class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                                    data-sph="<?= $row['sph']; ?>" data-category="<?= $row['category']; ?>"
-                                                    data-sub_category="<?= $row['sub_category']; ?>" data-nilai="<?= $row['nilai']; ?>"
-                                                    data-keterangan="<?= $row['keterangan']; ?>">
+                                                    data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
+                                                    data-nilai="<?= $row['nilai']; ?>" data-keterangan="<?= $row['keterangan']; ?>">
                                                     <i class="fa fa-edit"></i>&nbsp;
                                                 </button>
                                                 <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
@@ -247,6 +244,51 @@
                 </table>
             </div>
         </div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span class="label" style="flex: 3; margin-right: 10px;">
+                <strong>Kesimpulan Penilaian Faktor 1 (Aspek Pemegang Saham)</strong>
+            </span>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th colspan="5" class="text-center">Nilai Faktor 1</th>
+                    </tr>
+                    <!-- Display the average value here -->
+                    <tr>
+                        <th colspan="5" class="text-center"><?= round($rataRata, 2) ?></th>
+                    </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody>
+                    <?php if (empty($faktors)) { ?>
+                        <tr>
+                            <td scope="row"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    <?php } else { ?>
+                        <?php foreach ($faktors as $row): ?>
+                            <?php if ($row['sph'] == 'Kesimpulan'): ?>
+                                <tr>
+                                    <td scope="row"></td>
+                                    <td><?= $row['sub_category'] ?></td>
+                                    <td><?= $row['nilai'] ?></td>
+                                    <td><?= $row['keterangan'] ?></td>
+                                    <td>
+                                        <?= round($rataRata, 2) ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -264,14 +306,12 @@
                     <!-- Form untuk ubah data -->
                     <form action="<?= base_url('faktor/ubah'); ?>" method="post">
                         <!-- Hidden field untuk faktor1id -->
-                        <input type="hidden" name="faktor1id" id="id-faktor" value="">
-
+                        <input type="text" name="faktor1id" id="id-faktor" value="">
                         <div class="mb-3">
                             <label for="sub_category" class="form-label">Sub Kategori: </label>
                             <textarea class="form-control" name="sub_category" id="sub_category" style="height: 100px"
                                 readonly></textarea>
                         </div>
-
                         <div class="form-group">
                             <label for="nilai">Nilai: </label>
                             <select name="nilai" id="nilai" class="form-control" required>
@@ -298,126 +338,44 @@
                                     <tbody>
                                         <tr>
                                             <td>Nilai 1</td>
-                                            <td>Apabila memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses penerapan tata kelola dilakukan dengan sangat memadai, dan
-                                                ditunjukkan dengan hasil penerapan tata kelola yang sangat baik.<br>
-                                                Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara
-                                                lain:<br>
-                                                a. Struktur pemegang saham memenuhi seluruh ketentuan dan pelaksanaan tata
-                                                kelola sangat memadai sehingga tidak terdapat benturan kepentingan,
-                                                intervensi, mengambil keuntungan pribadi atau kepentingan golongan tertentu,
-                                                dan/atau keputusan pengangkatan, penggantian, atau pemberhentian anggota
-                                                Direksi dan/atau Dewan Komisaris sesuai dengan ketentuan peraturan
-                                                perundang-undangan.<br>
-                                                b. Seluruh pengambilan kebijakan aksi korporasi melalui RUPS sejalan dengan
-                                                anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana
-                                                strategis sehingga perencanaan pengembangan BPR terealisasikan sepenuhnya
-                                                yang tercermin pada pemenuhan ketentuan permodalan, kinerja keuangan,
-                                                dan/atau perkembangan kegiatan usaha BPR.<br>
-                                                c. Kebijakan penggunaan laba dan pembagian dividen telah dievaluasi secara
-                                                berkala sehingga seluruh pelaksanaan penggunaan laba dan pembagian dividen
-                                                telah sesuai dengan kebijakan yang ditetapkan.
+                                            <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
+                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan sangat memadai
+                                                dan ditunjukkan dengan hasil pelaksanaan tata kelola yang sangat baik.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Nilai 2</td>
-                                            <td>Apabila memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses penerapan tata kelola dilakukan dengan memadai, dan
-                                                ditunjukkan dengan hasil penerapan tata kelola yang baik.<br>
-                                                Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara
-                                                lain:<br>
-                                                a. Struktur pemegang saham memenuhi seluruh ketentuan dan pelaksanaan tata
-                                                kelola memadai sehingga benturan kepentingan dapat diselesaikan, intervensi
-                                                yang timbul tidak signifikan, tidak mengambil keuntungan pribadi atau
-                                                kepentingan golongan tertentu, dan/atau keputusan pengangkatan, penggantian,
-                                                atau pemberhentian anggota Direksi dan/atau Dewan Komisaris sesuai dengan
-                                                ketentuan peraturan perundang-undangan.<br>
-                                                b. Sebagian besar pengambilan kebijakan aksi korporasi melalui RUPS sejalan
-                                                dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana
-                                                strategis sehingga perencanaan pengembangan BPR sebagian besar
-                                                terealisasikan yang tercermin pada pemenuhan ketentuan permodalan, kinerja
-                                                keuangan, dan/atau perkembangan kegiatan usaha BPR.<br>
-                                                c. Kebijakan penggunaan laba dan pembagian dividen telah dievaluasi sehingga
-                                                sebagian besar pelaksanaan penggunaan laba dan pembagian dividen telah
-                                                sesuai dengan kebijakan yang ditetapkan.
+                                            <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
+                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                                ditunjukkan dengan hasil pelaksanaan tata kelola yang baik.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Nilai 3</td>
-                                            <td>Apabila memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses penerapan tata kelola dilakukan dengan cukup memadai, dan
-                                                ditunjukkan dengan hasil penerapan tata kelola yang cukup baik.<br>
-                                                Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara
-                                                lain:<br>
-                                                a. Struktur pemegang saham memenuhi seluruh ketentuan dan pelaksanaan tata
-                                                kelola cukup memadai sehingga benturan kepentingan dapat diselesaikan,
-                                                intervensi yang timbul tidak signifikan, tidak mengambil keuntungan pribadi
-                                                atau kepentingan golongan tertentu, dan/atau keputusan pengangkatan,
-                                                penggantian, atau pemberhentian anggota Direksi dan/atau Dewan Komisaris
-                                                sesuai dengan ketentuan peraturan perundang-undangan.<br>
-                                                b. Sebagian pengambilan kebijakan aksi korporasi melalui RUPS sejalan dengan
-                                                anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana
-                                                strategis sehingga perencanaan pengembangan BPR belum sepenuhnya
-                                                terealisasikan yang tercermin pada pemenuhan ketentuan permodalan, kinerja
-                                                keuangan, dan/atau perkembangan kegiatan usaha BPR.<br>
-                                                c. Kebijakan penggunaan laba dan pembagian dividen telah dievaluasi sehingga
-                                                sebagian pelaksanaan penggunaan laba dan pembagian dividen telah sesuai
-                                                dengan kebijakan yang ditetapkan.
+                                            <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
+                                                ketentuan, proses pelaksanaan tata kelola dilakukan cukup memadai dan
+                                                ditunjukkan dengan hasil pelaksanaan tata kelola yang cukup baik.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Nilai 4</td>
-                                            <td>Apabila memenuhi kondisi belum sepenuhnya terpenuhi struktur dan/atau
-                                                infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan
-                                                dengan kurang memadai, dan ditunjukkan dengan hasil penerapan tata kelola
-                                                yang kurang baik.<br>
-                                                Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara
-                                                lain:<br>
-                                                a. Struktur pemegang saham memenuhi sebagian ketentuan dan pelaksanaan tata
-                                                kelola kurang memadai sehingga benturan kepentingan kurang dapat
-                                                diselesaikan, intervensi yang timbul cukup signifikan, mengambil keuntungan
-                                                pribadi atau kepentingan golongan tertentu, dan/atau keputusan pengangkatan,
-                                                penggantian, atau pemberhentian anggota Direksi dan/atau Dewan Komisaris
-                                                kurang sesuai dengan ketentuan peraturan perundang-undangan.<br>
-                                                b. Sebagian kecil pengambilan kebijakan aksi korporasi melalui RUPS sejalan
-                                                dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana
-                                                strategis sehingga perencanaan pengembangan BPR sebagian kecil
-                                                terealisasikan yang tercermin pada pemenuhan ketentuan permodalan, kinerja
-                                                keuangan, dan/atau perkembangan kegiatan usaha BPR.<br>
-                                                c. Sebagian kebijakan penggunaan laba dan pembagian dividen telah dievaluasi
-                                                sehingga sebagian kecil pelaksanaan penggunaan laba dan pembagian dividen
-                                                telah sesuai dengan kebijakan yang ditetapkan.
+                                            <td>Memenuhi kondisi belum sepenuhnya terpenuhinya struktur dan/atau
+                                                infrastruktur sesuai ketentuan, proses pelaksanaan tata kelola dilakukan
+                                                kurang memadai dan ditunjukkan dengan hasil pelaksanaan tata kelola yang
+                                                kurang baik.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Nilai 5</td>
-                                            <td>Apabila memenuhi kondisi tidak terpenuhi struktur dan/atau infrastruktur
-                                                sesuai ketentuan, proses penerapan tata kelola dilakukan dengan tidak
-                                                memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang tidak
-                                                baik.<br>
-                                                Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara
-                                                lain:<br>
-                                                a. Struktur pemegang saham tidak memenuhi ketentuan dan pelaksanaan tata
-                                                kelola tidak memadai sehingga benturan kepentingan tidak dapat diselesaikan,
-                                                intervensi yang timbul signifikan, mengambil keuntungan pribadi atau
-                                                kepentingan golongan tertentu, dan/atau keputusan pengangkatan, penggantian,
-                                                atau pemberhentian anggota Direksi dan/atau Dewan Komisaris tidak sesuai
-                                                dengan ketentuan peraturan perundang-undangan.<br>
-                                                b. Pengambilan kebijakan aksi korporasi tidak melalui RUPS dan tidak sejalan
-                                                dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana
-                                                strategis sehingga perencanaan pengembangan BPR tidak terealisasikan yang
-                                                tercermin pada pemenuhan ketentuan permodalan, kinerja keuangan, dan/atau
-                                                perkembangan kegiatan usaha BPR.<br>
-                                                c. Kebijakan penggunaan laba dan pembagian dividen tidak dievaluasi sehingga
-                                                pelaksanaan penggunaan laba dan pembagian dividen tidak sesuai dengan
-                                                kebijakan yang ditetapkan.
+                                            <td>Memenuhi kondisi tidak terpenuhinya struktur dan/atau infrastruktur sesuai
+                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan tidak memadai,
+                                                dan ditunjukkan dengan hasil pelaksanaan tata kelola yang tidak baik.
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan: </label>
                             <textarea class="form-control" name="keterangan" id="keterangan" style="height: 120px"
@@ -451,7 +409,7 @@
 </script>
 
 <div class="modal fade" id="modaltambahNilai">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form action="<?= base_url('faktor/tambahNilai'); ?>" method="post">
                 <div class="modal-header">
@@ -464,11 +422,10 @@
                     <?php date_default_timezone_set('Asia/Jakarta'); ?>
 
                     <input type="hidden" name="faktor_id" id="id-faktor" readonly>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="sub_category" class="form-label">Sub Kategori: </label>
-                        <textarea class="form-control" type="text" name="sub_category" id="sub_category"
-                            style="height: 100px" value="<?= $row['sub_category'] ?? '' ?>"
-                            placeholder="<?= $row['sub_category'] ?? '' ?>" readonly></textarea>
+                        <textarea class="form-control" name="sub_category" id="sub_category" style="height: 100px"
+                            readonly></textarea>
                     </div>
                     <div class="form-group">
                         <label for="nilai">Nilai: </label>
@@ -481,8 +438,64 @@
                             <option value="5">5</option>
                         </select>
                     </div>
+
+                    <!-- Button to show/hide the guide -->
+                    <button type="button" class="btn btn-outline-info btn-sm" id="lihatPanduanNilai">Lihat
+                        Panduan</button>
+
+                    <!-- Guide section -->
+                    <div id="panduanNilaiContainer" style="display: none; margin-top: 15px;">
+                        <p><strong>Panduan Pengisian Nilai:</strong></p>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nilai Faktor</th>
+                                    <th>Penjelasan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Nilai 1</td>
+                                    <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
+                                        ketentuan, proses pelaksanaan tata kelola dilakukan dengan sangat memadai
+                                        dan ditunjukkan dengan hasil pelaksanaan tata kelola yang sangat baik.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Nilai 2</td>
+                                    <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
+                                        ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                        ditunjukkan dengan hasil pelaksanaan tata kelola yang baik.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Nilai 3</td>
+                                    <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
+                                        ketentuan, proses pelaksanaan tata kelola dilakukan cukup memadai dan
+                                        ditunjukkan dengan hasil pelaksanaan tata kelola yang cukup baik.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Nilai 4</td>
+                                    <td>Memenuhi kondisi belum sepenuhnya terpenuhinya struktur dan/atau
+                                        infrastruktur sesuai ketentuan, proses pelaksanaan tata kelola dilakukan
+                                        kurang memadai dan ditunjukkan dengan hasil pelaksanaan tata kelola yang
+                                        kurang baik.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Nilai 5</td>
+                                    <td>Memenuhi kondisi tidak terpenuhinya struktur dan/atau infrastruktur sesuai
+                                        ketentuan, proses pelaksanaan tata kelola dilakukan dengan tidak memadai,
+                                        dan ditunjukkan dengan hasil pelaksanaan tata kelola yang tidak baik.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
                     <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s') ?>">
+
                     <div class="form-group">
                         <label for="keterangan">Tambah Keterangan:</label>
                         <textarea class="form-control" name="keterangan" id="keterangan" style="height: 100px"
@@ -497,6 +510,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const lihatPanduanButton = document.getElementById('lihatPanduanNilai');
+        const panduanContainer = document.getElementById('panduanNilaiContainer');
+
+        if (lihatPanduanButton && panduanContainer) {
+            lihatPanduanButton.addEventListener('click', function () {
+                panduanContainer.style.display = panduanContainer.style.display === 'none' ? 'block' : 'none';
+                lihatPanduanButton.textContent = panduanContainer.style.display === 'none' ? 'Lihat Panduan' : 'Sembunyikan Panduan';
+            });
+        }
+    });
+</script>
+
 
 <script>
     $(document).ready(function () {

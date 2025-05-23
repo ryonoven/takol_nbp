@@ -58,6 +58,7 @@ class Faktor extends Controller
             return redirect()->to($redirectURL);
         }
 
+
         $userId = $this->auth->id();
         $user = $this->userModel->find($userId);
         $infobprId = $this->auth->id();
@@ -65,13 +66,10 @@ class Faktor extends Controller
         $fullname = $user['fullname'] ?? 'Unknown';
 
         $faktorData = $this->faktorModel->getAllData();
-        // $nilaiData = $this->nilaiModel->getAllData();
-
         $factorsWithDetails = [];
+
         foreach ($faktorData as $faktorItem) {
             $faktorId = $faktorItem['id'];
-            // Ambil data nilai TERBARU yang terkait dengan faktor ini.
-            // Anda mungkin perlu method khusus di M_nilaifaktor untuk ini.
             $associatedNilai = $this->nilaiModel->where('faktor1id', $faktorId)
                 ->orderBy('created_at', 'DESC') // Urutkan untuk mendapatkan yang terbaru
                 ->first(); // Ambil hanya 1 record (yang terbaru)
@@ -90,11 +88,15 @@ class Faktor extends Controller
                 // 'nama_kolom_lain_faktor' => $faktorItem['nama_kolom_lain_faktor'],
             ];
         }
+
+        $rataRata = $this->nilaiModel->hitungRataRata($faktorId);
+
         $data = [
             'judul' => 'Faktor 1',
             'faktor' => $faktorData,
             'userId' => $userId,
             'faktors' => $factorsWithDetails,
+            'rataRata' => $rataRata,
             // 'komentarList' => $komentarList, // Hapus ini atau set ke array kosong
             'komentarList' => [],
             // 'nilaiList' => $nilaiData,
@@ -187,6 +189,9 @@ class Faktor extends Controller
                 ];
 
                 $this->nilaiModel->tambahNilai($data);
+
+                $rataRata = $this->nilaiModel->hitungRataRata($faktor1Id);
+                $this->nilaiModel->updateRataRata($faktor1Id, $rataRata);
 
                 session()->setFlashdata('message', 'Nilai berhasil ditambahkan');
                 return redirect()->to(base_url('faktor') . '?modal_nilai=' . $faktor1Id);
