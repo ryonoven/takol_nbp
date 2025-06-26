@@ -13,7 +13,8 @@
         "laminas/laminas-escaper": "^2.9",
         "phpoffice/phpspreadsheet": "^4.1",
         "psr/log": "^1.1",
-        "setasign/fpdf": "^1.8"
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6"
     },
     "require-dev": {
         "kint-php/kint": "^5.0.4",

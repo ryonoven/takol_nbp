@@ -1,0 +1,1605 @@
+INFO - 2025-06-15 15:45:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:45:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:45:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:45:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:45:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:45:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:45:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:45:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-06-15 15:45:54 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(268): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(656): CodeIgniter\Model->doFirst()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(140): CodeIgniter\BaseModel->first()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(19): Myth\Auth\Authentication\LocalAuthenticator->validate()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Controllers\AuthController.php(108): Myth\Auth\Authentication\LocalAuthenticator->attempt()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): Myth\Auth\Controllers\AuthController->attemptLogin()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(268): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(656): CodeIgniter\Model->doFirst()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(140): CodeIgniter\BaseModel->first()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(19): Myth\Auth\Authentication\LocalAuthenticator->validate()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Controllers\AuthController.php(108): Myth\Auth\Authentication\LocalAuthenticator->attempt()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): Myth\Auth\Controllers\AuthController->attemptLogin()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2025-06-15 15:45:54 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(268): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(656): CodeIgniter\Model->doFirst()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(140): CodeIgniter\BaseModel->first()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(19): Myth\Auth\Authentication\LocalAuthenticator->validate()
+ 7 APPPATH\ThirdParty\myth-auth\src\Controllers\AuthController.php(108): Myth\Auth\Authentication\LocalAuthenticator->attempt()
+ 8 SYSTEMPATH\CodeIgniter.php(932): Myth\Auth\Controllers\AuthController->attemptLogin()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-06-15 15:55:02 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-06-15 15:55:02 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 15:55:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:11 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:11 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:11 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:11 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:11 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 22:55:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 15:55:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 15:55:16 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:03:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:03:30 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:04:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:04:01 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:06:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:06:29 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:07:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:07:00 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:13:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:13:21 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:15:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:15:08 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:16:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:16:09 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:22:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:22:20 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:22:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:22:21 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:22:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:22:22 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:23:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:23:38 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:25:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:25:12 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+ERROR - 2025-06-15 16:25:12 --> mysqli_sql_exception: Unknown column 'faktor2id' in 'where clause' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(268): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(656): CodeIgniter\Model->doFirst()
+#6 C:\xampp\htdocs\nbp\app\Controllers\showFaktor.php(185): CodeIgniter\BaseModel->first()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\ShowFaktor->index()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#10 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#12 {main}
+CRITICAL - 2025-06-15 16:25:12 --> Unknown column 'faktor2id' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(268): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(656): CodeIgniter\Model->doFirst()
+ 7 APPPATH\Controllers\showFaktor.php(185): CodeIgniter\BaseModel->first()
+ 8 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\ShowFaktor->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:25:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:25:25 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:26:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:26:18 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:29:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:29:59 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:30:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:30:27 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:32:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:32:18 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:32:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:32:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:33 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:33 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:33 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:33 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:34 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:34 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:34 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:34 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:34 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:34 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:34 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:32:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:37 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:38 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:32:38 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:32:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:32:39 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:37:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:37:30 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:37:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:37:32 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:38:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:38:25 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:38:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:38:27 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:39:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:39:22 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:39:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:39:23 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:39:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:39:50 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:41:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:41:32 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:43:18 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:43:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:43:41 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:43:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:43:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:58 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:58 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:58 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:58 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:43:59 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:43:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:00 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:00 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:00 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:00 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:00 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:00 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:00 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:01 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:01 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:01 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:01 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:01 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:02 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:02 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:02 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:02 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:44:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:44:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:04 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:04 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:04 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:04 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:04 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:04 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:05 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:05 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:05 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:05 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:05 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:05 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:05 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:06 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:06 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:06 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:06 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:06 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:44:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:07 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:07 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:08 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:08 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:08 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:08 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:09 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:10 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:10 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:10 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:44:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:12 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:13 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:13 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:13 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:13 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:13 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:13 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:44:13 --> Too few arguments to function App\Controllers\Faktor::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor.php on line 1176.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:44:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:44:21 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:44:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:44:48 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:45:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:45:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:32 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:33 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:33 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:33 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:33 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:45:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:41 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:41 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:41 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:41 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:45:41 --> Too few arguments to function App\Controllers\Faktor10::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\faktor10.php on line 1173.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor10->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:45:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:45:43 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:47:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:47:26 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:47:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:47:44 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:47:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:49 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:49 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:49 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:49 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:49 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:49 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:50 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:51 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:51 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:51 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:51 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:51 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:51 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:52 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:52 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:52 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:52 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-15 16:47:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:53 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:53 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:54 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:54 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:54 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:54 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:54 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:55 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:56 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:47:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-06-15 23:47:57 --> Too few arguments to function App\Controllers\Faktor2::getNewCommentsCount(), 1 passed in C:\xampp\htdocs\nbp\system\CodeIgniter.php on line 932 and exactly 2 expected
+in APPPATH\Controllers\Faktor2.php on line 1178.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Faktor2->getNewCommentsCount()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-15 16:48:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:48:07 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:49:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:49:05 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:50:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:50:22 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:50:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:50:55 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:51:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:51:49 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:51:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:51:50 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:52:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:52:42 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:52:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:52:43 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:54:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:54:17 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:54:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:54:18 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:54:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:54:57 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:54:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:54:58 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:55:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:55:05 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:55:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:55:10 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:55:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:55:17 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+INFO - 2025-06-15 16:56:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-15 16:56:20 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1

@@ -1,3 +1,14 @@
+<div class="alert alert-info my-2">
+    <?php if (isset($bprData) && isset($periodeDetail)): ?>
+        <strong><?= esc($bprData['namabpr'] ?? 'Nama BPR') ?></strong> - Periode Pelaporan
+        Semester <?= esc($periodeDetail['semester']) ?> Tahun <?= esc($periodeDetail['tahun']) ?>
+    <?php elseif (isset($periodeDetail)): ?>
+        <strong>Periode:</strong>
+        Semester <?= esc($periodeDetail['semester']) ?> Tahun <?= esc($periodeDetail['tahun']) ?>
+    <?php else: ?>
+        <strong>Periode belum ditentukan</strong>
+    <?php endif; ?>
+</div>
 <div class="container-fluid">
     <?php if (session()->get('message')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -15,40 +26,153 @@
                     <h3>Faktor 1</h3>
                     <h4>Aspek Pemegang Saham</h4>
                 </span>
-                <span>
+                <?php
+                // pastikan variabel ada dan tidak null
+                $kodebpr = $kodebpr ?? null;
+                $periodeId = $periodeId ?? null;
+                ?>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <!-- Approval Komisaris Utama (di kiri) -->
+                <span style="flex: 1; text-align: left;">
                     <?php
                     $allApproved = true;
-                    foreach ($faktors as $item) {
+                    $requiredFaktorIds = range(1, 12);
+
+                    foreach ($requiredFaktorIds as $faktorId) {
+                        $item = array_filter(
+                            $faktors,
+                            fn($f) =>
+                            $f['id'] == $faktorId
+                            && $f['kodebpr'] == $kodebpr
+                            && $f['periode_id'] == $periodeId
+                        );
+
+                        if (empty($item)) {
+                            $allApproved = false;
+                            break;
+                        }
+
+                        $item = array_values($item)[0];
+
+                        if (!isset($item['accdekom']) || $item['accdekom'] != 1) {
+                            $allApproved = false;
+                            break;
+                        }
+                    }
+                    ?>
+
+                    <?php if ($allApproved): ?>
+                        <span class="badge badge-success" style="font-size: 14px;">
+                            Disetujui oleh <strong>Komisaris Utama</strong><br>
+                            <?= esc($item['accdekom_at'] ?? '-') ?>
+                        </span>
+                    <?php else: ?>
+                        <span class="badge badge-secondary" style="font-size: 14px;">
+                            Belum Disetujui Seluruhnya<br>Oleh Komisaris Utama
+                        </span>
+                    <?php endif; ?>
+                </span>
+
+                <!-- Approval Direktur Utama (di kanan) -->
+                <span style="flex: 1; text-align: right;">
+                    <?php
+                    $allApproved = true;
+                    foreach ($requiredFaktorIds as $faktorId) {
+                        $item = array_filter(
+                            $faktors,
+                            fn($f) =>
+                            $f['id'] == $faktorId
+                            && $f['kodebpr'] == $kodebpr
+                            && $f['periode_id'] == $periodeId
+                        );
+
+                        if (empty($item)) {
+                            $allApproved = false;
+                            break;
+                        }
+
+                        $item = array_values($item)[0];
+
                         if (!isset($item['is_approved']) || $item['is_approved'] != 1) {
                             $allApproved = false;
                             break;
                         }
                     }
                     ?>
+
                     <?php if ($allApproved): ?>
                         <span class="badge badge-success" style="font-size: 14px;">
-                            Disetujui oleh <strong><?= esc($fullname ?? '-') ?></strong><br>
-                            <?= esc($faktors[0]['approved_at'] ?? '-') ?>
+                            Disetujui oleh <strong>Direktur Utama</strong><br>
+                            <?= esc($item['approved_at'] ?? '-') ?>
                         </span>
                     <?php else: ?>
                         <span class="badge badge-secondary" style="font-size: 14px;">
-                            Belum Disetujui Seluruhnya<br>Oleh Direksi
+                            Belum Disetujui Seluruhnya<br>Oleh Direktur Utama
                         </span>
                     <?php endif; ?>
                 </span>
             </div>
-            <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
-                <div class="col-md" style="display: flex; justify-content: flex-end; align-items: center;">
-                    <a href="<?= base_url('faktor/approveSemua') ?>" class="btn btn-success shadow mt-3 mr-2"
-                        onclick="return confirm('Apakah Anda yakin ingin melakukan approval?');">
-                        Approve
-                    </a>
-                    <a href="<?= base_url('faktor/unapproveSemua') ?>" class="btn btn-danger shadow mt-3 mr-2"
-                        onclick="return confirm('Batalkan semua approval?');">
-                        Batalkan Approval
-                    </a>
-                </div>
-            <?php endif; ?>
+
+            <!-- Approval Direktur Utama -->
+            <div class="row" style="display: flex; justify-content: space-between;">
+                <!-- Card untuk Approval Komisaris Utama -->
+                <?php if ($userInGroupAdmin || $userInGroupDekom): ?>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm" style="width: 100%; margin-top: 10px; height: 120px;">
+                            <div class="card-body">
+                                <!-- Label Approval Direktur Utama -->
+                                <div class="col-md" style="text-align: center;">
+                                    <span class="badge badge-primary">Approval Komisaris Utama</span>
+                                </div>
+
+                                <!-- Tombol Approve dan Batalkan Approval -->
+                                <div class="col-md" style="display: flex; justify-content: center; align-items: center;">
+                                    <a href="<?= base_url('faktor/approveSemuaKom') ?>"
+                                        class="btn btn-success shadow mt-3 mr-2"
+                                        onclick="return confirm('Apakah Anda yakin ingin melakukan approval?');">
+                                        Approve
+                                    </a>
+                                    <a href="<?= base_url('faktor/unapprovekom') ?>" class="btn btn-danger shadow mt-3 mr-2"
+                                        onclick="return confirm('Batalkan semua approval?');">
+                                        Tolak Approval
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Card untuk Approval Direktur Utama -->
+                <?php if ($userInGroupAdmin || $userInGroupDireksi): ?>
+                    <div class="col-md-3" style="margin-left: auto;">
+                        <div class="card shadow-sm <?php echo (isset($canApprove) && !$canApprove) ? 'disabled-card' : ''; ?>"
+                            style="width: 100%; margin-top: 10px; height: 120px;">
+                            <div class="card-body">
+                                <!-- Label Approval Direktur Utama -->
+                                <div class="col-md" style="text-align: center;">
+                                    <span class="badge badge-primary">Approval Direktur Utama</span>
+                                </div>
+
+                                <!-- Tombol Approve dan Batalkan Approval -->
+                                <div class="col-md" style="display: flex; justify-content: center; align-items: center;">
+                                    <a href="<?= base_url('faktor/approveSemua') ?>"
+                                        class="btn btn-success shadow mt-3 mr-2 <?php echo (isset($canApprove) && !$canApprove) ? 'disabled-btn' : ''; ?>"
+                                        onclick="return confirm('Apakah Anda yakin ingin melakukan approval?');">
+                                        Approve
+                                    </a>
+                                    <a href="<?= base_url('faktor/unapproveSemua') ?>"
+                                        class="btn btn-danger shadow mt-3 mr-2 <?php echo (isset($canApprove) && !$canApprove) ? 'disabled-btn' : ''; ?>"
+                                        onclick="return confirm('Batalkan semua approval?');">
+                                        Tolak Approval
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span class="label" style="flex: 3; margin-right: 10px;">
                     <strong>A. Struktur dan Infrastruktur Tata Kelola (S)</strong>
@@ -80,32 +204,214 @@
                                     <tr>
                                         <td scope="row"><?= $row['id']; ?></td>
                                         <td><?= $row['sub_category'] ?></td>
-                                        <td><?= $row['nilai'] ?? '' ?></td>
-                                        <td><?= $row['keterangan'] ?? '' ?></td>
+
+                                        <?php
+                                        // Cari data spesifik user berdasarkan kodebpr dan periode
+                                        $userSpecificData = array_filter($faktors, function ($item) use ($row, $kodebpr, $periodeId) {
+                                            return $item['id'] == $row['id'] &&
+                                                $item['kodebpr'] == $kodebpr &&
+                                                $item['periode_id'] == $periodeId;
+                                        });
+
+                                        // Jika ada data spesifik user, gunakan datanya
+                                        if (!empty($userSpecificData)) {
+                                            $userData = reset($userSpecificData);
+                                            $nilai = $userData['nilai'] ?? '';
+                                            $keterangan = $userData['keterangan'] ?? '';
+                                            // $accdekomValue = $userData['accdekom'] ?? '';
+                                        } else {
+                                            $nilai = '';
+                                            $keterangan = '';
+                                        }
+                                        ?>
+
+                                        <td><?= $nilai ?></td>
+                                        <td><?= $keterangan ?></td>
                                         <td>
-                                            <?php if (empty($row['nilai']) && empty($row['keterangan'])): ?>
-                                                <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
-                                                    id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
-                                                    <i class="fas fa-plus"></i>&nbsp;
-                                                </button>
-                                            <?php else: ?>
-                                                <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
-                                                    class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                                    data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
-                                                    data-nilai="<?= $row['nilai']; ?>" data-keterangan="<?= $row['keterangan']; ?>">
-                                                    <i class="fa fa-edit"></i>&nbsp;
-                                                </button>
-                                                <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
-                                                    class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>"> <i
-                                                        class="fas fa-trash-alt"></i>&nbsp;
-                                                </button>
-                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
-                                                    id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;
-                                                </button>
+                                            <?php if ($userInGroupAdmin || $userInGroupPE): ?>
+                                                <?php if (empty($nilai) && empty($keterangan)): ?>
+                                                    <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
+                                                        id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
+                                                        data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
+                                                        <i class="fas fa-plus"></i>&nbsp;
+                                                    </button>
+                                                <?php else: ?>
+                                                    <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
+                                                        class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
+                                                        data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
+                                                        data-nilai="<?= $nilai; ?>" data-keterangan="<?= $keterangan; ?>">
+                                                        <i class="fa fa-edit"></i>&nbsp;
+                                                    </button>
+                                                    <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
+                                                        class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>">
+                                                        <i class="fas fa-trash-alt"></i>&nbsp;
+                                                    </button>
+                                                <?php endif; ?>
+                                                <!-- Add checkbox for approval -->
                                             <?php endif; ?>
                                         </td>
+                                        <!-- Button untuk Approval -->
+                                        <td>
+                                            <?php
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+
+                                            // Get the initial count of unread comments for this specific factor and user
+                                            // Make sure $commentReadsModel is passed from the controller
+                                            $initialUnreadCount = $commentReadsModel->countUnreadCommentsForUserByFactor(
+                                                $row['id'],
+                                                $kodebpr, // The BPR code for the current user
+                                                $currentUserId,
+                                                $activePeriodeId
+                                            );
+                                            ?>
+                                            <div class="komentar-btn-wrapper">
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
+                                                    id="btn-komentar-<?= $row['id']; ?>"
+                                                    class="btn btn-sm position-relative komentar-button" style="font-weight: 600;"
+                                                    data-faktor-id="<?= $row['id']; ?>" data-kodebpr="<?= $kodebpr; ?>"
+                                                    data-user-id="<?= $currentUserId; ?>"
+                                                    data-periode-id="<?= $activePeriodeId; ?>">
+                                                    <i class="fas fa-comment"></i>
+                                                    <span id="notification-badge-<?= $row['id']; ?>"
+                                                        class="badge badge-danger notification-badge"
+                                                        style="display: <?= $initialUnreadCount > 0 ? 'inline-flex' : 'none'; ?>;">
+                                                        <?= $initialUnreadCount ?>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                        <!-- View (HTML/PHP) -->
+                                        <?php if ($userInGroupAdmin || $userInGroupDekom): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdekomValue = $row['accdekom'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdekomValue == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedekom/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdekom/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
+                                        <?php if ($userInGroupAdmin || $userInGroupDekom2): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdekom2Value = $row['accdekom2'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdekom2Value == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedekom2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdekom2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
+                                        <?php if ($userInGroupAdmin || $userInGroupDireksi2 || $userInGroupDireksi): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdir2Value = $row['accdir2'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdir2Value == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedir2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdir2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -145,31 +451,209 @@
                                     <tr>
                                         <td scope="row"><?= $row['id']; ?></td>
                                         <td><?= $row['sub_category'] ?></td>
-                                        <td><?= $row['nilai'] ?></td>
-                                        <td><?= $row['keterangan'] ?></td>
+
+                                        <?php
+                                        // Cari data spesifik user berdasarkan kodebpr dan periode
+                                        $userSpecificData = array_filter($faktors, function ($item) use ($row, $kodebpr, $periodeId) {
+                                            return $item['id'] == $row['id'] &&
+                                                $item['kodebpr'] == $kodebpr &&
+                                                $item['periode_id'] == $periodeId;
+                                        });
+
+                                        // Jika ada data spesifik user, gunakan datanya
+                                        if (!empty($userSpecificData)) {
+                                            $userData = reset($userSpecificData);
+                                            $nilai = $userData['nilai'] ?? '';
+                                            $keterangan = $userData['keterangan'] ?? '';
+                                        } else {
+                                            $nilai = '';
+                                            $keterangan = '';
+                                        }
+                                        ?>
+
+                                        <td><?= $nilai ?></td>
+                                        <td><?= $keterangan ?></td>
                                         <td>
-                                            <?php if (empty($row['nilai']) && empty($row['keterangan'])): ?>
-                                                <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
-                                                    id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
-                                                    <i class="fas fa-plus"></i>&nbsp;
-                                                </button>
-                                            <?php else: ?>
-                                                <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
-                                                    class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                                    data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
-                                                    data-nilai="<?= $row['nilai']; ?>" data-keterangan="<?= $row['keterangan']; ?>">
-                                                    <i class="fa fa-edit"></i>&nbsp;
-                                                </button>
-                                                <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
-                                                    class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>"> <i
-                                                        class="fas fa-trash-alt"></i>&nbsp;
-                                                </button>
-                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
-                                                    id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;
-                                                </button>
+                                            <?php if ($userInGroupAdmin || $userInGroupPE): ?>
+                                                <?php if (empty($nilai) && empty($keterangan)): ?>
+                                                    <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
+                                                        id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
+                                                        data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
+                                                        <i class="fas fa-plus"></i>&nbsp;
+                                                    </button>
+                                                <?php else: ?>
+                                                    <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
+                                                        class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
+                                                        data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
+                                                        data-nilai="<?= $nilai; ?>" data-keterangan="<?= $keterangan; ?>">
+                                                        <i class="fa fa-edit"></i>&nbsp;
+                                                    </button>
+                                                    <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
+                                                        class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>">
+                                                        <i class="fas fa-trash-alt"></i>&nbsp;
+                                                    </button>
+                                                <?php endif; ?>
                                             <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+
+                                            // Get the initial count of unread comments for this specific factor and user
+                                            // Make sure $commentReadsModel is passed from the controller
+                                            $initialUnreadCount = $commentReadsModel->countUnreadCommentsForUserByFactor(
+                                                $row['id'],
+                                                $kodebpr, // The BPR code for the current user
+                                                $currentUserId,
+                                                $activePeriodeId
+                                            );
+                                            ?>
+                                            <div class="komentar-btn-wrapper">
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
+                                                    id="btn-komentar-<?= $row['id']; ?>"
+                                                    class="btn btn-sm position-relative komentar-button" style="font-weight: 600;"
+                                                    data-faktor-id="<?= $row['id']; ?>" data-kodebpr="<?= $kodebpr; ?>"
+                                                    data-user-id="<?= $currentUserId; ?>"
+                                                    data-periode-id="<?= $activePeriodeId; ?>">
+                                                    <i class="fas fa-comment"></i>
+                                                    <span id="notification-badge-<?= $row['id']; ?>"
+                                                        class="badge badge-danger notification-badge"
+                                                        style="display: <?= $initialUnreadCount > 0 ? 'inline-flex' : 'none'; ?>;">
+                                                        <?= $initialUnreadCount ?>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <?php if ($userInGroupAdmin || $userInGroupDekom): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdekomValue = $row['accdekom'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdekomValue == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedekom/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdekom/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
+                                        <?php if ($userInGroupAdmin || $userInGroupDekom2): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdekom2Value = $row['accdekom2'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdekom2Value == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedekom2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdekom2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
+                                        <?php if ($userInGroupAdmin || $userInGroupDireksi2 || $userInGroupDireksi2): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdir2Value = $row['accdir2'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdir2Value == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedir2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdir2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -210,32 +694,209 @@
                                     <tr>
                                         <td scope="row"><?= $row['id']; ?></td>
                                         <td><?= $row['sub_category'] ?></td>
-                                        <td><?= $row['nilai'] ?></td>
-                                        <td><?= $row['keterangan'] ?></td>
+
+                                        <?php
+                                        // Cari data spesifik user berdasarkan kodebpr dan periode
+                                        $userSpecificData = array_filter($faktors, function ($item) use ($row, $kodebpr, $periodeId) {
+                                            return $item['id'] == $row['id'] &&
+                                                $item['kodebpr'] == $kodebpr &&
+                                                $item['periode_id'] == $periodeId;
+                                        });
+
+                                        // Jika ada data spesifik user, gunakan datanya
+                                        if (!empty($userSpecificData)) {
+                                            $userData = reset($userSpecificData);
+                                            $nilai = $userData['nilai'] ?? '';
+                                            $keterangan = $userData['keterangan'] ?? '';
+                                        } else {
+                                            $nilai = '';
+                                            $keterangan = '';
+                                        }
+                                        ?>
+
+                                        <td><?= $nilai ?></td>
+                                        <td><?= $keterangan ?></td>
                                         <td>
-                                            <?php if (empty($row['nilai']) && empty($row['keterangan'])): ?>
-                                                <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
-                                                    id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
-                                                    <i class="fas fa-plus"></i>&nbsp;
-                                                </button>
-                                            <?php else: ?>
-                                                <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
-                                                    class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                                    data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
-                                                    data-nilai="<?= $row['nilai']; ?>" data-keterangan="<?= $row['keterangan']; ?>">
-                                                    <i class="fa fa-edit"></i>&nbsp;
-                                                </button>
-                                                <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
-                                                    class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>"> <i
-                                                        class="fas fa-trash-alt"></i>&nbsp;
-                                                </button>
-                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
-                                                    id="btn-komentar" class="btn btn-sm" style="font-weight: 600;"
-                                                    data-id="<?= $row['id']; ?>"><i class="fas fa-comment"></i>&nbsp;
-                                                </button>
+                                            <?php if ($userInGroupAdmin || $userInGroupPE): ?>
+                                                <?php if (empty($nilai) && empty($keterangan)): ?>
+                                                    <button type="button" data-toggle="modal" data-target="#modaltambahNilai"
+                                                        id="btn-tambah" class="btn btn-sm" style="font-weight: 600;"
+                                                        data-id="<?= $row['id']; ?>" data-sub_category="<?= $row['sub_category']; ?>">
+                                                        <i class="fas fa-plus"></i>&nbsp;
+                                                    </button>
+                                                <?php else: ?>
+                                                    <button type="button" data-toggle="modal" data-target="#modalUbah" id="btn-edit"
+                                                        class="btn btn-sm" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
+                                                        data-sph="<?= $row['sph']; ?>" data-sub_category="<?= $row['sub_category']; ?>"
+                                                        data-nilai="<?= $nilai; ?>" data-keterangan="<?= $keterangan; ?>">
+                                                        <i class="fa fa-edit"></i>&nbsp;
+                                                    </button>
+                                                    <button type="button" data-toggle="modal" data-target="#modalHapusnilai" id="btn-hapus"
+                                                        class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>">
+                                                        <i class="fas fa-trash-alt"></i>&nbsp;
+                                                    </button>
+                                                <?php endif; ?>
                                             <?php endif; ?>
                                         </td>
+                                        <td>
+                                            <?php
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+
+                                            // Get the initial count of unread comments for this specific factor and user
+                                            // Make sure $commentReadsModel is passed from the controller
+                                            $initialUnreadCount = $commentReadsModel->countUnreadCommentsForUserByFactor(
+                                                $row['id'],
+                                                $kodebpr, // The BPR code for the current user
+                                                $currentUserId,
+                                                $activePeriodeId
+                                            );
+                                            ?>
+                                            <div class="komentar-btn-wrapper">
+                                                <button type="button" data-toggle="modal" data-target="#modaltambahKomentar"
+                                                    id="btn-komentar-<?= $row['id']; ?>"
+                                                    class="btn btn-sm position-relative komentar-button" style="font-weight: 600;"
+                                                    data-faktor-id="<?= $row['id']; ?>" data-kodebpr="<?= $kodebpr; ?>"
+                                                    data-user-id="<?= $currentUserId; ?>"
+                                                    data-periode-id="<?= $activePeriodeId; ?>">
+                                                    <i class="fas fa-comment"></i>
+                                                    <span id="notification-badge-<?= $row['id']; ?>"
+                                                        class="badge badge-danger notification-badge"
+                                                        style="display: <?= $initialUnreadCount > 0 ? 'inline-flex' : 'none'; ?>;">
+                                                        <?= $initialUnreadCount ?>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <?php if ($userInGroupAdmin || $userInGroupDekom): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdekomValue = $row['accdekom'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdekomValue == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedekom/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdekom/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
+                                        <?php if ($userInGroupAdmin || $userInGroupDekom2): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdekom2Value = $row['accdekom2'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdekom2Value == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedekom2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdekom2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
+                                        <?php if ($userInGroupAdmin || $userInGroupDireksi2 || $userInGroupDireksi): ?>
+                                            <?php
+                                            // Mendapatkan nilai user_id dan active_periode dari session
+                                            $currentUserId = session()->get('user_id');
+                                            $activePeriodeId = session()->get('active_periode');
+                                            if ($row['kodebpr'] == $kodebpr && $row['periode_id'] == $activePeriodeId) {
+                                                $accdir2Value = $row['accdir2'] ?? null;
+
+                                                // Jika accdekom == 1 dan filter sesuai dengan kodebpr dan periode_id
+                                                if ($accdir2Value == 1) {
+                                                    // Jika accdekom == 1, tampilkan tombol unapprove
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/unapprovedir2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-success" style="font-weight: 600;">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                } else {
+                                                    // Jika accdekom != 1, tampilkan tombol approve
+                                                    ?>
+                                                    <td>
+                                                        <form action="/faktor/accdir2/<?= $row['id']; ?>" method="POST"
+                                                            style="display: inline-block;">
+                                                            <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>" />
+                                                            <input type="hidden" name="periode_id" value="<?= $periodeId ?>" />
+                                                            <input type="hidden" name="faktor1id" value="<?= $row['id']; ?>" />
+                                                            <button type="submit" class="btn btn-sm btn-dark" style="font-weight: 600;">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -256,38 +917,218 @@
                     <tr>
                         <th colspan="5" class="text-center">Nilai Faktor 1</th>
                     </tr>
-                    <!-- Display the average value here -->
-                    <tr>
-                        <th colspan="5" class="text-center"><?= round($rataRata, 2) ?></th>
-                    </tr>
+                    <?php if ($rataRata !== null): ?>
+                        <tr>
+                            <th colspan="5" class="text-center"><strong><?= $rataRata ?></strong></th>
+                        </tr>
+                        <tr>
+                            <th colspan="5" class="text-center">Penjelasan Nilai Faktor</th>
+                        </tr>
+                        <?php if ($rataRata !== null): ?>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <?php
+                                    // Explanation based on rataRata
+                                    switch ($rataRata) {
+                                        case 1:
+                                            echo "<p style='text-align: justify; padding-left: 0px;'>";
+                                            echo "<li>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan <b>Sangat Memadai</b>, dan ditunjukkan dengan hasil penerapan tata kelola yang Sangat Baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:</li>";
+
+                                            echo "<ol style='text-align: left; padding-left: 40px;' type='a'>";
+                                            echo "<li>Struktur pemegang saham <b>memenuhi seluruh ketentuan dan pelaksanaan tata kelola sangat memadai</b> sehingga <b>tidak terdapat</b benturan kepentingan, intervensi, mengambil keuntungan pribadi atau kepentingan golongan tertentu, dan/atau keputusan pengangkatan, penggantian, atau pemberhentian anggota Direksi dan/atau Dewan Komisaris sesuai dengan ketentuan peraturan perundang-undangan.</li>";
+                                            echo "<li><b>Seluruh</b> pengambilan kebijakan aksi korporasi melalui RUPS sejalan dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana strategis sehingga perencanaan pengembangan BPR <b>terealisasikan sepenuhnya</b> yang tercermin pada pemenuhan ketentuan permodalan, kinerja keuangan, dan/atau perkembangan kegiatan usaha BPR.</li>";
+                                            echo "<li>Kebijakan penggunaan laba dan pembagian dividen <b>telah dievaluasi secara berkala</b> sehingga <b>Seluruh</b> pelaksanaan penggunaan laba dan pembagian dividen telah sesuai dengan kebijakan yang ditetapkan.</li>";
+                                            echo "</ol>";
+                                            break;
+                                        case 2:
+                                            echo "<p style='text-align: justify; padding-left: 0px;'>";
+                                            echo "<li>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:</li>";
+
+                                            echo "<ol style='text-align: left; padding-left: 40px;' type='a'>";
+                                            echo "<li>Struktur pemegang saham <b>memenuhi seluruh ketentuan</b> dan pelaksanaan tata kelola <b>Memadai</b> sehingga benturan kepentingan <b>dapat diselesaikan</b>, intervensi yang timbul <b>Tidak Signifikan</b>, tidak mengambil keuntungan pribadi atau kepentingan golongan tertentu, dan/atau keputusan pengangkatan, penggantian, atau pemberhentian anggota Direksi dan/atau Dewan Komisaris sesuai dengan ketentuan peraturan perundang-undangan.</li>";
+                                            echo "<li><b>Sebagian besar</b> pengambilan kebijakan aksi korporasi melalui RUPS sejalan dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana strategis sehingga perencanaan pengembangan BPR <b>sebagian besar terealisasikan</b> yang tercermin pada pemenuhan ketentuan permodalan, kinerja keuangan, dan/atau perkembangan kegiatan usaha BPR.</li>";
+                                            echo "<li>Kebijakan penggunaan laba dan pembagian dividen <b>telah dievaluasi</b> sehingga <b>sebagian besar</b> pelaksanaan penggunaan laba dan pembagian dividen telah sesuai dengan kebijakan yang ditetapkan.</li>";
+                                            echo "</ol>";
+                                            break;
+                                        case 3:
+                                            echo "<p style='text-align: justify; padding-left: 0px;'>";
+                                            echo "<li>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan <b>Cukup memadai</b>, dan ditunjukkan dengan hasil penerapan tata kelola yang <b>Cukup baik</b>. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:</li>";
+
+                                            echo "<ol style='text-align: left; padding-left: 40px;' type='a'>";
+                                            echo "<li>Struktur pemegang saham <b>Memenuhi Seluruh Ketentuan</b> dan pelaksanaan tata kelola <b>Cukup Memadai</b> sehingga benturan kepentingan dapat diselesaikan, intervensi yang timbul tidak signifikan, tidak mengambil keuntungan pribadi atau kepentingan golongan tertentu, dan/atau keputusan pengangkatan, penggantian, atau pemberhentian anggota Direksi dan/atau Dewan Komisaris sesuai dengan ketentuan peraturan perundang-undangan.</li>";
+                                            echo "<li><b>Sebagian</b> pengambilan kebijakan aksi korporasi melalui RUPS sejalan dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana strategis sehingga perencanaan pengembangan BPR belum sepenuhnya terealisasikan yang tercermin pada pemenuhan ketentuan permodalan, kinerja keuangan, dan/atau perkembangan kegiatan usaha BPR.</li>";
+                                            echo "<li>Kebijakan penggunaan laba dan pembagian dividen <b>Telah Dievaluasi</b> sehingga <b>Sebagian</b> pelaksanaan penggunaan laba dan pembagian dividen telah sesuai dengan kebijakan yang ditetapkan.</li>";
+                                            echo "</ol>";
+                                            break;
+                                        case 4:
+                                            echo "<p style='text-align: justify; padding-left: 0px;'>";
+                                            echo "<li>Memenuhi kondisi <b>Belum sepenuhnya</b> terpenuhi struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan <b>Kurang Memadai</b>, dan ditunjukkan dengan hasil penerapan tata kelola yang <b>Kurang Baik</b>. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:</li>";
+
+                                            echo "<ol style='text-align: left; padding-left: 40px;' type='a'>";
+                                            echo "<li>Struktur pemegang saham <b>memenuhi sebagian ketentuan</b> dan pelaksanaan tata kelola <b>Kurang Memadai</b> sehingga benturan kepentingan <b>kurang dapat diselesaikan</b>, intervensi yang timbul <b>cukup signifikan</b>, <b>mengambil keuntungan pribadi</b> atau kepentingan golongan tertentu, dan/atau keputusan pengangkatan, penggantian, atau pemberhentian anggota Direksi dan/atau Dewan Komisaris <b>kurang sesuai</b> dengan ketentuan peraturan perundang-undangan.</li>";
+                                            echo "<li><b>Sebagian kecil</b> pengambilan kebijakan aksi korporasi melalui RUPS sejalan dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana strategis sehingga perencanaan pengembangan BPR <b>sebagian kecil terealisasikan</b> yang tercermin pada pemenuhan ketentuan permodalan, kinerja keuangan, dan/atau perkembangan kegiatan usaha BPR.</li>";
+                                            echo "<li><b>Sebagian</b> kebijakan penggunaan laba dan pembagian dividen <b>telah dievaluasi</b> sehingga <b>sebagian kecil</b> pelaksanaan penggunaan laba dan pembagian dividen telah sesuai dengan kebijakan yang ditetapkan.</li>";
+                                            echo "</ol>";
+                                            break;
+                                        case 5:
+                                            echo "<p style='text-align: justify; padding-left: 0px;'>";
+                                            echo "<li>Memenuhi kondisi <b>Tidak Terpenuhi</b> struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan <b>tidak memadai</>, dan ditunjukkan dengan hasil penerapan tata kelola yang <b>tidak baik</b>. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:</li>";
+
+                                            echo "<ol style='text-align: left; padding-left: 40px;' type='a'>";
+                                            echo "<li>Struktur pemegang saham <b>tidak memenuhi ketentuan</b> dan pelaksanaan tata kelola <b>tidak memadai</b> sehingga benturan kepentingan <b>tidak dapat diselesaikan</b>, intervensi yang <b>timbul signifikan, mengambil keuntungan pribadi<b/> atau kepentingan golongan tertentu, dan/atau keputusan pengangkatan, penggantian, atau pemberhentian anggota Direksi dan/atau Dewan Komisaris <b>tidak sesuai</b> dengan ketentuan peraturan perundang-undangan.</li>";
+                                            echo "<li>Pengambilan kebijakan aksi korporasi <b>tidak melalui RUPS dan tidak sejalan</b> dengan anggaran dasar, ketentuan peraturan perundang-undangan, dan rencana strategis sehingga perencanaan pengembangan BPR <b>tidak terealisasikan</b> yang tercermin pada pemenuhan ketentuan permodalan, kinerja keuangan, dan/atau perkembangan kegiatan usaha BPR.</li>";
+                                            echo "<li>Kebijakan penggunaan laba dan pembagian dividen <b>tidak dievaluasi</b> sehingga pelaksanaan penggunaan laba dan pembagian dividen <b>tidak sesuai</b> dengan kebijakan yang ditetapkan.</li>";
+                                            echo "</ol>";
+                                            break;
+                                        default:
+                                            echo "Belum ada nilai faktor.";
+                                            break;
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </thead>
                 <!-- Table body -->
-                <tbody>
-                    <?php if (empty($faktors)) { ?>
-                        <tr>
-                            <td scope="row"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    <?php } else { ?>
-                        <?php foreach ($faktors as $row): ?>
-                            <?php if ($row['sph'] == 'Kesimpulan'): ?>
-                                <tr>
-                                    <td scope="row"></td>
-                                    <td><?= $row['sub_category'] ?></td>
-                                    <td><?= $row['nilai'] ?></td>
-                                    <td><?= $row['keterangan'] ?></td>
-                                    <td>
-                                        <?= round($rataRata, 2) ?>
-                                    </td>
-                                </tr>
+            </table>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th colspan="5" class="text-center">Kesimpulan
+                            <?php if ($userInGroupPE || $userInGroupAdmin):
+                                // Find the specific conclusion data for this BPR and period
+                                $kesimpulanData = array_filter($faktors, function ($item) use ($kodebpr, $periodeId) {
+                                    return $item['kodebpr'] == $kodebpr && $item['periode_id'] == $periodeId;
+                                });
+
+                                if (!empty($kesimpulanData)) {
+                                    $kesimpulan = reset($kesimpulanData);
+                                    ?>
+                                    <button type="button" data-toggle="modal" class="btn" data-target="#modalUbahkesimpulan"
+                                        id="btn-edit" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
+                                        data-positifstruktur="<?= $row['positifstruktur']; ?>"
+                                        data-negatifstruktur="<?= $row['negatifstruktur']; ?>"
+                                        data-positifproses="<?= $row['positifproses']; ?>"
+                                        data-negatifproses="<?= $row['negatifproses']; ?>"
+                                        data-positifhasil="<?= $row['positifhasil']; ?>"
+                                        data-negatifhasil="<?= $row['negatifhasil']; ?>"><i class="fa fa-plus"></i>&nbsp;
+                                    </button>
+                                <?php } ?>
                             <?php endif; ?>
-                        <?php endforeach; ?>
-                    <?php } ?>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table class="table">
+                <tbody>
+                    <?php
+                    // Filter faktor data for current BPR and period
+                    $filteredFaktors = array_filter($faktors, function ($item) use ($kodebpr, $periodeId) {
+                        return $item['kodebpr'] == $kodebpr && $item['periode_id'] == $periodeId;
+                    });
+
+                    // Jika data untuk kodebpr dan periode tidak ditemukan
+                    if (empty($filteredFaktors)) { ?>
+                        <tr>
+                            <td colspan="2"><?= esc($bprData['namabpr'] ?? 'BPR') ?> mengamati tidak ada data untuk
+                                faktor
+                                ini.</td>
+                        </tr>
+                    <?php } else {
+                        // Tampilkan setiap item dengan filter yang benar
+                        foreach ($filteredFaktors as $kesimpulan) {
+                            if (!empty($kesimpulan['positifstruktur'])) { ?>
+                                <tr>
+                                    <th style="text-align: left; width: 25%;">Faktor Positif (Struktur):</th>
+                                </tr>
+                                <tr>
+                                    <td style="width: 75%;"><?= esc($kesimpulan['positifstruktur']) ?></td>
+                                </tr>
+                            <?php }
+                            if (!empty($kesimpulan['negatifstruktur'])) { ?>
+                                <tr>
+                                    <th style="text-align: left; width: 25%;">Faktor Negatif (Struktur):</th>
+                                </tr>
+                                <tr>
+                                    <td style="width: 75%;"><?= esc($kesimpulan['negatifstruktur']) ?></td>
+                                </tr>
+                            <?php }
+                            if (!empty($kesimpulan['positifproses'])) { ?>
+                                <tr>
+                                    <th style="text-align: left; width: 25%;">Faktor Positif (Proses):</th>
+                                </tr>
+                                <tr>
+                                    <td style="width: 75%;"><?= esc($kesimpulan['positifproses']) ?></td>
+                                </tr>
+                            <?php }
+                            if (!empty($kesimpulan['negatifproses'])) { ?>
+                                <tr>
+                                    <th style="text-align: left; width: 25%;">Faktor Negatif (Proses):</th>
+                                </tr>
+                                <tr>
+                                    <td style="width: 75%;"><?= esc($kesimpulan['negatifproses']) ?></td>
+                                </tr>
+                            <?php }
+                            if (!empty($kesimpulan['positifhasil'])) { ?>
+                                <tr>
+                                    <th style="text-align: left; width: 25%;">Faktor Positif (Hasil):</th>
+                                </tr>
+                                <tr>
+                                    <td style="width: 75%;"><?= esc($kesimpulan['positifhasil']) ?></td>
+                                </tr>
+                            <?php }
+                            if (!empty($kesimpulan['negatifhasil'])) { ?>
+                                <tr>
+                                    <th style="text-align: left; width: 25%;">Faktor Negatif (Hasil):</th>
+                                </tr>
+                                <tr>
+                                    <td style="width: 75%;"><?= esc($kesimpulan['negatifhasil']) ?></td>
+                                </tr>
+                            <?php }
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('periode'); ?>'">Periode</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor'); ?>'">1</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor2'); ?>'">2</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor3'); ?>'">3</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor4'); ?>'">4</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor5'); ?>'">5</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor6'); ?>'">6</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor7'); ?>'">7</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor8'); ?>'">8</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor9'); ?>'">9</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor10'); ?>'">10</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor11'); ?>'">11</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('faktor12'); ?>'">12</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    onclick="window.location.href='<?= base_url('showFaktor'); ?>'">All</button>
+            </div>
         </div>
     </div>
 </div>
@@ -339,7 +1180,8 @@
                                         <tr>
                                             <td>Nilai 1</td>
                                             <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan sangat memadai
+                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan sangat
+                                                memadai
                                                 dan ditunjukkan dengan hasil pelaksanaan tata kelola yang sangat baik.
                                             </td>
                                         </tr>
@@ -367,8 +1209,10 @@
                                         </tr>
                                         <tr>
                                             <td>Nilai 5</td>
-                                            <td>Memenuhi kondisi tidak terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan tidak memadai,
+                                            <td>Memenuhi kondisi tidak terpenuhinya struktur dan/atau infrastruktur
+                                                sesuai
+                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan tidak
+                                                memadai,
                                                 dan ditunjukkan dengan hasil pelaksanaan tata kelola yang tidak baik.
                                             </td>
                                         </tr>
@@ -378,7 +1222,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan: </label>
-                            <textarea class="form-control" name="keterangan" id="keterangan" style="height: 120px"
+                            <textarea class="form-control" name="keterangan" id="keterangan" style="height: 100px"
                                 required></textarea>
                         </div>
 
@@ -408,12 +1252,66 @@
     });
 </script>
 
+<?php if (!empty($faktors)) { ?>
+    <div class="modal fade" id="modalUbahkesimpulan">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Kesimpulan Penilaian Faktor 1 </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="<?= base_url('faktor/ubahkesimpulan'); ?>" method="post">
+                        <input type="text" name="faktor1id" id="id-faktor" value="">
+                        <div class="mb-3">
+                            <label for="positifstruktur">Faktor Positif (Struktur):</label>
+                            <textarea class="form-control" type="text" name="positifstruktur" id="positifstruktur"
+                                placeholder="<?= $row['positifstruktur'] ?>" style="height: 100px;" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="negatifstruktur">Faktor Negatif (Struktur):</label>
+                            <textarea class="form-control" type="text" name="negatifstruktur" id="negatifstruktur"
+                                placeholder="<?= $row['negatifstruktur'] ?>" style="height: 100px;" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="positifproses">Faktor Positif (Proses):</label>
+                            <textarea class="form-control" type="text" name="positifproses" id="positifproses"
+                                placeholder="<?= $row['positifproses'] ?>" style="height: 100px;" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="negatifproses">Faktor Negatif (Proses):</label>
+                            <textarea class="form-control" type="text" name="negatifproses" id="negatifproses"
+                                placeholder="<?= $row['negatifproses'] ?>" style="height: 100px;" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="positifhasil">Faktor Positif (Hasil):</label>
+                            <textarea class="form-control" type="text" name="positifhasil" id="positifhasil"
+                                placeholder="<?= $row['positifhasil'] ?>" style="height: 100px;" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="negatifhasil">Faktor Negatif (Hasil):</label>
+                            <textarea class="form-control" type="text" name="negatifhasil" id="negatifhasil"
+                                placeholder="<?= $row['negatifhasil'] ?>" style="height: 100px;" required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" name="ubahkesimpulan" class="btn btn-primary">Ubah Data</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
 <div class="modal fade" id="modaltambahNilai">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form action="<?= base_url('faktor/tambahNilai'); ?>" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title">Komentar Direksi dan Dewan Komisaris</h5>
+                    <h5 class="modal-title">Faktor 2</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -559,6 +1457,8 @@
                     <?php date_default_timezone_set('Asia/Jakarta'); ?>
 
                     <input type="hidden" name="faktor_id" id="id-faktor">
+                    <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>">
+                    <!-- Tambahkan ini -->
 
                     <div class="form-group">
                         <label for="komentarLama">Komentar Saat Ini:</label>
@@ -567,24 +1467,26 @@
                         </ul>
                     </div>
 
-                    <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
+
+                    <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi || $userInGroupPE || $userInGroupDekom2 || $userInGroupDireksi2): ?>
                         <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
                         <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s') ?>">
                         <div class="form-group">
                             <label for="komentar">Tambahkan Komentar Baru:</label>
-                            <textarea class="form-control" name="komentar" id="komentar" style="height: 100px"
-                                required></textarea>
+                            <textarea class="form-control" name="komentar" id="komentar" style="height: 100px"></textarea>
                         </div>
                     <?php endif; ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" name="tambahKomentar" class="btn btn-primary">Simpan Komentar</button>
+                    <button type="submit" name="tambahKomentar" class="btn btn-primary">Simpan
+                        Komentar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="modalHapusnilai">
     <div class="modal-dialog" role="document">
@@ -599,38 +1501,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-
-        $('#formTambahKomentar').on('submit', function (e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-
-            $.ajax({
-                url: '<?= base_url('faktor/save_komentar'); ?>',
-                method: 'POST',
-                data: formData,
-                dataType: 'json',
-                success: function (response) {
-                    if (response.status === 'success') {
-                        alert(response.message);
-                        $('#komentarText').val('');
-                        var currentFaktorId = $('#inputFaktorId').val();
-                        $(`button[data-id="${currentFaktorId}"]`).click();
-
-                    } else {
-                        alert('Error: ' + response.message);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("AJAX Error:", status, error);
-                    alert('Terjadi kesalahan saat menyimpan komentar.');
-                }
-            });
-        });
-    });
-</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -649,25 +1519,51 @@
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#modaltambahKomentar').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var faktorId = button.data('id');
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
-            var modal = $(this);
-            modal.find('#id-faktor').val(faktorId);
-            modal.find('#komentarLamaList').html('<li>Memuat komentar...</li>');
+<script>
+    // Define global variables from PHP for consistent use in JS
+    const GLOBAL_KODEBPR = '<?= $kodebpr ?? '' ?>'; // Use null coalescing to prevent errors if not set
+    const GLOBAL_ACTIVE_PERIODE_ID = '<?= $activePeriodeId ?? '' ?>';
+    const GLOBAL_CURRENT_USER_ID = '<?= session()->get('user_id') ?? '' ?>';
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const commentButtons = document.querySelectorAll('.komentar-button');
+
+        // Function to update a single badge's count and visibility
+        function updateBadge(faktorId, newCount) {
+            const badge = document.getElementById('notification-badge-' + faktorId);
+            if (badge) {
+                if (newCount > 0) {
+                    badge.textContent = newCount;
+                    badge.style.display = 'inline-flex';
+                } else {
+                    badge.style.display = 'none';
+                    badge.textContent = '0'; // Reset count
+                }
+            }
+        }
+
+        // Function to fetch and display comments in the modal
+        function fetchAndDisplayComments(faktorId, kodebpr, periodeId) {
+            const modal = $('#modaltambahKomentar');
+            modal.find('#komentarLamaList').html('<li>Memuat komentar...</li>'); // Show loading message
+
             $.ajax({
                 url: '<?= base_url('faktor/getKomentarByFaktorId'); ?>/' + faktorId,
                 method: 'GET',
+                data: {
+                    kodebpr: kodebpr,
+                    periode_id: periodeId
+                },
                 dataType: 'json',
                 success: function (response) {
-                    var komentarListHtml = '';
+                    let komentarListHtml = '';
                     if (response.length > 0) {
                         response.forEach(function (komentar) {
-                            komentarListHtml += '<li>' + htmlspecialchars(komentar.komentar) + ' - (' + htmlspecialchars(komentar.fullname) + ' - ' + htmlspecialchars(komentar.created_at) + ')</li>';
+                            komentarListHtml += '<li>' + komentar.komentar +
+                                ' - (' + komentar.fullname +
+                                ' - ' + komentar.created_at + ')</li>';
                         });
                     } else {
                         komentarListHtml = '<li>Tidak ada komentar.</li>';
@@ -675,101 +1571,382 @@
                     modal.find('#komentarLamaList').html(komentarListHtml);
                 },
                 error: function (xhr, status, error) {
-                    console.error('Error loading comments:', status, error);
+                    console.error('Error fetching comments for modal:', error);
                     modal.find('#komentarLamaList').html('<li>Gagal memuat komentar.</li>');
                 }
             });
+        }
 
-            var urlParams = new URLSearchParams(window.location.search);
 
-            urlParams.delete('modaltambahKomentar');
-            urlParams.delete('modal_komentar');
+        // --- Event Listener for Comment Button Clicks (to open modal and mark as read) ---
+        commentButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const faktorId = this.getAttribute('data-faktor-id');
+                const kodebpr = this.getAttribute('data-kodebpr');
+                const userId = this.getAttribute('data-user-id');
+                const periodeId = this.getAttribute('data-periode-id');
 
-            urlParams.set('modal_komentar', faktorId);
+                // Set the hidden input in the modal
+                $('#modaltambahKomentar').find('#id-faktor').val(faktorId);
 
-            var newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                // Fetch and display comments when the modal opens
+                fetchAndDisplayComments(faktorId, kodebpr, periodeId);
 
-            history.pushState({ modalId: faktorId }, '', newUrl);
-        });
-
-        $('#modaltambahKomentar').on('hide.bs.modal', function (event) {
-            var urlParams = new URLSearchParams(window.location.search);
-
-            if (urlParams.has('modal_komentar')) {
-                urlParams.delete('modal_komentar');
-                var newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
-                history.pushState({}, '', newUrl);
-            }
-            $(this).find('#komentarLamaList').html('');
-        });
-
-        window.addEventListener('popstate', function (event) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const modalKomentarId = urlParams.get('modal_komentar');
-
-            if (modalKomentarId) {
-                $('#modaltambahKomentar').modal('show');
-                $('#modaltambahKomentar').find('#id-faktor').val(modalKomentarId);
+                // AJAX call to mark comments as read for the current user
                 $.ajax({
-                    url: '<?= base_url('faktor/getKomentarByFaktorId'); ?>/' + modalKomentarId,
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function (response) {
-                        var komentarListHtml = '';
-                        if (response.length > 0) {
-                            response.forEach(function (komentar) {
-                                komentarListHtml += '<li>' + htmlspecialchars(komentar.komentar) + ' - (' + htmlspecialchars(komentar.fullname) + ' - ' + htmlspecialchars(komentar.created_at) + ')</li>';
-                            });
-                        } else {
-                            komentarListHtml = '<li>Tidak ada komentar.</li>';
-                        }
-                        $('#modaltambahKomentar').find('#komentarLamaList').html(komentarListHtml);
+                    url: '<?= base_url('faktor/markUserCommentsAsRead'); ?>',
+                    method: 'POST',
+                    data: {
+                        faktor_id: faktorId,
+                        kodebpr: kodebpr,
+                        user_id: userId,
+                        periode_id: periodeId,
+                        '<?= csrf_token() ?>': '<?= csrf_hash() ?>', // CSRF token
                     },
-                    error: function () {
-                        console.log('Error loading comments via popstate.');
-                        $('#modaltambahKomentar').find('#komentarLamaList').html('<li>Gagal memuat komentar.</li>');
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            updateBadge(faktorId, 0); // Set badge to 0 after comments are marked read
+                        } else {
+                            console.error('Failed to mark comments as read:', response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error marking comments as read:', error);
                     }
                 });
-            } else {
-                $('#modaltambahKomentar').modal('hide');
-            }
+            });
         });
-        const initialUrlParams = new URLSearchParams(window.location.search);
-        const initialModalKomentarId = initialUrlParams.get('modal_komentar');
-        if (initialModalKomentarId) {
-            $('#modaltambahKomentar').modal('show');
-            $('#modaltambahKomentar').find('#id-faktor').val(initialModalKomentarId);
+
+        // --- Comment Submission Logic (for #formTambahKomentar) ---
+        // This handles submitting a NEW comment via AJAX
+        $('#formTambahKomentar').on('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            const form = $(this);
+            const formData = form.serialize();
+            const faktorId = form.find('#id-faktor').val(); // Get faktorId from the form's hidden input
+
             $.ajax({
-                url: '<?= base_url('faktor/getKomentarByFaktorId'); ?>/' + initialModalKomentarId,
-                method: 'GET',
+                url: form.attr('action'), // Use the form's action attribute
+                method: form.attr('method'), // Use the form's method attribute
+                data: formData + '&<?= csrf_token() ?>=' + '<?= csrf_hash() ?>', // Append CSRF token
                 dataType: 'json',
                 success: function (response) {
-                    var komentarListHtml = '';
-                    if (response.length > 0) {
-                        response.forEach(function (komentar) {
-                            komentarListHtml += '<li>' + htmlspecialchars(komentar.komentar) + ' - (' + htmlspecialchars(komentar.fullname) + ' - ' + htmlspecialchars(komentar.created_at) + ')</li>';
-                        });
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        form.find('#komentar').val(''); // Clear the textarea
+                        // Re-fetch and display comments to show the newly added one
+                        fetchAndDisplayComments(faktorId, GLOBAL_KODEBPR, GLOBAL_ACTIVE_PERIODE_ID);
+                        // No need to close modal here if user might add more comments
+                        // If you want to close: $('#modaltambahKomentar').modal('hide');
+                        // No need to update badge to 0 here, as the new comment is *from* this user
+                        // and the polling function will handle other users seeing it.
                     } else {
-                        komentarListHtml = '<li>Tidak ada komentar.</li>';
+                        alert('Error: ' + response.message);
                     }
-                    $('#modaltambahKomentar').find('#komentarLamaList').html(komentarListHtml);
                 },
-                error: function () {
-                    console.log('Error loading comments on page load.');
-                    $('#modaltambahKomentar').find('#komentarLamaList').html('<li>Gagal memuat komentar.</li>');
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                    alert('Terjadi kesalahan saat menyimpan komentar.');
                 }
+            });
+        });
+
+        // --- AJAX Polling for Unread Comment Counts ---
+        function pollUnreadCounts() {
+            commentButtons.forEach(button => {
+                const faktorId = button.getAttribute('data-faktor-id');
+                const kodebpr = button.getAttribute('data-kodebpr');
+                const userId = button.getAttribute('data-user-id');
+                const periodeId = button.getAttribute('data-periode-id');
+
+                $.ajax({
+                    url: '<?= base_url('faktor/getUnreadCommentCountForFactor'); ?>',
+                    method: 'GET',
+                    data: {
+                        faktor_id: faktorId,
+                        kodebpr: kodebpr,
+                        user_id: userId,
+                        periode_id: periodeId
+                    },
+                    success: function (response) {
+                        if (response && typeof response.unread_count !== 'undefined') {
+                            updateBadge(faktorId, response.unread_count);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching unread count for factor ' + faktorId + ':', error);
+                    }
+                });
             });
         }
 
-        function htmlspecialchars(str) {
-            var map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return str.replace(/[&<>"']/g, function (m) { return map[m]; });
-        }
+        // Call polling function initially
+        pollUnreadCounts();
+        // Set up polling interval (e.g., every 30 seconds)
+        setInterval(pollUnreadCounts, 10000);
+    });
+
+
+    // --- Other existing jQuery code for approve checkbox (remains unchanged) ---
+    $(document).ready(function () {
+        $('.approve-checkbox').change(function () {
+            var id = $(this).data('id');
+            var isChecked = $(this).prop('checked');
+            approveItem(id, isChecked);
+        });
+    });
+
+    function approveItem(id, isChecked) {
+        $.ajax({
+            url: '<?= base_url('faktor/approve') ?>',
+            method: 'POST',
+            data: {
+                id: id,
+                approve: isChecked ? 1 : 0,
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>', // CSRF token for security
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert('Terjadi kesalahan jaringan.');
+            }
+        });
+    }
+
+    // --- Existing Set Nulls Logic (remains unchanged) ---
+    document.addEventListener('DOMContentLoaded', function () {
+        const btnSetNulls = document.querySelectorAll('#btn-set-null');
+
+        btnSetNulls.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                if (confirm("Apakah Anda yakin hendak menghapus data nilai dan keterangan ini?")) {
+                    window.location.href = "/faktor/setNullKolom/" + id;
+                }
+            });
+        });
+    });
+
+    // --- Existing Approve Dekom/Dir Logic (remains unchanged, added feedback) ---
+    $(document).ready(function () {
+        $('.btn-accdekom').on('click', function () {
+            var faktorId = $(this).data('faktorid');
+            var kodebpr = $(this).data('kodebpr');
+            var periodeId = $(this).data('periodeid');
+
+            $.ajax({
+                url: '<?= base_url('faktor/accdekom'); ?>',
+                method: 'POST',
+                data: {
+                    faktor1id: faktorId,
+                    kodebpr: kodebpr,
+                    periode_id: periodeId,
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert('Approval berhasil!');
+                    } else {
+                        alert('Approval gagal: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Terjadi kesalahan jaringan saat approval.');
+                }
+            });
+        });
+
+        $('.btn-accdekom2').on('click', function () {
+            var faktorId = $(this).data('faktorid');
+            var kodebpr = $(this).data('kodebpr');
+            var periodeId = $(this).data('periodeid');
+
+            $.ajax({
+                url: '<?= base_url('faktor/accdekom2'); ?>',
+                method: 'POST',
+                data: {
+                    faktor1id: faktorId,
+                    kodebpr: kodebpr,
+                    periode_id: periodeId,
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert('Approval berhasil!');
+                    } else {
+                        alert('Approval gagal: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Terjadi kesalahan jaringan saat approval.');
+                }
+            });
+        });
+
+        $('.btn-accdir2').on('click', function () {
+            var faktorId = $(this).data('faktorid');
+            var kodebpr = $(this).data('kodebpr');
+            var periodeId = $(this).data('periodeid');
+
+            $.ajax({
+                url: '<?= base_url('faktor/accdir2'); ?>',
+                method: 'POST',
+                data: {
+                    faktor1id: faktorId,
+                    kodebpr: kodebpr,
+                    periode_id: periodeId,
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert('Approval berhasil!');
+                    } else {
+                        alert('Approval gagal: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Terjadi kesalahan jaringan saat approval.');
+                }
+            });
+        });
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        // Event listener untuk tombol Setujui
+        $('.btn-accdekom').on('click', function () {
+            // Ambil data yang dibutuhkan dari atribut data
+            var faktorId = $(this).data('faktorid');
+            var kodebpr = $(this).data('kodebpr');
+            var periodeId = $(this).data('periodeid');
+
+            // Kirim permintaan AJAX ke server
+            $.ajax({
+                url: '<?= base_url('faktor/accdekom'); ?>', // Gunakan base_url() agar lebih robust
+                method: 'POST',
+                data: {
+                    faktor1id: faktorId,
+                    kodebpr: kodebpr,
+                    periode_id: periodeId,
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>', // CSRF token untuk keamanan
+                },
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Event listener untuk tombol Setujui
+        $('.btn-accdekom2').on('click', function () {
+            // Ambil data yang dibutuhkan dari atribut data
+            var faktorId = $(this).data('faktorid');
+            var kodebpr = $(this).data('kodebpr');
+            var periodeId = $(this).data('periodeid');
+
+            // Kirim permintaan AJAX ke server
+            $.ajax({
+                url: '<?= base_url('faktor/accdekom2'); ?>', // Gunakan base_url() agar lebih robust
+                method: 'POST',
+                data: {
+                    faktor1id: faktorId,
+                    kodebpr: kodebpr,
+                    periode_id: periodeId,
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>', // CSRF token untuk keamanan
+                },
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Event listener untuk tombol Setujui
+        $('.btn-accdir2').on('click', function () {
+            // Ambil data yang dibutuhkan dari atribut data
+            var faktorId = $(this).data('faktorid');
+            var kodebpr = $(this).data('kodebpr');
+            var periodeId = $(this).data('periodeid');
+
+            // Kirim permintaan AJAX ke server
+            $.ajax({
+                url: '<?= base_url('faktor/accdir2'); ?>', // Gunakan base_url() agar lebih robust
+                method: 'POST',
+                data: {
+                    faktor1id: faktorId,
+                    kodebpr: kodebpr,
+                    periode_id: periodeId,
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>', // CSRF token untuk keamanan
+                },
+            });
+        });
+    });
+</script>
+
+<style>
+    /* Your existing CSS for the badge and button should be here */
+    .komentar-btn-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 50%;
+        font-size: 10px;
+        line-height: 1;
+        min-width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .disabled-card {
+        opacity: 0.5;
+        /* Membuat card terlihat samar */
+        pointer-events: none;
+        /* Menonaktifkan interaksi dengan elemen */
+    }
+
+    .disabled-btn {
+        opacity: 0.5;
+        /* Membuat tombol terlihat samar */
+        pointer-events: none;
+        /* Menonaktifkan klik pada tombol */
+    }
+</style>
+
+<style>
+    /* Button select page */
+    .btn-outline-primary {
+        border-width: 0px;
+        background-color: transparent;
+        color: #007bff;
+        /* Primary color */
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .btn-sm {
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+</style>

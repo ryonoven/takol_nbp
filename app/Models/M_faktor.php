@@ -7,7 +7,7 @@ class M_Faktor extends Model
 {
     protected $table = 'faktor';
     protected $primaryKey = 'id'; // Ganti dengan primary key tabel Anda
-    protected $allowedFields = ['is_approved', 'approved_by', 'approved_at'];
+    protected $allowedFields = ['is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by'];
     protected $useTimestamps = false;
     public function __construct()
     {
@@ -56,29 +56,29 @@ class M_Faktor extends Model
         $this->db->query('ALTER TABLE faktor_comments AUTO_INCREMENT = 1');
     }
 
-    // Menyaring data berdasarkan user_id, bpr_id, dan periode
-    public function getDataByUserAndPeriod($userId, $bprId, $periode)
+    // Menyaring data berdasarkan user_id, kodebpr, dan periode
+    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
     {
         return $this->nilaiModel->where('user_id', $userId)
-            ->where('bpr_id', $bprId)
+            ->where('kodebpr', $kodebpr)
             ->where('periode', $periode)
             ->findAll();
     }
 
-    public function getKomentarByFaktor($faktor1Id)
+    public function getKomentarByFaktor($faktorId)
     {
         return $this->db->table('faktor_comments')
-            ->where('faktor1id', $faktor1Id)
+            ->where('faktor1id', $faktorId)
             ->orderBy('date', 'DESC')
             ->get()
             ->getResultArray();
     }
 
 
-    public function getNilaiByFaktor($faktor1Id)
+    public function getNilaiByFaktor($faktorId)
     {
         return $this->db->table('nilaifaktor')
-            ->where('faktor1id', $faktor1Id)
+            ->where('faktor1id', $faktorId)
             ->orderBy('date', 'DESC')
             ->get()
             ->getResultArray();

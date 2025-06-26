@@ -314,6 +314,149 @@
     window.location.href = "faktor/hapus/" + idDataHapusNilai;
   });
 
+  var idDataHapusNilai2;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai2 = $(this).data("id");
+    console.log(idDataHapusNilai2);
+    $("#idDatanilaifaktor2").text(idDataHapusNilai2);
+    $("#modalHapusnilai2").modal("show");
+  });
+
+  $("#btnHapusnilai2").click(function () {
+    window.location.href = "faktor2/hapus/" + idDataHapusNilai2;
+  });
+
+  $(document).on("click", "#btn-komentar", function () {
+    // Mengambil faktor_id dari tombol yang membuka modal
+    var faktorId = $(this).data("id");
+
+    // Mengatur nilai faktor_id di input modal tambah komentar
+    $(".modal-body #id-faktor").val(faktorId);
+
+    // Anda dapat menambahkan pengaturan lainnya sesuai kebutuhan, seperti:
+    $(".modal-body #komentar").val($(this).data("komentar"));
+  });
+
+  var idDataHapusNilai3;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai3 = $(this).data("id");
+    console.log(idDataHapusNilai3);
+    $("#idDatanilaifaktor3").text(idDataHapusNilai3);
+    $("#modalHapusnilai3").modal("show");
+  });
+
+  $("#btnHapusnilai3").click(function () {
+    window.location.href = "faktor3/hapus/" + idDataHapusNilai3;
+  });
+
+  var idDataHapusNilai4;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai4 = $(this).data("id");
+    console.log(idDataHapusNilai4);
+    $("#idDatanilaifaktor4").text(idDataHapusNilai4);
+    $("#modalHapusnilai4").modal("show");
+  });
+
+  $("#btnHapusnilai4").click(function () {
+    window.location.href = "faktor4/hapus/" + idDataHapusNilai4;
+  });
+
+  var idDataHapusNilai5;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai5 = $(this).data("id");
+    console.log(idDataHapusNilai5);
+    $("#idDatanilaifaktor5").text(idDataHapusNilai5);
+    $("#modalHapusnilai5").modal("show");
+  });
+
+  $("#btnHapusnilai5").click(function () {
+    window.location.href = "faktor5/hapus/" + idDataHapusNilai5;
+  });
+
+  var idDataHapusNilai6;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai6 = $(this).data("id");
+    console.log(idDataHapusNilai6);
+    $("#idDatanilaifaktor6").text(idDataHapusNilai6);
+    $("#modalHapusnilai6").modal("show");
+  });
+
+  $("#btnHapusnilai6").click(function () {
+    window.location.href = "faktor6/hapus/" + idDataHapusNilai6;
+  });
+
+  var idDataHapusNilai7;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai7 = $(this).data("id");
+    console.log(idDataHapusNilai7);
+    $("#idDatanilaifaktor7").text(idDataHapusNilai7);
+    $("#modalHapusnilai7").modal("show");
+  });
+
+  $("#btnHapusnilai7").click(function () {
+    window.location.href = "faktor7/hapus/" + idDataHapusNilai7;
+  });
+
+  var idDataHapusNilai8;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai8 = $(this).data("id");
+    console.log(idDataHapusNilai8);
+    $("#idDatanilaifaktor8").text(idDataHapusNilai8);
+    $("#modalHapusnilai8").modal("show");
+  });
+
+  $("#btnHapusnilai8").click(function () {
+    window.location.href = "faktor8/hapus/" + idDataHapusNilai8;
+  });
+
+  var idDataHapusNilai9;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai9 = $(this).data("id");
+    console.log(idDataHapusNilai9);
+    $("#idDatanilaifaktor9").text(idDataHapusNilai9);
+    $("#modalHapusnilai9").modal("show");
+  });
+
+  $("#btnHapusnilai9").click(function () {
+    window.location.href = "faktor9/hapus/" + idDataHapusNilai9;
+  });
+
+  var idDataHapusNilai10;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai10 = $(this).data("id");
+    console.log(idDataHapusNilai10);
+    $("#idDatanilaifaktor10").text(idDataHapusNilai10);
+    $("#modalHapusnilai10").modal("show");
+  });
+
+  $("#btnHapusnilai10").click(function () {
+    window.location.href = "faktor10/hapus/" + idDataHapusNilai10;
+  });
+
+  var idDataHapusNilai11;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai11 = $(this).data("id");
+    console.log(idDataHapusNilai11);
+    $("#idDatanilaifaktor11").text(idDataHapusNilai11);
+    $("#modalHapusnilai11").modal("show");
+  });
+
+  $("#btnHapusnilai11").click(function () {
+    window.location.href = "faktor11/hapus/" + idDataHapusNilai11;
+  });
+
+  var idDataHapusNilai12;
+  $("button#btn-hapus").click(function () {
+    idDataHapusNilai12 = $(this).data("id");
+    console.log(idDataHapusNilai12);
+    $("#idDatanilaifaktor12").text(idDataHapusNilai12);
+    $("#modalHapusnilai12").modal("show");
+  });
+
+  $("#btnHapusnilai12").click(function () {
+    window.location.href = "faktor12/hapus/" + idDataHapusNilai12;
+  });
+
   $(document).on("click", "#btn-komentar", function () {
     // Mengambil faktor_id dari tombol yang membuka modal
     var faktorId = $(this).data("id");

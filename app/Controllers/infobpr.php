@@ -22,9 +22,18 @@ class infobpr extends Controller
             return redirect()->to($redirectURL);
         }
 
+        $userId = $this->auth->id();
+        $userModel = new \App\Models\M_user();
+        $user = $userModel->find($userId);
+        $kodebpr = $user['kodebpr'] ?? null;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
         $data = [
             'judul' => 'Informasi BPR',
-            'infobpr' => $this->model->getAllData()
+            'infobpr' => $this->model->getBprByKode($kodebpr),
         ];
 
         echo view('templates/v_header', $data);
@@ -53,6 +62,11 @@ class infobpr extends Controller
 
         // Aturan validasi lainnya
         $validationRules = [
+            'kodebpr' => [
+                'label' => 'Kode BPR',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
             'namabpr' => [
                 'label' => 'Nama BPR',
                 'rules' => 'required',
@@ -102,6 +116,7 @@ class infobpr extends Controller
 
         if ($this->validate($validationRules)) {
             $data = [
+                'kodebpr' => $this->request->getPost('kodebpr'),
                 'namabpr' => $this->request->getPost('namabpr'),
                 'alamat' => $this->request->getPost('alamat'),
                 'nomor' => $this->request->getPost('nomor'),

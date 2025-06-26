@@ -13,9 +13,14 @@ $routes = Services::routes();
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
-$routes->setTranslateURIDashes(false); 
+$routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute('true');
+$routes->post('pdfself/uploadPdf', 'Pdfself::uploadPdf');
+$routes->get('pdfself/generateFullReport', 'Pdfself::generateFullReport'); // Pastikan rute ini ada dan mengarah ke generateFullReport
+$routes->get('pdfself/download/(:segment)', 'Pdfself::downloadPdf/$1');
+
+
 // $routes->get('/faktor/getKomentarByFaktorId', 'FaktorController::getKomentarByFaktorId');
 
 
@@ -35,13 +40,13 @@ $routes->setAutoRoute('true');
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->group('', ['filter' => 'login'], function ($routes) {
-    $routes->get('/', 'user::index');
+    $routes->get('/', 'Home::index');
     $routes->get('/admin', 'Admin::index', ['filter' => 'role:admin']);
     $routes->get('/admin/index', 'Admin::index', ['filter' => 'role:admin']);
     $routes->get('/admin/(:num)', 'Admin::detail/$1', ['filter' => 'role:admin']);
-    
-    
-    
+
+
+
 });
 
 

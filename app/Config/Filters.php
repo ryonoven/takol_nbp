@@ -16,14 +16,15 @@ class Filters extends BaseConfig
      * make reading things nicer and simpler.
      */
     public array $aliases = [
-        'csrf'          => CSRF::class,
-        'toolbar'       => DebugToolbar::class,
-        'honeypot'      => Honeypot::class,
-        'invalidchars'  => InvalidChars::class,
+        'csrf' => CSRF::class,
+        'toolbar' => DebugToolbar::class,
+        'honeypot' => Honeypot::class,
+        'invalidchars' => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'login'      => \Myth\Auth\Filters\LoginFilter::class,
-        'role'       => \Myth\Auth\Filters\RoleFilter::class,
+        'login' => \Myth\Auth\Filters\LoginFilter::class,
+        'role' => \Myth\Auth\Filters\RoleFilter::class,
         'permission' => \Myth\Auth\Filters\PermissionFilter::class,
+        'kodebpr' => \App\Filters\KodebprFilter::class,
     ];
 
     /**
@@ -64,5 +65,7 @@ class Filters extends BaseConfig
      * Example:
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
-    public array $filters = [];
+    public array $filters = [
+        'kodebpr' => ['before' => ['faktor2/*']],
+    ];
 }

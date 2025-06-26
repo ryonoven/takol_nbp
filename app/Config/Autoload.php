@@ -44,6 +44,8 @@ class Autoload extends AutoloadConfig
         'Config'      => APPPATH . 'Config',
         'App'         => APPPATH,
         'Myth\Auth'   => APPPATH . 'ThirdParty/myth-auth/src',
+        'CodeIgniter' => SYSTEMPATH,
+        'setasign\\Fpdi' => ROOTPATH . 'vendor/setasign/fpdi/src',
     ];
 
     /**

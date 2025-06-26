@@ -11,7 +11,7 @@
                     <th scope="col">No</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Role</th>
+                    <th scope="col">BPR</th>
                     <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -22,7 +22,7 @@
                     <th scope="row"><?= $i++; ?></th>
                     <td><?= $user->username; ?></td>
                     <td><?= $user->email; ?></td>
-                    <td><?= $user->name; ?></td>
+                    <td>BPR NBP <?= $user->kodebpr; ?></td>
                     <td>
                         <a href="<?= base_url('admin/' . $user->userid); ?>" class="btn btn-info">Detail</a>
                     </td>

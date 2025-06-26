@@ -117,7 +117,7 @@ class PdfGenerator extends FPDF
 
         $this->SetFont('Arial', '', 11);
         $this->Cell(50, 8, 'Alamat', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Arial', 'B', 9.5);
         $this->Cell(0, 8, $infoData['alamat'] ?? '', 1, 1);
 
         $this->SetFont('Arial', '', 11);

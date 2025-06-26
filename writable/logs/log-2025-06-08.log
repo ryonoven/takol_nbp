@@ -1,0 +1,90 @@
+INFO - 2025-06-08 06:21:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-06-08 06:21:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$session is deprecated in APPPATH\Controllers\user.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-06-08 06:21:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\user::$auth is deprecated in APPPATH\Controllers\user.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\user->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-08 06:21:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:21:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:22:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 1 (ID 12) - nfaktor: 3, Final nfaktor1: 3
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 2 (ID 29) - nfaktor: 2, Final nfaktor2: 2
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 3 (ID 27) - nfaktor: 0, Final nfaktor3: 0
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 4 (ID 12) - nfaktor: 0, Final nfaktor4: 0
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 5 (ID 6) - nfaktor: 1, Final nfaktor5: 1
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 6 (ID 10) - nfaktor: 2, Final nfaktor6: 2
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 7 (ID 12) - nfaktor: 0, Final nfaktor7: 0
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 8 (ID 6) - nfaktor: 0, Final nfaktor8: 0
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 9 (ID 18) - nfaktor: 0, Final nfaktor9: 0
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 10 (ID 6) - nfaktor: 0, Final nfaktor10: 0
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 11 (ID 13) - nfaktor: 0, Final nfaktor11: 0
+DEBUG - 2025-06-08 06:22:27 --> ShowFaktor: Faktor 12 (ID 8) - nfaktor: 0, Final nfaktor12: 0
+INFO - 2025-06-08 06:35:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-06-08 06:35:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-06-08 06:35:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-08 06:35:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:35:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:35:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:35:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:35:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-06-08 06:35:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-06-08 06:35:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-06-08 06:35:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:35:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:35:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:35:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:36:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:36:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-06-08 06:37:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: User ID: 1, Kode BPR: 01, Periode ID: 1
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 1 (ID 12) - nfaktor: 3, Final nfaktor1: 3
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 2 (ID 29) - nfaktor: 2, Final nfaktor2: 2
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 3 (ID 27) - nfaktor: 0, Final nfaktor3: 0
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 4 (ID 12) - nfaktor: 0, Final nfaktor4: 0
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 5 (ID 6) - nfaktor: 1, Final nfaktor5: 1
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 6 (ID 10) - nfaktor: 2, Final nfaktor6: 2
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 7 (ID 12) - nfaktor: 0, Final nfaktor7: 0
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 8 (ID 6) - nfaktor: 0, Final nfaktor8: 0
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 9 (ID 18) - nfaktor: 0, Final nfaktor9: 0
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 10 (ID 6) - nfaktor: 0, Final nfaktor10: 0
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 11 (ID 13) - nfaktor: 0, Final nfaktor11: 0
+DEBUG - 2025-06-08 06:37:03 --> ShowFaktor: Faktor 12 (ID 8) - nfaktor: 0, Final nfaktor12: 0
+INFO - 2025-06-08 06:37:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

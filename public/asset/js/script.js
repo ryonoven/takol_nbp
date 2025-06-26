@@ -46,9 +46,16 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #created_at").val($(this).data("created_at"));
 
   $(".modal-body #id-nilaifaktor").val($(this).data("id"));
+  $(".modal-body #id-nilaifaktor2").val($(this).data("id"));
   $(".modal-body #sub_category").val($(this).data("sub_category"));
   $(".modal-body #nilai").val($(this).data("nilai"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
+  $(".modal-body #positifstruktur").val($(this).data("positifstruktur"));
+  $(".modal-body #negatifstruktur").val($(this).data("negatifstruktur"));
+  $(".modal-body #positifproses").val($(this).data("positifproses"));
+  $(".modal-body #negatifproses").val($(this).data("negatifproses"));
+  $(".modal-body #positifhasil").val($(this).data("positifhasil"));
+  $(".modal-body #negatifhasil").val($(this).data("negatifhasil"));
 
   $(".modal-body #id-faktor2").val($(this).data("id"));
   $(".modal-body #number").val($(this).data("number"));
@@ -397,6 +404,20 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #nilaitransaksi").val($(this).data("nilaitransaksi"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
   $(".modal-body #tindakbenturan").val($(this).data("tindakbenturan"));
+
+  $(".modal-body #id-faktor").val($(this).data("id"));
+  $(".modal-body #id-faktor2").val($(this).data("id"));
+  $(".modal-body #id-faktor3").val($(this).data("id"));
+  $(".modal-body #id-faktor4").val($(this).data("id"));
+  $(".modal-body #id-faktor5").val($(this).data("id"));
+  $(".modal-body #id-faktor6").val($(this).data("id"));
+  $(".modal-body #id-faktor7").val($(this).data("id"));
+  $(".modal-body #id-faktor8").val($(this).data("id"));
+  $(".modal-body #id-faktor9").val($(this).data("id"));
+  $(".modal-body #id-faktor10").val($(this).data("id"));
+  $(".modal-body #id-faktor11").val($(this).data("id"));
+  $(".modal-body #id-faktor12").val($(this).data("id"));
+  $(".modal-body #id-showfaktor").val($(this).data("id"));
 });
 
 //imagepreview
@@ -406,7 +427,26 @@ $(document).ready(function () {
 
 $(document).on("click", "#btn-tambah", function () {
   $(".modal-body #id-faktor").val($(this).data("id"));
+  $(".modal-body #id-faktor2").val($(this).data("id"));
+  $(".modal-body #id-faktor3").val($(this).data("id"));
+  $(".modal-body #id-faktor4").val($(this).data("id"));
+  $(".modal-body #id-faktor5").val($(this).data("id"));
+  $(".modal-body #id-faktor6").val($(this).data("id"));
+  $(".modal-body #id-faktor7").val($(this).data("id"));
+  $(".modal-body #id-faktor8").val($(this).data("id"));
+  $(".modal-body #id-faktor9").val($(this).data("id"));
+  $(".modal-body #id-faktor10").val($(this).data("id"));
+  $(".modal-body #id-faktor11").val($(this).data("id"));
+  $(".modal-body #id-faktor12").val($(this).data("id"));
   $(".modal-body #sub_category").val($(this).data("sub_category"));
+  $(".modal-body #kesimpulan").val($(this).data("kesimpulan"));
+  $(".modal-body #positifstruktur").val($(this).data("positifstruktur"));
+  $(".modal-body #negatifstruktur").val($(this).data("negatifstruktur"));
+  $(".modal-body #positifproses").val($(this).data("positifproses"));
+  $(".modal-body #negatifproses").val($(this).data("negatifproses"));
+  $(".modal-body #positifhasil").val($(this).data("positifhasil"));
+  $(".modal-body #negatifhasil").val($(this).data("negatifhasil"));
+
 
 });
 
