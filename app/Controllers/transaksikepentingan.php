@@ -5,70 +5,246 @@ use CodeIgniter\Controller;
 use App\Models\M_transaksikepentingan;
 use App\Models\M_infobpr;
 use App\Models\M_user;
+use App\Models\M_periodetransparansi;
+use App\Models\M_transparansicomments;
+use App\Models\M_transparansicommentsread;
+use App\Models\M_penjelastindak;
 use Myth\Auth\Config\Services as AuthServices;
 
 class transaksikepentingan extends Controller
 {
-    protected $model;
-    protected $transaksikepentinganModel;
-    protected $usermodel;
-    protected $session;
     protected $auth;
+    protected $session;
+    protected $userKodebpr;
+    protected $userId;
+
+    protected $transaksikepentinganModel;
+    protected $userModel;
     protected $infobprModel;
+    protected $periodeModel;
+    protected $komentarModel;
+    protected $commentReadsModel;
+    protected $penjelastindakModel;
+
+    private $userPermissions = null;
+    private $userData = null;
+
+
     public function __construct()
     {
-        $this->model = new M_transaksikepentingan();
-        $this->transaksikepentinganModel = new M_transaksikepentingan();
-        $this->userModel = new M_user();
-        $this->infobprModel = new M_infobpr();
+        date_default_timezone_set('Asia/Jakarta');
         $this->session = service('session');
         $this->auth = service('authentication');
-        $auth = AuthServices::authentication();
-        $authorize = AuthServices::authorization();
 
-        $userInGroupPE = $authorize->inGroup('pe', $auth->id());
-        $userInGroupAdmin = $authorize->inGroup('admin', $auth->id());
-        $userInGroupDekom = $authorize->inGroup('dekom', $auth->id());
-        $userInGroupDireksi = $authorize->inGroup('direksi', $auth->id());
-
-        $data['userInGroupPE'] = $userInGroupPE;
-        $data['userInGroupAdmin'] = $userInGroupAdmin;
-        $data['userInGroupDekom'] = $userInGroupDekom;
-        $data['userInGroupDireksi'] = $userInGroupDireksi;
+        if ($this->auth->check()) {
+            $this->userId = $this->auth->id();
+            $this->loadUserData();
+        }
     }
 
-    public function index()
+    private function getTransaksikepentinganModel()
+    {
+        if (!$this->transaksikepentinganModel) {
+            $this->transaksikepentinganModel = new M_transaksikepentingan();
+        }
+        return $this->transaksikepentinganModel;
+    }
+
+    private function getUserModel()
+    {
+        if (!$this->userModel) {
+            $this->userModel = new M_user();
+        }
+        return $this->userModel;
+    }
+
+    private function getPeriodeModel()
+    {
+        if (!$this->periodeModel) {
+            $this->periodeModel = new M_periodetransparansi();
+        }
+        return $this->periodeModel;
+    }
+
+    private function getKomentarModel()
+    {
+        if (!$this->komentarModel) {
+            $this->komentarModel = new M_transparansicomments();
+        }
+        return $this->komentarModel;
+    }
+
+    private function getCommentReadsModel()
+    {
+        if (!$this->commentReadsModel) {
+            $this->commentReadsModel = new M_transparansicommentsread();
+        }
+        return $this->commentReadsModel;
+    }
+
+    private function getPenjelastindakModel()
+    {
+        if (!$this->penjelastindakModel) {
+            $this->penjelastindakModel = new M_penjelastindak();
+        }
+        return $this->penjelastindakModel;
+    }
+
+    private function getInfobprModel()
+    {
+        if (!$this->infobprModel) {
+            $this->infobprModel = new M_infobpr();
+        }
+        return $this->infobprModel;
+    }
+
+    private function loadUserData()
+    {
+        if ($this->userData === null && $this->userId) {
+            $this->userData = $this->getUserModel()->find($this->userId);
+            $this->userKodebpr = $this->userData['kodebpr'] ?? null;
+        }
+    }
+
+    private function getUserPermissions()
+    {
+        if ($this->userPermissions === null && $this->userId) {
+            $authorize = AuthServices::authorization();
+
+            $this->userPermissions = [
+                'pe' => $authorize->inGroup('pe', $this->userId),
+                'admin' => $authorize->inGroup('admin', $this->userId),
+                'dekom' => $authorize->inGroup('dekom', $this->userId),
+                'dekom2' => $authorize->inGroup('dekom2', $this->userId),
+                'dekom3' => $authorize->inGroup('dekom3', $this->userId),
+                'dekom4' => $authorize->inGroup('dekom4', $this->userId),
+                'dekom5' => $authorize->inGroup('dekom5', $this->userId),
+                'direksi' => $authorize->inGroup('direksi', $this->userId),
+                'direksi2' => $authorize->inGroup('direksi2', $this->userId),
+            ];
+        }
+        return $this->userPermissions;
+    }
+
+    private function checkAuthentication()
     {
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
             return redirect()->to($redirectURL);
         }
+        return null;
+    }
 
-        $userId = $this->auth->id(); // ambil ID user yang login
-        $user = $this->userModel->find($userId);
+    private function getIndexData($periodeId, $kodebpr)
+    {
+        $subkategori = 'Transaksikepentingan';
 
-        $fullname = $user['fullname'] ?? 'Unknown';
+        $transaksikepentinganData = $this->getTransaksikepentinganModel()
+            ->select('*, accdekom, accdekom_by, accdekom_at, is_approved, approved_by, approved_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->limit(10)
+            ->findAll();
 
-        $transaksikepentinganData = $this->transaksikepentinganModel->getAllData();
+        $komentarList = $this->getKomentarModel()
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
 
-        $authorize = AuthServices::authorization();
-        $userInGroupPE = $authorize->inGroup('pe', $this->auth->id());
-        $userInGroupAdmin = $authorize->inGroup('admin', $this->auth->id());
-        $userInGroupDekom = $authorize->inGroup('dekom', $this->auth->id());
-        $userInGroupDireksi = $authorize->inGroup('direksi', $this->auth->id());
+        $penjelastindak = $this->getPenjelastindakModel()
+            ->getDataPenjelasByKodebprAndPeriode($subkategori, $kodebpr, $periodeId);
+
+        return [
+            'transaksikepentingan' => $transaksikepentinganData,
+            'komentarList' => $komentarList,
+            'penjelastindak' => $penjelastindak
+        ];
+    }
+
+    public function index()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!session('active_periode')) {
+            return redirect()->to('/Periodetransparansi');
+        }
+
+        $periodeId = session('active_periode');
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $indexData = $this->getIndexData($periodeId, $kodebpr);
+
+        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
+        $bprData = $this->getInfobprModel()->getBprByKode($kodebpr);
+
+        $permissions = $this->getUserPermissions();
+
+        $accdekomData = $this->transaksikepentinganModel
+            ->select('accdekom, accdekom_by, accdekom_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->findAll();
+
+        $accdirutData = $this->transaksikepentinganModel
+            ->select('is_approved, approved_by, approved_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->findAll();
+
+        // Prepare data for view session management
+        $lastVisit = session('last_visit_komentar') ?? date('Y-m-d H:i:s', strtotime('-1 day'));
+        session()->set('last_visit_komentar', date('Y-m-d H:i:s'));
+
+        $canApprove = true;
+
+        // Ambil semua data dengan kondisi yang sesuai
+        $accdekomValues = $this->transaksikepentinganModel
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();  // Mengambil semua data yang sesuai
+
+        // Loop melalui setiap data
+        foreach ($accdekomValues as $accdekomValue) {
+            if ($accdekomValue['accdekom'] != 1) {
+                // Jika ada data yang accdekom tidak 1, set canApprove ke false
+                $canApprove = false;
+                break;  // Tidak perlu melanjutkan jika sudah ditemukan yang tidak valid
+            }
+        }
 
         $data = [
             'judul' => '17. Transaksi yang Mengandung Benturan Kepentingan',
-            'transaksikepentingan' => $transaksikepentinganData,
-            // 'transaksikepentingan' => $this->model->getAllData(),
-            'infobpr' => $this->infobprModel->getAllData(),
-            'userInGroupPE' => $userInGroupPE,
-            'userInGroupAdmin' => $userInGroupAdmin,
-            'userInGroupDekom' => $userInGroupDekom,
-            'userInGroupDireksi' => $userInGroupDireksi,
-            'fullname' => $fullname,
+            'transaksikepentingan' => $indexData['transaksikepentingan'],
+            'userInGroupPE' => $permissions['pe'],
+            'userInGroupAdmin' => $permissions['admin'],
+            'userInGroupDekom' => $permissions['dekom'],
+            'userInGroupDekom2' => $permissions['dekom2'],
+            'userInGroupDekom3' => $permissions['dekom3'],
+            'userInGroupDekom4' => $permissions['dekom4'],
+            'userInGroupDekom5' => $permissions['dekom5'],
+            'userInGroupDireksi' => $permissions['direksi'],
+            'userInGroupDireksi2' => $permissions['direksi2'],
+            'fullname' => $this->userData['fullname'] ?? 'Unknown',
+            'kodebpr' => $kodebpr,
+            'komentarModel' => $this->getKomentarModel(),
+            'commentReadsModel' => $this->getCommentReadsModel(),
+            'lastVisit' => $lastVisit,
+            'periodeId' => $periodeId,
+            'periodeDetail' => $periodeDetail,
+            'bprData' => $bprData,
+            'accdekomData' => $accdekomData,
+            'accdirutData' => $accdirutData,
+            'periodetransparansi' => $this->getPeriodeModel()->find($periodeId),
+            'penjelastindak' => $indexData['penjelastindak'],
+            'canApprove' => $canApprove
         ];
 
         echo view('templates/v_header', $data);
@@ -78,240 +254,256 @@ class transaksikepentingan extends Controller
         echo view('templates/v_footer');
     }
 
-    public function tambahtransaksikepentingan()
+    private function validateSahamDir($data)
     {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahtransaksikepentingan'])) {
-            $val = $this->validate([
-                'namapihakbenturan' => [
-                    'label' => 'Nama Pihak yang Memiliki Benturan Kepentingan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jbtbenturan' => [
-                    'label' => 'Jabatan Pihak yang Memiliki Benturan Kepentingan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nikbenturan' => [
-                    'label' => 'NIK Pihak yang Memiliki Benturan Kepentingan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'pengambilkeputusan' => [
-                    'label' => 'Nama Pengambil Keputusan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jbtpengambilkeputusan' => [
-                    'label' => 'Jabatan Pengambil Keputusan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nikpengambilkeputusan' => [
-                    'label' => 'NIK Pengambil Keputusan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jenistransaksi' => [
-                    'label' => 'Jenis Transaksi',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nilaitransaksi' => [
-                    'label' => 'Nilai Transaksi (Jutaan Rupiah)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'keterangan' => [
-                    'label' => 'Keterangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
+        return $this->validate([
+            'namapihakbenturan' => [
+                'label' => 'Nama Pihak yang Memiliki Benturan Kepentingan',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'jbtbenturan' => [
+                'label' => 'Jabatan Pihak yang Memiliki Benturan Kepentingan',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'nikbenturan' => [
+                'label' => 'NIK',
+                'rules' => 'required|numeric|min_length[16]|max_length[16]',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong.',
+                    'numeric' => '{field} harus berupa angka.',
+                    'min_length' => '{field} harus memiliki panjang minimal 16 karakter.',
+                    'max_length' => '{field} harus memiliki panjang maksimal 16 karakter.'
                 ]
-
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Transaksi yang Mengandung Benturan Kepentingan',
-                    'transaksikepentingan' => $this->model->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('transaksikepentingan/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'namapihakbenturan' => $this->request->getPost('namapihakbenturan'),
-                    'jbtbenturan' => $this->request->getPost('jbtbenturan'),
-                    'nikbenturan' => $this->request->getPost('nikbenturan'),
-                    'pengambilkeputusan' => $this->request->getPost('pengambilkeputusan'),
-                    'jbtpengambilkeputusan' => $this->request->getPost('jbtpengambilkeputusan'),
-                    'nikpengambilkeputusan' => $this->request->getPost('nikpengambilkeputusan'),
-                    'jenistransaksi' => $this->request->getPost('jenistransaksi'),
-                    'nilaitransaksi' => $this->request->getPost('nilaitransaksi'),
-                    'keterangan' => $this->request->getPost('keterangan')
-
-                ];
-
-                // Insert data
-                $this->model->checkIncrement();
-                $success = $this->model->tambahtransaksikepentingan($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('transaksikepentingan'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('transaksikepentingan'));
-        }
+            ],
+            'pengambilkeputusan' => [
+                'label' => 'Nama Pengambil Keputusan',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'jbtpengambilkeputusan' => [
+                'label' => 'Jabatan Pengambil Keputusan',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'nikpengambilkeputusan' => [
+                'label' => 'NIK',
+                'rules' => 'required|numeric|min_length[16]|max_length[16]',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong.',
+                    'numeric' => '{field} harus berupa angka.',
+                    'min_length' => '{field} harus memiliki panjang minimal 16 karakter.',
+                    'max_length' => '{field} harus memiliki panjang maksimal 16 karakter.'
+                ]
+            ],
+            'jenistransaksi' => [
+                'label' => 'Jenis Transaksi',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'nilaitransaksi' => [
+                'label' => 'Nilai Transaksi',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'tindakbenturan' => [
+                'label' => 'Keterangan',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ]
+        ]);
     }
 
-    public function ubah()
+    private function prepareInsertData($specificData)
     {
+        return array_merge($specificData, [
+            'periode_id' => session('active_periode'),
+            'user_id' => $this->userId,
+            'kodebpr' => $this->userKodebpr,
+            'fullname' => $this->userData['fullname'] ?? null,
+            'accdekom' => 0,
+            'is_approved' => 0,
+        ]);
+    }
 
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
+    public function tambahtransaksi()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
 
-            return redirect()
-                ->to($redirectURL);
+        if (!isset($_POST['tambahtransaksi'])) {
+            return redirect()->to(base_url('Transaksikepentingan'));
         }
 
-        if (isset($_POST['ubah'])) {
-            $val = $this->validate([
-                'namapihakbenturan' => [
-                    'label' => 'Nama Pihak yang Memiliki Benturan Kepentingan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jbtbenturan' => [
-                    'label' => 'Jabatan Pihak yang Memiliki Benturan Kepentingan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nikbenturan' => [
-                    'label' => 'NIK Pihak yang Memiliki Benturan Kepentingan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'pengambilkeputusan' => [
-                    'label' => 'Nama Pengambil Keputusan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jbtpengambilkeputusan' => [
-                    'label' => 'Jabatan Pengambil Keputusan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nikpengambilkeputusan' => [
-                    'label' => 'NIK Pengambil Keputusan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jenistransaksi' => [
-                    'label' => 'Jenis Transaksi',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nilaitransaksi' => [
-                    'label' => 'Nilai Transaksi (Jutaan Rupiah)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'keterangan' => [
-                    'label' => 'Keterangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
+        if (!$this->validateSahamDir($_POST)) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back();
+        }
 
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Transaksi yang Mengandung Benturan Kepentingan',
-                    'transaksikepentingan' => $this->model->getAllData()
-                ];
+        if (!$this->userKodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
 
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('transaksikepentingan/index', $data);
-                echo view('templates/v_footer');
+        $specificData = [
+            'namapihakbenturan' => $this->request->getPost('namapihakbenturan'),
+            'jbtbenturan' => $this->request->getPost('jbtbenturan'),
+            'nikbenturan' => $this->request->getPost('nikbenturan'),
+            'pengambilkeputusan' => $this->request->getPost('pengambilkeputusan'),
+            'jbtpengambilkeputusan' => $this->request->getPost('jbtpengambilkeputusan'),
+            'nikpengambilkeputusan' => $this->request->getPost('nikpengambilkeputusan'),
+            'jenistransaksi' => $this->request->getPost('jenistransaksi'),
+            'nilaitransaksi' => $this->request->getPost('nilaitransaksi'),
+            'tindakbenturan' => $this->request->getPost('tindakbenturan'),
+            'accdekom' => 0,
+            'is_approved' => 0
+        ];
 
-            } else {
-                $id = $this->request->getPost('id');
+        $data = $this->prepareInsertData($specificData);
 
-                $data = [
-                    'namapihakbenturan' => $this->request->getPost('namapihakbenturan'),
-                    'jbtbenturan' => $this->request->getPost('jbtbenturan'),
-                    'nikbenturan' => $this->request->getPost('nikbenturan'),
-                    'pengambilkeputusan' => $this->request->getPost('pengambilkeputusan'),
-                    'jbtpengambilkeputusan' => $this->request->getPost('jbtpengambilkeputusan'),
-                    'nikpengambilkeputusan' => $this->request->getPost('nikpengambilkeputusan'),
-                    'jenistransaksi' => $this->request->getPost('jenistransaksi'),
-                    'nilaitransaksi' => $this->request->getPost('nilaitransaksi'),
-                    'keterangan' => $this->request->getPost('keterangan')
-                ];
-
-                // Update data
-                $success = $this->model->ubah($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Transaksi yang Mengandung Benturan Kepentingan berhasil diubah ');
-                    return redirect()->to(base_url('transaksikepentingan'));
-                }
-            }
+        if ($this->getTransaksikepentinganModel()->tambah($data)) {
+            session()->setFlashdata('message', 'Data berhasil ditambahkan');
         } else {
-            return redirect()->to(base_url('transaksikepentingan'));
+            session()->setFlashdata('err', 'Gagal menambahkan data');
         }
+
+        return redirect()->to(base_url('Transaksikepentingan'));
+    }
+
+    public function tambahketerangan()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!isset($_POST['tambahketerangan'])) {
+            return redirect()->to(base_url('Transaksikepentingan'));
+        }
+
+        $val = $this->validate([
+            'tindaklanjut' => [
+                'label' => 'Penjelasan lebih lanjut',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ]
+        ]);
+
+        if (!$val) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back()->withInput();
+        }
+
+        $periodeId = session('active_periode');
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $penjelastindak = [
+            'subkategori' => 'Transaksikepentingan',
+            'tindaklanjut' => $this->request->getPost('tindaklanjut'),
+            'kodebpr' => $kodebpr,
+            'periode_id' => $periodeId,
+            'fullname' => $this->userData['fullname'] ?? null,
+            'user_id' => $this->userId,
+        ];
+
+        $this->getPenjelastindakModel()->tambahpenjelastindak($penjelastindak);
+        session()->setFlashdata('message', 'Data berhasil diubah');
+
+        return redirect()->to(base_url('Transaksikepentingan'));
+    }
+
+    public function editketerangan()
+    {
+        $id = $this->request->getPost('id');
+        $subkategori = 'Transaksikepentingan';
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $periodeId = session('active_periode');
+        if (!$periodeId) {
+            return redirect()->back()->with('error', 'Periode tidak valid');
+        }
+
+        $tindaklanjut = $this->request->getPost('tindaklanjut');
+        if (empty($tindaklanjut)) {
+            return redirect()->back()->with('error', 'Tindak Lanjut atau Penjelasan tidak boleh kosong');
+        }
+
+        $data = [
+            'tindaklanjut' => $tindaklanjut,
+            'user_id' => $this->userId,
+            'kodebpr' => $kodebpr,
+        ];
+
+        if ($this->getPenjelastindakModel()->editberdasarkankodedanperiode($data, $subkategori, $kodebpr, $periodeId)) {
+            session()->setFlashdata('message', 'Data berhasil diubah');
+        } else {
+            session()->setFlashdata('err', 'Gagal mengubah data');
+        }
+
+        return redirect()->to(base_url('Transaksikepentingan'));
+    }
+
+    private function updateData($id, $data, $errorMessage)
+    {
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            return redirect()->back()->with('error', 'Kode BPR atau Periode tidak valid');
+        }
+
+        $data['user_id'] = $this->userId;
+        $data['kodebpr'] = $kodebpr;
+
+        if ($this->getTransaksikepentinganModel()->editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)) {
+            session()->setFlashdata('message', 'Data berhasil diubah');
+        } else {
+            session()->setFlashdata('err', $errorMessage);
+        }
+
+        return redirect()->to(base_url('Transaksikepentingan'));
+    }
+
+    public function ubahdata()
+    {
+        $id = $this->request->getPost('id');
+        $namapihakbenturan = $this->request->getPost('namapihakbenturan');
+        $jbtbenturan = $this->request->getPost('jbtbenturan');
+        $nikbenturan = $this->request->getPost('nikbenturan');
+        $pengambilkeputusan = $this->request->getPost('pengambilkeputusan');
+        $jbtpengambilkeputusan = $this->request->getPost('jbtpengambilkeputusan');
+        $nikpengambilkeputusan = $this->request->getPost('nikpengambilkeputusan');
+        $jenistransaksi = $this->request->getPost('jenistransaksi');
+        $nilaitransaksi = $this->request->getPost('nilaitransaksi');
+        $tindakbenturan = $this->request->getPost('tindakbenturan');
+
+        if (empty($namapihakbenturan) || empty($jbtbenturan) || empty($nikbenturan) || empty($pengambilkeputusan) || empty($jbtpengambilkeputusan) || empty($nikpengambilkeputusan) || empty($jenistransaksi) || empty($nilaitransaksi) || empty($tindakbenturan)) {
+            return redirect()->back()->with('error', 'Semua field harus diisi');
+        }
+
+        $data = [
+            'namapihakbenturan' => $namapihakbenturan,
+            'jbtbenturan' => $jbtbenturan,
+            'nikbenturan' => $nikbenturan,
+            'pengambilkeputusan' => $pengambilkeputusan,
+            'jbtpengambilkeputusan' => $jbtpengambilkeputusan,
+            'nikpengambilkeputusan' => $nikpengambilkeputusan,
+            'jenistransaksi' => $jenistransaksi,
+            'nilaitransaksi' => $nilaitransaksi,
+            'tindakbenturan' => $tindakbenturan,
+            'accdekom' => 0,
+            'is_approved' => 0
+        ];
+
+        return $this->updateData($id, $data, 'Gagal mengubah data');
     }
 
     public function hapus($id)
@@ -319,125 +511,416 @@ class transaksikepentingan extends Controller
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
             return redirect()->to($redirectURL);
         }
 
-        // Memanggil fungsi hapus pada model dan menyimpan hasilnya dalam variabel $success
-        $this->model->hapus($id);
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        $this->transaksikepentinganModel = new M_transaksikepentingan();
+
+        $this->transaksikepentinganModel->builder()
+            ->where('id', $id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->delete();
+
         session()->setFlashdata('message', 'Data berhasil dihapus');
+        return redirect()->to(base_url('Transaksikepentingan'));
+    }
 
-        return redirect()->to(base_url('transaksikepentingan'));
+    public function getUnreadCommentCountForFactor()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
 
+        $Id = $this->request->getGet('id');
+        $kodebpr = $this->userKodebpr;
+        $userId = $this->userId;
+        $periodeId = session('active_periode');
+
+        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
+
+        $count = $this->getCommentReadsModel()->countUnreadCommentsForUserByFactor($Id, $kodebpr, $userId, $periodeId);
+
+        return $this->response->setJSON(['unread_count' => $count]);
+    }
+
+    public function cekKomentarBaru()
+    {
+        $subkategori = 'Transaksikepentingan';
+        $kodebpr = $this->request->getGet('kodebpr');
+        $lastVisit = $this->request->getGet('last_visit');
+        $periodeId = session('active_periode');
+
+        $results = $this->komentarModel
+            ->select('id, COUNT(*) as jumlah')
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('created_at >', $lastVisit)
+            ->groupBy('id')
+            ->findAll();
+
+        return $this->response->setJSON($results);
+    }
+
+    public function getKomentarByFaktorId()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(404)->setBody('Not Found');
+        }
+
+        $subkategori = 'Transaksikepentingan';
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        $komentarList = $this->getKomentarModel()->getKomentarByFaktorId($subkategori, $kodebpr, $periodeId);
+
+        return $this->response->setJSON($komentarList);
+    }
+
+
+
+    public function Tambahkomentar()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!isset($_POST['TambahKomentar'])) {
+            return redirect()->to(base_url('Transaksikepentingan'));
+        }
+
+        if (!$this->userKodebpr) {
+            session()->setFlashdata('error', 'User tidak memiliki kode BPR yang valid');
+            return redirect()->back();
+        }
+
+        $val = $this->validate([
+            'komentar' => [
+                'label' => 'Komentar',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+        ]);
+
+        if (!$val) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back();
+        }
+
+        $data = [
+            'id' => $this->request->getPost('id'),
+            'subkategori' => 'Transaksikepentingan',
+            'komentar' => $this->request->getPost('komentar'),
+            'fullname' => $this->request->getPost('fullname'),
+            'user_id' => $this->userId,
+            'kodebpr' => $this->userKodebpr,
+            'periode_id' => session('active_periode'),
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+
+        $this->getKomentarModel()->insertKomentar($data);
+        session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
+        return redirect()->to(base_url('Transaksikepentingan') . '?modal_komentar=' . $this->request->getPost('id'));
+    }
+
+    public function markUserCommentsAsRead()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
+
+        $Id = $this->request->getPost('id');
+        $kodebpr = $this->userKodebpr; // Get from property
+        $userId = user_id();
+        $periodeId = session('active_periode');
+
+        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
+
+        // Get all comment IDs for this factor, kodebpr, periode, and not by the current user
+        $commentsToMark = $this->getKomentarModel()->select('id')
+            ->where('subkategori', $Id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('user_id !=', $userId) // Mark comments from others as read
+            ->findAll();
+
+        if (!empty($commentsToMark)) {
+            foreach ($commentsToMark as $comment) {
+                $this->getCommentReadsModel()->markAsRead($comment['id'], $userId);
+            }
+        }
+
+        return $this->response->setJSON(['status' => 'success', 'message' => 'Comments marked as read for this user.']);
+    }
+
+    public function saveKomentar()
+    {
+        $data = [
+            'id' => $this->request->getPost('id'),
+            'kodebpr' => $this->request->getPost('kodebpr'),
+            'komentar' => $this->request->getPost('komentar'),
+            'is_read' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'user_id' => session()->get('user_id')
+        ];
+
+        $this->komentarModel->insert($data);
+        return $this->response->setJSON(['status' => 'comment_saved']);
+    }
+
+    private function updateApprovalStatus($id, $isApproved, $successMessage, $errorMessage)
+    {
+        if (!is_numeric($id) || $id <= 0) {
+            session()->setFlashdata('err', 'ID tidak valid.');
+            return redirect()->back();
+        }
+
+        $data = $this->getTransaksikepentinganModel()->find($id);
+        if (!$data) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
+            return redirect()->back();
+        }
+
+        $dataUpdate = [
+            'id' => $id,
+            'is_approved' => $isApproved,
+            'approved_by' => $this->userId,
+            'approved_at' => $isApproved ? date('Y-m-d H:i:s') : null,
+        ];
+
+        if ($this->getTransaksikepentinganModel()->save($dataUpdate)) {
+            session()->setFlashdata('message', $successMessage);
+        } else {
+            session()->setFlashdata('err', $errorMessage);
+        }
+
+        return redirect()->back();
     }
 
     public function approve($idtransaksikepentingan)
     {
-        if (!is_numeric($idtransaksikepentingan) || $idtransaksikepentingan <= 0) {
-            session()->setFlashdata('err', 'ID Data Transaksi yang Mengandung Benturan Kepentingan tidak valid.');
-            return redirect()->back();
-        }
-
-        $transaksikepentingan = $this->transaksikepentinganModel->find($idtransaksikepentingan);
-        if (!$transaksikepentingan) {
-            session()->setFlashdata('err', 'Data Data Transaksi yang Mengandung Benturan Kepentingan dengan ID tersebut tidak ditemukan.');
-            return redirect()->back();
-        }
-
-        date_default_timezone_set('Asia/Jakarta');
-
-        $userId = service('authentication')->id();
-
-        $dataUpdate = [
-            'id' => $idtransaksikepentingan,
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
-
-        if ($this->transaksikepentinganModel->save($dataUpdate)) {
-            session()->setFlashdata('message', 'Data Transaksi yang Mengandung Benturan Kepentingan berhasil disetujui.');
-            return redirect()->back();
-        } else {
-            session()->setFlashdata('err', 'Terjadi kesalahan saat melakukan approval.');
-            return redirect()->back();
-        }
+        return $this->updateApprovalStatus(
+            $idtransaksikepentingan,
+            1,
+            'Data berhasil disetujui.',
+            'Terjadi kesalahan saat melakukan approval.'
+        );
     }
 
     public function unapprove($idtransaksikepentingan)
     {
-        if (!is_numeric($idtransaksikepentingan) || $idtransaksikepentingan <= 0) {
-            session()->setFlashdata('err', 'ID Data Transaksi yang Mengandung Benturan Kepentingan tidak valid.');
-            return redirect()->back();
-        }
+        return $this->updateApprovalStatus(
+            $idtransaksikepentingan,
+            0,
+            'Approval dibatalkan.',
+            'Terjadi kesalahan saat membatalkan approval.'
+        );
+    }
 
-        $transaksikepentingan = $this->transaksikepentinganModel->find($idtransaksikepentingan);
-        if (!$transaksikepentingan) {
-            session()->setFlashdata('err', 'Data Data Transaksi yang Mengandung Benturan Kepentingan dengan ID tersebut tidak ditemukan.');
-            return redirect()->back();
-        }
-
+    private function bulkUpdateApproval($isApproved, $field, $successMessage, $isError = false)
+    {
         date_default_timezone_set('Asia/Jakarta');
+        $userId = $this->userId;
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
 
-        $userId = service('authentication')->id();
+        if (!$kodebpr || !$periodeId) {
+            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
+            return redirect()->back();
+        }
+
+        $count = $this->getTransaksikepentinganModel()
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->countAllResults();
+
+        if ($count === 0) {
+            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
+            return redirect()->back();
+        }
+
+        $currentTimestamp = date('Y-m-d H:i:s');
 
         $dataUpdate = [
-            'id' => $idtransaksikepentingan,
-            'is_approved' => 2,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            $field => $isApproved,
+            $field . '_by' => $isApproved ? $userId : null,
+            $field . '_at' => $isApproved ? $currentTimestamp : null,
         ];
 
-        if ($this->transaksikepentinganModel->save($dataUpdate)) {
-            session()->setFlashdata('err', 'Approval Data Transaksi yang Mengandung Benturan Kepentingan dibatalkan.');
-            return redirect()->back();
+        // Tambahkan update untuk approved_at dan accdekom_at jika field utama disetujui
+        if ($isApproved) {
+            if ($field === 'is_approved') {
+                $dataUpdate['approved_at'] = $currentTimestamp;
+            } elseif ($field === 'accdekom') {
+                $dataUpdate['accdekom_at'] = $currentTimestamp;
+            }
         } else {
-            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan approval.');
+            // Jika dibatalkan, set timestamp menjadi null
+            if ($field === 'is_approved') {
+                $dataUpdate['approved_at'] = null;
+            } elseif ($field === 'accdekom') {
+                $dataUpdate['accdekom_at'] = null;
+            }
+        }
+
+        try {
+            $updated = $this->getTransaksikepentinganModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->set($dataUpdate)
+                ->update();
+
+            if (!$updated) {
+                session()->setFlashdata('err', 'Gagal mengupdate data approval');
+                return redirect()->back();
+            }
+
+            if ($isError) {
+                session()->setFlashdata('err', $successMessage);
+            } else {
+                session()->setFlashdata('message', $successMessage);
+            }
+
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in bulk approval: ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
             return redirect()->back();
         }
     }
 
+    // Approval umum
     public function approveSemua()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
-        $dataUpdate = [
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
-
-        $this->transaksikepentinganModel->builder()->update($dataUpdate);
-
-        session()->setFlashdata('message', 'Semua Data Transaksi yang Mengandung Benturan Kepentingan berhasil disetujui.');
-        return redirect()->back();
+        return $this->bulkUpdateApproval(1, 'is_approved', 'Semua data berhasil disetujui.');
     }
 
     public function unapproveSemua()
     {
+        return $this->bulkUpdateApproval(0, 'is_approved', 'Semua approval dibatalkan.', true);
+    }
 
+    // Method untuk update approval komisaris saja (tanpa dependency)
+    private function updateKomisarisApproval($isApproved)
+    {
+        $field = 'accdekom';
+        $successMessage = $isApproved ? 'Persetujuan komisaris utama berhasil diberikan.' : 'Persetujuan komisaris utama dibatalkan.';
+
+        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
+    }
+
+    // Method untuk update approval direktur saja (tanpa dependency)
+    private function updateDirekturApproval($isApproved)
+    {
+        $field = 'is_approved';
+        $successMessage = $isApproved ? 'Persetujuan direktur utama berhasil diberikan.' : 'Persetujuan direktur utama dibatalkan.';
+
+        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
+    }
+
+    // Public methods dengan dependency yang benar
+    public function approveSemuaKom()
+    {
+        return $this->updateKomisarisApproval(1);
+    }
+
+    public function unapproveSemuaKom()
+    {
+        // Ketika komisaris dibatalkan, direktur juga harus dibatalkan
+        $this->updateDirekturApproval(0);  // Batalkan direktur dulu
+        return $this->updateKomisarisApproval(0);  // Lalu batalkan komisaris
+    }
+
+    public function approveSemuaDirut()
+    {
+        return $this->updateDirekturApproval(1);
+    }
+
+    public function unapproveSemuaDirut()
+    {
+        // Ketika direktur dibatalkan, hanya direktur saja yang dibatalkan
+        // TIDAK perlu membatalkan komisaris
+        return $this->updateDirekturApproval(0);
+    }
+
+    // ATAU jika Anda ingin hierarchy yang ketat:
+// Dimana pembatalan komisaris akan membatalkan direktur juga
+
+    public function unapproveSemuaKomWithHierarchy()
+    {
+        try {
+            // 1. Batalkan direktur terlebih dahulu
+            $this->updateDirekturApproval(0);
+
+            // 2. Baru batalkan komisaris
+            $result = $this->updateKomisarisApproval(0);
+
+            // 3. Set pesan gabungan
+            session()->setFlashdata('message', 'Persetujuan komisaris dan direktur utama telah dibatalkan.');
+
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in unapprove hierarchy: ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan persetujuan.');
+            return redirect()->back();
+        }
+    }
+
+    private function updateApprovalStatusKom($id, $isApproved, $successMessage, $errorMessage)
+    {
         date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
+        if (!is_numeric($id) || $id <= 0) {
+            session()->setFlashdata('err', 'ID tidak valid.');
+            return redirect()->back();
+        }
+
+        $data = $this->getTransaksikepentinganModel()->find($id);
+        if (!$data) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
+            return redirect()->back();
+        }
+
         $dataUpdate = [
-            'is_approved' => 2,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            'id' => $id,
+            'accdekom' => $isApproved,
+            'accdekom_by' => $isApproved ? $this->userId : null,
+            'accdekom_at' => $isApproved ? date('Y-m-d H:i:s') : null,
         ];
 
-        $this->transaksikepentinganModel->builder()->update($dataUpdate);
+        if ($this->getTransaksikepentinganModel()->save($dataUpdate)) {
+            session()->setFlashdata('message', $successMessage);
+        } else {
+            session()->setFlashdata('err', $errorMessage);
+        }
 
-        session()->setFlashdata('err', 'Semua approval data Transaksi yang Mengandung Benturan Kepentingan dibatalkan.');
         return redirect()->back();
     }
 
-    public function excel()
+    public function setNullKolomTindak($id)
     {
-        $data = [
-            'transaksikepentingan' => $this->model->getAllData()
-        ];
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
 
-        echo view('transaksikepentingan/excel', $data);
+        $result = $this->getPenjelastindakModel()->setNullKolomTindak($id);
 
+        if ($result) {
+            session()->setFlashdata('message', 'Data berhasil dihapus');
+        } else {
+            session()->setFlashdata('err', 'Data gagal dihapus');
+        }
+
+        return redirect()->to(base_url('Transaksikepentingan'));
     }
 
     public function exporttxttransaksikepentingan()
@@ -447,8 +930,27 @@ class transaksikepentingan extends Controller
             unset($_SESSION['redirect_url']);
             return redirect()->to($redirectURL);
         }
-        $data_transaksikepentingan = $this->model->getAllData();
-        $data_infobpr = $this->infobprModel->getAllData();
+        ;
+
+        $this->transaksikepentinganModel = model('M_transaksikepentingan');
+        $this->infobprModel = model('M_infobpr');
+        $this->penjelastindakModel = model('M_penjelastindak');
+
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        $subkategori = "Transaksikepentingan";
+
+        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
+        $exportDate = $periodeDetail['tahun'] ?? date('Y');
+
+        $data_transaksikepentingan = $this->transaksikepentinganModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
+
+        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
+        $data_penjelastindak = $this->penjelastindakModel->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
 
         $sandibpr = '';
         $kodejenis = '';
@@ -458,28 +960,50 @@ class transaksikepentingan extends Controller
             $kodejenis = $infobpr['kodejenis'];
         }
 
+        $isEmpty = function ($value) {
+            return empty($value) || is_null($value) || $value === '' || $value === '0';
+        };
+
         $output = "";
-        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|2025-05-31|LTBPRK|E01000|0|\n";
+        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|" . $exportDate . "-12-31|LTBPRK|E01000|0|" . "\r\n";
+
         foreach ($data_transaksikepentingan as $row) {
-            $output .= "D01|" . "110100000000" . "|" . $row['namapihakbenturan'] . "|" . $row['jbtbenturan'] . "|" . $row['nikbenturan'] . "|" . $row['pengambilkeputusan'] . "|" . $row['jbtpengambilkeputusan'] . "|" . $row['nikpengambilkeputusan'] . "|" . $row['jenistransaksi'] . "|" . $row['nilaitransaksi'] . "|" . $row['keterangan'] . "\n";
+            $hasValidData = false;
+            $namapihakbenturan = isset($row['namapihakbenturan']) && !$isEmpty($row['namapihakbenturan']) ? $row['namapihakbenturan'] : '';
+            $jbtbenturan = isset($row['jbtbenturan']) && !$isEmpty($row['jbtbenturan']) ? $row['jbtbenturan'] : '';
+            $nikbenturan = isset($row['nikbenturan']) && !$isEmpty($row['nikbenturan']) ? $row['nikbenturan'] : '';
+            $pengambilkeputusan = isset($row['pengambilkeputusan']) && !$isEmpty($row['pengambilkeputusan']) ? $row['pengambilkeputusan'] : '';
+            $jbtpengambilkeputusan = isset($row['jbtpengambilkeputusan']) && !$isEmpty($row['jbtpengambilkeputusan']) ? $row['jbtpengambilkeputusan'] : '';
+            $nikpengambilkeputusan = isset($row['nikpengambilkeputusan']) && !$isEmpty($row['nikpengambilkeputusan']) ? $row['nikpengambilkeputusan'] : '';
+            $jenistransaksi = isset($row['jenistransaksi']) && !$isEmpty($row['jenistransaksi']) ? $row['jenistransaksi'] : '';
+            $nilaitransaksi = isset($row['nilaitransaksi']) && !$isEmpty($row['nilaitransaksi']) ? $row['nilaitransaksi'] : '';
+            $keterangan = isset($row['keterangan']) && !$isEmpty($row['keterangan']) ? $row['keterangan'] : '';
+
+            if ($namapihakbenturan !== '' || $jbtbenturan !== '' || $nikbenturan !== '' || $pengambilkeputusan !== '' || $jbtpengambilkeputusan !== '' || $nikpengambilkeputusan !== '' || $jenistransaksi !== '' || $nilaitransaksi !== '' || $keterangan !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "110100000000" . "|" . $namapihakbenturan . "|" . $jbtbenturan . "|" . $nikbenturan . "|" . $pengambilkeputusan . "|" . $jbtpengambilkeputusan . "|" . $nikpengambilkeputusan . "|" . $jenistransaksi . "|" . $nilaitransaksi . "|" . $keterangan . "\r\n";
+            }
         }
 
-        if (!empty($data_transaksikepentingan)) {
-            $footer_row = end($data_transaksikepentingan);
-            $output .= "F01|" . "Footer 1" . "|" . $footer_row['tindakbenturan'];
-        } else {
-            $output .= "F01|" . "Footer 1" . "|";
+        foreach ($data_penjelastindak as $penjelas) {
+            if (!empty($penjelas['tindaklanjut']) && $penjelas['tindaklanjut'] !== null) {
+                $tindaklanjut = str_replace(array("\r", "\n"), ' ', $penjelas['tindaklanjut']);
+                $output .= "F01|" . $tindaklanjut . "\r\n";
+            }
         }
+
+
+
+        $filename = "LTBPRK-E01000-R-A-" . $exportDate . "1231-" . $sandibpr . "-01.txt";
 
         $response = service('response');
-
-        $filename = "LTBPRK-E01000-R-A-20250531-" . $sandibpr . "-01.txt";
-
         $response->setHeader('Content-Type', 'text/plain');
         $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
-        $response->setBody($output);
-
-        return $response;
+        return $response->setBody($output);
     }
 
 }

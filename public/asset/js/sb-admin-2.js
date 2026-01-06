@@ -98,17 +98,31 @@
     window.location.href = "penjelasanumum/hapus/" + idDataHapus;
   });
 
-  var idDataHapus3;
+  var idDataHapus3, kodebprDataHapus, periodeDataHapus;
+
   $("button#btn-hapus").click(function () {
+    // Capture all the data attributes
     idDataHapus3 = $(this).data("id");
-    console.log(idDataHapus3);
+    kodebprDataHapus = $(this).data("kodebpr");
+    periodeDataHapus = $(this).data("periode");
+
+    // Log to ensure the values are captured correctly
+    console.log(idDataHapus3, kodebprDataHapus, periodeDataHapus);
+
+    // Display the ID on the modal (optional)
     $("#idDatadir").text(idDataHapus3);
+
+    // Show the modal
     $("#modalHapusdir").modal("show");
   });
 
+  // When the "Yakin" button is clicked
   $("#btnHapusdir").click(function () {
-    window.location.href = "tgjwbdir/hapus/" + idDataHapus3;
+    // Make sure the URL passes all three parameters
+    window.location.href = "Tgjwbdir/hapus/" + idDataHapus3 + "/" + kodebprDataHapus + "/" + periodeDataHapus;
   });
+
+
 
   var idDataHapus4;
   $("button#btn-hapus").click(function () {
@@ -131,7 +145,7 @@
   });
 
   $("#btnHapuskomite").click(function () {
-    window.location.href = "tgjwbkomite/hapus/" + idDataHapus5;
+    window.location.href = "Tgjwbkomite/hapus/" + idDataHapus5;
   });
 
   var idDataHapus6;

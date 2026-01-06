@@ -187,7 +187,7 @@ class ShowFaktor extends Controller
                 'nfaktor2' => $this->nilai2Model->where('faktor2id', 29)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor2'] ?? 'N/A',
                 'accdekom' => $this->nilai2Model->where('faktor2id', 29)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
                 'is_approved' => $this->nilai2Model->where('faktor2id', 29)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ], 
+            ],
             [
                 'name' => 'Faktor 3: Pelaksanaan Tugas, Tanggung Jawab, dan Wewenang Dewan Komisaris',
                 'link' => base_url('faktor3') . '?modal_nilai=' . 27,
@@ -264,8 +264,17 @@ class ShowFaktor extends Controller
         // Menghitung rata-rata nfaktor
         $totalNilai = 0;
         $validCount = 0;
+        $validFactors = 12; // Asumsikan ada 12 faktor, tetapi nanti akan disesuaikan jika nfaktor4 kosong
 
         foreach ($factors as $factor) {
+            // Cek nfaktor4 terlebih dahulu
+            if (isset($factor['nfaktor4']) && is_numeric($factor['nfaktor4']) && $factor['nfaktor4'] != 'N/A' && $factor['nfaktor4'] != 0 && $factor['nfaktor4'] !== null) {
+                // Jika nfaktor4 ada dan valid, perhitungan rata-rata tetap menggunakan 12 faktor
+                $totalNilai += $factor['nfaktor4'];
+                $validCount++;
+            }
+
+            // Jika nfaktor4 kosong, 0, atau null, maka abaikan nfaktor4 dan hitung dengan 11 faktor
             if (isset($factor['nfaktor']) && is_numeric($factor['nfaktor']) && $factor['nfaktor'] != 'N/A') {
                 $totalNilai += $factor['nfaktor'];
                 $validCount++;
@@ -274,9 +283,6 @@ class ShowFaktor extends Controller
                 $validCount++;
             } else if (isset($factor['nfaktor3']) && is_numeric($factor['nfaktor3']) && $factor['nfaktor3'] != 'N/A') {
                 $totalNilai += $factor['nfaktor3'];
-                $validCount++;
-            } else if (isset($factor['nfaktor4']) && is_numeric($factor['nfaktor4']) && $factor['nfaktor4'] != 'N/A') {
-                $totalNilai += $factor['nfaktor4'];
                 $validCount++;
             } else if (isset($factor['nfaktor5']) && is_numeric($factor['nfaktor5']) && $factor['nfaktor5'] != 'N/A') {
                 $totalNilai += $factor['nfaktor5'];
@@ -305,9 +311,11 @@ class ShowFaktor extends Controller
             }
         }
 
-        $nilaikomposit = $validCount > 0 ? $totalNilai / $validCount : 0;
+        // Jika nfaktor4 kosong atau 0, bagi dengan 11 faktor, jika nfaktor4 valid, bagi dengan 12 faktor
+        $nilaikomposit = $validCount > 0 ? $totalNilai / ($validFactors - ($validFactors === 12 && $validCount < 12 ? 1 : 0)) : 0;
 
-        // Pembulatan nilai komposit (rounding)
+
+        // // Pembulatan nilai komposit (rounding)
         $nilaikomposit = ($nilaikomposit - floor($nilaikomposit)) >= 0.5 ? ceil($nilaikomposit) : floor($nilaikomposit);
 
         $peringkatkomposit = $this->hitungPeringkatKomposit($nilaikomposit);
@@ -400,12 +408,12 @@ class ShowFaktor extends Controller
             'positifhasil' => $this->request->getPost('positifhasil'),
             'negatifstruktur' => $this->request->getPost('negatifstruktur'),
             'negatifproses' => $this->request->getPost('negatifproses'),
-            'negatifhasil' => $this->request->getPost('negatifhasil')            
+            'negatifhasil' => $this->request->getPost('negatifhasil')
         ];
         $this->showfaktorModel->update($id, $data);
-        return redirect()->to(base_url('showfaktor'))->with('message', 'Data berhasil diupdate!');
-    } 
-    
+        return redirect()->to(base_url('ShowFaktor'))->with('message', 'Data berhasil diupdate!');
+    }
+
     public function updatettd()
     {
         $id = $this->request->getPost('id');
@@ -416,6 +424,27 @@ class ShowFaktor extends Controller
             'lokasi' => $this->request->getPost('lokasi')
         ];
         $this->showfaktorModel->update($id, $data);
-        return redirect()->to(base_url('showfaktor'))->with('message', 'Data berhasil diupdate!');
+        return redirect()->to(base_url('ShowFaktor'))->with('message', 'Data berhasil diupdate!');
     }
+
+    public function updatecover()
+    {
+        $id = $this->request->getPost('id');
+        $data = [
+            'cover' => $this->request->getPost('cover')
+        ];
+
+        // Memastikan ID ada dan tidak kosong
+        if (!empty($id)) {
+            // Memanggil model untuk update data dengan klausa WHERE
+            $this->showfaktorModel->update($id, $data);
+
+            // Redirect dengan pesan sukses
+            return redirect()->to(base_url('ShowFaktor'))->with('message', 'Data berhasil diupdate!');
+        } else {
+            // Jika ID tidak valid
+            return redirect()->to(base_url('ShowFaktor'))->with('error', 'ID tidak ditemukan!');
+        }
+    }
+
 }

@@ -1,0 +1,423 @@
+INFO - 2025-08-20 01:01:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:01:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:01:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:01:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:01:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:01:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:01:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:01:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 01:02:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-08-20 01:02:20 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 01:02:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 08:02:37 --> [DEPRECATED] Function strftime() is deprecated in APPPATH\Views\sahamdirdekom\index.php on line 45.
+ 1 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\nbp\\app\\Views\\sahamdirdekom\\index.php')
+ 2 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('sahamdirdekom/index', [], true)
+ 4 APPPATH\Controllers\Sahamdirdekom.php(262): view('sahamdirdekom/index', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\sahamdirdekom->index()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\sahamdirdekom))
+ 7 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2025-08-20 08:02:37 --> [DEPRECATED] Function strftime() is deprecated in APPPATH\Views\sahamdirdekom\index.php on line 69.
+ 1 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\nbp\\app\\Views\\sahamdirdekom\\index.php')
+ 2 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render('sahamdirdekom/index', [], true)
+ 4 APPPATH\Controllers\Sahamdirdekom.php(262): view('sahamdirdekom/index', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\sahamdirdekom->index()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\sahamdirdekom))
+ 7 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 01:02:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:02:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 01:23:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 08:23:37 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(148): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(190): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 08:23:37 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 149.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(190): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 01:31:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 08:31:38 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(148): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(190): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 08:31:38 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 149.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(190): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 01:37:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 08:37:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(148): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(190): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 08:37:45 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 149.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(190): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 02:35:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 09:35:58 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 09:35:58 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:24:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 10:24:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 10:24:45 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:46:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-08-20 10:46:59 --> Call to undefined method App\Controllers\keuangandirdekompshm::getSahamdirdekomModel()
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 147.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:47:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 10:47:11 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 10:47:11 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:47:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 10:47:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 10:47:46 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:47:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 10:47:47 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 10:47:47 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:48:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-08-20 10:48:57 --> Call to undefined method App\Controllers\keuangandirdekompshm::getSahamdirdekomModel()
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 147.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:48:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-08-20 10:48:58 --> Call to undefined method App\Controllers\keuangandirdekompshm::getSahamdirdekomModel()
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 147.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 03:48:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-08-20 10:48:59 --> Call to undefined method App\Controllers\keuangandirdekompshm::getSahamdirdekomModel()
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 147.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:09:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:09:24 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:09:24 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:09:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:09:25 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:09:25 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:18:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:18:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:18:40 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:18:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:18:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:18:40 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:18:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:18:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:18:41 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:18:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:18:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:18:41 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:35:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:35:43 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:35:43 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:35:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:35:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:35:44 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:35:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:35:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:35:44 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:35:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-08-20 11:35:45 --> [DEPRECATED] Creation of dynamic property App\Controllers\keuangandirdekompshm::$shmusahadirdekomModel is deprecated in APPPATH\Controllers\Keuangandirdekompshm.php on line 51.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(147): App\Controllers\keuangandirdekompshm->getKeuangandirdekompshmModel()
+ 2 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData('5', '001811')
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\keuangandirdekompshm))
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+CRITICAL - 2025-08-20 11:35:45 --> Call to a member function select() on null
+in APPPATH\Controllers\Keuangandirdekompshm.php on line 148.
+ 1 APPPATH\Controllers\Keuangandirdekompshm.php(187): App\Controllers\keuangandirdekompshm->getIndexData()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\keuangandirdekompshm->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2025-08-20 04:37:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:37:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:38:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:38:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:38:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:38:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:38:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:38:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:47:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:47:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:48:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:48:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:55:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:55:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:56:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:56:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:57:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:57:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:58:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 04:58:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 06:47:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 06:47:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 07:26:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 07:26:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 09:22:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 09:22:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 09:29:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-20 09:29:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

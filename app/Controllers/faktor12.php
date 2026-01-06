@@ -229,7 +229,7 @@ class Faktor12 extends Controller
                 'accdekom2' => $associatedNilai['accdekom2'] ?? null,
                 'accdekom2_by' => $associatedNilai['accdekom2_by'] ?? null,
                 'accdir2' => $associatedNilai['accdir2'] ?? null,
-                'accdir2_by' => $associatedNilai['accdir_2by'] ?? null,
+                'accdir2_by' => $associatedNilai['accdir2_by'] ?? null,
                 // Add any other columns as needed
                 // 'nama_kolom_lain_faktor' => $faktorItem['nama_kolom_lain_faktor'],
             ];

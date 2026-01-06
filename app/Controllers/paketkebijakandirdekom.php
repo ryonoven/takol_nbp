@@ -3,79 +3,247 @@ namespace App\Controllers;
 
 use CodeIgniter\Controller;
 use App\Models\M_paketkebijakandirdekom;
-use App\Models\M_tgjwbdir;
-use App\Models\M_tgjwbdekom;
 use App\Models\M_infobpr;
 use App\Models\M_user;
+use App\Models\M_periodetransparansi;
+use App\Models\M_transparansicomments;
+use App\Models\M_transparansicommentsread;
+use App\Models\M_penjelastindak;
 use Myth\Auth\Config\Services as AuthServices;
 
 class paketkebijakandirdekom extends Controller
 {
-    protected $paketkebijakandirdekomModel;
-    protected $tgjwbdirModel;
-    protected $tgjwbdekomModel;
-    protected $shmusahadirdekomModel;
-    protected $infobprModel;
-    protected $usermodel;
-    protected $session;
     protected $auth;
+    protected $session;
+    protected $userKodebpr;
+    protected $userId;
+
+    protected $paketkebijakandirdekomModel;
+    protected $userModel;
+    protected $infobprModel;
+    protected $periodeModel;
+    protected $komentarModel;
+    protected $commentReadsModel;
+    protected $penjelastindakModel;
+
+    private $userPermissions = null;
+    private $userData = null;
+
 
     public function __construct()
     {
-        $this->paketkebijakandirdekomModel = new M_paketkebijakandirdekom();
-        $this->tgjwbdirModel = new M_tgjwbdir();
-        $this->tgjwbdekomModel = new M_tgjwbdekom();
-        $this->userModel = new M_user();
-        $this->infobprModel = new M_infobpr();
+        date_default_timezone_set('Asia/Jakarta');
         $this->session = service('session');
         $this->auth = service('authentication');
-        $this->session = service('session');
-        $this->auth = service('authentication');
-        $auth = AuthServices::authentication();
-        $authorize = AuthServices::authorization();
 
-        $userInGroupPE = $authorize->inGroup('pe', $auth->id());
-        $userInGroupAdmin = $authorize->inGroup('admin', $auth->id());
-        $userInGroupDekom = $authorize->inGroup('dekom', $auth->id());
-        $userInGroupDireksi = $authorize->inGroup('direksi', $auth->id());
-
-        $data['userInGroupPE'] = $userInGroupPE;
-        $data['userInGroupAdmin'] = $userInGroupAdmin;
-        $data['userInGroupDekom'] = $userInGroupDekom;
-        $data['userInGroupDireksi'] = $userInGroupDireksi;
+        if ($this->auth->check()) {
+            $this->userId = $this->auth->id();
+            $this->loadUserData();
+        }
     }
 
-    public function index()
+    private function getPaketkebijakandirdekomModel()
+    {
+        if (!$this->paketkebijakandirdekomModel) {
+            $this->paketkebijakandirdekomModel = new M_paketkebijakandirdekom();
+        }
+        return $this->paketkebijakandirdekomModel;
+    }
+
+    private function getUserModel()
+    {
+        if (!$this->userModel) {
+            $this->userModel = new M_user();
+        }
+        return $this->userModel;
+    }
+
+    private function getPeriodeModel()
+    {
+        if (!$this->periodeModel) {
+            $this->periodeModel = new M_periodetransparansi();
+        }
+        return $this->periodeModel;
+    }
+
+    private function getKomentarModel()
+    {
+        if (!$this->komentarModel) {
+            $this->komentarModel = new M_transparansicomments();
+        }
+        return $this->komentarModel;
+    }
+
+    private function getCommentReadsModel()
+    {
+        if (!$this->commentReadsModel) {
+            $this->commentReadsModel = new M_transparansicommentsread();
+        }
+        return $this->commentReadsModel;
+    }
+
+    private function getPenjelastindakModel()
+    {
+        if (!$this->penjelastindakModel) {
+            $this->penjelastindakModel = new M_penjelastindak();
+        }
+        return $this->penjelastindakModel;
+    }
+
+    private function getInfobprModel()
+    {
+        if (!$this->infobprModel) {
+            $this->infobprModel = new M_infobpr();
+        }
+        return $this->infobprModel;
+    }
+
+    private function loadUserData()
+    {
+        if ($this->userData === null && $this->userId) {
+            $this->userData = $this->getUserModel()->find($this->userId);
+            $this->userKodebpr = $this->userData['kodebpr'] ?? null;
+        }
+    }
+
+    private function getUserPermissions()
+    {
+        if ($this->userPermissions === null && $this->userId) {
+            $authorize = AuthServices::authorization();
+
+            $this->userPermissions = [
+                'pe' => $authorize->inGroup('pe', $this->userId),
+                'admin' => $authorize->inGroup('admin', $this->userId),
+                'dekom' => $authorize->inGroup('dekom', $this->userId),
+                'dekom2' => $authorize->inGroup('dekom2', $this->userId),
+                'dekom3' => $authorize->inGroup('dekom3', $this->userId),
+                'dekom4' => $authorize->inGroup('dekom4', $this->userId),
+                'dekom5' => $authorize->inGroup('dekom5', $this->userId),
+                'direksi' => $authorize->inGroup('direksi', $this->userId),
+                'direksi2' => $authorize->inGroup('direksi2', $this->userId),
+            ];
+        }
+        return $this->userPermissions;
+    }
+
+    private function checkAuthentication()
     {
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
             return redirect()->to($redirectURL);
         }
-        $userId = $this->auth->id(); // ambil ID user yang login
-        $user = $this->userModel->find($userId); // ambil data user
+        return null;
+    }
 
-        $fullname = $user['fullname'] ?? 'Unknown';
+    private function getIndexData($periodeId, $kodebpr)
+    {
+        $subkategori = 'Paketkebijakandirdekom';
 
-        $paketkebijakandirdekomData = $this->paketkebijakandirdekomModel->getAllData();
+        $paketkebijakandirdekomData = $this->getPaketkebijakandirdekomModel()
+            ->select('*, accdekom, accdekom_by, accdekom_at, is_approved, approved_by, approved_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->limit(10)
+            ->findAll();
 
-        $authorize = AuthServices::authorization();
-        $userInGroupPE = $authorize->inGroup('pe', $this->auth->id());
-        $userInGroupAdmin = $authorize->inGroup('admin', $this->auth->id());
-        $userInGroupDekom = $authorize->inGroup('dekom', $this->auth->id());
-        $userInGroupDireksi = $authorize->inGroup('direksi', $this->auth->id());
+        $komentarList = $this->getKomentarModel()
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
+
+        $penjelastindak = $this->getPenjelastindakModel()
+            ->getDataPenjelasByKodebprAndPeriode($subkategori, $kodebpr, $periodeId);
+
+        return [
+            'paketkebijakandirdekom' => $paketkebijakandirdekomData,
+            'komentarList' => $komentarList,
+            'penjelastindak' => $penjelastindak
+        ];
+    }
+
+    public function index()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!session('active_periode')) {
+            return redirect()->to('/Periodetransparansi');
+        }
+
+        $periodeId = session('active_periode');
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $indexData = $this->getIndexData($periodeId, $kodebpr);
+
+        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
+        $bprData = $this->getInfobprModel()->getBprByKode($kodebpr);
+
+        $permissions = $this->getUserPermissions();
+
+        $accdekomData = $this->paketkebijakandirdekomModel
+            ->select('accdekom, accdekom_by, accdekom_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->findAll();
+
+        $accdirutData = $this->paketkebijakandirdekomModel
+            ->select('is_approved, approved_by, approved_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->findAll();
+
+        $lastVisit = session('last_visit_komentar') ?? date('Y-m-d H:i:s', strtotime('-1 day'));
+        session()->set('last_visit_komentar', date('Y-m-d H:i:s'));
+
+        $canApprove = true;
+
+        // Ambil semua data dengan kondisi yang sesuai
+        $accdekomValues = $this->paketkebijakandirdekomModel
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();  // Mengambil semua data yang sesuai
+
+        // Loop melalui setiap data
+        foreach ($accdekomValues as $accdekomValue) {
+            if ($accdekomValue['accdekom'] != 1) {
+                // Jika ada data yang accdekom tidak 1, set canApprove ke false
+                $canApprove = false;
+                break;  // Tidak perlu melanjutkan jika sudah ditemukan yang tidak valid
+            }
+        }
 
         $data = [
             'judul' => '11. Paket/Kebijakan Remunerasi dan Fasilitas Lain bagi Direksi dan Dewan Komisaris',
-            'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData(),
-            'tgjwbdir' => $this->tgjwbdirModel->getAllData(),
-            'tgjwbdekom' => $this->tgjwbdekomModel->getAllData(),
-            'infobpr' => $this->infobprModel->getAllData(),
-            'userInGroupPE' => $userInGroupPE,
-            'userInGroupAdmin' => $userInGroupAdmin,
-            'userInGroupDekom' => $userInGroupDekom,
-            'userInGroupDireksi' => $userInGroupDireksi,
-            'fullname' => $fullname,
+            'paketkebijakandirdekom' => $indexData['paketkebijakandirdekom'],
+            'userInGroupPE' => $permissions['pe'],
+            'userInGroupAdmin' => $permissions['admin'],
+            'userInGroupDekom' => $permissions['dekom'],
+            'userInGroupDekom2' => $permissions['dekom2'],
+            'userInGroupDekom3' => $permissions['dekom3'],
+            'userInGroupDekom4' => $permissions['dekom4'],
+            'userInGroupDekom5' => $permissions['dekom5'],
+            'userInGroupDireksi' => $permissions['direksi'],
+            'userInGroupDireksi2' => $permissions['direksi2'],
+            'fullname' => $this->userData['fullname'] ?? 'Unknown',
+            'kodebpr' => $kodebpr,
+            'komentarModel' => $this->getKomentarModel(),
+            'commentReadsModel' => $this->getCommentReadsModel(),
+            'lastVisit' => $lastVisit,
+            'periodeId' => $periodeId,
+            'periodeDetail' => $periodeDetail,
+            'bprData' => $bprData,
+            'accdekomData' => $accdekomData,
+            'accdirutData' => $accdirutData,
+            'periodetransparansi' => $this->getPeriodeModel()->find($periodeId),
+            'penjelastindak' => $indexData['penjelastindak'],
+            'canApprove' => $canApprove
         ];
 
         echo view('templates/v_header', $data);
@@ -85,1391 +253,379 @@ class paketkebijakandirdekom extends Controller
         echo view('templates/v_footer');
     }
 
-    public function tambahgaji()
+    public function tambahpenjelasAjax()
     {
-
         if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
         }
 
-        if (isset($_POST['tambahgaji'])) {
+        if ($this->request->getMethod() === 'post') {
+            // Validate the incoming data
+            $validation = \Config\Services::validation();
             $val = $this->validate([
-                'penerimagajidir' => [
-                    'label' => 'Jumlah Direksi Penerima Gaji',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalgajidir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Gaji Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'penerimagajidekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Gaji',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalgajidekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Gaji Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-
+                'penerimagajidir' => 'required',
+                'nominalgajidir' => 'required',
+                'penerimagajidekom' => 'required',
+                'nominalgajidekom' => 'required',
+                'terimatunjangandir' => 'required',
+                'nominaltunjangandir' => 'required',
+                'terimatunjangandekom' => 'required',
+                'nominaltunjangandekom' => 'required',
+                'terimatantiemdir' => 'required',
+                'nominaltantiemdir' => 'required',
+                'terimatantiemdekom' => 'required',
+                'nominaltantiemdekom' => 'required',
+                'terimashmdir' => 'required',
+                'nominalshmdir' => 'required',
+                'terimashmdekom' => 'required',
+                'nominalshmdekom' => 'required',
+                'terimaremunlaindir' => 'required',
+                'nominalremunlaindir' => 'required',
+                'terimaremunlaindekom' => 'required',
+                'nominalremunlaindekom' => 'required',
+                'terimarumahdir' => 'required',
+                'nominalrumahdir' => 'required',
+                'terimarumahdekom' => 'required',
+                'nominalrumahdekom' => 'required',
+                'terimatransportdir' => 'required',
+                'nominaltransportdir' => 'required',
+                'terimatransportdekom' => 'required',
+                'nominaltransportdekom' => 'required',
+                'terimaasuransidir' => 'required',
+                'nominalasuransidir' => 'required',
+                'terimaasuransidekom' => 'required',
+                'nominalasuransidekom' => 'required',
+                'terimafasilitasdir' => 'required',
+                'nominalfasilitasdir' => 'required',
+                'terimafasilitasdekom' => 'required',
+                'nominalfasilitasdekom' => 'required'
             ]);
 
             if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Gaji Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
+                return $this->response->setJSON(['status' => 'error', 'message' => $validation->listErrors()]);
             } else {
-                $data = [
-                    'penerimagajidir' => $this->request->getPost('penerimagajidir'),
-                    'nominalgajidir' => $this->request->getPost('nominalgajidir'),
-                    'penerimagajidekom' => $this->request->getPost('penerimagajidekom'),
-                    'nominalgajidekom' => $this->request->getPost('nominalgajidekom')
-                ];
+                // Prepare the data to be inserted
+                $userId = $this->auth->id();
+                $kodebpr = $this->userKodebpr;
+                $periodeId = session('active_periode');
 
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahgaji($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahtunjangan()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahtunjangan'])) {
-            $val = $this->validate([
-                'terimatunjangandir' => [
-                    'label' => 'Jumlah Direksi Penerima Tunjangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltunjangandir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tunjangan Direksi',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimatunjangandekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Tunjangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltunjangandekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tunjangan Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Tunjangan Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimatunjangandir' => $this->request->getPost('terimatunjangandir'),
-                    'nominaltunjangandir' => $this->request->getPost('nominaltunjangandir'),
-                    'terimatunjangandekom' => $this->request->getPost('terimatunjangandekom'),
-                    'nominaltunjangandekom' => $this->request->getPost('nominaltunjangandekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahtunjangan($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahtantiem()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahtantiem'])) {
-            $val = $this->validate([
-                'terimatantiemdir' => [
-                    'label' => 'Jumlah Direksi Penerima Tantiem',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltantiemdir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tantiem Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimatantiemdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Tantiem',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltantiemdekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tantiem Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Tantiem Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimatantiemdir' => $this->request->getPost('terimatantiemdir'),
-                    'nominaltantiemdir' => $this->request->getPost('nominaltantiemdir'),
-                    'terimatantiemdekom' => $this->request->getPost('terimatantiemdekom'),
-                    'nominaltantiemdekom' => $this->request->getPost('nominaltantiemdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahtantiem($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahsaham()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahsaham'])) {
-            $val = $this->validate([
-                'terimashmdir' => [
-                    'label' => 'Jumlah Direksi Penerima Kompensasi berbasis saham',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalshmdir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Kompensasi berbasis saham Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimashmdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Kompensasi berbasis saham',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalshmdekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Kompensasi berbasis saham Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Kompensasi berbasis saham Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimashmdir' => $this->request->getPost('terimashmdir'),
-                    'nominalshmdir' => $this->request->getPost('nominalshmdir'),
-                    'terimashmdekom' => $this->request->getPost('terimashmdekom'),
-                    'nominalshmdekom' => $this->request->getPost('nominalshmdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahsaham($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahremun()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahremun'])) {
-            $val = $this->validate([
-                'terimaremunlaindir' => [
-                    'label' => 'Jumlah Direksi Penerima Remunerasi lainnya',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalremunlaindir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Remunerasi lainnya Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimaremunlaindekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Remunerasi lainnya',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalremunlaindekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Remunerasi lainnya Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Remunerasi lainnya Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimaremunlaindir' => $this->request->getPost('terimaremunlaindir'),
-                    'nominalremunlaindir' => $this->request->getPost('nominalremunlaindir'),
-                    'terimaremunlaindekom' => $this->request->getPost('terimaremunlaindekom'),
-                    'nominalremunlaindekom' => $this->request->getPost('nominalremunlaindekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahremun($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahrumah()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahrumah'])) {
-            $val = $this->validate([
-                'terimarumahdir' => [
-                    'label' => 'Jumlah Direksi Penerima Perumahan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalrumahdir' => [
-                    'label' => 'Jumlah Nominal Perumahan Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimarumahdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Perumahan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalrumahdekom' => [
-                    'label' => 'Jumlah Nominal Perumahan Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Perumahan Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimarumahdir' => $this->request->getPost('terimarumahdir'),
-                    'nominalrumahdir' => $this->request->getPost('nominalrumahdir'),
-                    'terimarumahdekom' => $this->request->getPost('terimarumahdekom'),
-                    'nominalrumahdekom' => $this->request->getPost('nominalrumahdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahrumah($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahtransport()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahtransport'])) {
-            $val = $this->validate([
-                'terimatransportdir' => [
-                    'label' => 'Jumlah Direksi Penerima Transportasi (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltransportdir' => [
-                    'label' => 'Jumlah Nominal Transportasi Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimatransportdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Transportasi (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltransportdekom' => [
-                    'label' => 'Jumlah Nominal Transportasi Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Transportasi Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimatransportdir' => $this->request->getPost('terimatransportdir'),
-                    'nominaltransportdir' => $this->request->getPost('nominaltransportdir'),
-                    'terimatransportdekom' => $this->request->getPost('terimatransportdekom'),
-                    'nominaltransportdekom' => $this->request->getPost('nominaltransportdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahtransport($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahasuransi()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahasuransi'])) {
-            $val = $this->validate([
-                'terimaasuransidir' => [
-                    'label' => 'Jumlah Direksi Penerima Asuransi Kesehatan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalasuransidir' => [
-                    'label' => 'Jumlah Nominal Asuransi Kesehatan Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimaasuransidekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Asuransi Kesehatan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalasuransidekom' => [
-                    'label' => 'Jumlah Nominal Asuransi Kesehatan Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Asuransi Kesehatan Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimaasuransidir' => $this->request->getPost('terimaasuransidir'),
-                    'nominalasuransidir' => $this->request->getPost('nominalasuransidir'),
-                    'terimaasuransidekom' => $this->request->getPost('terimaasuransidekom'),
-                    'nominalasuransidekom' => $this->request->getPost('nominalasuransidekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahasuransi($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function tambahfasilitas()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['tambahfasilitas'])) {
-            $val = $this->validate([
-                'terimafasilitasdir' => [
-                    'label' => 'Jumlah Direksi Penerima Fasilitas Lain-Lainnya (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalfasilitasdir' => [
-                    'label' => 'Jumlah Nominal Fasilitas Lain-Lainnya Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimafasilitasdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Fasilitas Lain-Lainnya (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalfasilitasdekom' => [
-                    'label' => 'Jumlah Nominal Fasilitas Lain-Lainnya Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Fasilitas Lain-Lainnya Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $data = [
-                    'terimafasilitasdir' => $this->request->getPost('terimafasilitasdir'),
-                    'nominalfasilitasdir' => $this->request->getPost('nominalfasilitasdir'),
-                    'terimafasilitasdekom' => $this->request->getPost('terimafasilitasdekom'),
-                    'nominalfasilitasdekom' => $this->request->getPost('nominalfasilitasdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->tambahfasilitas($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahgaji()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahgaji'])) {
-            $val = $this->validate([
-                'penerimagajidir' => [
-                    'label' => 'Jumlah Direksi Penerima Gaji',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalgajidir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Gaji Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'penerimagajidekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Gaji',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalgajidekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Gaji Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Jumlah Penyimpangan Internal oleh Anggota Direksi',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
+                // PERBAIKAN: Gunakan method getter untuk model
+                $existingData = $this->getPaketkebijakandirdekomModel()->where(['kodebpr' => $kodebpr, 'periode_id' => $periodeId])->first();
 
                 $data = [
                     'penerimagajidir' => $this->request->getPost('penerimagajidir'),
                     'nominalgajidir' => $this->request->getPost('nominalgajidir'),
                     'penerimagajidekom' => $this->request->getPost('penerimagajidekom'),
-                    'nominalgajidekom' => $this->request->getPost('nominalgajidekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahgaji($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahtunjangan()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahtunjangan'])) {
-            $val = $this->validate([
-                'terimatunjangandir' => [
-                    'label' => 'Jumlah Direksi Penerima Tunjangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltunjangandir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tunjangan Direksi',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimatunjangandekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Tunjangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltunjangandekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tunjangan Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Tunjangan Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominalgajidekom' => $this->request->getPost('nominalgajidekom'),
                     'terimatunjangandir' => $this->request->getPost('terimatunjangandir'),
                     'nominaltunjangandir' => $this->request->getPost('nominaltunjangandir'),
                     'terimatunjangandekom' => $this->request->getPost('terimatunjangandekom'),
-                    'nominaltunjangandekom' => $this->request->getPost('nominaltunjangandekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahtunjangan($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahtantiem()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahtantiem'])) {
-            $val = $this->validate([
-                'terimatantiemdir' => [
-                    'label' => 'Jumlah Direksi Penerima Tantiem',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltantiemdir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tantiem Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimatantiemdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Tantiem',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltantiemdekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Tantiem Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Tantiem Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominaltunjangandekom' => $this->request->getPost('nominaltunjangandekom'),
                     'terimatantiemdir' => $this->request->getPost('terimatantiemdir'),
                     'nominaltantiemdir' => $this->request->getPost('nominaltantiemdir'),
                     'terimatantiemdekom' => $this->request->getPost('terimatantiemdekom'),
-                    'nominaltantiemdekom' => $this->request->getPost('nominaltantiemdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahtantiem($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahsaham()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahsaham'])) {
-            $val = $this->validate([
-                'terimashmdir' => [
-                    'label' => 'Jumlah Direksi Penerima Kompensasi berbasis saham',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalshmdir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Kompensasi berbasis saham Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimashmdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Kompensasi berbasis saham',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalshmdekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Kompensasi berbasis saham Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Kompensasi berbasis saham Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominaltantiemdekom' => $this->request->getPost('nominaltantiemdekom'),
                     'terimashmdir' => $this->request->getPost('terimashmdir'),
                     'nominalshmdir' => $this->request->getPost('nominalshmdir'),
                     'terimashmdekom' => $this->request->getPost('terimashmdekom'),
-                    'nominalshmdekom' => $this->request->getPost('nominalshmdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahsaham($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahremun()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahremun'])) {
-            $val = $this->validate([
-                'terimaremunlaindir' => [
-                    'label' => 'Jumlah Direksi Penerima Remunerasi lainnya',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalremunlaindir' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Remunerasi lainnya Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimaremunlaindekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Remunerasi lainnya',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalremunlaindekom' => [
-                    'label' => 'Jumlah Nominal Keseluruhan Remunerasi lainnya Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Remunerasi lainnya Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominalshmdekom' => $this->request->getPost('nominalshmdekom'),
                     'terimaremunlaindir' => $this->request->getPost('terimaremunlaindir'),
                     'nominalremunlaindir' => $this->request->getPost('nominalremunlaindir'),
                     'terimaremunlaindekom' => $this->request->getPost('terimaremunlaindekom'),
-                    'nominalremunlaindekom' => $this->request->getPost('nominalremunlaindekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahremun($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahrumah()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahrumah'])) {
-            $val = $this->validate([
-                'terimarumahdir' => [
-                    'label' => 'Jumlah Direksi Penerima Perumahan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalrumahdir' => [
-                    'label' => 'Jumlah Nominal Perumahan Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimarumahdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Perumahan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalrumahdekom' => [
-                    'label' => 'Jumlah Nominal Perumahan Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Perumahan Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominalremunlaindekom' => $this->request->getPost('nominalremunlaindekom'),
                     'terimarumahdir' => $this->request->getPost('terimarumahdir'),
                     'nominalrumahdir' => $this->request->getPost('nominalrumahdir'),
                     'terimarumahdekom' => $this->request->getPost('terimarumahdekom'),
-                    'nominalrumahdekom' => $this->request->getPost('nominalrumahdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahrumah($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahtransport()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahtransport'])) {
-            $val = $this->validate([
-                'terimatransportdir' => [
-                    'label' => 'Jumlah Direksi Penerima Transportasi (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltransportdir' => [
-                    'label' => 'Jumlah Nominal Transportasi Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimatransportdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Transportasi (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominaltransportdekom' => [
-                    'label' => 'Jumlah Nominal Transportasi Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Transportasi Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominalrumahdekom' => $this->request->getPost('nominalrumahdekom'),
                     'terimatransportdir' => $this->request->getPost('terimatransportdir'),
                     'nominaltransportdir' => $this->request->getPost('nominaltransportdir'),
                     'terimatransportdekom' => $this->request->getPost('terimatransportdekom'),
-                    'nominaltransportdekom' => $this->request->getPost('nominaltransportdekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahtransport($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahasuransi()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahasuransi'])) {
-            $val = $this->validate([
-                'terimaasuransidir' => [
-                    'label' => 'Jumlah Direksi Penerima Asuransi Kesehatan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalasuransidir' => [
-                    'label' => 'Jumlah Nominal Asuransi Kesehatan Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimaasuransidekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Asuransi Kesehatan (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalasuransidekom' => [
-                    'label' => 'Jumlah Nominal Asuransi Kesehatan Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Asuransi Kesehatan Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominaltransportdekom' => $this->request->getPost('nominaltransportdekom'),
                     'terimaasuransidir' => $this->request->getPost('terimaasuransidir'),
                     'nominalasuransidir' => $this->request->getPost('nominalasuransidir'),
                     'terimaasuransidekom' => $this->request->getPost('terimaasuransidekom'),
-                    'nominalasuransidekom' => $this->request->getPost('nominalasuransidekom')
-                ];
-
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahasuransi($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
-        }
-    }
-
-    public function ubahfasilitas()
-    {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahfasilitas'])) {
-            $val = $this->validate([
-                'terimafasilitasdir' => [
-                    'label' => 'Jumlah Direksi Penerima Fasilitas Lain-Lainnya (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalfasilitasdir' => [
-                    'label' => 'Jumlah Nominal Fasilitas Lain-Lainnya Direksi (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'terimafasilitasdekom' => [
-                    'label' => 'Jumlah Komisaris Penerima Fasilitas Lain-Lainnya (Orang)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'nominalfasilitasdekom' => [
-                    'label' => 'Jumlah Nominal Fasilitas Lain-Lainnya Komisaris (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Fasilitas Lain-Lainnya Bagi Direksi dan Dewan Komisaris',
-                    'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('paketkebijakandirdekom/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
+                    'nominalasuransidekom' => $this->request->getPost('nominalasuransidekom'),
                     'terimafasilitasdir' => $this->request->getPost('terimafasilitasdir'),
                     'nominalfasilitasdir' => $this->request->getPost('nominalfasilitasdir'),
                     'terimafasilitasdekom' => $this->request->getPost('terimafasilitasdekom'),
-                    'nominalfasilitasdekom' => $this->request->getPost('nominalfasilitasdekom')
+                    'nominalfasilitasdekom' => $this->request->getPost('nominalfasilitasdekom'),
+                    'totalremundir' => $this->request->getPost('totalremundir'),
+                    'totalremundekom' => $this->request->getPost('totalremundekom'),
+                    'totalfasdir' => $this->request->getPost('totalfasdir'),
+                    'totalfasdekom' => $this->request->getPost('totalfasdekom'),
+                    'totaldir' => $this->request->getPost('totaldir'),
+                    'totaldekom' => $this->request->getPost('totaldekom'),
+                    'periode_id' => $periodeId,
+                    'user_id' => $userId,
+                    'kodebpr' => $kodebpr,
+                    'fullname' => $this->getUserModel()->find($userId)['fullname'], // PERBAIKAN: Gunakan getter
+                    'accdekom' => 0,
+                    'is_approved' => 0,
                 ];
 
-                // Insert data
-                $this->paketkebijakandirdekomModel->checkIncrement();
-                $success = $this->paketkebijakandirdekomModel->ubahfasilitas($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil diubahkan ');
-                    return redirect()->to(base_url('paketkebijakandirdekom'));
+                if ($existingData) {
+                    // Data sudah ada, lakukan UPDATE
+                    $data['id'] = $existingData['id']; // Pastikan ID disertakan
+
+                    $result = $this->getPaketkebijakandirdekomModel()->save($data);
+
+                    if ($result) {
+                        return $this->response->setJSON([
+                            'status' => 'success',
+                            'message' => 'Data berhasil diperbarui'
+                        ]);
+                    } else {
+                        return $this->response->setJSON([
+                            'status' => 'error',
+                            'message' => 'Gagal memperbarui data'
+                        ]);
+                    }
+                } else {
+                    // Data belum ada, lakukan INSERT
+                    unset($data['id']); // Pastikan tidak ada ID untuk insert
+
+                    $result = $this->getPaketkebijakandirdekomModel()->insert($data);
+
+                    if ($result) {
+                        return $this->response->setJSON([
+                            'status' => 'success',
+                            'message' => 'Data berhasil ditambahkan'
+                        ]);
+                    } else {
+                        return $this->response->setJSON([
+                            'status' => 'error',
+                            'message' => 'Gagal menambahkan data'
+                        ]);
+                    }
                 }
             }
-        } else {
-            return redirect()->to(base_url('paketkebijakandirdekom'));
         }
+
+        return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+    }
+
+    public function getUnreadCommentCountForFactor()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
+
+        $Id = $this->request->getGet('id');
+        $kodebpr = $this->userKodebpr;
+        $userId = $this->userId;
+        $periodeId = session('active_periode');
+
+        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
+
+        $count = $this->getCommentReadsModel()->countUnreadCommentsForUserByFactor($Id, $kodebpr, $userId, $periodeId);
+
+        return $this->response->setJSON(['unread_count' => $count]);
+    }
+
+    public function cekKomentarBaru()
+    {
+        $subkategori = 'Paketkebijakandirdekom';
+        $kodebpr = $this->request->getGet('kodebpr');
+        $lastVisit = $this->request->getGet('last_visit');
+        $periodeId = session('active_periode');
+
+        $results = $this->komentarModel
+            ->select('id, COUNT(*) as jumlah')
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('created_at >', $lastVisit)
+            ->groupBy('id')
+            ->findAll();
+
+        return $this->response->setJSON($results);
+    }
+
+    public function getKomentarByFaktorId()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(404)->setBody('Not Found');
+        }
+        $subkategori = 'Paketkebijakandirdekom';
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        $komentarList = $this->getKomentarModel()->getKomentarByFaktorId($subkategori, $kodebpr, $periodeId);
+
+        return $this->response->setJSON($komentarList);
+    }
+
+    public function Tambahkomentar()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!isset($_POST['TambahKomentar'])) {
+            return redirect()->to(base_url('Paketkebijakandirdekom'));
+        }
+
+        if (!$this->userKodebpr) {
+            session()->setFlashdata('error', 'User tidak memiliki kode BPR yang valid');
+            return redirect()->back();
+        }
+
+        $val = $this->validate([
+            'komentar' => [
+                'label' => 'Komentar',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+        ]);
+
+        if (!$val) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back();
+        }
+
+        $data = [
+            'id' => $this->request->getPost('id'),
+            'subkategori' => 'Paketkebijakandirdekom',
+            'komentar' => $this->request->getPost('komentar'),
+            'fullname' => $this->request->getPost('fullname'),
+            'user_id' => $this->userId,
+            'kodebpr' => $this->userKodebpr,
+            'periode_id' => session('active_periode'),
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+
+        $this->getKomentarModel()->insertKomentar($data);
+        session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
+        return redirect()->to(base_url('Paketkebijakandirdekom') . '?modal_komentar=' . $this->request->getPost('id'));
+    }
+
+    public function markUserCommentsAsRead()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
+
+        $Id = $this->request->getPost('id');
+        $kodebpr = $this->userKodebpr; // Get from property
+        $userId = user_id();
+        $periodeId = session('active_periode');
+
+        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
+
+        // Get all comment IDs for this factor, kodebpr, periode, and not by the current user
+        $commentsToMark = $this->getKomentarModel()->select('id')
+            ->where('subkategori', $Id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('user_id !=', $userId) // Mark comments from others as read
+            ->findAll();
+
+        if (!empty($commentsToMark)) {
+            foreach ($commentsToMark as $comment) {
+                $this->getCommentReadsModel()->markAsRead($comment['id'], $userId);
+            }
+        }
+
+        return $this->response->setJSON(['status' => 'success', 'message' => 'Comments marked as read for this user.']);
+    }
+
+    public function saveKomentar()
+    {
+        $data = [
+            'id' => $this->request->getPost('id'),
+            'kodebpr' => $this->request->getPost('kodebpr'),
+            'komentar' => $this->request->getPost('komentar'),
+            'is_read' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'user_id' => session()->get('user_id')
+        ];
+
+        $this->komentarModel->insert($data);
+        return $this->response->setJSON(['status' => 'comment_saved']);
+    }
+
+    public function tambahketerangan()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!isset($_POST['tambahketerangan'])) {
+            return redirect()->to(base_url('Paketkebijakandirdekom'));
+        }
+
+        $val = $this->validate([
+            'tindaklanjut' => [
+                'label' => 'Penjelasan lebih lanjut',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ]
+        ]);
+
+        if (!$val) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back()->withInput();
+        }
+
+        $periodeId = session('active_periode');
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $penjelastindak = [
+            'subkategori' => 'Paketkebijakandirdekom',
+            'tindaklanjut' => $this->request->getPost('tindaklanjut'),
+            'kodebpr' => $kodebpr,
+            'periode_id' => $periodeId,
+            'fullname' => $this->userData['fullname'] ?? null,
+            'user_id' => $this->userId,
+        ];
+
+        $this->getPenjelastindakModel()->tambahpenjelastindak($penjelastindak);
+        session()->setFlashdata('message', 'Data berhasil diubah');
+
+        return redirect()->to(base_url('Paketkebijakandirdekom'));
+    }
+
+    public function editketerangan()
+    {
+        $id = $this->request->getPost('id');
+        $subkategori = 'Keuangandirdekompshm';
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $periodeId = session('active_periode');
+        if (!$periodeId) {
+            return redirect()->back()->with('error', 'Periode tidak valid');
+        }
+
+        $tindaklanjut = $this->request->getPost('tindaklanjut');
+        if (empty($tindaklanjut)) {
+            return redirect()->back()->with('error', 'Tindak Lanjut atau Penjelasan tidak boleh kosong');
+        }
+
+        $data = [
+            'tindaklanjut' => $tindaklanjut,
+            'user_id' => $this->userId,
+            'kodebpr' => $kodebpr,
+        ];
+
+        if ($this->getPenjelastindakModel()->editberdasarkankodedanperiode($data, $subkategori, $kodebpr, $periodeId)) {
+            session()->setFlashdata('message', 'Data berhasil diubah');
+        } else {
+            session()->setFlashdata('err', 'Gagal mengubah data');
+        }
+
+        return redirect()->to(base_url('Keuangandirdekompshm'));
     }
 
     public function ubahketerangan()
@@ -1531,128 +687,269 @@ class paketkebijakandirdekom extends Controller
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
             return redirect()->to($redirectURL);
         }
 
-        // Memanggil fungsi hapus pada paketkebijakandirdekomModel dan menyimpan hasilnya dalam variabel $success
-        $this->paketkebijakandirdekomModel->hapus($id);
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        $this->paketkebijakandirdekomModel = new M_paketkebijakandirdekom();
+
+        $this->paketkebijakandirdekomModel->builder()
+            ->where('id', $id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->delete();
+
         session()->setFlashdata('message', 'Data berhasil dihapus');
+        return redirect()->to(base_url('Paketkebijakandirdekom'));
+    }
 
-        return redirect()->to(base_url('paketkebijakandirdekom'));
+    private function updateApprovalStatus($id, $isApproved, $successMessage, $errorMessage)
+    {
+        if (!is_numeric($id) || $id <= 0) {
+            session()->setFlashdata('err', 'ID tidak valid.');
+            return redirect()->back();
+        }
 
+        $data = $this->getPaketkebijakandirdekomModel()->find($id);
+        if (!$data) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
+            return redirect()->back();
+        }
+
+        $dataUpdate = [
+            'id' => $id,
+            'is_approved' => $isApproved,
+            'approved_by' => $this->userId,
+            'approved_at' => $isApproved ? date('Y-m-d H:i:s') : null,
+        ];
+
+        if ($this->getPaketkebijakandirdekomModel()->save($dataUpdate)) {
+            session()->setFlashdata('message', $successMessage);
+        } else {
+            session()->setFlashdata('err', $errorMessage);
+        }
+
+        return redirect()->back();
     }
 
     public function approve($idpaketkebijakandirdekom)
     {
-        if (!is_numeric($idpaketkebijakandirdekom) || $idpaketkebijakandirdekom <= 0) {
-            session()->setFlashdata('err', 'ID Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR tidak valid.');
-            return redirect()->back();
-        }
-
-        $paketkebijakandirdekom = $this->paketkebijakandirdekomModel->find($idpaketkebijakandirdekom);
-        if (!$paketkebijakandirdekom) {
-            session()->setFlashdata('err', 'Data Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR dengan ID tersebut tidak ditemukan.');
-            return redirect()->back();
-        }
-
-        date_default_timezone_set('Asia/Jakarta');
-
-        $userId = service('authentication')->id();
-
-        $dataUpdate = [
-            'id' => $idpaketkebijakandirdekom,
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
-
-        if ($this->paketkebijakandirdekomModel->save($dataUpdate)) {
-            session()->setFlashdata('message', 'Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR berhasil disetujui.');
-            return redirect()->back();
-        } else {
-            session()->setFlashdata('err', 'Terjadi kesalahan saat melakukan approval.');
-            return redirect()->back();
-        }
+        return $this->updateApprovalStatus(
+            $idpaketkebijakandirdekom,
+            1,
+            'Data berhasil disetujui.',
+            'Terjadi kesalahan saat melakukan approval.'
+        );
     }
 
     public function unapprove($idpaketkebijakandirdekom)
     {
-        if (!is_numeric($idpaketkebijakandirdekom) || $idpaketkebijakandirdekom <= 0) {
-            session()->setFlashdata('err', 'ID Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR tidak valid.');
-            return redirect()->back();
-        }
+        return $this->updateApprovalStatus(
+            $idpaketkebijakandirdekom,
+            0,
+            'Approval dibatalkan.',
+            'Terjadi kesalahan saat membatalkan approval.'
+        );
+    }
 
-        $paketkebijakandirdekom = $this->paketkebijakandirdekomModel->find($idpaketkebijakandirdekom);
-        if (!$paketkebijakandirdekom) {
-            session()->setFlashdata('err', 'Data Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR dengan ID tersebut tidak ditemukan.');
-            return redirect()->back();
-        }
-
+    private function bulkUpdateApproval($isApproved, $field, $successMessage, $isError = false)
+    {
         date_default_timezone_set('Asia/Jakarta');
+        $userId = $this->userId;
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
 
-        $userId = service('authentication')->id();
+        if (!$kodebpr || !$periodeId) {
+            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
+            return redirect()->back();
+        }
+
+        $count = $this->getPaketkebijakandirdekomModel()
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->countAllResults();
+
+        if ($count === 0) {
+            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
+            return redirect()->back();
+        }
+
+        $currentTimestamp = date('Y-m-d H:i:s');
 
         $dataUpdate = [
-            'id' => $idpaketkebijakandirdekom,
-            'is_approved' => 2,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            $field => $isApproved,
+            'approved_by' => $isApproved ? $this->userId : null,
+            $field . '_at' => $isApproved ? $currentTimestamp : null,
         ];
 
-        if ($this->paketkebijakandirdekomModel->save($dataUpdate)) {
-            session()->setFlashdata('err', 'Approval Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR dibatalkan.');
-            return redirect()->back();
+        // Tambahkan update untuk approved_at dan accdekom_at jika field utama disetujui
+        if ($isApproved) {
+            if ($field === 'is_approved') {
+                $dataUpdate['approved_at'] = $currentTimestamp;
+            } elseif ($field === 'accdekom') {
+                $dataUpdate['accdekom_at'] = $currentTimestamp;
+            }
         } else {
-            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan approval.');
+            // Jika dibatalkan, set timestamp menjadi null
+            if ($field === 'is_approved') {
+                $dataUpdate['approved_at'] = null;
+            } elseif ($field === 'accdekom') {
+                $dataUpdate['accdekom_at'] = null;
+            }
+        }
+
+        try {
+            $updated = $this->getPaketkebijakandirdekomModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->set($dataUpdate)
+                ->update();
+
+            if (!$updated) {
+                session()->setFlashdata('err', 'Gagal mengupdate data approval');
+                return redirect()->back();
+            }
+
+            if ($isError) {
+                session()->setFlashdata('err', $successMessage);
+            } else {
+                session()->setFlashdata('message', $successMessage);
+            }
+
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in bulk approval: ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
             return redirect()->back();
         }
     }
 
     public function approveSemua()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
-        $dataUpdate = [
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
-
-        $this->paketkebijakandirdekomModel->builder()->update($dataUpdate);
-
-        session()->setFlashdata('message', 'Semua Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR berhasil disetujui.');
-        return redirect()->back();
+        return $this->bulkUpdateApproval(1, 'is_approved', 'Semua data berhasil disetujui.');
     }
 
     public function unapproveSemua()
     {
+        return $this->bulkUpdateApproval(0, 'is_approved', 'Semua approval dibatalkan.', true);
+    }
 
+    // Method untuk update approval komisaris saja (tanpa dependency)
+    private function updateKomisarisApproval($isApproved)
+    {
+        $field = 'accdekom';
+        $successMessage = $isApproved ? 'Persetujuan komisaris utama berhasil diberikan.' : 'Persetujuan komisaris utama dibatalkan.';
+
+        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
+    }
+
+    // Method untuk update approval direktur saja (tanpa dependency)
+    private function updateDirekturApproval($isApproved)
+    {
+        $field = 'is_approved';
+        $successMessage = $isApproved ? 'Persetujuan direktur utama berhasil diberikan.' : 'Persetujuan direktur utama dibatalkan.';
+
+        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
+    }
+
+    // Public methods dengan dependency yang benar
+    public function approveSemuaKom()
+    {
+        return $this->updateKomisarisApproval(1);
+    }
+
+    public function unapproveSemuaKom()
+    {
+        // Ketika komisaris dibatalkan, direktur juga harus dibatalkan
+        $this->updateDirekturApproval(0);  // Batalkan direktur dulu
+        return $this->updateKomisarisApproval(0);  // Lalu batalkan komisaris
+    }
+
+    public function approveSemuaDirut()
+    {
+        return $this->updateDirekturApproval(1);
+    }
+
+    public function unapproveSemuaDirut()
+    {
+        // Ketika direktur dibatalkan, hanya direktur saja yang dibatalkan
+        // TIDAK perlu membatalkan komisaris
+        return $this->updateDirekturApproval(0);
+    }
+
+    // ATAU jika Anda ingin hierarchy yang ketat:
+// Dimana pembatalan komisaris akan membatalkan direktur juga
+
+    public function unapproveSemuaKomWithHierarchy()
+    {
+        try {
+            // 1. Batalkan direktur terlebih dahulu
+            $this->updateDirekturApproval(0);
+
+            // 2. Baru batalkan komisaris
+            $result = $this->updateKomisarisApproval(0);
+
+            // 3. Set pesan gabungan
+            session()->setFlashdata('message', 'Persetujuan komisaris dan direktur utama telah dibatalkan.');
+
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in unapprove hierarchy: ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan persetujuan.');
+            return redirect()->back();
+        }
+    }
+
+    private function updateApprovalStatusKom($id, $isApproved, $successMessage, $errorMessage)
+    {
         date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
+        if (!is_numeric($id) || $id <= 0) {
+            session()->setFlashdata('err', 'ID tidak valid.');
+            return redirect()->back();
+        }
+
+        $data = $this->getPaketkebijakandirdekomModel()->find($id);
+        if (!$data) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
+            return redirect()->back();
+        }
+
         $dataUpdate = [
-            'is_approved' => 2,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            'id' => $id,
+            'accdekom' => $isApproved,
+            'accdekom_by' => $isApproved ? $this->userId : null,
+            'accdekom_at' => $isApproved ? date('Y-m-d H:i:s') : null,
         ];
 
-        $this->paketkebijakandirdekomModel->builder()->update($dataUpdate);
+        if ($this->getPaketkebijakandirdekomModel()->save($dataUpdate)) {
+            session()->setFlashdata('message', $successMessage);
+        } else {
+            session()->setFlashdata('err', $errorMessage);
+        }
 
-        session()->setFlashdata('err', 'Semua approval Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR dibatalkan.');
         return redirect()->back();
     }
 
-    public function excel()
+    public function setNullKolomTindak($id)
     {
-        $data = [
-            'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData()
-        ];
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
 
-        echo view('paketkebijakandirdekom/excel', $data);
+        $result = $this->getPaketkebijakandirdekomModel()->setNullKolomTindak($id);
 
+        if ($result) {
+            session()->setFlashdata('message', 'Data berhasil dihapus');
+        } else {
+            session()->setFlashdata('err', 'Data gagal dihapus');
+        }
+
+        return redirect()->to(base_url('Paketkebijakandirdekom'));
     }
-
-
 
     public function exporttxtpaketkebijakandirdekom()
     {
@@ -1662,8 +959,22 @@ class paketkebijakandirdekom extends Controller
             return redirect()->to($redirectURL);
         }
 
-        $data_paketkebijakandirdekom = $this->paketkebijakandirdekomModel->getAllData();
-        $data_infobpr = $this->infobprModel->getAllData();
+        $this->paketkebijakandirdekomModel = model('M_paketkebijakandirdekom');
+        $this->infobprModel = model('M_infobpr');
+        $this->penjelastindakModel = model('M_penjelastindak');
+
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        $subkategori = "Paketkebijakandirdekom";
+
+        $data_paketkebijakandirdekom = $this->paketkebijakandirdekomModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
+
+        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
+        $data_penjelastindak = $this->penjelastindakModel->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
 
         $sandibpr = '';
         $kodejenis = '';
@@ -1673,132 +984,227 @@ class paketkebijakandirdekom extends Controller
             $kodejenis = $infobpr['kodejenis'];
         }
 
-        $output = "";
-        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|2025-05-31|LTBPRK|E0500|0|\n";
+        $isEmpty = function ($value) {
+            return empty($value) || is_null($value) || $value === '' || $value === '0';
+        };
 
-        // Initialize totals
-        $totalNominalDireksiAll = 0;
-        $totalNominalDekomAll = 0;
-        $totalAdditionalDireksiAll = 0;
-        $totalAdditionalDekomAll = 0;
+        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
+        $exportDate = $periodeDetail['tahun'] ?? date('Y');
+
+        $output = "";
+        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|" . $exportDate . "-12-31|LTBPRK|E0500|0|" . "\r\n";
 
         foreach ($data_paketkebijakandirdekom as $row) {
-            $hasDetail = false;
-            $detailRows = [];
+            $hasValidData = false;
+            $penerimagajidir = isset($row['penerimagajidir']) && !$isEmpty($row['penerimagajidir']) ? $row['penerimagajidir'] : '';
+            $nominalgajidir = isset($row['nominalgajidir']) && !$isEmpty($row['nominalgajidir']) ? $row['nominalgajidir'] : '';
+            $penerimagajidekom = isset($row['penerimagajidekom']) && !$isEmpty($row['penerimagajidekom']) ? $row['penerimagajidekom'] : '';
+            $nominalgajidekom = isset($row['nominalgajidekom']) && !$isEmpty($row['nominalgajidekom']) ? $row['nominalgajidekom'] : '';
 
-            // Gaji
-            if (!empty($row['penerimagajidir']) || !empty($row['nominalgajidir']) || !empty($row['penerimagajidekom']) || !empty($row['nominalgajidekom'])) {
-                $detailRows[] = "D01|" . "611" . "|" . $row['penerimagajidir'] . "|" . $row['nominalgajidir'] . "|" . $row['penerimagajidekom'] . "|" . $row['nominalgajidekom'];
-                $hasDetail = true;
+            if ($penerimagajidir !== '' || $nominalgajidir !== '' || $penerimagajidekom !== '' || $nominalgajidekom !== '') {
+                $hasValidData = true;
             }
 
-            // Tunjangan
-            if (!empty($row['terimatunjangandir']) || !empty($row['nominaltunjangandir']) || !empty($row['terimatunjangandekom']) || !empty($row['nominaltunjangandekom'])) {
-                $detailRows[] = "D01|" . "612" . "|" . $row['terimatunjangandir'] . "|" . $row['nominaltunjangandir'] . "|" . $row['terimatunjangandekom'] . "|" . $row['nominaltunjangandekom'];
-                $hasDetail = true;
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "611" . "|" . $penerimagajidir . "|" . $nominalgajidir . "|" . $penerimagajidekom . "|" . $nominalgajidekom . "\r\n";
             }
-
-            // Tantiem
-            if (!empty($row['terimatantiemdir']) || !empty($row['nominaltantiemdir']) || !empty($row['terimatantiemdekom']) || !empty($row['nominaltantiemdekom'])) {
-                $detailRows[] = "D01|" . "613" . "|" . $row['terimatantiemdir'] . "|" . $row['nominaltantiemdir'] . "|" . $row['terimatantiemdekom'] . "|" . $row['nominaltantiemdekom'];
-                $hasDetail = true;
-            }
-
-            // SHM
-            if (!empty($row['terimashmdir']) || !empty($row['nominalshmdir']) || !empty($row['terimashmdekom']) || !empty($row['nominalshmdekom'])) {
-                $detailRows[] = "D01|" . "614" . "|" . $row['terimashmdir'] . "|" . $row['nominalshmdir'] . "|" . $row['terimashmdekom'] . "|" . $row['nominalshmdekom'];
-                $hasDetail = true;
-            }
-
-            // Remunerasi Lain
-            if (!empty($row['terimaremunlaindir']) || !empty($row['nominalremunlaindir']) || !empty($row['terimaremunlaindekom']) || !empty($row['nominalremunlaindekom'])) {
-                $detailRows[] = "D01|" . "615" . "|" . $row['terimaremunlaindir'] . "|" . $row['nominalremunlaindir'] . "|" . $row['terimaremunlaindekom'] . "|" . $row['nominalremunlaindekom'];
-                $hasDetail = true;
-            }
-
-            // Perumahan
-            if (!empty($row['terimarumahdir']) || !empty($row['nominalrumahdir']) || !empty($row['terimarumahdekom']) || !empty($row['nominalrumahdekom'])) {
-                $detailRows[] = "D01|" . "621" . "|" . $row['terimarumahdir'] . "|" . $row['nominalrumahdir'] . "|" . $row['terimarumahdekom'] . "|" . $row['nominalrumahdekom'];
-                $hasDetail = true;
-            }
-
-            // Transportasi
-            if (!empty($row['terimatransportdir']) || !empty($row['nominaltransportdir']) || !empty($row['terimatransportdekom']) || !empty($row['nominaltransportdekom'])) {
-                $detailRows[] = "D01|" . "622" . "|" . $row['terimatransportdir'] . "|" . $row['nominaltransportdir'] . "|" . $row['terimatransportdekom'] . "|" . $row['nominaltransportdekom'];
-                $hasDetail = true;
-            }
-
-            // Asuransi
-            if (!empty($row['terimaasuransidir']) || !empty($row['nominalasuransidir']) || !empty($row['terimaasuransidekom']) || !empty($row['nominalasuransidekom'])) {
-                $detailRows[] = "D01|" . "623" . "|" . $row['terimaasuransidir'] . "|" . $row['nominalasuransidir'] . "|" . $row['terimaasuransidekom'] . "|" . $row['nominalasuransidekom'];
-                $hasDetail = true;
-            }
-
-            // Fasilitas Lain
-            if (!empty($row['terimafasilitasdir']) || !empty($row['nominalfasilitasdir']) || !empty($row['terimafasilitasdekom']) || !empty($row['nominalfasilitasdekom'])) {
-                $detailRows[] = "D01|" . "624" . "|" . $row['terimafasilitasdir'] . "|" . $row['nominalfasilitasdir'] . "|" . $row['terimafasilitasdekom'] . "|" . $row['nominalfasilitasdekom'];
-                $hasDetail = true;
-            }
-
-            // Cetak baris detail
-            foreach ($detailRows as $detailRow) {
-                $output .= $detailRow . "\n";
-            }
-
-            // Calculate totals for this row (611-615)
-            $totalNominalDireksi = (float) ($row['nominalgajidir'] ?? 0) +
-                (float) ($row['nominaltunjangandir'] ?? 0) +
-                (float) ($row['nominaltantiemdir'] ?? 0) +
-                (float) ($row['nominalshmdir'] ?? 0) +
-                (float) ($row['nominalremunlaindir'] ?? 0);
-
-            $totalNominalDekom = (float) ($row['nominalgajidekom'] ?? 0) +
-                (float) ($row['nominaltunjangandekom'] ?? 0) +
-                (float) ($row['nominaltantiemdekom'] ?? 0) +
-                (float) ($row['nominalshmdekom'] ?? 0) +
-                (float) ($row['nominalremunlaindekom'] ?? 0);
-
-            // Calculate additional benefits totals (621-624)
-            $totalAdditionalDireksi = (float) ($row['nominalrumahdir'] ?? 0) +
-                (float) ($row['nominaltransportdir'] ?? 0) +
-                (float) ($row['nominalasuransidir'] ?? 0) +
-                (float) ($row['nominalfasilitasdir'] ?? 0);
-
-            $totalAdditionalDekom = (float) ($row['nominalrumahdekom'] ?? 0) +
-                (float) ($row['nominaltransportdekom'] ?? 0) +
-                (float) ($row['nominalasuransidekom'] ?? 0) +
-                (float) ($row['nominalfasilitasdekom'] ?? 0);
-
-            // Add to grand totals
-            $totalNominalDireksiAll += $totalNominalDireksi;
-            $totalNominalDekomAll += $totalNominalDekom;
-            $totalAdditionalDireksiAll += $totalAdditionalDireksi;
-            $totalAdditionalDekomAll += $totalAdditionalDekom;
         }
 
-        // Add the total lines at the end if there were any details
-        if (!empty($data_paketkebijakandirdekom)) {
-            // Total for 611-615 (placed after all records, not per record)
-            $output .= "D01|" . "616" . "|" . "|" . $totalNominalDireksiAll . "|" . "|" . $totalNominalDekomAll . "\n";
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $penerimatunjangandir = isset($row['terimatunjangandir']) && !$isEmpty($row['terimatunjangandir']) ? $row['terimatunjangandir'] : '';
+            $nominaltunjangandir = isset($row['nominaltunjangandir']) && !$isEmpty($row['nominaltunjangandir']) ? $row['nominaltunjangandir'] : '';
+            $penerimatunjangandekom = isset($row['terimatunjangandekom']) && !$isEmpty($row['terimatunjangandekom']) ? $row['terimatunjangandekom'] : '';
+            $nominaltunjangandekom = isset($row['nominaltunjangandekom']) && !$isEmpty($row['nominaltunjangandekom']) ? $row['nominaltunjangandekom'] : '';
 
-            // Total for 621-624
-            $output .= "D01|" . "625" . "|" . "|" . $totalAdditionalDireksiAll . "|" . "|" . $totalAdditionalDekomAll . "\n";
+            if ($penerimatunjangandir !== '' || $nominaltunjangandir !== '' || $penerimatunjangandekom !== '' || $nominaltunjangandekom !== '') {
+                $hasValidData = true;
+            }
 
-            // Grand Total (616 + 625)
-            $grandTotalDireksi = $totalNominalDireksiAll + $totalAdditionalDireksiAll;
-            $grandTotalDekom = $totalNominalDekomAll + $totalAdditionalDekomAll;
-            $output .= "D01|" . "630" . "|" . "|" . $grandTotalDireksi . "|" . "|" . $grandTotalDekom . "\n";
-
-            $footer_row = end($data_paketkebijakandirdekom);
-            $output .= "F01|" . "Footer 1" . "|" . $footer_row['keterangan'];
-        } else {
-            $output .= "F01|" . "Footer 1" . "|";
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "612" . "|" . $penerimatunjangandir . "|" . $nominaltunjangandir . "|" . $penerimatunjangandekom . "|" . $nominaltunjangandekom . "\r\n";
+            }
         }
 
-        $this->response->setHeader('Content-Type', 'text/plain');
-        $this->response->setHeader('Content-Disposition', 'attachment; filename="LTBPRK-E0500-R-A-20250531-"' . $sandibpr . '-01.txt"');
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $terimatantiemdir = isset($row['terimatantiemdir']) && !$isEmpty($row['terimatantiemdir']) ? $row['terimatantiemdir'] : '';
+            $nominaltantiemdir = isset($row['nominaltantiemdir']) && !$isEmpty($row['nominaltantiemdir']) ? $row['nominaltantiemdir'] : '';
+            $terimatantiemdekom = isset($row['terimatantiemdekom']) && !$isEmpty($row['terimatantiemdekom']) ? $row['terimatantiemdekom'] : '';
+            $nominaltantiemdekom = isset($row['nominaltantiemdekom']) && !$isEmpty($row['nominaltantiemdekom']) ? $row['nominaltantiemdekom'] : '';
 
-        echo $output;
+            if ($terimatantiemdir !== '' || $nominaltantiemdir !== '' || $terimatantiemdekom !== '' || $nominaltantiemdekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "613" . "|" . $terimatantiemdir . "|" . $nominaltantiemdir . "|" . $terimatantiemdekom . "|" . $nominaltantiemdekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $terimashmdir = isset($row['terimashmdir']) && !$isEmpty($row['terimashmdir']) ? $row['terimashmdir'] : '';
+            $nominalshmdir = isset($row['nominalshmdir']) && !$isEmpty($row['nominalshmdir']) ? $row['nominalshmdir'] : '';
+            $terimashmdekom = isset($row['terimashmdekom']) && !$isEmpty($row['terimashmdekom']) ? $row['terimashmdekom'] : '';
+            $nominalshmdekom = isset($row['nominalshmdekom']) && !$isEmpty($row['nominalshmdekom']) ? $row['nominalshmdekom'] : '';
+
+            if ($terimashmdir !== '' || $nominalshmdir !== '' || $terimashmdekom !== '' || $nominalshmdekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "614" . "|" . $terimashmdir . "|" . $nominalshmdir . "|" . $terimashmdekom . "|" . $nominalshmdekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $terimaremunlaindir = isset($row['terimaremunlaindir']) && !$isEmpty($row['terimaremunlaindir']) ? $row['terimaremunlaindir'] : '';
+            $nominalremunlaindir = isset($row['nominalremunlaindir']) && !$isEmpty($row['nominalremunlaindir']) ? $row['nominalremunlaindir'] : '';
+            $terimaremunlaindekom = isset($row['terimaremunlaindekom']) && !$isEmpty($row['terimaremunlaindekom']) ? $row['terimaremunlaindekom'] : '';
+            $nominalremunlaindekom = isset($row['nominalremunlaindekom']) && !$isEmpty($row['nominalremunlaindekom']) ? $row['nominalremunlaindekom'] : '';
+
+            if ($terimaremunlaindir !== '' || $nominalremunlaindir !== '' || $terimaremunlaindekom !== '' || $nominalremunlaindekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "615" . "|" . $terimaremunlaindir . "|" . $nominalremunlaindir . "|" . $terimaremunlaindekom . "|" . $nominalremunlaindekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $totalremundir = isset($row['totalremundir']) && !$isEmpty($row['totalremundir']) ? $row['totalremundir'] : '';
+            $totalremundekom = isset($row['totalremundekom']) && !$isEmpty($row['totalremundekom']) ? $row['totalremundekom'] : '';
+
+            if ($totalremundir !== '' || $totalremundekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "616" . "|" . "|" . $totalremundir . "|" . "|" . $totalremundekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $terimarumahdir = isset($row['terimarumahdir']) && !$isEmpty($row['terimarumahdir']) ? $row['terimarumahdir'] : '';
+            $nominalrumahdir = isset($row['nominalrumahdir']) && !$isEmpty($row['nominalrumahdir']) ? $row['nominalrumahdir'] : '';
+            $terimarumahdekom = isset($row['terimarumahdekom']) && !$isEmpty($row['terimarumahdekom']) ? $row['terimarumahdekom'] : '';
+            $nominalrumahdekom = isset($row['nominalrumahdekom']) && !$isEmpty($row['nominalrumahdekom']) ? $row['nominalrumahdekom'] : '';
+
+            if ($terimarumahdir !== '' || $nominalrumahdir !== '' || $terimarumahdekom !== '' || $nominalrumahdekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "621" . "|" . $terimarumahdir . "|" . $nominalrumahdir . "|" . $terimarumahdekom . "|" . $nominalrumahdekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $terimatransportdir = isset($row['terimatransportdir']) && !$isEmpty($row['terimatransportdir']) ? $row['terimatransportdir'] : '';
+            $nominaltransportdir = isset($row['nominaltransportdir']) && !$isEmpty($row['nominaltransportdir']) ? $row['nominaltransportdir'] : '';
+            $terimatransportdekom = isset($row['terimatransportdekom']) && !$isEmpty($row['terimatransportdekom']) ? $row['terimatransportdekom'] : '';
+            $nominaltransportdekom = isset($row['nominaltransportdekom']) && !$isEmpty($row['nominaltransportdekom']) ? $row['nominaltransportdekom'] : '';
+
+            if ($terimatransportdir !== '' || $nominaltransportdir !== '' || $terimatransportdekom !== '' || $nominaltransportdekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "622" . "|" . $terimatransportdir . "|" . $nominaltransportdir . "|" . $terimatransportdekom . "|" . $nominaltransportdekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $terimaasuransidir = isset($row['terimaasuransidir']) && !$isEmpty($row['terimaasuransidir']) ? $row['terimaasuransidir'] : '';
+            $nominalasuransidir = isset($row['nominalasuransidir']) && !$isEmpty($row['nominalasuransidir']) ? $row['nominalasuransidir'] : '';
+            $terimaasuransidekom = isset($row['terimaasuransidekom']) && !$isEmpty($row['terimaasuransidekom']) ? $row['terimaasuransidekom'] : '';
+            $nominalasuransidekom = isset($row['nominalasuransidekom']) && !$isEmpty($row['nominalasuransidekom']) ? $row['nominalasuransidekom'] : '';
+
+            if ($terimaasuransidir !== '' || $nominalasuransidir !== '' || $terimaasuransidekom !== '' || $nominalasuransidekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "623" . "|" . $terimaasuransidir . "|" . $nominalasuransidir . "|" . $terimaasuransidekom . "|" . $nominalasuransidekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $terimafasilitasdir = isset($row['terimafasilitasdir']) && !$isEmpty($row['terimafasilitasdir']) ? $row['terimafasilitasdir'] : '';
+            $nominalfasilitasdir = isset($row['nominalfasilitasdir']) && !$isEmpty($row['nominalfasilitasdir']) ? $row['nominalfasilitasdir'] : '';
+            $terimafasilitasdekom = isset($row['terimafasilitasdekom']) && !$isEmpty($row['terimafasilitasdekom']) ? $row['terimafasilitasdekom'] : '';
+            $nominalfasilitasdekom = isset($row['nominalfasilitasdekom']) && !$isEmpty($row['nominalfasilitasdekom']) ? $row['nominalfasilitasdekom'] : '';
+
+            if ($terimafasilitasdir !== '' || $nominalfasilitasdir !== '' || $terimafasilitasdekom !== '' || $nominalfasilitasdekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "624" . "|" . $terimafasilitasdir . "|" . $nominalfasilitasdir . "|" . $nominalfasilitasdekom . "|" . $nominalfasilitasdekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $totalfasdir = isset($row['totalfasdir']) && !$isEmpty($row['totalfasdir']) ? $row['totalfasdir'] : '';
+            $totalfasdekom = isset($row['totalfasdekom']) && !$isEmpty($row['totalfasdekom']) ? $row['totalfasdekom'] : '';
+
+            if ($totalfasdir !== '' || $totalfasdekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "625" . "|" . "|" . $totalfasdir . "|" . "|" . $totalfasdekom . "\r\n";
+            }
+        }
+
+        foreach ($data_paketkebijakandirdekom as $row) {
+            $hasValidData = false;
+            $totaldir = isset($row['totaldir']) && !$isEmpty($row['totaldir']) ? $row['totaldir'] : '';
+            $totaldekom = isset($row['totaldekom']) && !$isEmpty($row['totaldekom']) ? $row['totaldekom'] : '';
+
+            if ($totaldir !== '' || $totaldekom !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "630" . "|" . "|" . $totaldir . "|" . "|" . $totaldekom . "\r\n";
+            }
+        }
+
+        foreach ($data_penjelastindak as $penjelas) {
+            if (!empty($penjelas['tindaklanjut']) && $penjelas['tindaklanjut'] !== null) {
+                $tindaklanjut = str_replace(array("\r", "\n"), ' ', $penjelas['tindaklanjut']);
+                $output .= "F01|" . $tindaklanjut . "\r\n";
+            }
+        }
+
+        $filename = "LTBPRK-E0500-R-A-" . $exportDate . "1231-" . $sandibpr . "-01.txt";
+
+        $response = service('response');
+        $response->setHeader('Content-Type', 'text/plain');
+        $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        return $response->setBody($output);
     }
 
 

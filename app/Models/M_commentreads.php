@@ -11,14 +11,13 @@ class M_commentreads extends Model
     protected $useAutoIncrement = true;
 
     protected $returnType = 'array';
-    protected $useSoftDeletes = false; // Assuming you don't soft delete read records
+    protected $useSoftDeletes = false; 
 
     protected $allowedFields = ['comment_id', 'user_id', 'read_at'];
 
     protected bool $allowEmptyInserts = false;
 
-    // Dates
-    protected $useTimestamps = true; // Use CodeIgniter's automatic timestamps
+    protected $useTimestamps = true; 
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';

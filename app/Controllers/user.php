@@ -3,15 +3,19 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
+use App\Models\M_user;
 
-class user extends Controller
+class User extends Controller
 {
+    protected $userModel;
+    protected $auth;
+
     public function __construct()
     {
-        // Most services in this controller require
-        // the session to be started - so fire it up!
         $this->session = service('session');
-        $this->auth   = service('authentication');
+        $this->auth = service('authentication');
+        $this->authorize = service('authorization');
+        $this->userModel = new M_user();
     }
 
     public function index()
@@ -27,7 +31,6 @@ class user extends Controller
             'judul' => 'My Profile',
 
         ];
-        
 
         echo view('templates/v_header', $data);
         echo view('templates/v_sidebar');
@@ -35,5 +38,33 @@ class user extends Controller
         echo view('user/index', $data);
         echo view('templates/v_footer');
     }
-    
+
+    public function updateEmail($id)
+    {
+        if (!$this->auth->check()) {
+            return redirect()->to('/login');
+        }
+
+        // Debug - lihat data yang diterima
+        // dd($this->request->getPost());
+
+        $rules = [
+            'email' => 'required|valid_email|is_unique[users.email,id,' . $id . ']'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $data = [
+            'email' => $this->request->getPost('email')
+        ];
+
+        $this->userModel->update($id, $data);
+
+        return redirect()->back()->with('message', 'Email berhasil diperbarui');
+    }
+
+
+
 }

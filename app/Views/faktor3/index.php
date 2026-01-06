@@ -433,6 +433,8 @@
                             <th>Sub Kategori</th>
                             <th>Nilai</th>
                             <th>Keterangan</th>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </thead>
                     <!-- Table body -->
@@ -611,7 +613,7 @@
                                             }
                                             ?>
                                         <?php endif; ?>
-                                        <?php if ($userInGroupAdmin || $userInGroupDireksi2 || $userInGroupDireksi2): ?>
+                                        <?php if ($userInGroupAdmin || $userInGroupDireksi2 || $userInGroupDireksi): ?>
                                             <?php
                                             // Mendapatkan nilai user_id dan active_periode dari session
                                             $currentUserId = session()->get('user_id');
@@ -1103,37 +1105,45 @@
         </div>
     </div>
     <br>
-    <div class="d-flex justify-content-center">
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group me-2" role="group" aria-label="First group">
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('periode'); ?>'">Periode</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor'); ?>'">1</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor2'); ?>'">2</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor3'); ?>'">3</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor4'); ?>'">4</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor5'); ?>'">5</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor6'); ?>'">6</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor7'); ?>'">7</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor8'); ?>'">8</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor9'); ?>'">9</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor10'); ?>'">10</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor11'); ?>'">11</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor12'); ?>'">12</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('showFaktor'); ?>'">All</button>
+    <div class="cardpilihfaktor">
+        <div class="cardpilihfaktor-header">
+            <h6>Pilih Faktor</h6>
+        </div>
+        <div class="cardpilihfaktor-body">
+            <div class="d-flex justify-content-center">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor'); ?>'">1</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor2'); ?>'">2</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor3'); ?>'">3</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor4'); ?>'">4</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor5'); ?>'">5</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor6'); ?>'">6</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor7'); ?>'">7</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor8'); ?>'">8</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor9'); ?>'">9</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor10'); ?>'">10</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor11'); ?>'">11</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor12'); ?>'">12</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('showFaktor'); ?>'">All</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-1">
+                <a href="<?= base_url('periode'); ?>" class="btn btn-link btn-sm">Kembali ke halaman periode</a>
             </div>
         </div>
     </div>
@@ -1159,73 +1169,53 @@
                             <textarea class="form-control" name="sub_category" id="sub_category" style="height: 100px"
                                 readonly></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="nilai">Nilai: </label>
-                            <select name="nilai" id="nilai" class="form-control" required>
-                                <option>Pilih nilai faktor3</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
+                        <label for="nilai" class="form-label">Pilih Nilai Faktor:</label>
+                        <input type="hidden" name="nilai" id="nilai" value="">
+
+                        <div class="list-group" id="ratingList" name="nilai">
+                            <a href="#" class="list-group-item list-group-item-action py-1 px-2" value="1">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0 fs-6"><b>Nilai 1</b></h6>
+                                </div>
+                                <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                    sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                    ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Sangat Baik</b></p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action py-1 px-2" value="2">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0 fs-6"><b>Nilai 2</b></h6>
+                                </div>
+                                <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                    sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                    ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Baik</b></p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action py-1 px-2" value="3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0 fs-6"><b>Nilai 3</b></h6>
+                                </div>
+                                <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                    sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                    ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Cukup Baik</b></p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action py-1 px-2" value="4">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0 fs-6"><b>Nilai 4</b></h6>
+                                </div>
+                                <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                    sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                    ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Kurang Baik</b></p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action py-1 px-2" value="5">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0 fs-6"><b>Nilai 5</b></h6>
+                                </div>
+                                <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                    sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                    ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Buruk</b></p>
+                            </a>
                         </div>
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-outline-info btn-sm" id="lihatPanduanFaktorUmum">Lihat
-                                Panduan</button>
-                            <div id="panduanNilaiContainerFaktorUmum" style="display: none; margin-top: 15px;">
-                                <p><strong>Panduan Pengisian Nilai:</strong></p>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Nilai Faktor</th>
-                                            <th>Penjelasan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Nilai 1</td>
-                                            <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan sangat
-                                                memadai
-                                                dan ditunjukkan dengan hasil pelaksanaan tata kelola yang sangat baik.
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nilai 2</td>
-                                            <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
-                                                ditunjukkan dengan hasil pelaksanaan tata kelola yang baik.
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nilai 3</td>
-                                            <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                                ketentuan, proses pelaksanaan tata kelola dilakukan cukup memadai dan
-                                                ditunjukkan dengan hasil pelaksanaan tata kelola yang cukup baik.
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nilai 4</td>
-                                            <td>Memenuhi kondisi belum sepenuhnya terpenuhinya struktur dan/atau
-                                                infrastruktur sesuai ketentuan, proses pelaksanaan tata kelola dilakukan
-                                                kurang memadai dan ditunjukkan dengan hasil pelaksanaan tata kelola yang
-                                                kurang baik.
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nilai 5</td>
-                                            <td>Memenuhi kondisi tidak terpenuhinya struktur dan/atau infrastruktur
-                                                sesuai
-                                                ketentuan, proses pelaksanaan tata kelola dilakukan dengan tidak
-                                                memadai,
-                                                dan ditunjukkan dengan hasil pelaksanaan tata kelola yang tidak baik.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+
+                        <p class="mt-3">Nilai yang dipilih: <strong id="selectedValue">Belum ada</strong></p>
                         <div class="mb-3">
                             <label for="keterangan" class="form-label">Keterangan: </label>
                             <textarea class="form-control" name="keterangan" id="keterangan" style="height: 100px"
@@ -1246,15 +1236,34 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const lihatPanduanButtonFaktorUmum = document.getElementById('lihatPanduanFaktorUmum');
-        const panduanContainerFaktorUmum = document.getElementById('panduanNilaiContainerFaktorUmum');
+        const ratingList = document.getElementById('ratingList');
+        const listItems = ratingList.querySelectorAll('.list-group-item');
+        const selectedValueDisplay = document.getElementById('selectedValue');
+        // Changed this line to get the input by its new ID
+        const hiddenRatingInput = document.getElementById('nilai');
 
-        if (lihatPanduanButtonFaktorUmum && panduanContainerFaktorUmum) {
-            lihatPanduanButtonFaktorUmum.addEventListener('click', function () {
-                panduanContainerFaktorUmum.style.display = panduanContainerFaktorUmum.style.display === 'none' ? 'block' : 'none';
-                lihatPanduanButtonFaktorUmum.textContent = panduanContainerFaktorUmum.style.display === 'none' ? 'Lihat Panduan' : 'Sembunyikan Panduan';
+        listItems.forEach(item => {
+            item.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                // Remove 'active' class from all items
+                listItems.forEach(li => li.classList.remove('active'));
+
+                // Add 'active' class to the clicked item
+                this.classList.add('active');
+
+                // Get the data-value of the clicked item
+                const selectedRating = this.getAttribute('value');
+
+                // Update the hidden input field's value
+                hiddenRatingInput.value = selectedRating;
+
+                // Update the display for the selected value
+                selectedValueDisplay.textContent = selectedRating;
+
+                console.log('Nilai yang dipilih (untuk disimpan):', selectedRating);
             });
-        }
+        });
     });
 </script>
 
@@ -1331,72 +1340,53 @@
                         <textarea class="form-control" name="sub_category" id="sub_category" style="height: 100px"
                             readonly></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="nilai">Nilai: </label>
-                        <select name="nilai" id="nilai" class="form-control" required>
-                            <option>Pilih nilai faktor</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
+                    <label for="nilai" class="form-label">Pilih Nilai Faktor:</label>
+                    <input type="hidden" name="nilai" id="nilai" value="">
+
+                    <div class="list-group" id="ratingLists">
+                        <a href="#" class="list-group-item list-group-item-action py-1 px-2" data-value="1">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-0 fs-6"><b>Nilai 1</b></h6>
+                            </div>
+                            <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Sangat Baik</b></p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action py-1 px-2" data-value="2">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-0 fs-6"><b>Nilai 2</b></h6>
+                            </div>
+                            <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Baik</b></p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action py-1 px-2" data-value="3">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-0 fs-6"><b>Nilai 3</b></h6>
+                            </div>
+                            <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Cukup Baik</b></p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action py-1 px-2" data-value="4">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-0 fs-6"><b>Nilai 4</b></h6>
+                            </div>
+                            <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Kurang Baik</b></p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action py-1 px-2" data-value="5">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-0 fs-6"><b>Nilai 5</b></h6>
+                            </div>
+                            <p class="mb-0 small">Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur
+                                sesuai ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
+                                ditunjukkan dengan hasil pelaksanaan tata kelola yang <b>Buruk</b></p>
+                        </a>
                     </div>
 
-                    <!-- Button to show/hide the guide -->
-                    <button type="button" class="btn btn-outline-info btn-sm" id="lihatPanduanNilai">Lihat
-                        Panduan</button>
-
-                    <!-- Guide section -->
-                    <div id="panduanNilaiContainer" style="display: none; margin-top: 15px;">
-                        <p><strong>Panduan Pengisian Nilai:</strong></p>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nilai Faktor</th>
-                                    <th>Penjelasan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Nilai 1</td>
-                                    <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                        ketentuan, proses pelaksanaan tata kelola dilakukan dengan sangat memadai
-                                        dan ditunjukkan dengan hasil pelaksanaan tata kelola yang sangat baik.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Nilai 2</td>
-                                    <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                        ketentuan, proses pelaksanaan tata kelola dilakukan dengan memadai dan
-                                        ditunjukkan dengan hasil pelaksanaan tata kelola yang baik.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Nilai 3</td>
-                                    <td>Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai
-                                        ketentuan, proses pelaksanaan tata kelola dilakukan cukup memadai dan
-                                        ditunjukkan dengan hasil pelaksanaan tata kelola yang cukup baik.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Nilai 4</td>
-                                    <td>Memenuhi kondisi belum sepenuhnya terpenuhinya struktur dan/atau
-                                        infrastruktur sesuai ketentuan, proses pelaksanaan tata kelola dilakukan
-                                        kurang memadai dan ditunjukkan dengan hasil pelaksanaan tata kelola yang
-                                        kurang baik.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Nilai 5</td>
-                                    <td>Memenuhi kondisi tidak terpenuhinya struktur dan/atau infrastruktur sesuai
-                                        ketentuan, proses pelaksanaan tata kelola dilakukan dengan tidak memadai,
-                                        dan ditunjukkan dengan hasil pelaksanaan tata kelola yang tidak baik.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <p class="mt-3">Nilai yang dipilih: <strong id="selectedValues">Belum ada</strong></p>
                     <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
                     <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s') ?>">
 
@@ -1417,33 +1407,39 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const lihatPanduanButton = document.getElementById('lihatPanduanNilai');
-        const panduanContainer = document.getElementById('panduanNilaiContainer');
+        $('#modaltambahNilai').on('shown.bs.modal', function () {
+            const modal = $(this);
+            const ratingLists = modal.find('#ratingLists')[0]; // [0] to get the native DOM element from jQuery object
 
-        if (lihatPanduanButton && panduanContainer) {
-            lihatPanduanButton.addEventListener('click', function () {
-                panduanContainer.style.display = panduanContainer.style.display === 'none' ? 'block' : 'none';
-                lihatPanduanButton.textContent = panduanContainer.style.display === 'none' ? 'Lihat Panduan' : 'Sembunyikan Panduan';
+            if (!ratingLists) {
+                console.warn("Element with ID 'ratingLists' not found within #modaltambahNilai. Script might not function correctly.");
+                return;
+            }
+
+            const listItems = ratingLists.querySelectorAll('.list-group-item');
+            const selectedValuesDisplay = modal.find('#selectedValues')[0];
+            const nilaiInput = modal.find('#nilai')[0];
+
+            listItems.forEach(li => li.classList.remove('active'));
+            nilaiInput.value = '';
+            selectedValuesDisplay.textContent = 'Belum ada';
+
+            listItems.forEach(item => {
+                item.removeEventListener('click', handleRatingSelection);
+                item.addEventListener('click', handleRatingSelection);
             });
-        }
-    });
-</script>
 
+            function handleRatingSelection(event) {
+                event.preventDefault();
+                listItems.forEach(li => li.classList.remove('active'));
+                this.classList.add('active');
+                const selectedRatings = this.getAttribute('data-value');
+                nilaiInput.value = selectedRatings;
 
-<script>
-    $(document).ready(function () {
-        // When the "Tambah Nilai" button is clicked, populate the id-faktor3 input field
-        $('#modaltambahNilai').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var faktor3Id = button.data('id'); // Extract the faktor3_id from data-id attribute
+                selectedValuesDisplay.textContent = selectedRatings;
 
-            var modal = $(this);
-            modal.find('#id-faktor3').val(faktor3Id); // Set the value of #id-faktor3 input
-        });
-
-        // Optional: if you need to clear the value of #id-faktor3 when closing the modal
-        $('#modaltambahNilai').on('hidden.bs.modal', function () {
-            $(this).find('#id-faktor3').val('');
+                console.log('Nilai yang dipilih (untuk disimpan):', selectedRatings);
+            }
         });
     });
 </script>
@@ -1716,7 +1712,7 @@
         // Call polling function initially
         pollUnreadCounts();
         // Set up polling interval (e.g., every 30 seconds)
-        setInterval(pollUnreadCounts, 10000);
+        // setInterval(pollUnreadCounts, 10000);
     });
 
 
@@ -1924,6 +1920,200 @@
 </script>
 
 <style>
+    /* General Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Container for whole content */
+    .container-fluid {
+        margin-top: 30px;
+    }
+
+    /* Heading Styling */
+    h3,
+    h4 {
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    /* Alert Styling */
+    .alert {
+        font-size: 14px;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    /* Custom Success Alert */
+    .alert-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    /* Table Styling */
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th,
+    .table td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table th {
+        background-color: #f1f3f5;
+        color: #495057;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    /* Badge Styling */
+    .badge {
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 20px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .badge-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .badge-primary {
+        background-color: #12131C;
+        color: white;
+    }
+
+    /* Card Styling */
+    .card-body {
+        padding: 20px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #f1f3f5;
+        border-bottom: 2px solid #ddd;
+        font-weight: bold;
+    }
+
+    .cardpilihfaktor {
+        width: auto;
+        max-width: 440px;
+        margin: 10px auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .cardpilihfaktor-header {
+        text-align: center;
+        background-color: #f8f9fa;
+        padding: 2px;
+        border-bottom: 1px solid #ddd;
+        font-size: 1.0rem;
+        font-weight: bold;
+    }
+
+    .cardpilihfaktor-body {
+        padding: 5px;
+    }
+
+    .cardpilihfaktor .btn-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .cardpilihfaktor .btn-group .btn {
+        margin: 1px;
+    }
+
+    /* Buttons Styling */
+    .btn {
+        font-size: 14px;
+        padding: 8px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary {
+        border: 1px solid #007bff;
+        background-color: transparent;
+        color: #007bff;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    /* Modal Button Styling */
+    .modal-footer .btn {
+        padding: 10px 25px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    /* Input fields in table rows */
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    /* Add Hover Effects to Buttons */
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Adjust Modal Header */
+    .modal-header {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 18px;
+        padding: 15px;
+    }
+
+    /* Add Scroll to Large Tables */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
     /* Your existing CSS for the badge and button should be here */
     .komentar-btn-wrapper {
         position: relative;

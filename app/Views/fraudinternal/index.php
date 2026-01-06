@@ -1,1316 +1,861 @@
-<!-- Begin Page Content -->
-<div class="container-fluid">
-    <!-- Page Heading -->
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="h3 mb-4 text-gray-800"><?= $judul; ?></h1>
-        <span>
-            <?php
-            $allApproved = true;
-            foreach ($fraudinternal as $item) {
-                if ($item['is_approved'] != 1) {
-                    $allApproved = false;
-                    break;
-                }
-            }
-            ?>
-            <?php if ($allApproved): ?>
-                <span class="badge badge-success" style="font-size: 14px;">
-                    Disetujui oleh <strong><?= esc($fullname ?? '-') ?></strong><br>
-                    <?= esc($fraudinternal[0]['approved_at'] ?? '-') ?>
-                </span>
-            <?php else: ?>
-                <span class="badge badge-danger" style="font-size: 14px;">
-                    Belum Disetujui Seluruhnya<br>Oleh Direksi
-                </span>
-            <?php endif; ?>
-        </span>
-    </div>
+<div class="alert beautiful-alert my-4">
+    <i class="fas fa-info-circle alert-icon"></i> <?php if (isset($bprData) && isset($periodeDetail)): ?>
+        <strong><?= esc($bprData['namabpr'] ?? 'Nama BPR') ?></strong> - Periode Pelaporan Tahun
+        <?= esc($periodeDetail['tahun']) ?>
+    <?php elseif (isset($periodeDetail)): ?>
+        <strong>Periode:</strong> Tahun <?= esc($periodeDetail['tahun']) ?>
+    <?php else: ?>
+        <strong>Periode belum ditentukan</strong>
+    <?php endif; ?>
 </div>
-
-<!-- Display success message -->
-<?php if (session()->get('message')): ?>
+<?php if (session()->getFlashdata('message')): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong><?= session()->getFlashdata('message'); ?></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+        <strong><?= esc(session()->getFlashdata('message')); ?></strong>
     </div>
 <?php endif; ?>
 
-<!-- Display error message -->
-<div class="row">
-    <div class="col-md-6">
-        <?php if (session()->get('err')): ?>
-            <div class="alert alert-danger" role="alert"><?= session()->get('err'); ?></div>
-        <?php endif; ?>
-    </div>
-</div>
+<?php if (session()->getFlashdata('err')): ?>
+    <div class="alert alert-danger" role="alert"><?= esc(session()->getFlashdata('err')); ?></div>
+<?php endif; ?>
 
-<div class="card">
-    <div class="card-reader">
-        <?php if ($userInGroupDekom || $userInGroupDireksi || $userInGroupPE || $userInGroupAdmin): ?>
-            <button type="button" data-toggle="modal" class="btn btn-outline-success shadow float-right mr-3 ml-2 mt-3"
-                data-target="#modalTambahkomentar"><i class="far fa-check-circle"></i> Komentar dan
-                Approval
-            </button>
-        <?php endif; ?>
-        <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-            <div class="row">
-                <div class="col-md">
-                    <button type="button" data-toggle="modal" class="btn btn-primary ml-3 mt-3"
-                        data-target="#modalTambahfrauddir"><i class="fa fa-plus"> Tambah Data</i></button>
-                </div>
-                <div class="col-md">
-                    <!-- <button onclick="window.print()"
-                    class="btn btn-outline-secondary shadow float-right mr-3 ml-2 mt-3">Print <i
-                        class="fa fa-print"></i> </button>
-                <a href="/fraudinternal/excel" class="btn btn-outline-success shadow float-right mt-3">Excel <i
-                        class="fa fa-file-excel"></i></a> -->
-                    <a href="/fraudinternal/exporttxtfraudinternal"
-                        class="btn btn-outline-secondary shadow float-right mr-3 ml-2 mt-3">Export TXT <i
-                            class="fa fa-file-alt"></i></a>
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
-    <div class="card-body">
-        <table class="table table-primary">
-            <th>1.1. Jumlah Penyimpangan Internal oleh Anggota Direksi</th>
-        </table>
-        <table class="table table-bordered table-secondary">
-            <tbody>
-                <?php if (empty($fraudinternal)) { ?>
-                    <tr>
-                        <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                <?php } else { ?>
-                    <?php foreach ($fraudinternal as $row): ?>
-                        <?php if (
-                            !empty($row['fraudtahunlaporandir']) ||
-                            !empty($row['fraudtahunsebelumdir']) ||
-                            !empty($row['selesaitahunlaporandir']) ||
-                            !empty($row['prosestahunlaporandir']) ||
-                            !empty($row['prosestahunsebelumdir']) ||
-                            !empty($row['belumtahunlaporandir']) ||
-                            !empty($row['belumtahunsebelumdir']) ||
-                            !empty($row['hukumtahunlaporandir'])
-                        ): ?>
-                            <tr>
-                                <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['fraudtahunlaporandir']) ? $row['fraudtahunlaporandir'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['fraudtahunsebelumdir']) ? $row['fraudtahunsebelumdir'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['selesaitahunlaporandir']) ? $row['selesaitahunlaporandir'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['prosestahunlaporandir']) ? $row['prosestahunlaporandir'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <?php if (!empty($row['prosestahunsebelumdir'])): ?>
-                                <tr>
-                                    <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya :</th>
-                                    <td style="width: 75%;"><?= $row['prosestahunsebelumdir']; ?> Kasus</td>
-                                </tr>
-                            <?php endif; ?>
-                            <tr>
-                                <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['belumtahunlaporandir']) ? $row['belumtahunlaporandir'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <?php if (!empty($row['belumtahunsebelumdir'])): ?>
-                                <tr>
-                                    <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya :</th>
-                                    <td style="width: 75%;"><?= $row['belumtahunsebelumdir']; ?> Kasus</td>
-                                </tr>
-                            <?php endif; ?>
-                            <tr>
-                                <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['hukumtahunlaporandir']) ? $row['hukumtahunlaporandir'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-                                    <td colspan="3">
-                                        <button type="button" data-toggle="modal" class="btn" data-target="#modalUbahfrauddir"
-                                            id="btn-edit" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                            data-fraudtahunlaporandir="<?= $row['fraudtahunlaporandir']; ?>"
-                                            data-fraudtahunsebelumdir="<?= $row['fraudtahunsebelumdir']; ?>"
-                                            data-selesaitahunlaporandir="<?= $row['selesaitahunlaporandir']; ?>"
-                                            data-prosestahunlaporandir="<?= $row['prosestahunlaporandir']; ?>"
-                                            data-prosestahunsebelumdir="<?= $row['prosestahunsebelumdir']; ?>"
-                                            data-belumtahunlaporandir="<?= $row['belumtahunlaporandir']; ?>"
-                                            data-belumtahunsebelumdir="<?= $row['belumtahunsebelumdir']; ?>"
-                                            data-hukumtahunlaporandir="<?= $row['hukumtahunlaporandir']; ?>"><i
-                                                class="fa fa-edit"></i>&nbsp;
-                                        </button>
-                                        <button type="button" data-toggle="modal" data-target="#modalHapusfraudinternal" id="btn-hapus"
-                                            class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>">
-                                            <i class="fa fa-trash"></i>&nbsp;</button>
-                                    </td>
-                                </tr>
-                                <tr height="40">
-                                    <td colspan="3" style="border-color: white; background-color: white;"></td>
-                                </tr>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-reader">
-        <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-            <div class="row">
-                <div class="col-md">
-                    <button type="button" data-toggle="modal" class="btn btn-primary ml-3 mt-3"
-                        data-target="#modalTambahfrauddekom"><i class="fa fa-plus"> Tambah Data</i></button>
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
-    <div class="card-body">
-        <table class="table table-primary">
-            <th>1.2. Jumlah Penyimpangan Internal oleh Dewan Komisaris</th>
-        </table>
-        <table class="table table-bordered table-secondary">
-            <tbody>
-                <?php if (empty($fraudinternal)) { ?>
-                    <tr>
-                        <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                <?php } else { ?>
-                    <?php foreach ($fraudinternal as $row): ?>
-                        <?php if (
-                            !empty($row['fraudtahunlaporandekom']) ||
-                            !empty($row['fraudtahunsebelumdekom']) ||
-                            !empty($row['selesaitahunlaporandekom']) ||
-                            !empty($row['prosestahunlaporandekom']) ||
-                            !empty($row['prosestahunsebelumdekom']) ||
-                            !empty($row['belumtahunlaporandekom']) ||
-                            !empty($row['belumtahunsebelumdekom']) ||
-                            !empty($row['hukumtahunlaporandekom'])
-                        ): ?>
-                            <tr>
-                                <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['fraudtahunlaporandekom']) ? $row['fraudtahunlaporandekom'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['fraudtahunsebelumdekom']) ? $row['fraudtahunsebelumdekom'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['selesaitahunlaporandekom']) ? $row['selesaitahunlaporandekom'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['prosestahunlaporandekom']) ? $row['prosestahunlaporandekom'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <?php if (!empty($row['prosestahunsebelumdekom'])): ?>
-                                <tr>
-                                    <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya :</th>
-                                    <td style="width: 75%;"><?= $row['prosestahunsebelumdekom']; ?> Kasus</td>
-                                </tr>
-                            <?php endif; ?>
-                            <tr>
-                                <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['belumtahunlaporandekom']) ? $row['belumtahunlaporandekom'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <?php if (!empty($row['belumtahunsebelumdekom'])): ?>
-                                <tr>
-                                    <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya :</th>
-                                    <td style="width: 75%;"><?= $row['belumtahunsebelumdekom']; ?> Kasus</td>
-                                </tr>
-                            <?php endif; ?>
-                            <tr>
-                                <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['hukumtahunlaporandekom']) ? $row['hukumtahunlaporandekom'] : '0'; ?> Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-                                    <td colspan="3">
-                                        <button type="button" data-toggle="modal" class="btn" data-target="#modalUbahfrauddekom"
-                                            id="btn-edit" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                            data-fraudtahunlaporandekom="<?= $row['fraudtahunlaporandekom']; ?>"
-                                            data-fraudtahunsebelumdekom="<?= $row['fraudtahunsebelumdekom']; ?>"
-                                            data-selesaitahunlaporandekom="<?= $row['selesaitahunlaporandekom']; ?>"
-                                            data-prosestahunlaporandekom="<?= $row['prosestahunlaporandekom']; ?>"
-                                            data-prosestahunsebelumdekom="<?= $row['prosestahunsebelumdekom']; ?>"
-                                            data-belumtahunlaporandekom="<?= $row['belumtahunlaporandekom']; ?>"
-                                            data-belumtahunsebelumdekom="<?= $row['belumtahunsebelumdekom']; ?>"
-                                            data-hukumtahunlaporandekom="<?= $row['hukumtahunlaporandekom']; ?>"><i
-                                                class="fa fa-edit"></i>&nbsp;
-                                        </button>
-                                        <button type="button" data-toggle="modal" data-target="#modalHapusfraudinternal" id="btn-hapus"
-                                            class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>">
-                                            <i class="fa fa-trash"></i>&nbsp;</button>
-                                    </td>
-                                </tr>
-                                <tr height="40">
-                                    <td colspan="3" style="border-color: white; background-color: white;"></td>
-                                </tr>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-reader">
-        <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-            <div class="row">
-                <div class="col-md">
-                    <button type="button" data-toggle="modal" class="btn btn-primary ml-3 mt-3"
-                        data-target="#modalTambahfraudkartap"><i class="fa fa-plus"> Tambah Data</i></button>
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
-    <div class="card-body">
-        <table class="table table-primary">
-            <th>1.3. Jumlah Penyimpangan Internal oleh Pegawai Tidak Tetap</th>
-        </table>
-        <table class="table table-bordered table-secondary">
-            <tbody>
-                <?php if (empty($fraudinternal)) { ?>
-                    <tr>
-                        <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                    <tr>
-                        <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan:</th>
-                        <td colspan="2">0 Kasus</td>
-                    </tr>
-                <?php } else { ?>
-                    <?php foreach ($fraudinternal as $row): ?>
-                        <?php if (
-                            !empty($row['fraudtahunlaporankartap']) ||
-                            !empty($row['fraudtahunsebelumkartap']) ||
-                            !empty($row['selesaitahunlaporankartap']) ||
-                            !empty($row['prosestahunlaporankartap']) ||
-                            !empty($row['prosestahunsebelumkartap']) ||
-                            !empty($row['belumtahunlaporankartap']) ||
-                            !empty($row['belumtahunsebelumkartap']) ||
-                            !empty($row['hukumtahunlaporankartap'])
-                        ): ?>
-                            <tr>
-                                <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['fraudtahunlaporankartap']) ? $row['fraudtahunlaporankartap'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['fraudtahunsebelumkartap']) ? $row['fraudtahunsebelumkartap'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['selesaitahunlaporankartap']) ? $row['selesaitahunlaporankartap'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['prosestahunlaporankartap']) ? $row['prosestahunlaporankartap'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <?php if (!empty($row['prosestahunsebelumkartap'])): ?>
-                                <tr>
-                                    <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya :</th>
-                                    <td style="width: 75%;"><?= $row['prosestahunsebelumkartap']; ?> Kasus</td>
-                                </tr>
-                            <?php endif; ?>
-                            <tr>
-                                <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['belumtahunlaporankartap']) ? $row['belumtahunlaporankartap'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <?php if (!empty($row['belumtahunsebelumkartap'])): ?>
-                                <tr>
-                                    <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya :</th>
-                                    <td style="width: 75%;"><?= $row['belumtahunsebelumkartap']; ?> Kasus</td>
-                                </tr>
-                            <?php endif; ?>
-                            <tr>
-                                <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan :</th>
-                                <td style="width: 75%;">
-                                    <?= !empty($row['hukumtahunlaporankartap']) ? $row['hukumtahunlaporankartap'] : '0'; ?>
-                                    Kasus
-                                </td>
-                            </tr>
-                            <tr>
-                                <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-                                    <td colspan="3">
-                                        <button type="button" data-toggle="modal" class="btn" data-target="#modalUbahfraudkartap"
-                                            id="btn-edit" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                            data-fraudtahunlaporankartap="<?= $row['fraudtahunlaporankartap']; ?>"
-                                            data-fraudtahunsebelumkartap="<?= $row['fraudtahunsebelumkartap']; ?>"
-                                            data-selesaitahunlaporankartap="<?= $row['selesaitahunlaporankartap']; ?>"
-                                            data-prosestahunlaporankartap="<?= $row['prosestahunlaporankartap']; ?>"
-                                            data-prosestahunsebelumkartap="<?= $row['prosestahunsebelumkartap']; ?>"
-                                            data-belumtahunlaporankartap="<?= $row['belumtahunlaporankartap']; ?>"
-                                            data-belumtahunsebelumkartap="<?= $row['belumtahunsebelumkartap']; ?>"
-                                            data-hukumtahunlaporankartap="<?= $row['hukumtahunlaporankartap']; ?>"><i
-                                                class="fa fa-edit"></i>&nbsp;
-                                        </button>
-                                        <button type="button" data-toggle="modal" data-target="#modalHapusfraudinternal" id="btn-hapus"
-                                            class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>">
-                                            <i class="fa fa-trash"></i>&nbsp;</button>
-                                    </td>
-                                <?php endif; ?>
-                            </tr>
-                            <tr height="40">
-                                <td colspan="3" style="border-color: white; background-color: white;"></td>
-                            </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <div id="ajax-response-message"></div>
     <div class="card">
-        <div class="card-reader">
-            <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-                <div class="row">
-                    <div class="col-md">
-                        <button type="button" data-toggle="modal" class="btn btn-primary ml-3 mt-3"
-                            data-target="#modalTambahfraudkontrak"><i class="fa fa-plus"> Tambah Data</i></button>
-                    </div>
-                </div>
-            <?php endif; ?>
-        </div>
         <div class="card-body">
-            <table class="table table-primary">
-                <th>1.4. Jumlah Penyimpangan Internal oleh Pegawai Tidak Tetap</th>
-            </table>
-            <table class="table table-bordered table-secondary">
-                <tbody>
-                    <?php if (empty($fraudinternal)) { ?>
+            <?php
+            // pastikan variabel ada dan tidak null
+            $kodebpr = $kodebpr ?? null;
+            $periodeId = $periodeId ?? null;
+            ?>
+            <div class="card-body custom-badge-container">
+                <?php
+                // Check if all accdekom records are approved
+                $allAccdekomApproved = true;
+                if (!empty($accdekomData)) {
+                    foreach ($accdekomData as $item) {
+                        if ($item['accdekom'] != 1) {
+                            $allAccdekomApproved = false;
+                            break;
+                        }
+                    }
+                }
+
+                // Check if all accdirut records are approved
+                $allAccdirutApproved = true;
+                if (!empty($accdirutData)) {
+                    foreach ($accdirutData as $item) {
+                        if ($item['is_approved'] != 1) {
+                            $allAccdirutApproved = false;
+                            break;
+                        }
+                    }
+                }
+                ?>
+
+                <?php if (!empty($accdekomData)): ?>
+                    <?php if ($allAccdekomApproved): ?>
+                        <span class="badge badge-success" style="font-size: 14px;">
+                            Disetujui oleh <strong>Komisaris Utama</strong><br>
+                            Tanggal: <?php
+                            $date = strtotime($accdekomData[count($accdekomData) - 1]['accdekom_at']);
+                            setlocale(LC_TIME, 'id_ID.UTF-8', 'id_ID', 'ind');
+                            echo strftime("%d %B %Y %H:%M:%S", $date);
+                            ?>
+                        </span>
+                    <?php else: ?>
+                        <span class="badge badge-secondary" style="font-size: 14px;">
+                            Belum Disetujui Seluruhnya<br>Oleh Komisaris Utama
+                        </span>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <?php if (!empty($accdirutData)): ?>
+                    <?php
+                    $item = $accdirutData[0]; // Ambil data pertama
+                    if ($item['is_approved'] == 1): ?>
+                        <span class="badge badge-success" style="font-size: 14px;">
+                            Disetujui oleh <strong>Direktur Utama</strong><br>
+                            Tanggal: <?php
+                            setlocale(LC_TIME, 'id_ID.UTF-8', 'id_ID', 'ind');
+                            $date = strtotime($item['approved_at']);
+                            echo strftime("%d %B %Y %H:%M:%S", $date);
+                            ?>
+                        </span>
+                    <?php else: ?>
+                        <span class="badge badge-secondary" style="font-size: 14px;">
+                            Belum Disetujui Seluruhnya<br>Oleh Direktur Utama
+                        </span>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+
+            <h1 class="h3 mb-4 text-gray-800 text-center"><?= $judul; ?><br>(E0800)</h1>
+            <form id="fraudinternalForm">
+                <input type="hidden" name="user_id" id="user_id" value="<?= esc($userId ?? '-') ?>">
+                <input type="hidden" name="fullname" id="fullname" value="<?= esc($fullname ?? '-') ?>">
+
+                <!-- 1.1. Penyimpangan Direksi -->
+                <!-- 1.1. Gaji Direksi dan Dewan Komisaris -->
+                <table class="table table-info table-hover mb-4">
+                    <thead class="thead-primary">
                         <tr>
-                            <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                            <td colspan="2">0 Kasus</td>
+                            <th>1.1 Jumlah Penyimpangan Internal oleh Anggota Direksi</th>
                         </tr>
-                        <tr>
-                            <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya:</th>
-                            <td colspan="2">0 Kasus</td>
-                        </tr>
-                        <tr>
-                            <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                            <td colspan="2">0 Kasus</td>
-                        </tr>
-                        <tr>
-                            <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan:</th>
-                            <td colspan="2">0 Kasus</td>
-                        </tr>
-                        <tr>
-                            <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya:</th>
-                            <td colspan="2">0 Kasus</td>
-                        </tr>
-                        <tr>
-                            <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan:</th>
-                            <td colspan="2">0 Kasus</td>
-                        </tr>
-                        <tr>
-                            <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya:</th>
-                            <td colspan="2">0 Kasus</td>
-                        </tr>
-                        <tr>
-                            <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan:</th>
-                            <td colspan="2">0 Kasus</td>
-                        </tr>
-                    <?php } else { ?>
-                        <?php foreach ($fraudinternal as $row): ?>
-                            <?php if (
-                                !empty($row['fraudtahunlaporankontrak']) ||
-                                !empty($row['fraudtahunsebelumkontrak']) ||
-                                !empty($row['selesaitahunlaporankontrak']) ||
-                                !empty($row['prosestahunlaporankontrak']) ||
-                                !empty($row['prosestahunsebelumkontrak']) ||
-                                !empty($row['belumtahunlaporankontrak']) ||
-                                !empty($row['belumtahunsebelumkontrak']) ||
-                                !empty($row['hukumtahunlaporankontrak'])
-                            ): ?>
-                                <tr>
-                                    <th style="width: 25%;">Total Fraud Pada Tahun Laporan :</th>
-                                    <td style="width: 75%;">
-                                        <?= !empty($row['fraudtahunlaporankontrak']) ? $row['fraudtahunlaporankontrak'] : '0'; ?>
-                                        Kasus
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="width: 25%;">Total Fraud Pada Tahun Sebelumnya :</th>
-                                    <td style="width: 75%;">
-                                        <?= !empty($row['fraudtahunsebelumkontrak']) ? $row['fraudtahunsebelumkontrak'] : '0'; ?>
-                                        Kasus
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="width: 25%;">Telah Diselesaikan Pada Tahun Laporan :</th>
-                                    <td style="width: 75%;">
-                                        <?= !empty($row['selesaitahunlaporankontrak']) ? $row['selesaitahunlaporankontrak'] : '0'; ?>
-                                        Kasus
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Laporan :</th>
-                                    <td style="width: 75%;">
-                                        <?= !empty($row['prosestahunlaporankontrak']) ? $row['prosestahunlaporankontrak'] : '0'; ?>
-                                        Kasus
-                                    </td>
-                                </tr>
-                                <?php if (!empty($row['prosestahunsebelumkontrak'])): ?>
-                                    <tr>
-                                        <th style="width: 25%;">Dalam Proses Penyelesaian Pada Tahun Sebelumnya :</th>
-                                        <td style="width: 75%;"><?= $row['prosestahunsebelumkontrak']; ?> Kasus</td>
-                                    </tr>
-                                <?php endif; ?>
-                                <tr>
-                                    <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Laporan :</th>
-                                    <td style="width: 75%;">
-                                        <?= !empty($row['belumtahunlaporankontrak']) ? $row['belumtahunlaporankontrak'] : '0'; ?>
-                                        Kasus
-                                    </td>
-                                </tr>
-                                <?php if (!empty($row['belumtahunsebelumkontrak'])): ?>
-                                    <tr>
-                                        <th style="width: 25%;">Belum Diupayakan Penyelesaiannya Pada Tahun Sebelumnya :</th>
-                                        <td style="width: 75%;"><?= $row['belumtahunsebelumkontrak']; ?> Kasus</td>
-                                    </tr>
-                                <?php endif; ?>
-                                <tr>
-                                    <th style="width: 25%;">Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun Laporan :</th>
-                                    <td style="width: 75%;">
-                                        <?= !empty($row['hukumtahunlaporankontrak']) ? $row['hukumtahunlaporankontrak'] : '0'; ?>
-                                        Kasus
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <?php if ($userInGroupPE || $userInGroupAdmin): ?>
-                                        <td colspan="3">
-                                            <button type="button" data-toggle="modal" class="btn" data-target="#modalUbahfraudkontrak"
-                                                id="btn-edit" style="font-weight: 600;" data-id="<?= $row['id']; ?>"
-                                                data-fraudtahunlaporankontrak="<?= $row['fraudtahunlaporankontrak']; ?>"
-                                                data-fraudtahunsebelumkontrak="<?= $row['fraudtahunsebelumkontrak']; ?>"
-                                                data-selesaitahunlaporankontrak="<?= $row['selesaitahunlaporankontrak']; ?>"
-                                                data-prosestahunlaporankontrak="<?= $row['prosestahunlaporankontrak']; ?>"
-                                                data-prosestahunsebelumkontrak="<?= $row['prosestahunsebelumkontrak']; ?>"
-                                                data-belumtahunlaporankontrak="<?= $row['belumtahunlaporankontrak']; ?>"
-                                                data-belumtahunsebelumkontrak="<?= $row['belumtahunsebelumkontrak']; ?>"
-                                                data-hukumtahunlaporankontrak="<?= $row['hukumtahunlaporankontrak']; ?>"><i
-                                                    class="fa fa-edit"></i>&nbsp;
-                                            </button>
-                                            <button type="button" data-toggle="modal" data-target="#modalHapusfraudinternal"
-                                                id="btn-hapus" class="btn" style="font-weight: 600;" data-id="<?= $row['id']; ?>">
-                                                <i class="fa fa-trash"></i>&nbsp;</button>
-                                        </td>
-                                    <?php endif; ?>
-                                </tr>
-                                <tr height="40">
-                                    <td colspan="3" style="border-color: white; background-color: white;"></td>
-                                </tr>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    <?php } ?>
-                </tbody>
-            </table>
-            <!-- <div class="card-reader">
-                    <div class="row">
-                        <div class="col-md">
-                            <button type="button" data-toggle="modal" class="btn btn-primary ml-3 mt-3"
-                                data-target="#modalUbahketerangan"><i class="fa fa-plus"> Tambah Keterangan</i></button>
+                    </thead>
+                </table>
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunlaporandir">1. Total Fraud Pada Tahun Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunlaporandir" id="fraudtahunlaporandir"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunlaporandir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunsebelumdir">2. Total Fraud Pada Tahun Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunsebelumdir" id="fraudtahunsebelumdir"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunsebelumdir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-2 text-center">
+                            <label for="selesaitahunlaporandir">3. Telah Diselesaikan Pada Tahun Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="selesaitahunlaporandir" id="selesaitahunlaporandir"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['selesaitahunlaporandir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <table style="border-collapse: collapse;">
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunlaporandir">1. Dalam Proses Penyelesaian Pada Tahun Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunlaporandir" id="prosestahunlaporandir"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunlaporandir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunsebelumdir">2. Dalam Proses Penyelesaian Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunsebelumdir" id="prosestahunsebelumdir"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunsebelumdir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunlaporandir">3. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunlaporandir" id="belumtahunlaporandir"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunlaporandir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunsebelumdir">4. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunsebelumdir" id="belumtahunsebelumdir"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunsebelumdir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12 mb-5">
+                        <div class="form-group mb-2 text-center">
+                            <label for="hukumtahunlaporandir">5. Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="hukumtahunlaporandir" id="hukumtahunlaporandir"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['hukumtahunlaporandir'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1.2. Penyimpangan Dekom -->
+                <table class="table table-info table-hover mb-4">
+                    <thead class="thead-primary">
+                        <tr>
+                            <th>1.2 Jumlah Penyimpangan Internal oleh Anggota Dewan Komisaris</th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunlaporandekom">1. Total Fraud Pada Tahun Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunlaporandekom" id="fraudtahunlaporandekom"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunlaporandekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunsebelumdekom">2. Total Fraud Pada Tahun Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunsebelumdekom" id="fraudtahunsebelumdekom"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunsebelumdekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-2 text-center">
+                            <label for="selesaitahunlaporandekom">3. Telah Diselesaikan Pada Tahun Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="selesaitahunlaporandekom" id="selesaitahunlaporandekom"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['selesaitahunlaporandekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunlaporandekom">1. Dalam Proses Penyelesaian Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunlaporandekom" id="prosestahunlaporandekom"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunlaporandekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunsebelumdekom">2. Dalam Proses Penyelesaian Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunsebelumdekom" id="prosestahunsebelumdekom"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunsebelumdekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunlaporandekom">3. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunlaporandekom" id="belumtahunlaporandekom"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunlaporandekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunsebelumdekom">4. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunsebelumdekom" id="belumtahunsebelumdekom"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunsebelumdekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-2 text-center">
+                            <label for="hukumtahunlaporandekom">5. Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="hukumtahunlaporandekom" id="hukumtahunlaporandekom"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['hukumtahunlaporandekom'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1.3. Penyimpangan Pegawai Tetap -->
+                <table class="table table-info table-hover mb-4">
+                    <thead class="thead-primary">
+                        <tr>
+                            <th>1.3 Jumlah Penyimpangan Internal oleh Pegawai Tetap</th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunlaporankartap">1. Total Fraud Pada Tahun Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunlaporankartap" id="fraudtahunlaporankartap"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunlaporankartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunsebelumkartap">2. Total Fraud Pada Tahun Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunsebelumkartap" id="fraudtahunsebelumkartap"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunsebelumkartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-2 text-center">
+                            <label for="selesaitahunlaporankartap">3. Telah Diselesaikan Pada Tahun Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="selesaitahunlaporankartap" id="selesaitahunlaporankartap"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['selesaitahunlaporankartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunlaporankartap">1. Dalam Proses Penyelesaian Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunlaporankartap" id="prosestahunlaporankartap"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunlaporankartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunsebelumkartap">2. Dalam Proses Penyelesaian Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunsebelumkartap" id="prosestahunsebelumkartap"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunsebelumkartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunlaporankartap">3. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunlaporankartap" id="belumtahunlaporankartap"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunlaporankartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunsebelumkartap">4. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunsebelumkartap" id="belumtahunsebelumkartap"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunsebelumkartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-2 text-center">
+                            <label for="hukumtahunlaporankartap">5. Telah ditindaklanjuti Melalui Proses Hukum Pada
+                                Tahun
+                                Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="hukumtahunlaporankartap" id="hukumtahunlaporankartap"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['hukumtahunlaporankartap'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1.4. Penyimpangan Pegawai Tidak Tetap -->
+                <table class="table table-info table-hover mb-4">
+                    <thead class="thead-primary">
+                        <tr>
+                            <th>1.4 Jumlah Penyimpangan Internal oleh Pegawai Tidak Tetap</th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunlaporankontrak">1. Total Fraud Pada Tahun Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunlaporankontrak" id="fraudtahunlaporankontrak"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunlaporankontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fraudtahunsebelumkontrak">2. Total Fraud Pada Tahun Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="fraudtahunsebelumkontrak" id="fraudtahunsebelumkontrak"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['fraudtahunsebelumkontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-2 text-center">
+                            <label for="selesaitahunlaporankontrak">3. Telah Diselesaikan Pada Tahun Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="selesaitahunlaporankontrak" id="selesaitahunlaporankontrak"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['selesaitahunlaporankontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <!-- Kolom kiri -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunlaporankontrak">1. Dalam Proses Penyelesaian Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunlaporankontrak" id="prosestahunlaporankontrak"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunlaporankontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom kanan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="prosestahunsebelumkontrak">2. Dalam Proses Penyelesaian Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="prosestahunsebelumkontrak" id="prosestahunsebelumkontrak"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['prosestahunsebelumkontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunlaporankontrak">3. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Laporan:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunlaporankontrak" id="belumtahunlaporankontrak"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunlaporankontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="belumtahunsebelumkontrak">4. Belum Diupayakan Penyelesaiannya Pada Tahun
+                                Sebelumnya:</label>
+                            <div class="input-group">
+                                <input type="number" name="belumtahunsebelumkontrak" id="belumtahunsebelumkontrak"
+                                    class="form-control" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['belumtahunsebelumkontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nomor 3 berada di tengah -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-2 text-center">
+                            <label for="hukumtahunlaporankontrak">5. Telah ditindaklanjuti Melalui Proses Hukum Pada
+                                Tahun
+                                Laporan:</label>
+                            <div class="input-group justify-content-center" style="max-width:500px; margin:0 auto;">
+                                <input type="number" name="hukumtahunlaporankontrak" id="hukumtahunlaporankontrak"
+                                    class="form-control text-center" style="height:45px" min="0" max="10" step="1"
+                                    value="<?= esc($fraudinternal[0]['hukumtahunlaporankontrak'] ?? '') ?>" required>
+                                <span class="input-group-text">Kasus</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-hover mb-5">
+                    <?php
+                    $tindaklanjut = '';
+                    $id = '';
+
+                    foreach ($penjelastindak as $item) {
+                        if ($item['id']) {
+                            $id = $item['id'] ?? '';
+                            $tindaklanjut = $item['tindaklanjut'] ?? '';
+                            break;
+                        }
+                    }
+                    ?>
+
+                    <div>
+                        <?php if ($userInGroupPE || $userInGroupAdmin): ?>
+                            <div class="btn-group" role="group" aria-label="Button group">
+                                <?php if (empty($penjelastindak)): ?>
+                                    <button type="button" class="btn btn-primary3 btn-sm" data-toggle="modal"
+                                        data-target="#modalTambahketerangan">
+                                        <i class="fa fa-plus"></i> Penjelasan Lebih Lanjut
+                                    </button>
+                                <?php else: ?>
+                                    <?php foreach ($penjelastindak as $row): ?>
+                                        <button type="button" class="btn btn-primary2 btn-sm" data-toggle="modal"
+                                            data-target="#modaleditketerangan" id="btn-edit" data-id="<?= esc($row['id']); ?>"
+                                            data-tindaklanjut="<?= esc($row['tindaklanjut'] ?? ''); ?>">
+                                            <i class="fa fa-edit"></i>Ubah Penjelasan Lebih Lanjut
+                                        </button>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
                     <tbody>
-                        <?php if (empty($fraudinternal)) { ?>
+                        <?php if (empty($penjelastindak)) { ?>
                             <tr>
-                                <th>Keterangan:</th>
-                                <td colspan="2">Data tidak tersedia</td>
+                                <th class="table-info" style="width: 30%; color: black;">Penjelasan Lebih Lanjut (Opsional)
+                                    :
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    <em>Tidak ada penjelasan lebih lanjut</em>
+                                </td>
                             </tr>
                         <?php } else { ?>
-                            <?php foreach ($fraudinternal as $row): ?>
-                                <?php if ($row['id'] == 1): ?>
-                                    <tr>
-                                        <th>Keterangan:</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <ol style="list-style: lower-latin;">
-                                                <?php
-                                                $keterangan = explode("\n", $row['keterangan']);
-                                                foreach ($keterangan as $poin):
-                                                    ?>
-                                                    <li><?= htmlspecialchars(trim($poin)); ?></li>
-                                                <?php endforeach; ?>
-                                            </ol>
-                                        </td>
-                                    </tr>
-                                <?php endif; ?>
+                            <?php foreach ($penjelastindak as $row): ?>
+                                <tr>
+                                    <th colspan="2" class="table-info" style="width: 30%; color: black;">Penjelasan Lebih Lanjut
+                                        (Opsional) :</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <?= isset($row['tindaklanjut']) ? esc($row['tindaklanjut']) : 'Data tidak tersedia'; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="button" class="btn btn-outline-danger btn-sm" id="btn-setnulltindak"
+                                            data-id="<?= $row['id']; ?>"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr height="40">
+                                    <td colspan="3" style="background-color: white; border-color: white;"></td>
+                                </tr>
                             <?php endforeach; ?>
                         <?php } ?>
                     </tbody>
-                </table> -->
-        </div>
-    </div>
+                </table>
+                <div class="row" style="display: flex; justify-content: space-between;">
+                    <?php if (($userInGroupAdmin || $userInGroupDekom) && !empty($accdekomData)): ?>
+                        <div class="col-md-3">
+                            <div class="card shadow-sm approval-card">
+                                <div class="card-body approval-card-body">
+                                    <div class="approval-badge-container"> <span class="badge approval-badge">Approval
+                                            Komisaris
+                                            Utama</span> </div>
 
-</div>
-<!-- End Page Content -->
+                                    <div class="approval-buttons-container"> <a
+                                            href="<?= base_url('Fraudinternal/approveSemuaKom') ?>"
+                                            class="btn btn-success approval-btn approval-btn-approve"
+                                            onclick="return confirm('Apakah Anda yakin hendak melakukan approval?');">
+                                            Setuju
+                                        </a>
+                                        <a href="<?= base_url('Fraudinternal/unapproveSemuaKom') ?>"
+                                            class="btn btn-danger approval-btn approval-btn-reject"
+                                            onclick="return confirm('Apakah Anda yakin hendak melakukan pembatalan semua approval?');">
+                                            Tolak
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
-<div class="modal fade" id="modalTambahfrauddir">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Jumlah Penyimpangan Internal oleh Anggota Direksi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('fraudinternal/tambahfrauddir'); ?>" method="post">
-                    <div class="form-group">
-                        <label for="fraudtahunlaporandir">Input Total Fraud Pada Tahun Laporan:</label>
-                        <input type="text" name="fraudtahunlaporandir" id="fraudtahunlaporandir" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fraudtahunsebelumdir">Input Total Fraud Pada Tahun Sebelumnya: </label>
-                        <input type="text" name="fraudtahunsebelumdir" id="fraudtahunsebelumdir" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="selesaitahunlaporandir">Input Telah Diselesaikan Pada Tahun Laporan : </label>
-                        <input type="text" name="selesaitahunlaporandir" id="selesaitahunlaporandir"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunlaporandir">Input Proses Penyelesaian Pada Tahun Laporan: </label>
-                        <input type="text" name="prosestahunlaporandir" id="prosestahunlaporandir" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunsebelumdir">Input Dalam Proses Penyelesaian Pada Tahun Sebelumnya:
-                        </label>
-                        <input type="text" name="prosestahunsebelumdir" id="prosestahunsebelumdir" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunlaporandir">Input Belum Diupayakan Penyelesaiannya Pada Tahun Laporan:
-                        </label>
-                        <input type="text" name="belumtahunlaporandir" id="belumtahunlaporandir" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunsebelumdir">Input Belum Diupayakan Penyelesaiannya Pada Tahun
-                            Sebelumnya:
-                        </label>
-                        <input type="text" name="belumtahunsebelumdir" id="belumtahunsebelumdir" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="hukumtahunlaporandir">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
-                            Tahun
-                            Laporan: </label>
-                        <input type="text" name="hukumtahunlaporandir" id="hukumtahunlaporandir" class="form-control" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" name="tambahfrauddir" class="btn btn-primary">Tambah Data</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                    <?php if (($userInGroupAdmin || $userInGroupDireksi) && !empty($accdirutData)): ?>
+                        <div class="col-md-3">
+                            <div class="card shadow-sm approvaldir-card">
+                                <div
+                                    class="card-body approvaldir-card-body <?php echo (isset($canApprove) && !$canApprove) ? 'disabled-btn' : ''; ?>">
+                                    <div class="approval-badge-container"> <span class="badge approval-badge">Approval
+                                            Direktur
+                                            Utama</span> </div>
 
-<!--edit data-->
-<?php if (!empty($fraudinternal)) { ?>
-    <div class="modal fade" id="modalUbahfrauddir">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ubah Jumlah Penyimpangan Internal oleh Anggota Direksi </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                                    <div class="approval-buttons-container"> <a
+                                            href="<?= base_url('Fraudinternal/approveSemuaDirut') ?>"
+                                            class="btn btn-success approval-btn approval-btn-approve <?php echo (isset($canApprove) && !$canApprove) ? 'disabled-btn' : ''; ?>"
+                                            onclick="return confirm('Apakah Anda yakin ingin melakukan approval?');">
+                                            Setuju
+                                        </a>
+                                        <a href="<?= base_url('Fraudinternal/unapproveSemuaDirut') ?>"
+                                            class="btn btn-danger approval-btn approval-btn-reject <?php echo (isset($canApprove) && !$canApprove) ? 'disabled-btn' : ''; ?>"
+                                            onclick="return confirm('Batalkan semua approval?');">
+                                            Tolak
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <div class="modal-body">
-                    <form action="<?= base_url('fraudinternal/ubahfrauddir'); ?>" method="post">
-                        <input type="hidden" name="id" id="id-fraudinternal">
-                        <div class="mb-3">
-                            <label for="fraudtahunlaporandir">Ubah Total Fraud Pada Tahun Laporan:</label>
-                            <input class="form-control" type="text" name="fraudtahunlaporandir" id="fraudtahunlaporandir"
-                                placeholder="<?= $row['fraudtahunlaporandir'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fraudtahunsebelumdir">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
-                            <input class="form-control" type="text" name="fraudtahunsebelumdir" id="fraudtahunsebelumdir"
-                                placeholder="<?= $row['fraudtahunsebelumdir'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="selesaitahunlaporandir">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
-                            <input class="form-control" type="text" name="selesaitahunlaporandir"
-                                id="selesaitahunlaporandir" placeholder="<?= $row['selesaitahunlaporandir'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunlaporandir">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="prosestahunlaporandir" id="prosestahunlaporandir"
-                                placeholder="<?= $row['prosestahunlaporandir'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunsebelumdir">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="prosestahunsebelumdir" id="prosestahunsebelumdir"
-                                placeholder="<?= $row['prosestahunsebelumdir'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunlaporandir">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="belumtahunlaporandir" id="belumtahunlaporandir"
-                                placeholder="<?= $row['belumtahunlaporandir'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunsebelumdir">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="belumtahunsebelumdir" id="belumtahunsebelumdir"
-                                placeholder="<?= $row['belumtahunsebelumdir'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="hukumtahunlaporandir">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="hukumtahunlaporandir" id="hukumtahunlaporandir"
-                                placeholder="<?= $row['hukumtahunlaporandir'] ?>" required>
-                        </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" name="ubahfrauddir" class="btn btn-primary">Ubah Data</button>
-                        </div>
-                    </form>
+                <!-- Button Submit -->
+                <div class="d-flex justify-content-center gap-2 mb-5 mt-4">
+                    <?php if ($userInGroupPE || $userInGroupAdmin): ?>
+                        <a href="<?= base_url('Fraudinternal/exporttxtfraudinternal'); ?>" class="btn btn-secondary btn-sm">
+                            <i class="fa fa-file-alt"></i> Export .txt
+                        </a>
+                        <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    <?php endif; ?>
+                    <?php if ($userInGroupDekom || $userInGroupDireksi || $userInGroupPE || $userInGroupAdmin): ?>
+                        <td>
+                            <?php
+                            // $Id = session()->get('id');
+                            $subkategori = 'Fraudinternal';
+                            $currentUserId = session()->get('user_id');
+                            $activePeriodeId = session()->get('active_periode');
+
+                            // Hitung unread count dengan ID yang benar
+                            $initialUnreadCount = $commentReadsModel->countUnreadCommentsForUserByFactor($subkategori, $kodebpr, $currentUserId, $activePeriodeId);
+
+                            // echo "<!-- Debug: Id=$Id, unreadCount=$initialUnreadCount -->";
+                            ?>
+                            <div class="komentar-btn-wrapper">
+                                <button type="button" data-toggle="modal" data-target="#modalTambahkomentar"
+                                    id="btn-komentar-<?= $subkategori; ?>" class="btn btn-success btn-sm"
+                                    style="font-weight: 610;" data-id="<?= $subkategori; ?>" data-kodebpr="<?= $kodebpr; ?>"
+                                    data-user-id="<?= $currentUserId; ?>" data-periode-id="<?= $activePeriodeId; ?>">
+                                    <i class="fas fa-comment"></i>
+                                    <span id="notification-badge-<?= $subkategori; ?>"
+                                        class="badge badge-danger notification-badge"
+                                        style="display: <?= $initialUnreadCount > 0 ? 'inline-flex' : 'none'; ?>;">
+                                        <?= $initialUnreadCount ?>
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+                    <?php endif; ?>
                 </div>
-            </div>
-        </div>
-    </div>
-<?php } ?>
 
-<div class="modal fade" id="modalTambahfrauddekom">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Jumlah Penyimpangan Internal oleh Anggota Direksi (Dekompensasi)</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('fraudinternal/tambahfrauddekom'); ?>" method="post">
-                    <div class="form-group">
-                        <label for="fraudtahunlaporandekom">Input Total Fraud Pada Tahun Laporan:</label>
-                        <input type="text" name="fraudtahunlaporandekom" id="fraudtahunlaporandekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fraudtahunsebelumdekom">Input Total Fraud Pada Tahun Sebelumnya: </label>
-                        <input type="text" name="fraudtahunsebelumdekom" id="fraudtahunsebelumdekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="selesaitahunlaporandekom">Input Telah Diselesaikan Pada Tahun Laporan : </label>
-                        <input type="text" name="selesaitahunlaporandekom" id="selesaitahunlaporandekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunlaporandekom">Input Proses Penyelesaian Pada Tahun Laporan: </label>
-                        <input type="text" name="prosestahunlaporandekom" id="prosestahunlaporandekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunsebelumdekom">Input Dalam Proses Penyelesaian Pada Tahun Sebelumnya:
-                        </label>
-                        <input type="text" name="prosestahunsebelumdekom" id="prosestahunsebelumdekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunlaporandekom">Input Belum Diupayakan Penyelesaiannya Pada Tahun
-                            Laporan:
-                        </label>
-                        <input type="text" name="belumtahunlaporandekom" id="belumtahunlaporandekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunsebelumdekom">Input Belum Diupayakan Penyelesaiannya Pada Tahun
-                            Sebelumnya:
-                        </label>
-                        <input type="text" name="belumtahunsebelumdekom" id="belumtahunsebelumdekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="hukumtahunlaporandekom">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
-                            Tahun
-                            Laporan: </label>
-                        <input type="text" name="hukumtahunlaporandekom" id="hukumtahunlaporandekom"
-                            class="form-control" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" name="tambahfrauddekom" class="btn btn-primary">Tambah Data</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php if (!empty($fraudinternal)) { ?>
-    <div class="modal fade" id="modalUbahfrauddekom">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ubah Jumlah Penyimpangan Internal oleh Anggota Direksi (Dekompensasi)</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="<?= base_url('fraudinternal/ubahfrauddekom'); ?>" method="post">
-                        <input type="hidden" name="id" id="id-fraudinternal">
-                        <div class="mb-3">
-                            <label for="fraudtahunlaporandekom">Ubah Total Fraud Pada Tahun Laporan:</label>
-                            <input class="form-control" type="text" name="fraudtahunlaporandekom"
-                                id="fraudtahunlaporandekom"
-                                placeholder="<?= isset($row['fraudtahunlaporandekom']) ? $row['fraudtahunlaporandekom'] : '' ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fraudtahunsebelumdekom">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
-                            <input class="form-control" type="text" name="fraudtahunsebelumdekom"
-                                id="fraudtahunsebelumdekom"
-                                placeholder="<?= isset($row['fraudtahunsebelumdekom']) ? $row['fraudtahunsebelumdekom'] : '' ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="selesaitahunlaporandekom">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
-                            <input class="form-control" type="text" name="selesaitahunlaporandekom"
-                                id="selesaitahunlaporandekom"
-                                placeholder="<?= isset($row['selesaitahunlaporandekom']) ? $row['selesaitahunlaporandekom'] : '' ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunlaporandekom">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="prosestahunlaporandekom"
-                                id="prosestahunlaporandekom"
-                                placeholder="<?= isset($row['prosestahunlaporandekom']) ? $row['prosestahunlaporandekom'] : '' ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunsebelumdekom">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="prosestahunsebelumdekom"
-                                id="prosestahunsebelumdekom"
-                                placeholder="<?= isset($row['prosestahunsebelumdekom']) ? $row['prosestahunsebelumdekom'] : '' ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunlaporandekom">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="belumtahunlaporandekom"
-                                id="belumtahunlaporandekom"
-                                placeholder="<?= isset($row['belumtahunlaporandekom']) ? $row['belumtahunlaporandekom'] : '' ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunsebelumdekom">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="belumtahunsebelumdekom"
-                                id="belumtahunsebelumdekom"
-                                placeholder="<?= isset($row['belumtahunsebelumdekom']) ? $row['belumtahunsebelumdekom'] : '' ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="hukumtahunlaporandekom">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada
-                                Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="hukumtahunlaporandekom"
-                                id="hukumtahunlaporandekom"
-                                placeholder="<?= isset($row['hukumtahunlaporandekom']) ? $row['hukumtahunlaporandekom'] : '' ?>" required>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" name="ubahfrauddekom" class="btn btn-primary">Ubah Data</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php } ?>
-
-<div class="modal fade" id="modalTambahfraudkartap">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Jumlah Penyimpangan Internal oleh Anggota Kartap</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('fraudinternal/tambahfraudkartap'); ?>" method="post">
-                    <div class="form-group">
-                        <label for="fraudtahunlaporankartap">Input Total Fraud Pada Tahun Laporan:</label>
-                        <input type="text" name="fraudtahunlaporankartap" id="fraudtahunlaporankartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fraudtahunsebelumkartap">Input Total Fraud Pada Tahun Sebelumnya: </label>
-                        <input type="text" name="fraudtahunsebelumkartap" id="fraudtahunsebelumkartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="selesaitahunlaporankartap">Input Telah Diselesaikan Pada Tahun Laporan :
-                        </label>
-                        <input type="text" name="selesaitahunlaporankartap" id="selesaitahunlaporankartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunlaporankartap">Input Proses Penyelesaian Pada Tahun Laporan: </label>
-                        <input type="text" name="prosestahunlaporankartap" id="prosestahunlaporankartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunsebelumkartap">Input Dalam Proses Penyelesaian Pada Tahun Sebelumnya:
-                        </label>
-                        <input type="text" name="prosestahunsebelumkartap" id="prosestahunsebelumkartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunlaporankartap">Input Belum Diupayakan Penyelesaiannya Pada Tahun
-                            Laporan:
-                        </label>
-                        <input type="text" name="belumtahunlaporankartap" id="belumtahunlaporankartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunsebelumkartap">Input Belum Diupayakan Penyelesaiannya Pada Tahun
-                            Laporan:
-                        </label>
-                        <input type="text" name="belumtahunsebelumkartap" id="belumtahunsebelumkartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="hukumtahunlaporankartap">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
-                            Tahun
-                            Laporan: </label>
-                        <input type="text" name="hukumtahunlaporankartap" id="hukumtahunlaporankartap"
-                            class="form-control" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" name="tambahfraudkartap" class="btn btn-primary">Tambah Data</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php if (!empty($fraudinternal)) { ?>
-    <div class="modal fade" id="modalUbahfraudkartap">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ubah Jumlah Penyimpangan Internal oleh Anggota Kartap </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="<?= base_url('fraudinternal/ubahfraudkartap'); ?>" method="post">
-                        <input type="hidden" name="id" id="id-fraudinternal">
-                        <div class="mb-3">
-                            <label for="fraudtahunlaporankartap">Ubah Total Fraud Pada Tahun Laporan:</label>
-                            <input class="form-control" type="text" name="fraudtahunlaporankartap"
-                                id="fraudtahunlaporankartap" placeholder="<?= $row['fraudtahunlaporankartap'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fraudtahunsebelumkartap">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
-                            <input class="form-control" type="text" name="fraudtahunsebelumkartap"
-                                id="fraudtahunsebelumkartap" placeholder="<?= $row['fraudtahunsebelumkartap'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="selesaitahunlaporankartap">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
-                            <input class="form-control" type="text" name="selesaitahunlaporankartap"
-                                id="selesaitahunlaporankartap" placeholder="<?= $row['selesaitahunlaporankartap'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunlaporankartap">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="prosestahunlaporankartap"
-                                id="prosestahunlaporankartap" placeholder="<?= $row['prosestahunlaporankartap'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunsebelumkartap">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="prosestahunsebelumkartap"
-                                id="prosestahunsebelumkartap" placeholder="<?= $row['prosestahunsebelumkartap'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunlaporankartap">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="belumtahunlaporankartap"
-                                id="belumtahunlaporankartap" placeholder="<?= $row['belumtahunlaporankartap'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunsebelumkartap">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="belumtahunsebelumkartap"
-                                id="belumtahunsebelumkartap" placeholder="<?= $row['belumtahunsebelumkartap'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="hukumtahunlaporankartap">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada
-                                Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="hukumtahunlaporankartap"
-                                id="hukumtahunlaporankartap" placeholder="<?= $row['hukumtahunlaporankartap'] ?>" required>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" name="ubahfraudkartap" class="btn btn-primary">Ubah Data</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php } ?>
-
-<div class="modal fade" id="modalTambahfraudkontrak">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Jumlah Penyimpangan Internal oleh Anggota Kontrak</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('fraudinternal/tambahfraudkontrak'); ?>" method="post">
-                    <div class="form-group">
-                        <label for="fraudtahunlaporankontrak">Input Total Fraud Pada Tahun Laporan:</label>
-                        <input type="text" name="fraudtahunlaporankontrak" id="fraudtahunlaporankontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fraudtahunsebelumkontrak">Input Total Fraud Pada Tahun Sebelumnya: </label>
-                        <input type="text" name="fraudtahunsebelumkontrak" id="fraudtahunsebelumkontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="selesaitahunlaporankontrak">Input Telah Diselesaikan Pada Tahun Laporan :
-                        </label>
-                        <input type="text" name="selesaitahunlaporankontrak" id="selesaitahunlaporankontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunlaporankontrak">Input Proses Penyelesaian Pada Tahun Laporan:
-                        </label>
-                        <input type="text" name="prosestahunlaporankontrak" id="prosestahunlaporankontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosestahunsebelumkontrak">Input Dalam Proses Penyelesaian Pada Tahun
-                            Sebelumnya:
-                        </label>
-                        <input type="text" name="prosestahunsebelumkontrak" id="prosestahunsebelumkontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunlaporankontrak">Input Belum Diupayakan Penyelesaiannya Pada Tahun
-                            Laporan:
-                        </label>
-                        <input type="text" name="belumtahunlaporankontrak" id="belumtahunlaporankontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="belumtahunsebelumkontrak">Input Belum Diupayakan Penyelesaiannya Pada Tahun
-                            Laporan:
-                        </label>
-                        <input type="text" name="belumtahunsebelumkontrak" id="belumtahunsebelumkontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="hukumtahunlaporankontrak">Input Telah Ditindaklanjuti Melalui Proses Hukum Pada
-                            Tahun
-                            Laporan: </label>
-                        <input type="text" name="hukumtahunlaporankontrak" id="hukumtahunlaporankontrak"
-                            class="form-control" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" name="tambahfraudkontrak" class="btn btn-primary">Tambah Data</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php if (!empty($fraudinternal)) { ?>
-    <div class="modal fade" id="modalUbahfraudkontrak">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ubah Jumlah Penyimpangan Internal oleh Anggota Kontrak </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="<?= base_url('fraudinternal/ubahfraudkontrak'); ?>" method="post">
-                        <input type="hidden" name="id" id="id-fraudinternal">
-                        <div class="mb-3">
-                            <label for="fraudtahunlaporankontrak">Ubah Total Fraud Pada Tahun Laporan:</label>
-                            <input class="form-control" type="text" name="fraudtahunlaporankontrak"
-                                id="fraudtahunlaporankontrak" placeholder="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fraudtahunsebelumkontrak">Ubah Total Fraud Pada Tahun Sebelumnya:</label>
-                            <input class="form-control" type="text" name="fraudtahunsebelumkontrak"
-                                id="fraudtahunsebelumkontrak" placeholder="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="selesaitahunlaporankontrak">Ubah Telah Diselesaikan Pada Tahun Laporan :</label>
-                            <input class="form-control" type="text" name="selesaitahunlaporankontrak"
-                                id="selesaitahunlaporankontrak" placeholder="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunlaporankontrak">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="prosestahunlaporankontrak"
-                                id="prosestahunlaporankontrak" placeholder="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="prosestahunsebelumkontrak">Ubah Dalam Proses Penyelesaian Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="prosestahunsebelumkontrak"
-                                id="prosestahunsebelumkontrak" placeholder="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunlaporankontrak">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="belumtahunlaporankontrak"
-                                id="belumtahunlaporankontrak" placeholder="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="belumtahunsebelumkontrak">Ubah Belum Diupayakan Penyelesaiannya Pada Tahun
-                                Sebelumnya:</label>
-                            <input class="form-control" type="text" name="belumtahunsebelumkontrak"
-                                id="belumtahunsebelumkontrak" placeholder="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="hukumtahunlaporankontrak">Ubah Telah ditindaklanjuti Melalui Proses Hukum Pada
-                                Tahun
-                                Laporan:</label>
-                            <input class="form-control" type="text" name="hukumtahunlaporankontrak"
-                                id="hukumtahunlaporankontrak" placeholder="" required>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" name="ubahfraudkontrak" class="btn btn-primary">Ubah Data</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php } ?>
-
-<div class="modal fade" id="modalTambahfraudket">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Keterangan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('fraudinternal/tambahfraudket'); ?>" method="post">
-                    <div class="form-group">
-                        <label for="keterangan">Input Keterangan:</label>
-                        <textarea style="height: 150px" type="text" name="keterangan" id="keterangan"
-                            class="form-control"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" name="tambahfraudket" class="btn btn-primary">Tambah Data</button>
-            </div>
+                <!-- Response Message -->
+                <div id="ajax-response-message"></div>
             </form>
+
+            <div class="cardpilihfaktor">
+                <div class="cardpilihfaktor-header">
+                    <h6>Pilih Halaman</h6>
+                </div>
+                <div class="cardpilihfaktor-body">
+                    <div class="d-flex justify-content-center">
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group me-2" role="group" aria-label="First group">
+                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                    onclick="window.location.href='<?= base_url('Kehadirandekom') ?>'">
+                                    << </button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Penjelasanumum'); ?>'">1</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Tgjwbdir'); ?>'">2</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Tgjwbdekom'); ?>'">3</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Tgjwbkomite'); ?>'">4</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Strukturkomite'); ?>'">5</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Sahamdirdekom'); ?>'">6</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Shmusahadirdekom'); ?>'">7</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Shmdirdekomlain'); ?>'">8</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Keuangandirdekompshm'); ?>'">9</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Keluargadirdekompshm'); ?>'">10</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Paketkebijakandirdekom'); ?>'">11</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Rasiogaji'); ?>'">12</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Rapat'); ?>'">13</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Kehadirandekom'); ?>'">14</button>
+                                        <button style="background-color: #000; color: #fff;" type="button"
+                                            class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Fraudinternal'); ?>'">15</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Masalahhukum'); ?>'">16</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Transaksikepentingan'); ?>'">17</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Danasosial'); ?>'">18</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('ShowTransparansi') ?>'">All</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="window.location.href='<?= base_url('Masalahhukum') ?>'">>></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-1">
+                        <a href="<?= base_url('periodetransparansi'); ?>" class="btn btn-link btn-sm">Kembali ke halaman
+                            periode</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<?php if (!empty($fraudinternal)) { ?>
-    <div class="modal fade" id="modalUbahketerangan">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ubah Tambah Pelaksanaan Tugas dan Tanggung Jawab Anggota Direksi </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="<?= base_url('fraudinternal/ubahketerangan'); ?>" method="post">
-                        <input type="hidden" name="id" id="id-fraudinternal">
-                        <div class="form-group">
-                            <label for="keterangan" class="form-label">Input Tindak Lanjut Direksi BPR: </label>
-                            <textarea class="form-control" type="text" name="keterangan" id="keterangan"
-                                style="height: 150px" placeholder="<?= $row['keterangan'] ?>"></textarea>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="ubahketerangan" class="btn btn-primary">Ubah Data</button>
-                </div>
+<div class="modal fade" id="modalTambahketerangan">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Penjelasan lebih lanjut (Opsional)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?= base_url('Fraudinternal/tambahketerangan'); ?>" method="post">
+                    <input type="hidden" name="id" id="id-penjelastindak"> <!-- Hidden field to pass the ID -->
+
+                    <div class="form-group">
+                        <label for="tindaklanjut" class="form-label">Penjelasan lebih lanjut (Opsional):
+                        </label>
+                        <textarea class="form-control" name="tindaklanjut" id="tindaklanjut"
+                            style="height: 150px"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" name="tambahketerangan" class="btn btn-primary">Ubah Data</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-<?php } ?>
+</div>
 
-<div class="modal fade" id="modalHapusfraudinternal">
+<div class="modal fade" id="modaleditketerangan">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-body">
-                Apakah anda yakin ingin menghapus data no-<span id="idData"></span>?
+            <div class="modal-header">
+                <h5 class="modal-title">Ubah Penjelasan dan Tindak Lanjut</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnHapusfraudinternal">Yakin</button>
+            <div class="modal-body">
+                <form action="<?= base_url('Fraudinternal/editketerangan'); ?>" method="post">
+                    <input type="hidden" name="id" id="id-penjelastindak"
+                        value="<?= isset($row['id']) ? esc($row['id']) : ''; ?>">
+                    <div class="form-group">
+                        <label for="tindaklanjut" class="form-label">Penjelasan lebih lanjut (Opsional):
+                        </label>
+                        <textarea class="form-control" name="tindaklanjut" id="tindaklanjut"
+                            style="height: 150px"><?= isset($row['tindaklanjut']) ? esc($row['tindaklanjut']) : ''; ?></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Submit button should be inside the form to trigger submission -->
+                        <button type="submit" name="editketerangan" class="btn btn-primary">Ubah Data</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -1319,44 +864,834 @@
 <div class="modal fade" id="modalTambahkomentar">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Komentar dan Approval </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('fraudinternal/tambahkomentar'); ?>" method="post">
+            <form action="<?= base_url('Fraudinternal/Tambahkomentar'); ?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Komentar Direksi dan Dewan Komisaris</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php date_default_timezone_set('Asia/Jakarta'); ?>
+
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="kodebpr" value="<?= $kodebpr ?>">
+                    <!-- Tambahkan ini -->
+
                     <div class="form-group">
-                        <label for="komentar">Komentar Direksi dan Dewan Komisaris:</label>
-                        <textarea type="text" name="komentar" id="komentar" class="form-control" style="height: 150px;"
-                            readonly></textarea>
+                        <label for="komentarLama">Komentar Saat Ini:</label>
+                        <ul id="komentarLamaList" style="list-style-type: none; padding-left: 0;">
+                            <li>Memuat komentar...</li>
+                        </ul>
                     </div>
-                    <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi): ?>
+
+                    <?php if ($userInGroupAdmin || $userInGroupDekom || $userInGroupDireksi || $userInGroupPE || $userInGroupDekom2 || $userInGroupDireksi2): ?>
+                        <input type="hidden" name="fullname" value="<?= htmlspecialchars($fullname) ?>">
+                        <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s') ?>">
                         <div class="form-group">
-                            <label for="komentar">Input Komentar Direksi dan Dewan Komisaris:</label>
-                            <textarea type="komentar" name="komentar" id="komentar" class="form-control"
-                                style="height: 150px;"></textarea>
-                        </div>
-                        <div class="col-md d-flex justify-content-center align-items-center" style="margin-top: 20px;">
-                            <a href="<?= base_url('fraudinternal/approveSemua') ?>"
-                                class="btn btn-success shadow mt-3 mx-2"
-                                onclick="return confirm('Apakah Anda yakin hendak melakukan approval?');">
-                                Approve
-                            </a>
-                            <a href="<?= base_url('fraudinternal/unapproveSemua') ?>"
-                                class="btn btn-danger shadow mt-3 mx-2"
-                                onclick="return confirm('Apakah Anda yakin hendak membatalkan semua approval?');">
-                                Batalkan Approval
-                            </a>
+                            <label for="komentar">Tambahkan Komentar Baru:</label>
+                            <textarea class="form-control" name="komentar" id="komentar" style="height: 100px"></textarea>
                         </div>
                     <?php endif; ?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" name="tambahkomentar" class="btn btn-primary">Tambah Data</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="TambahKomentar" class="btn btn-primary">Simpan
+                        Komentar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
+
+<?php if (session()->getFlashdata('message')): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+        <strong><?= esc(session()->getFlashdata('message')); ?></strong>
+    </div>
+<?php endif; ?>
+
+<?php if (session()->getFlashdata('err')): ?>
+    <div class="alert alert-danger" role="alert"><?= esc(session()->getFlashdata('err')); ?></div>
+<?php endif; ?>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#fraudinternalForm').on('submit', function (e) {
+            e.preventDefault();
+
+            // Serialize langsung: TIDAK ada transformasi angka
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: '/Fraudinternal/tambahfraudajax',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                beforeSend: function () {
+                    $('button[type="submit"]').prop('disabled', true).text('Menyimpan...');
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        $('#ajax-response-message').html(
+                            '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                            '<i class="fa fa-check-circle"></i> ' + response.message +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+                            '</div>'
+                        );
+                    } else {
+                        $('#ajax-response-message').html(
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            '<i class="fa fa-exclamation-triangle"></i> ' + (response.message || 'Gagal menyimpan data.') +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+                            '</div>'
+                        );
+                    }
+
+                    $('html, body').animate({
+                        scrollTop: $("#ajax-response-message").offset().top - 100
+                    }, 500);
+
+                    setTimeout(function () {
+                        $('#ajax-response-message .alert').fadeOut();
+                    }, 5000);
+                },
+                error: function (xhr) {
+                    var errorMessage = 'Terjadi kesalahan saat menyimpan data.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    } else if (xhr.status === 404) {
+                        errorMessage = 'URL endpoint tidak ditemukan. Periksa route di controller.';
+                    } else if (xhr.status === 500) {
+                        errorMessage = 'Error server internal. Periksa log server.';
+                    } else if (xhr.status === 403) {
+                        errorMessage = 'Akses ditolak. Pastikan Anda memiliki permission yang tepat.';
+                    }
+
+                    $('#ajax-response-message').html(
+                        '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                        '<i class="fa fa-exclamation-triangle"></i> ' + errorMessage +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+                        '</div>'
+                    );
+                },
+                complete: function () {
+                    $('button[type="submit"]').prop('disabled', false).text('Simpan Data');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    const GLOBAL_SUBKATEGORI = '<?= $subkategori ?? '' ?>';
+    const GLOBAL_KODEBPR = '<?= $kodebpr ?? '' ?>';
+    const GLOBAL_ACTIVE_PERIODE_ID = '<?= $activePeriodeId ?? '' ?>';
+    const GLOBAL_CURRENT_USER_ID = '<?= session()->get('user_id') ?? '' ?>';
+
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#tambahPenjelasForm').on('submit', function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var formData = form.serialize();
+
+                $.ajax({
+                    url: '<?= base_url('Fraudinternal/tambahfraudajax') ?>',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            $('#ajax-response-message').html('<div class="alert alert-success">' + response.message + '</div>');
+                            setTimeout(function () { $('#ajax-response-message').fadeOut(); }, 3000);
+                        } else {
+                            $('#ajax-response-message').html('<div class="alert alert-danger">' + (response.message || 'Gagal menyimpan data.') + '</div>');
+                        }
+                    },
+                    error: function (xhr) {
+                        var errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : 'Error while processing the request.';
+                        $('#ajax-response-message').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                    }
+                });
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Selector yang konsisten
+        const commentButtons = document.querySelectorAll('[id^="btn-komentar-"]');
+
+        console.log('Found comment buttons:', commentButtons.length); // Debug
+
+        function updateBadge(Id, newCount) {
+            const badge = document.getElementById('notification-badge-' + Id);
+            // console.log('Updating badge for factor', Id, 'with count', newCount); // Debug
+            if (badge) {
+                if (newCount > 0) {
+                    badge.textContent = newCount;
+                    badge.style.display = 'inline-flex';
+                } else {
+                    badge.style.display = 'none';
+                    badge.textContent = '0';
+                }
+            }
+        }
+
+        function fetchAndDisplayComments(Id, kodebpr, periodeId) {
+            const modal = $('#modalTambahkomentar');
+            modal.find('#komentarLamaList').html('<li>Memuat komentar...</li>');
+
+            $.ajax({
+                url: '<?= base_url('fraudinternal/getKomentarByFaktorId'); ?>/' + Id,
+                method: 'GET',
+                data: {
+                    kodebpr: kodebpr,
+                    periode_id: periodeId
+                },
+                dataType: 'json',
+                success: function (response) {
+                    let komentarListHtml = '';
+                    if (response.length > 0) {
+                        response.forEach(function (komentar) {
+                            komentarListHtml += '<li>' + komentar.komentar +
+                                ' - (' + komentar.fullname +
+                                ' - ' + komentar.created_at + ')</li>';
+                        });
+                    } else {
+                        komentarListHtml = '<li>Tidak ada komentar.</li>';
+                    }
+                    modal.find('#komentarLamaList').html(komentarListHtml);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching comments for modal:', error);
+                    console.log('Response:', xhr.responseText);
+                    modal.find('#komentarLamaList').html('<li>Gagal memuat komentar.</li>');
+                }
+            });
+        }
+
+        // Event listener untuk button komentar
+        commentButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const Id = this.getAttribute('data-id');
+                const kodebpr = this.getAttribute('data-kodebpr');
+                const userId = this.getAttribute('data-user-id');
+                const periodeId = this.getAttribute('data-periode-id');
+
+                // console.log('Button clicked - Id:', Id, 'userId:', userId); // Debug
+
+                $('#modalTambahkomentar').find('#id').val(Id);
+
+                // Fetch dan display comments
+                fetchAndDisplayComments(Id, kodebpr, periodeId);
+
+                // Mark comments as read
+                $.ajax({
+                    url: '<?= base_url('Fraudinternal/markUserCommentsAsRead'); ?>',
+                    method: 'POST',
+                    data: {
+                        id: Id,
+                        kodebpr: kodebpr,
+                        user_id: userId,
+                        periode_id: periodeId,
+                        '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+                    },
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            updateBadge(Id, 0);
+                            console.log('Comments marked as read for factor', Id); // Debug
+                        } else {
+                            console.error('Failed to mark comments as read:', response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error marking comments as read:', error);
+                    }
+                });
+            });
+        });
+
+        // Form submit handler
+        $('#formTambahKomentar').on('submit', function (e) {
+            e.preventDefault();
+            const form = $(this);
+            const formData = form.serialize();
+            const Id = form.find('#id').val(); // ID yang konsisten
+
+            console.log('Submitting comment for factor:', Id); // Debug
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: formData + '&<?= csrf_token() ?>=' + '<?= csrf_hash() ?>',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        form.find('#komentar').val('');
+                        fetchAndDisplayComments(Id, GLOBAL_KODEBPR, GLOBAL_ACTIVE_PERIODE_ID);
+
+                        // Refresh badge untuk user lain
+                        refreshBadgeForAllUsers(GLOBAL_CURRENT_USER_ID);
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                    alert('Terjadi kesalahan saat menyimpan komentar.');
+                }
+            });
+        });
+
+        // Polling function
+        function pollUnreadCounts() {
+            console.log('Polling unread counts for', commentButtons.length, 'buttons');
+
+            commentButtons.forEach(button => {
+                const Id = button.getAttribute('data-id');
+                const kodebpr = button.getAttribute('data-kodebpr');
+                const userId = button.getAttribute('data-user-id');
+                const periodeId = button.getAttribute('data-periode-id');
+
+                console.log('Polling for ID:', Id, 'User:', userId);
+
+                $.ajax({
+                    url: '<?= base_url('Fraudinternal/getUnreadCommentCountForFactor'); ?>',
+                    method: 'GET',
+                    data: {
+                        id: Id,
+                        kodebpr: kodebpr,
+                        user_id: userId,
+                        periode_id: periodeId
+                    },
+                    success: function (response) {
+                        console.log('Unread count response for ID', Id, ':', response);
+                        if (response && typeof response.unread_count !== 'undefined') {
+                            updateBadge(Id, response.unread_count);
+                        } else {
+                            console.warn('Invalid response format:', response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching unread count for factor ' + Id + ':', error);
+                        console.error('Response text:', xhr.responseText);
+                    }
+                });
+            });
+        }
+
+        // Fungsi untuk refresh badge setelah ada komentar baru
+        function refreshBadgeForAllUsers(exceptUserId) {
+            console.log('Refreshing badges for all users except:', exceptUserId);
+
+            commentButtons.forEach(button => {
+                const Id = button.getAttribute('data-id');
+                const kodebpr = button.getAttribute('data-kodebpr');
+                const periodeId = button.getAttribute('data-periode-id');
+
+                $.ajax({
+                    url: '<?= base_url('Fraudinternal/getUnreadCommentCountForAllUsers'); ?>',
+                    method: 'GET',
+                    data: {
+                        id: Id,
+                        kodebpr: kodebpr,
+                        periode_id: periodeId,
+                        except_user_id: exceptUserId
+                    },
+                    success: function (response) {
+                        console.log('Badge refresh response:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error refreshing badges:', error);
+                    }
+                });
+            });
+        }
+
+        // Call polling function initially
+        pollUnreadCounts();
+
+        // setInterval(pollUnreadCounts, 10000);
+    });
+</script>
+
+<style>
+    .cardpilihfaktor {
+        width: auto;
+        max-width: 700px;
+        margin: 10px auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+
+    .cardpilihfaktor-header {
+        text-align: center;
+        background-color: #f8f9fa;
+        padding: 2px;
+        border-bottom: 1px solid #ddd;
+        font-size: 1.0rem;
+        font-weight: bold;
+    }
+
+    .cardpilihfaktor-body {
+        padding: 5px;
+    }
+
+    .cardpilihfaktor .btn-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .cardpilihfaktor .btn-group .btn {
+        margin: 1px;
+    }
+
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .card-body {
+        padding: 40px;
+    }
+
+    .alert-info-custom {
+        background-color: #e0f7fa;
+        color: #007bb5;
+        border-color: #b2ebf2;
+        border-radius: 10px;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+    }
+
+    .alert-info-custom strong {
+        color: #0056b3;
+    }
+
+    .alert-info-custom .fas {
+        margin-right: 10px;
+        font-size: 1.5rem;
+    }
+
+    .h3.mb-4.text-gray-800.text-center {
+        color: #343a40;
+        font-weight: 700;
+        margin-bottom: 30px !important;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .h3.mb-4.text-gray-800.text-center::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #007bff;
+        border-radius: 5px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+    }
+
+    .btn-primary {
+        background-color: #141863;
+        border-color: #141863;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        margin-left: 15px;
+    }
+
+    .btn-primary:hover {
+        background-color: #ffffff;
+        border-color: #141863;
+        transform: translateY(-2px);
+        color: #141863;
+    }
+
+    .btn-primary2 {
+        background-color: #141863;
+        border-color: #141863;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        margin-right: 10px;
+        margin-left: 0px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        color: #ffffff;
+    }
+
+    .btn-primary2:hover {
+        background-color: #ffffff;
+        border-color: #0056b3;
+        transform: translateY(-2px);
+        color: #0056b3;
+    }
+
+    .btn-primary3 {
+        background-color: #141863;
+        border-color: #141863;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        margin-top: 40px;
+        margin-right: 10px;
+        margin-bottom: 15px;
+        color: #ffffff;
+    }
+
+    .btn-primary3:hover {
+        background-color: #ffffff;
+        border-color: #141863;
+        color: #141863;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border-color: #343a40;
+        border-radius: 55px;
+        padding: 12px 30px;
+        font-size: 1.0rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #ffffff;
+        border-color: #343a40;
+        transform: translateY(-2px);
+        color: #343a40;
+    }
+
+    .btn-success {
+        background-color: #ffffff;
+        /* Blue button */
+        border-color: #28a745;
+        border-radius: 25px;
+        /* Pill-shaped button */
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        margin-right: 15px;
+        margin-left: 15px;
+        color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #28a745;
+        border-color: #ffffff;
+        transform: translateY(-2px);
+        color: #ffffff;
+        /* Slight lift on hover */
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+        border-radius: 10px;
+    }
+
+    .btn-danger {
+        background-color: #721c24;
+        border-color: #721c24;
+        border-radius: 55px;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        margin-right: 5px;
+    }
+
+    .btn-danger:hover {
+        background-color: #ffffff;
+        border-color: #721c24;
+        transform: translateY(-2px);
+        color: #721c24;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+        border-radius: 10px;
+    }
+
+    .close {
+        color: #000;
+        opacity: 0.5;
+        font-weight: 700;
+        text-shadow: none;
+    }
+
+    .close:hover {
+        opacity: 0.75;
+    }
+
+    .beautiful-alert {
+        background-color: #e0f7fa;
+        /* A very light blue */
+        color: #007bb5;
+        /* A darker, soothing blue for text */
+        border-color: #b2ebf2;
+        /* A slightly darker border than background */
+        border-radius: 10px;
+        /* Rounded corners for a softer look */
+        padding: 15px 25px;
+        /* More padding for breathing room */
+        display: flex;
+        /* Use flexbox for alignment of icon and text */
+        align-items: center;
+        /* Vertically align items in the middle */
+        font-size: 1.1rem;
+        /* Slightly larger font for readability */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Subtle shadow for depth */
+    }
+
+    .beautiful-alert strong {
+        color: #0056b3;
+        /* Even darker blue for the strong text */
+    }
+
+    .beautiful-alert .alert-icon {
+        margin-right: 15px;
+        /* Space between the icon and text */
+        font-size: 1.8rem;
+        /* Larger icon size */
+        color: #007bff;
+        /* Bootstrap primary blue for the icon */
+    }
+
+    .custom-badge-container {
+        display: flex;
+        /* Makes it a flex container */
+        justify-content: space-between;
+        /* Pushes the first item to the start (left) and the last item to the end (right) */
+        align-items: flex-start;
+        /* Aligns items to the top if they have different heights */
+        /* Add any other styling for the container here, e.g., padding */
+        padding: 15px;
+        /* Example padding */
+    }
+
+    /* Card keseluruhan */
+    .approval-card {
+        width: 75%;
+        left: 6px;
+        margin-top: 1px;
+        /*(Jika ingin mempertahankan margin-top) */
+        height: 95px;
+        /* Tinggi tetap */
+        border-radius: 15px;
+        /* Sudut lebih membulat untuk efek modern */
+        overflow: hidden;
+        /* Pastikan konten tidak meluber */
+    }
+
+    /* Bagian body dari card */
+    .approval-card-body {
+        display: flex;
+        /* Menggunakan flexbox untuk tata letak vertikal */
+        flex-direction: column;
+        /* Mengatur item dalam kolom (vertikal) */
+        justify-content: space-between;
+        /* Menarik badge ke atas dan tombol ke bawah */
+        padding: 15px;
+        /* Sesuaikan padding di dalam card body */
+        height: 100%;
+        /* Pastikan body mengisi penuh tinggi card */
+    }
+
+    /* Card keseluruhan */
+    .approvaldir-card {
+        position: absolute;
+        right: 16px;
+        width: 75%;
+        margin-top: 1px;
+        /*(Jika ingin mempertahankan margin-top) */
+        height: 95px;
+        /* Tinggi tetap */
+        border-radius: 15px;
+        /* Sudut lebih membulat untuk efek modern */
+        overflow: hidden;
+        /* Pastikan konten tidak meluber */
+    }
+
+    /* Bagian body dari card */
+    .approvaldir-card-body {
+        display: flex;
+        /* Menggunakan flexbox untuk tata letak vertikal */
+        flex-direction: column;
+        /* Mengatur item dalam kolom (vertikal) */
+        justify-content: right;
+        /* Menarik badge ke atas dan tombol ke bawah */
+        padding: 15px;
+        /* Sesuaikan padding di dalam card body */
+        height: 100%;
+        /* Pastikan body mengisi penuh tinggi card */
+    }
+
+    /* Container untuk badge */
+    .approval-badge-container {
+        text-align: center;
+        /* Menengahkan badge horizontal */
+        margin-bottom: 6px;
+        /* Jarak antara badge dan tombol */
+    }
+
+    /* Gaya badge */
+    .approval-badge {
+        background-color: #343a40;
+        /* Warna hitam gelap (sesuai gambar) */
+        color: #ffffff;
+        /* Teks putih */
+        font-size: 0.8em;
+        /* Ukuran font */
+        font-weight: 500;
+        /* Ketebalan font */
+        padding: 5px 12px;
+        /* Padding vertikal dan horizontal */
+        border-radius: 5px;
+        /* Sedikit membulat */
+        display: inline-block;
+        /* Penting untuk padding dan margin */
+        /* Box shadow untuk efek seperti di gambar */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Container untuk tombol-tombol */
+    .approval-buttons-container {
+        display: flex;
+        /* Menggunakan flexbox untuk tata letak horizontal */
+        justify-content: center;
+        /* Menengahkan tombol-tombol secara keseluruhan */
+        align-items: center;
+        /* Mengatur vertikal di tengah (jika ada perbedaan tinggi) */
+        gap: 9px;
+        /* Jarak antar tombol (modern, Bootstrap 5+ setara dengan me-*) */
+        /* Jika menggunakan Bootstrap 4 dan tidak ada 'gap': */
+        /* .approval-btn:first-child { margin-right: 8px; } */
+    }
+
+    /* Gaya umum untuk semua tombol approval */
+    .approval-btn {
+        flex: 1;
+        /* Membuat tombol mengisi ruang yang tersedia secara merata */
+        max-width: 50%;
+        /* Batasi lebar maksimal agar tidak terlalu besar */
+        padding: 8px 15px;
+        /* Padding tombol */
+        font-size: 0.95em;
+        /* Ukuran font tombol */
+        font-weight: 500;
+        /* Ketebalan font */
+        border-radius: 8px;
+        /* Sudut tombol yang lebih membulat */
+        text-align: center;
+        /* Pastikan teks tombol di tengah */
+        text-decoration: none;
+        /* Hapus garis bawah pada link */
+        white-space: nowrap;
+        /* Pastikan teks tombol tidak pecah baris */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Bayangan lembut */
+        transition: all 0.2s ease-in-out;
+        /* Transisi untuk efek hover */
+    }
+
+    /* Gaya khusus tombol Setujui */
+    .approval-btn-approve {
+        background-color: #28a745;
+        /* Warna hijau */
+        border-color: #28a745;
+        color: #fff;
+    }
+
+    .approval-btn-approve:hover {
+        background-color: #218838;
+        /* Hijau lebih gelap saat hover */
+        border-color: #1e7e34;
+        transform: translateY(-1px);
+        /* Efek terangkat sedikit */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Gaya khusus tombol Tolak */
+    .approval-btn-reject {
+        background-color: #dc3545;
+        /* Warna merah */
+        border-color: #dc3545;
+        color: #fff;
+    }
+
+    .approval-btn-reject:hover {
+        background-color: #c82333;
+        /* Merah lebih gelap saat hover */
+        border-color: #bd2130;
+        transform: translateY(-1px);
+        /* Efek terangkat sedikit */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .disabled-card {
+        opacity: 0.5;
+        /* Membuat card terlihat samar */
+        pointer-events: none;
+        /* Menonaktifkan interaksi dengan elemen */
+    }
+
+    .disabled-btn {
+        opacity: 0.5;
+        /* Membuat tombol terlihat samar */
+        pointer-events: none;
+        /* Menonaktifkan klik pada tombol */
+    }
+</style>

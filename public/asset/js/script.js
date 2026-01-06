@@ -9,6 +9,9 @@ $(document).on("click", "#btn-edit", function () {
 
   $(".modal-body #id-inv").val($(this).data("id"));
   $(".modal-body #namadat").val($(this).data("namadat"));
+  $(".modal-body #kodebank").val($(this).data("kodebank"));
+  $(".modal-body #perusahaan").val($(this).data("perusahaan"));
+  $(".modal-body #persensaham").val($(this).data("persensaham"));
   $(".modal-body #media").val($(this).data("media"));
   $(".modal-body #lokasi").val($(this).data("lokasi"));
   $(".modal-body #utgjawab").val($(this).data("utgjawab"));
@@ -210,14 +213,18 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #id-sahamdirdekom").val($(this).data("id"));
   $(".modal-body #direksi").val($(this).data("direksi"));
   $(".modal-body #persensahamdir").val($(this).data("persensahamdir"));
+  $(".modal-body #nikdir").val($(this).data("nikdir"));
+  $(".modal-body #nikdekom").val($(this).data("nikdekom"));
   $(".modal-body #dekom").val($(this).data("dekom"));
   $(".modal-body #persensahamdekom").val($(this).data("persensahamdekom"));
 
   $(".modal-body #id-masalahhukum").val($(this).data("id"));
   $(".modal-body #hukumperdataselesai").val($(this).data("hukumperdataselesai"));
   $(".modal-body #hukumpidanaselesai").val($(this).data("hukumpidanaselesai"));
+  $(".modal-body #totalselesai").val($(this).data("totalselesai"));
   $(".modal-body #hukumperdataproses").val($(this).data("hukumperdataproses"));
   $(".modal-body #hukumpidanaproses").val($(this).data("hukumpidanaproses"));
+  $(".modal-body #totalproses").val($(this).data("totalproses"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
 
   $(".modal-body #id-fraudinternal").val($(this).data("id"));
@@ -271,6 +278,7 @@ $(document).on("click", "#btn-edit", function () {
 
   $(".modal-body #id-shmdirdekomlain").val($(this).data("id"));
   $(".modal-body #direksi").val($(this).data("direksi"));
+  $(".modal-body #nama").val($(this).data("nama"));
   $(".modal-body #jenisdir").val($(this).data("jenisdir"));
   $(".modal-body #kodedir").val($(this).data("kodedir"));
   $(".modal-body #perusahaandir").val($(this).data("perusahaandir"));
@@ -295,17 +303,11 @@ $(document).on("click", "#btn-edit", function () {
 
   $(".modal-body #id-keuangandirdekompshm").val($(this).data("id"));
   $(".modal-body #direksi").val($(this).data("direksi"));
-  $(".modal-body #hubdirdir").val($(this).data("hubdirdir"));
-  $(".modal-body #hubdirdekom").val($(this).data("hubdirdekom"));
-  $(".modal-body #hubdirpshm").val($(this).data("hubdirpshm"));
+  $(".modal-body #hubdir").val($(this).data("hubdir"));
+  $(".modal-body #hubdekom").val($(this).data("hubdekom"));
+  $(".modal-body #hubpshm").val($(this).data("hubpshm"));
   $(".modal-body #dekom").val($(this).data("dekom"));
-  $(".modal-body #hubdekomdir").val($(this).data("hubdekomdir"));
-  $(".modal-body #hubdekomdekom	").val($(this).data("hubdekomdekom"));
-  $(".modal-body #hubdekompshm").val($(this).data("hubdekompshm"));
   $(".modal-body #pshm").val($(this).data("pshm"));
-  $(".modal-body #hubpshmdir").val($(this).data("hubpshmdir"));
-  $(".modal-body #hubpshmdekom").val($(this).data("hubpshmdekom"));
-  $(".modal-body #hubpshmpshm").val($(this).data("hubpshmpshm"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
 
   $(".modal-body #id-keluargadirdekompshm").val($(this).data("id"));
@@ -345,6 +347,9 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #terimaremunlaindekom").val($(this).data("terimaremunlaindekom"));
   $(".modal-body #nominalremunlaindekom").val($(this).data("nominalremunlaindekom"));
 
+  $(".modal-body #totalremundir").val($(this).data("totalremundir"));
+  $(".modal-body #totalremundekom").val($(this).data("totalremundekom"));
+
   $(".modal-body #terimarumahdir").val($(this).data("terimarumahdir"));
   $(".modal-body #nominalrumahdir").val($(this).data("nominalrumahdir"));
   $(".modal-body #nominalrumahdekom").val($(this).data("nominalrumahdekom"));
@@ -380,11 +385,16 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #dekomrendah").val($(this).data("dekomrendah"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
 
+  $(".modal-body #ntotalrisk").val($(this).data("ntotalrisk"));
+
   $(".modal-body #id-rapat").val($(this).data("id"));
   $(".modal-body #tanggalrapat").val($(this).data("tanggalrapat"));
   $(".modal-body #jumlahpeserta").val($(this).data("jumlahpeserta"));
   $(".modal-body #topikrapat").val($(this).data("topikrapat"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
+
+  $(".modal-body #penjelasanlanjut").val($(this).data("penjelasanlanjut"));
+  $(".modal-body #tindaklanjut").val($(this).data("tindaklanjut"));
 
   $(".modal-body #id-kehadirandekom").val($(this).data("id"));
   $(".modal-body #dekom").val($(this).data("dekom"));
@@ -404,6 +414,8 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #nilaitransaksi").val($(this).data("nilaitransaksi"));
   $(".modal-body #keterangan").val($(this).data("keterangan"));
   $(".modal-body #tindakbenturan").val($(this).data("tindakbenturan"));
+  
+  $(".modal-body #penjelasanpenilaian").val($(this).data("penjelasanpenilaian"));
 
   $(".modal-body #id-faktor").val($(this).data("id"));
   $(".modal-body #id-faktor2").val($(this).data("id"));
@@ -417,7 +429,9 @@ $(document).on("click", "#btn-edit", function () {
   $(".modal-body #id-faktor10").val($(this).data("id"));
   $(".modal-body #id-faktor11").val($(this).data("id"));
   $(".modal-body #id-faktor12").val($(this).data("id"));
-  $(".modal-body #id-showfaktor").val($(this).data("id"));
+  $(".modal-body #id-showfaktor").val($(this).data("id"));  
+  $(".modal-body #parameterpenilaian").val($(this).data("parameterpenilaian"));
+  $(".modal-body #penilaiankredit").val($(this).data("penilaiankredit"));
 });
 
 //imagepreview
@@ -446,6 +460,8 @@ $(document).on("click", "#btn-tambah", function () {
   $(".modal-body #negatifproses").val($(this).data("negatifproses"));
   $(".modal-body #positifhasil").val($(this).data("positifhasil"));
   $(".modal-body #negatifhasil").val($(this).data("negatifhasil"));
+  $(".modal-body #parameterpenilaian").val($(this).data("parameterpenilaian"));
+  $(".modal-body #id-Risikokredit").val($(this).data("id"));
 
 
 });

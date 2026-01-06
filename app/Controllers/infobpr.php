@@ -7,6 +7,7 @@ use App\Models\M_infobpr;
 class infobpr extends Controller
 {
     protected $model;
+    protected $auth;
     public function __construct()
     {
         $this->model = new M_infobpr();

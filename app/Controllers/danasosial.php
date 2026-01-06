@@ -4,138 +4,246 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use App\Models\M_danasosial;
 use App\Models\M_infobpr;
-use App\Models\M_penjelasanumum;
-use App\Models\M_tgjwbdir;
-use App\Models\M_tgjwbdekom;
-use App\Models\M_tgjwbkomite;
-use App\Models\M_strukturkomite;
-use App\Models\M_sahamdirdekom;
-use App\Models\M_shmusahadirdekom;
-use App\Models\M_shmdirdekomlain;
-use App\Models\M_keuangandirdekompshm;
-use App\Models\M_keluargadirdekompshm;
-use App\Models\M_paketkebijakandirdekom;
-use App\Models\M_rasiogaji;
-use App\Models\M_rapat;
-use App\Models\M_kehadirandekom;
-use App\Models\M_fraudinternal;
-use App\Models\M_masalahhukum;
-use App\Models\M_transaksikepentingan;
 use App\Models\M_user;
+use App\Models\M_periodetransparansi;
+use App\Models\M_transparansicomments;
+use App\Models\M_transparansicommentsread;
+use App\Models\M_penjelastindak;
 use Myth\Auth\Config\Services as AuthServices;
 
 class danasosial extends Controller
 {
-    protected $model;
-    protected $danasosialModel;
-    protected $infobprModel;
-    protected $penjelasanumumModel;
-    protected $tgjwbdirModel;
-    protected $tgjwbdekomModel;
-    protected $tgjwbkomiteModel;
-    protected $strukturkomiteModel;
-    protected $sahamdirdekomModel;
-    protected $shmusahadirdekomModel;
-    protected $shmdirdekomlainModel;
-    protected $keuangandirdekompshmModel;
-    protected $keluargadirdekompshmModel;
-    protected $paketkebijakandirdekomModel;
-    protected $rasiogajiModel;
-    protected $rapatModel;
-    protected $kehadirandekomModel;
-    protected $fraudinternalModel;
-    protected $masalahhukumModel;
-    protected $transaksikepentinganModel;
-    protected $usermodel;
-    protected $session;
     protected $auth;
+    protected $session;
+    protected $userKodebpr;
+    protected $userId;
+
+    protected $danasosialModel;
+    protected $userModel;
+    protected $infobprModel;
+    protected $periodeModel;
+    protected $komentarModel;
+    protected $commentReadsModel;
+    protected $penjelastindakModel;
+
+    private $userPermissions = null;
+    private $userData = null;
+
     public function __construct()
     {
-        $this->model = new M_danasosial();
-        $this->danasosialModel = new M_danasosial();
-        $this->infobprModel = new M_infobpr();
-        $this->penjelasanumumModel = new M_penjelasanumum();
-        $this->tgjwbdirModel = new M_tgjwbdir();
-        $this->tgjwbdekomModel = new M_tgjwbdekom();
-        $this->tgjwbkomiteModel = new M_tgjwbkomite();
-        $this->sahamdirdekomModel = new M_sahamdirdekom();
-        $this->strukturkomiteModel = new M_strukturkomite();
-        $this->shmusahadirdekomModel = new M_shmusahadirdekom();
-        $this->shmdirdekomlainModel = new M_shmdirdekomlain();
-        $this->keuangandirdekompshmModel = new M_keuangandirdekompshm();
-        $this->keluargadirdekompshmModel = new M_keluargadirdekompshm();
-        $this->paketkebijakandirdekomModel = new M_paketkebijakandirdekom();
-        $this->rasiogajiModel = new M_rasiogaji();
-        $this->rapatModel = new M_rapat();
-        $this->kehadirandekomModel = new M_kehadirandekom();
-        $this->fraudinternalModel = new M_fraudinternal();
-        $this->masalahhukumModel = new M_masalahhukum();
-        $this->transaksikepentinganModel = new M_transaksikepentingan();
-        $this->userModel = new M_user();
+        date_default_timezone_set('Asia/Jakarta');
         $this->session = service('session');
         $this->auth = service('authentication');
-        $auth = AuthServices::authentication();
-        $authorize = AuthServices::authorization();
 
-        $userInGroupPE = $authorize->inGroup('pe', $auth->id());
-        $userInGroupAdmin = $authorize->inGroup('admin', $auth->id());
-        $userInGroupDekom = $authorize->inGroup('dekom', $auth->id());
-        $userInGroupDireksi = $authorize->inGroup('direksi', $auth->id());
-
-        $data['userInGroupPE'] = $userInGroupPE;
-        $data['userInGroupAdmin'] = $userInGroupAdmin;
-        $data['userInGroupDekom'] = $userInGroupDekom;
-        $data['userInGroupDireksi'] = $userInGroupDireksi;
+        if ($this->auth->check()) {
+            $this->userId = $this->auth->id();
+            $this->loadUserData();
+        }
     }
 
-    public function index()
+    private function getDanasosialModel()
+    {
+        if (!$this->danasosialModel) {
+            $this->danasosialModel = new M_danasosial();
+        }
+        return $this->danasosialModel;
+    }
+
+    private function getUserModel()
+    {
+        if (!$this->userModel) {
+            $this->userModel = new M_user();
+        }
+        return $this->userModel;
+    }
+
+    private function getPeriodeModel()
+    {
+        if (!$this->periodeModel) {
+            $this->periodeModel = new M_periodetransparansi();
+        }
+        return $this->periodeModel;
+    }
+
+    private function getKomentarModel()
+    {
+        if (!$this->komentarModel) {
+            $this->komentarModel = new M_transparansicomments();
+        }
+        return $this->komentarModel;
+    }
+
+    private function getCommentReadsModel()
+    {
+        if (!$this->commentReadsModel) {
+            $this->commentReadsModel = new M_transparansicommentsread();
+        }
+        return $this->commentReadsModel;
+    }
+
+    private function getPenjelastindakModel()
+    {
+        if (!$this->penjelastindakModel) {
+            $this->penjelastindakModel = new M_penjelastindak();
+        }
+        return $this->penjelastindakModel;
+    }
+
+    private function getInfobprModel()
+    {
+        if (!$this->infobprModel) {
+            $this->infobprModel = new M_infobpr();
+        }
+        return $this->infobprModel;
+    }
+
+    private function loadUserData()
+    {
+        if ($this->userData === null && $this->userId) {
+            $this->userData = $this->getUserModel()->find($this->userId);
+            $this->userKodebpr = $this->userData['kodebpr'] ?? null;
+        }
+    }
+
+    private function getUserPermissions()
+    {
+        if ($this->userPermissions === null && $this->userId) {
+            $authorize = AuthServices::authorization();
+
+            $this->userPermissions = [
+                'pe' => $authorize->inGroup('pe', $this->userId),
+                'admin' => $authorize->inGroup('admin', $this->userId),
+                'dekom' => $authorize->inGroup('dekom', $this->userId),
+                'dekom2' => $authorize->inGroup('dekom2', $this->userId),
+                'dekom3' => $authorize->inGroup('dekom3', $this->userId),
+                'dekom4' => $authorize->inGroup('dekom4', $this->userId),
+                'dekom5' => $authorize->inGroup('dekom5', $this->userId),
+                'direksi' => $authorize->inGroup('direksi', $this->userId),
+                'direksi2' => $authorize->inGroup('direksi2', $this->userId),
+            ];
+        }
+        return $this->userPermissions;
+    }
+
+    private function checkAuthentication()
     {
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
             return redirect()->to($redirectURL);
         }
-        $userId = $this->auth->id(); // ambil ID user yang login
-        $user = $this->userModel->find($userId);
+        return null;
+    }
 
-        $fullname = $user['fullname'] ?? 'Unknown';
+    private function getIndexData($periodeId, $kodebpr)
+    {
+        $subkategori = 'Danasosial';
 
-        $danasosialData = $this->danasosialModel->getAllData();
+        $danasosialData = $this->getDanasosialModel()
+            ->select('*, accdekom, accdekom_by, accdekom_at, is_approved, approved_by, approved_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->limit(10)
+            ->findAll();
 
-        $authorize = AuthServices::authorization();
-        $userInGroupPE = $authorize->inGroup('pe', $this->auth->id());
-        $userInGroupAdmin = $authorize->inGroup('admin', $this->auth->id());
-        $userInGroupDekom = $authorize->inGroup('dekom', $this->auth->id());
-        $userInGroupDireksi = $authorize->inGroup('direksi', $this->auth->id());
+        $komentarList = $this->getKomentarModel()
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
+
+        $penjelastindak = $this->getPenjelastindakModel()
+            ->getDataPenjelasByKodebprAndPeriode($subkategori, $kodebpr, $periodeId);
+
+        return [
+            'danasosial' => $danasosialData,
+            'komentarList' => $komentarList,
+            'penjelastindak' => $penjelastindak
+        ];
+    }
+
+    public function index()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!session('active_periode')) {
+            return redirect()->to('/Periodetransparansi');
+        }
+
+        $periodeId = session('active_periode');
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $indexData = $this->getIndexData($periodeId, $kodebpr);
+
+        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
+        $bprData = $this->getInfobprModel()->getBprByKode($kodebpr);
+
+        $permissions = $this->getUserPermissions();
+
+        $accdekomData = $this->danasosialModel
+            ->select('accdekom, accdekom_by, accdekom_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->findAll();
+
+        $accdirutData = $this->danasosialModel
+            ->select('is_approved, approved_by, approved_at')
+            ->where('periode_id', $periodeId)
+            ->where('kodebpr', $kodebpr)
+            ->findAll();
+
+        // Prepare data for view session management
+        $lastVisit = session('last_visit_komentar') ?? date('Y-m-d H:i:s', strtotime('-1 day'));
+        session()->set('last_visit_komentar', date('Y-m-d H:i:s'));
+
+        $canApprove = true;
+
+        // Ambil semua data dengan kondisi yang sesuai
+        $accdekomValues = $this->danasosialModel
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();  // Mengambil semua data yang sesuai
+
+        // Loop melalui setiap data
+        foreach ($accdekomValues as $accdekomValue) {
+            if ($accdekomValue['accdekom'] != 1) {
+                // Jika ada data yang accdekom tidak 1, set canApprove ke false
+                $canApprove = false;
+                break;  // Tidak perlu melanjutkan jika sudah ditemukan yang tidak valid
+            }
+        }
 
         $data = [
             'judul' => '18. Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik',
-            'penjelasanumum' => $this->penjelasanumumModel->getAllData(),
-            'tgjwbdir' => $this->tgjwbdirModel->getAllData(),
-            'tgjwbdekom' => $this->tgjwbdekomModel->getAllData(),
-            'tgjwbkomite' => $this->tgjwbkomiteModel->getAllData(),
-            'strukturkomite' => $this->strukturkomiteModel->getAllData(),
-            'sahamdirdekom' => $this->sahamdirdekomModel->getAllData(),
-            'shmusahadirdekom' => $this->shmusahadirdekomModel->getAllData(),
-            'shmdirdekomlain' => $this->shmdirdekomlainModel->getAllData(),
-            'keuangandirdekompshm' => $this->keuangandirdekompshmModel->getAllData(),
-            'keluargadirdekompshm' => $this->keluargadirdekompshmModel->getAllData(),
-            'paketkebijakandirdekom' => $this->paketkebijakandirdekomModel->getAllData(),
-            'rasiogaji' => $this->rasiogajiModel->getAllData(),
-            'rapat' => $this->rapatModel->getAllData(),
-            'kehadirandekom' => $this->kehadirandekomModel->getAllData(),
-            'fraudinternal' => $this->fraudinternalModel->getAllData(),
-            'masalahhukum' => $this->masalahhukumModel->getAllData(),
-            'transaksikepentingan' => $this->transaksikepentinganModel->getAllData(),
-            'infobpr' => $this->infobprModel->getAllData(),
-            // 'danasosial' => $this->model->getAllData(),
-            'danasosial' => $danasosialData,
-            'userInGroupPE' => $userInGroupPE,
-            'userInGroupAdmin' => $userInGroupAdmin,
-            'userInGroupDekom' => $userInGroupDekom,
-            'userInGroupDireksi' => $userInGroupDireksi,
-            'fullname' => $fullname,
+            'danasosial' => $indexData['danasosial'],
+            'userInGroupPE' => $permissions['pe'],
+            'userInGroupAdmin' => $permissions['admin'],
+            'userInGroupDekom' => $permissions['dekom'],
+            'userInGroupDekom2' => $permissions['dekom2'],
+            'userInGroupDekom3' => $permissions['dekom3'],
+            'userInGroupDekom4' => $permissions['dekom4'],
+            'userInGroupDekom5' => $permissions['dekom5'],
+            'userInGroupDireksi' => $permissions['direksi'],
+            'userInGroupDireksi2' => $permissions['direksi2'],
+            'fullname' => $this->userData['fullname'] ?? 'Unknown',
+            'kodebpr' => $kodebpr,
+            'komentarModel' => $this->getKomentarModel(),
+            'commentReadsModel' => $this->getCommentReadsModel(),
+            'lastVisit' => $lastVisit,
+            'periodeId' => $periodeId,
+            'periodeDetail' => $periodeDetail,
+            'bprData' => $bprData,
+            'accdekomData' => $accdekomData,
+            'accdirutData' => $accdirutData,
+            'periodetransparansi' => $this->getPeriodeModel()->find($periodeId),
+            'penjelastindak' => $indexData['penjelastindak'],
+            'canApprove' => $canApprove
         ];
 
         echo view('templates/v_header', $data);
@@ -143,232 +251,257 @@ class danasosial extends Controller
         echo view('templates/v_topbar');
         echo view('danasosial/index', $data);
         echo view('templates/v_footer');
+    }
 
+    private function validateDanaSosial($data)
+    {
+        return $this->validate([
+            'tanggalpelaksanaan' => [
+                'label' => 'Tanggal Pelaksanaan',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'jeniskegiatan' => [
+                'label' => 'Jenis Kegiatan (Sosial/Politik)',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'penerimadana' => [
+                'label' => 'Penerima Dana',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'penjelasankegiatan' => [
+                'label' => 'Penjelasan Kegiatan',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+            'jumlah' => [
+                'label' => 'Jumlah Dana',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ]
+        ]);
+    }
 
+    private function prepareInsertData($specificData)
+    {
+        return array_merge($specificData, [
+            'periode_id' => session('active_periode'),
+            'user_id' => $this->userId,
+            'kodebpr' => $this->userKodebpr,
+            // 'fullname' => $this->userData['fullname'] ?? null,
+            'accdekom' => 0,
+            'is_approved' => 0,
+        ]);
     }
 
     public function tambahdanasosial()
     {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!isset($_POST['tambahdanasosial'])) {
+            return redirect()->to(base_url('Danasosial'));
         }
 
-        if (isset($_POST['tambahdanasosial'])) {
-            $val = $this->validate([
-                'tanggalpelaksanaan' => [
-                    'label' => 'Tanggal Pelaksanaan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jeniskegiatan' => [
-                    'label' => 'Jenis Kegiatan (Sosial/Politik)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'penerimadana' => [
-                    'label' => 'Penerima Dana',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'penjelasankegiatan' => [
-                    'label' => 'Jenis Kegiatan (Sosial/Politik)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jumlah' => [
-                    'label' => 'Jumlah (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-            ]);
+        if (!$this->validateDanaSosial($_POST)) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back();
+        }
 
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Penjelasan Tugas dan tanggung jawab',
-                    'danasosial' => $this->model->getAllData()
-                ];
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('danasosial/index', $data);
-                echo view('templates/v_footer');
-            } else {
-                // Bersihkan format Rupiah dari input jumlah
-                $jumlahInput = $this->request->getPost('jumlah');
-                $jumlahBersih = preg_replace('/[^0-9]/', '', $jumlahInput);
+        if (!$this->userKodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
 
-                $data = [
-                    'tanggalpelaksanaan' => $this->request->getPost('tanggalpelaksanaan'),
-                    'jeniskegiatan' => $this->request->getPost('jeniskegiatan'),
-                    'penerimadana' => $this->request->getPost('penerimadana'),
-                    'penjelasankegiatan' => $this->request->getPost('penjelasankegiatan'),
-                    'jumlah' => $jumlahBersih, // Gunakan nilai bersih (angka saja)
-                ];
+        $specificData = [
+            'tanggalpelaksanaan' => $this->request->getPost('tanggalpelaksanaan'),
+            'jeniskegiatan' => $this->request->getPost('jeniskegiatan'),
+            'penerimadana' => $this->request->getPost('penerimadana'),
+            'penjelasankegiatan' => $this->request->getPost('penjelasankegiatan'),
+            'jumlah' => $this->request->getPost('jumlah')
+        ];
 
-                // Insert data
-                $this->model->checkIncrement();
-                $success = $this->model->tambahdanasosial($data);
-                if ($success) {
-                    session()->setFlashdata('message', 'Data berhasil ditambahkan ');
-                    return redirect()->to(base_url('danasosial'));
-                }
-            }
+        $data = $this->prepareInsertData($specificData);
+
+        if ($this->getDanasosialModel()->tambah($data)) {
+            session()->setFlashdata('message', 'Data berhasil ditambahkan');
         } else {
-            return redirect()->to(base_url('danasosial'));
+            session()->setFlashdata('err', 'Gagal menambahkan data');
         }
+
+        return redirect()->to(base_url('Danasosial'));
     }
 
-    public function ubah()
+    public function Tambahkomentar()
     {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
 
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
+        if (!isset($_POST['TambahKomentar'])) {
+            return redirect()->to(base_url('Danasosial'));
         }
 
-        if (isset($_POST['ubah'])) {
-            $val = $this->validate([
-                'tanggalpelaksanaan' => [
-                    'label' => 'Tanggal Pelaksanaan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jeniskegiatan' => [
-                    'label' => 'Jenis Kegiatan (Sosial/Politik)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'penerimadana' => [
-                    'label' => 'Penerima Dana',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'penjelasankegiatan' => [
-                    'label' => 'Jenis Kegiatan (Sosial/Politik)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-                'jumlah' => [
-                    'label' => 'Jumlah (Rp)',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ],
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik',
-                    'danasosial' => $this->model->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('danasosial/index', $data);
-                echo view('templates/v_footer');
-
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
-                    'tanggalpelaksanaan' => $this->request->getPost('tanggalpelaksanaan'),
-                    'jeniskegiatan' => $this->request->getPost('jeniskegiatan'),
-                    'penerimadana' => $this->request->getPost('penerimadana'),
-                    'penjelasankegiatan' => $this->request->getPost('penjelasankegiatan'),
-                    'jumlah' => $this->request->getPost('jumlah'),
-                ];
-
-                // Update data
-                $success = $this->model->ubah($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik berhasil diubah ');
-                    return redirect()->to(base_url('danasosial'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('danasosial'));
+        if (!$this->userKodebpr) {
+            session()->setFlashdata('error', 'User tidak memiliki kode BPR yang valid');
+            return redirect()->back();
         }
+
+        $val = $this->validate([
+            'komentar' => [
+                'label' => 'Komentar',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ],
+        ]);
+
+        if (!$val) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back();
+        }
+
+        $data = [
+            'id' => $this->request->getPost('id'),
+            'subkategori' => 'Danasosial',
+            'komentar' => $this->request->getPost('komentar'),
+            'fullname' => $this->request->getPost('fullname'),
+            'user_id' => $this->userId,
+            'kodebpr' => $this->userKodebpr,
+            'periode_id' => session('active_periode'),
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+
+        $this->getKomentarModel()->insertKomentar($data);
+        session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
+        return redirect()->to(base_url('Danasosial') . '?modal_komentar=' . $this->request->getPost('id'));
     }
 
-    public function ubahketerangan()
+    public function markUserCommentsAsRead()
     {
-
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
         }
 
-        if (isset($_POST['ubahketerangan'])) {
-            $val = $this->validate([
-                'keterangan' => [
-                    'label' => 'Keterangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
+        $Id = $this->request->getPost('id');
+        $kodebpr = $this->userKodebpr;
+        $userId = $this->userId;
+        $periodeId = session('active_periode');
 
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Pelaksanaan Tugas dan Tanggung Jawab Anggota Direksi',
-                    'danasosial' => $this->model->getAllData()
-                ];
+        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
 
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('danasosial/index', $data);
-                echo view('templates/v_footer');
+        $commentsToMark = $this->getKomentarModel()->select('id')
+            ->where('subkategori', $Id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('user_id !=', $userId)
+            ->findAll();
 
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
-                    'keterangan' => $this->request->getPost('keterangan')
-                ];
-
-                // Update data
-                $success = $this->model->ubah($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Keterangan ');
-                    return redirect()->to(base_url('danasosial'));
-                }
+        if (!empty($commentsToMark)) {
+            foreach ($commentsToMark as $comment) {
+                $this->getCommentReadsModel()->markAsRead($comment['id'], $userId);
             }
-        } else {
-            return redirect()->to(base_url('danasosial'));
         }
+
+        return $this->response->setJSON(['status' => 'success', 'message' => 'Comments marked as read for this user.']);
+    }
+
+    public function saveKomentar()
+    {
+        $data = [
+            'id' => $this->request->getPost('id'),
+            'kodebpr' => $this->request->getPost('kodebpr'),
+            'komentar' => $this->request->getPost('komentar'),
+            'is_read' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'user_id' => session()->get('user_id')
+        ];
+
+        $this->komentarModel->insert($data);
+        return $this->response->setJSON(['status' => 'comment_saved']);
+    }
+
+    public function tambahketerangan()
+    {
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
+
+        if (!isset($_POST['tambahketerangan'])) {
+            return redirect()->to(base_url('Danasosial'));
+        }
+
+        $val = $this->validate([
+            'tindaklanjut' => [
+                'label' => 'Penjelasan lebih lanjut',
+                'rules' => 'required',
+                'errors' => ['required' => '{field} tidak boleh kosong.']
+            ]
+        ]);
+
+        if (!$val) {
+            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            return redirect()->back()->withInput();
+        }
+
+        $periodeId = session('active_periode');
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $penjelastindak = [
+            'subkategori' => 'Danasosial',
+            'tindaklanjut' => $this->request->getPost('tindaklanjut'),
+            'kodebpr' => $kodebpr,
+            'periode_id' => $periodeId,
+            'fullname' => $this->userData['fullname'] ?? null,
+            'user_id' => $this->userId,
+        ];
+
+        $this->getPenjelastindakModel()->tambahpenjelastindak($penjelastindak);
+        session()->setFlashdata('message', 'Data berhasil diubah');
+
+        return redirect()->to(base_url('Danasosial'));
+    }
+
+    public function editketerangan()
+    {
+        $id = $this->request->getPost('id');
+        $subkategori = 'Danasosial';
+        $kodebpr = $this->userKodebpr;
+
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        }
+
+        $periodeId = session('active_periode');
+        if (!$periodeId) {
+            return redirect()->back()->with('error', 'Periode tidak valid');
+        }
+
+        $tindaklanjut = $this->request->getPost('tindaklanjut');
+        if (empty($tindaklanjut)) {
+            return redirect()->back()->with('error', 'Tindak Lanjut atau Penjelasan tidak boleh kosong');
+        }
+
+        $data = [
+            'tindaklanjut' => $tindaklanjut,
+            'user_id' => $this->userId,
+            'kodebpr' => $kodebpr,
+        ];
+
+        if ($this->getPenjelastindakModel()->editberdasarkankodedanperiode($data, $subkategori, $kodebpr, $periodeId)) {
+            session()->setFlashdata('message', 'Data berhasil diubah');
+        } else {
+            session()->setFlashdata('err', 'Gagal mengubah data');
+        }
+
+        return redirect()->to(base_url('Danasosial'));
     }
 
     public function hapus($id)
@@ -376,127 +509,371 @@ class danasosial extends Controller
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-
             return redirect()->to($redirectURL);
         }
 
-        // Memanggil fungsi hapus pada model dan menyimpan hasilnya dalam variabel $success
-        $this->model->hapus($id);
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        $this->danasosialModel = new M_danasosial();
+
+        $this->danasosialModel->builder()
+            ->where('id', $id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->delete();
+
         session()->setFlashdata('message', 'Data berhasil dihapus');
-
-        return redirect()->to(base_url('danasosial'));
-
+        return redirect()->to(base_url('Danasosial'));
     }
 
-    public function approve($iddanasosial)
+    private function updateData($id, $data, $errorMessage)
     {
-        if (!is_numeric($iddanasosial) || $iddanasosial <= 0) {
-            session()->setFlashdata('err', 'ID Data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik tidak valid.');
-            return redirect()->back();
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            return redirect()->back()->with('error', 'Kode BPR atau Periode tidak valid');
         }
 
-        $danasosial = $this->danasosialModel->find($iddanasosial);
-        if (!$danasosial) {
-            session()->setFlashdata('err', 'Data Data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik dengan ID tersebut tidak ditemukan.');
-            return redirect()->back();
+        $data['user_id'] = $this->userId;
+        $data['kodebpr'] = $kodebpr;
+
+        if ($this->getDanasosialModel()->editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)) {
+            session()->setFlashdata('message', 'Data berhasil diubah');
+        } else {
+            session()->setFlashdata('err', $errorMessage);
         }
 
-        date_default_timezone_set('Asia/Jakarta');
+        return redirect()->to(base_url('Danasosial'));
+    }
 
-        $userId = service('authentication')->id();
+    public function ubahdata()
+    {
+        $id = $this->request->getPost('id');
+        $tanggalpelaksanaan = $this->request->getPost('tanggalpelaksanaan');
+        $jeniskegiatan = $this->request->getPost('jeniskegiatan');
+        $penerimadana = $this->request->getPost('penerimadana');
+        $penjelasankegiatan = $this->request->getPost('penjelasankegiatan');
+        $jumlah = $this->request->getPost('jumlah');
 
-        $dataUpdate = [
-            'id' => $iddanasosial,
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+        if (empty($tanggalpelaksanaan) || empty($jeniskegiatan) || empty($penerimadana) || empty($penjelasankegiatan) || empty($jumlah)) {
+            return redirect()->back()->with('error', 'Semua field harus diisi');
+        }
+
+        $data = [
+            'tanggalpelaksanaan' => $tanggalpelaksanaan,
+            'jeniskegiatan' => $jeniskegiatan,
+            'penerimadana' => $penerimadana,
+            'penjelasankegiatan' => $penjelasankegiatan,
+            'jumlah' => $jumlah,
+            'accdekom' => 0,
+            'is_approved' => 0
         ];
 
-        if ($this->danasosialModel->save($dataUpdate)) {
-            session()->setFlashdata('message', 'Data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik berhasil disetujui.');
-            return redirect()->back();
-        } else {
-            session()->setFlashdata('err', 'Terjadi kesalahan saat melakukan approval.');
-            return redirect()->back();
-        }
+        return $this->updateData($id, $data, 'Gagal mengubah data');
     }
 
-    public function unapprove($iddanasosial)
+    public function getUnreadCommentCountForFactor()
     {
-        if (!is_numeric($iddanasosial) || $iddanasosial <= 0) {
-            session()->setFlashdata('err', 'ID Data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik tidak valid.');
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
+
+        $Id = $this->request->getGet('id');
+        $kodebpr = $this->userKodebpr;
+        $userId = $this->userId;
+        $periodeId = session('active_periode');
+
+        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
+
+        $count = $this->getCommentReadsModel()->countUnreadCommentsForUserByFactor($Id, $kodebpr, $userId, $periodeId);
+
+        return $this->response->setJSON(['unread_count' => $count]);
+    }
+
+    public function getKomentarByFaktorId()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(404)->setBody('Not Found');
+        }
+
+        $subkategori = 'Danasosial';
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        $komentarList = $this->getKomentarModel()->getKomentarByFaktorId($subkategori, $kodebpr, $periodeId);
+
+        return $this->response->setJSON($komentarList);
+    }
+
+    public function cekKomentarBaru()
+    {
+        $subkategori = 'Danasosial';
+        $kodebpr = $this->request->getGet('kodebpr');
+        $lastVisit = $this->request->getGet('last_visit');
+        $periodeId = session('active_periode');
+
+        $results = $this->getKomentarModel()
+            ->select('id, COUNT(*) as jumlah')
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('created_at >', $lastVisit)
+            ->groupBy('id')
+            ->findAll();
+
+        return $this->response->setJSON($results);
+    }
+
+    private function updateApprovalStatus($id, $isApproved, $successMessage, $errorMessage)
+    {
+        if (!is_numeric($id) || $id <= 0) {
+            session()->setFlashdata('err', 'ID tidak valid.');
             return redirect()->back();
         }
 
-        $danasosial = $this->danasosialModel->find($iddanasosial);
-        if (!$danasosial) {
-            session()->setFlashdata('err', 'Data Data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik dengan ID tersebut tidak ditemukan.');
+        $data = $this->getDanasosialModel()->find($id);
+        if (!$data) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
             return redirect()->back();
         }
-
-        date_default_timezone_set('Asia/Jakarta');
-
-        $userId = service('authentication')->id();
 
         $dataUpdate = [
-            'id' => $iddanasosial,
-            'is_approved' => 2,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            'id' => $id,
+            'is_approved' => $isApproved,
+            'approved_by' => $this->userId,
+            'approved_at' => $isApproved ? date('Y-m-d H:i:s') : null,
         ];
 
-        if ($this->danasosialModel->save($dataUpdate)) {
-            session()->setFlashdata('err', 'Approval Data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik dibatalkan.');
-            return redirect()->back();
+        if ($this->getDanasosialModel()->save($dataUpdate)) {
+            session()->setFlashdata('message', $successMessage);
         } else {
-            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan approval.');
+            session()->setFlashdata('err', $errorMessage);
+        }
+
+        return redirect()->back();
+    }
+
+    public function approve($idDanasosial)
+    {
+        return $this->updateApprovalStatus(
+            $idDanasosial,
+            1,
+            'Data berhasil disetujui.',
+            'Terjadi kesalahan saat melakukan approval.'
+        );
+    }
+
+    public function unapprove($idDanasosial)
+    {
+        return $this->updateApprovalStatus(
+            $idDanasosial,
+            0,
+            'Approval dibatalkan.',
+            'Terjadi kesalahan saat membatalkan approval.'
+        );
+    }
+
+    private function bulkUpdateApproval($isApproved, $field, $successMessage, $isError = false)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $userId = $this->userId;
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
+            return redirect()->back();
+        }
+
+        $count = $this->getDanasosialModel()
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->countAllResults();
+
+        if ($count === 0) {
+            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
+            return redirect()->back();
+        }
+
+        $currentTimestamp = date('Y-m-d H:i:s');
+
+        $dataUpdate = [
+            $field => $isApproved,
+            $field . '_by' => $isApproved ? $userId : null,
+            $field . '_at' => $isApproved ? $currentTimestamp : null,
+        ];
+
+        // Tambahkan update untuk approved_at dan accdekom_at jika field utama disetujui
+        if ($isApproved) {
+            if ($field === 'is_approved') {
+                $dataUpdate['approved_at'] = $currentTimestamp;
+            } elseif ($field === 'accdekom') {
+                $dataUpdate['accdekom_at'] = $currentTimestamp;
+            }
+        } else {
+            // Jika dibatalkan, set timestamp menjadi null
+            if ($field === 'is_approved') {
+                $dataUpdate['approved_at'] = null;
+            } elseif ($field === 'accdekom') {
+                $dataUpdate['accdekom_at'] = null;
+            }
+        }
+
+        try {
+            $updated = $this->getDanasosialModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->set($dataUpdate)
+                ->update();
+
+            if (!$updated) {
+                session()->setFlashdata('err', 'Gagal mengupdate data approval');
+                return redirect()->back();
+            }
+
+            if ($isError) {
+                session()->setFlashdata('err', $successMessage);
+            } else {
+                session()->setFlashdata('message', $successMessage);
+            }
+
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in bulk approval: ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
             return redirect()->back();
         }
     }
 
+    // Approval umum
     public function approveSemua()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
-        $dataUpdate = [
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
-
-        $this->danasosialModel->builder()->update($dataUpdate);
-
-        session()->setFlashdata('message', 'Semua Data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik berhasil disetujui.');
-        return redirect()->back();
+        return $this->bulkUpdateApproval(1, 'is_approved', 'Semua data berhasil disetujui.');
     }
 
     public function unapproveSemua()
     {
+        return $this->bulkUpdateApproval(0, 'is_approved', 'Semua approval dibatalkan.', true);
+    }
 
+    // Method untuk update approval komisaris saja (tanpa dependency)
+    private function updateKomisarisApproval($isApproved)
+    {
+        $field = 'accdekom';
+        $successMessage = $isApproved ? 'Persetujuan komisaris utama berhasil diberikan.' : 'Persetujuan komisaris utama dibatalkan.';
+
+        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
+    }
+
+    // Method untuk update approval direktur saja (tanpa dependency)
+    private function updateDirekturApproval($isApproved)
+    {
+        $field = 'is_approved';
+        $successMessage = $isApproved ? 'Persetujuan direktur utama berhasil diberikan.' : 'Persetujuan direktur utama dibatalkan.';
+
+        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
+    }
+
+    // Public methods dengan dependency yang benar
+    public function approveSemuaKom()
+    {
+        return $this->updateKomisarisApproval(1);
+    }
+
+    public function unapproveSemuaKom()
+    {
+        // Ketika komisaris dibatalkan, direktur juga harus dibatalkan
+        $this->updateDirekturApproval(0);  // Batalkan direktur dulu
+        return $this->updateKomisarisApproval(0);  // Lalu batalkan komisaris
+    }
+
+    public function approveSemuaDirut()
+    {
+        return $this->updateDirekturApproval(1);
+    }
+
+    public function unapproveSemuaDirut()
+    {
+        // Ketika direktur dibatalkan, hanya direktur saja yang dibatalkan
+        // TIDAK perlu membatalkan komisaris
+        return $this->updateDirekturApproval(0);
+    }
+
+    // ATAU jika Anda ingin hierarchy yang ketat:
+// Dimana pembatalan komisaris akan membatalkan direktur juga
+
+    public function unapproveSemuaKomWithHierarchy()
+    {
+        try {
+            // 1. Batalkan direktur terlebih dahulu
+            $this->updateDirekturApproval(0);
+
+            // 2. Baru batalkan komisaris
+            $result = $this->updateKomisarisApproval(0);
+
+            // 3. Set pesan gabungan
+            session()->setFlashdata('message', 'Persetujuan komisaris dan direktur utama telah dibatalkan.');
+
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in unapprove hierarchy: ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan persetujuan.');
+            return redirect()->back();
+        }
+    }
+
+    private function updateApprovalStatusKom($id, $isApproved, $successMessage, $errorMessage)
+    {
         date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
+        if (!is_numeric($id) || $id <= 0) {
+            session()->setFlashdata('err', 'ID tidak valid.');
+            return redirect()->back();
+        }
+
+        $data = $this->getDanasosialModel()->find($id);
+        if (!$data) {
+            session()->setFlashdata('err', 'Data tidak ditemukan.');
+            return redirect()->back();
+        }
+
         $dataUpdate = [
-            'is_approved' => 2,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
+            'id' => $id,
+            'accdekom' => $isApproved,
+            'accdekom_by' => $isApproved ? $this->userId : null,
+            'accdekom_at' => $isApproved ? date('Y-m-d H:i:s') : null,
         ];
 
-        $this->danasosialModel->builder()->update($dataUpdate);
+        if ($this->getDanasosialModel()->save($dataUpdate)) {
+            session()->setFlashdata('message', $successMessage);
+        } else {
+            session()->setFlashdata('err', $errorMessage);
+        }
 
-        session()->setFlashdata('err', 'Semua approval data Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik dibatalkan.');
         return redirect()->back();
     }
 
-    public function excel()
+    public function setNullKolomTindak($id)
     {
-        $data = [
-            'danasosial' => $this->model->getAllData()
-        ];
+        $authCheck = $this->checkAuthentication();
+        if ($authCheck)
+            return $authCheck;
 
-        echo view('danasosial/excel', $data);
+        $result = $this->getPenjelastindakModel()->setNullKolomTindak($id);
 
+        if ($result) {
+            session()->setFlashdata('message', 'Data berhasil dihapus');
+        } else {
+            session()->setFlashdata('err', 'Data gagal dihapus');
+        }
+
+        return redirect()->to(base_url('Danasosial'));
     }
-
     public function exporttxtdanasosial()
     {
         if (!$this->auth->check()) {
@@ -504,8 +881,25 @@ class danasosial extends Controller
             unset($_SESSION['redirect_url']);
             return redirect()->to($redirectURL);
         }
-        $data_danasosial = $this->model->getAllData();
-        $data_infobpr = $this->infobprModel->getAllData();
+
+        $this->danasosialModel = model('M_danasosial');
+        $this->infobprModel = model('M_infobpr');
+        $this->penjelastindakModel = model('M_penjelastindak');
+
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        $subkategori = "Danasosial";
+
+        $exportDate = date('Y-m-d');
+
+        $data_danasosial = $this->danasosialModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
+
+        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
+        $data_penjelastindak = $this->penjelastindakModel->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
 
         $sandibpr = '';
         $kodejenis = '';
@@ -515,109 +909,50 @@ class danasosial extends Controller
             $kodejenis = $infobpr['kodejenis'];
         }
 
+        $isEmpty = function ($value) {
+            return empty($value) || is_null($value) || $value === '' || $value === '0';
+        };
+
+        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
+        $exportDate = $periodeDetail['tahun'] ?? date('Y');
+
         $output = "";
-        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|2025-05-31|LTBPRK|E01100|0|\n";
+        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|" . $exportDate . "-12-31|LTBPRK|E01100|0|" . "\r\n";
+
         foreach ($data_danasosial as $row) {
-            $output .= "D01|" . "120100000000" . "|" . $row['tanggalpelaksanaan'] . "|" . $row['jeniskegiatan'] . "|" . $row['penerimadana'] . "|" . $row['penjelasankegiatan'] . "|" . $row['jumlah'] . "\n";
+            $hasValidData = false;
+            $tanggalpelaksanaan = isset($row['tanggalpelaksanaan']) && !$isEmpty($row['tanggalpelaksanaan']) ? date('Ymd', strtotime($row['tanggalpelaksanaan'])) : '';
+            $jeniskegiatan = isset($row['jeniskegiatan']) && !$isEmpty($row['jeniskegiatan']) ? $row['jeniskegiatan'] : '';
+            $penerimadana = isset($row['penerimadana']) && !$isEmpty($row['penerimadana']) ? $row['penerimadana'] : '';
+            $penjelasankegiatan = isset($row['penjelasankegiatan']) && !$isEmpty($row['penjelasankegiatan']) ? $row['penjelasankegiatan'] : '';
+            $jumlah = isset($row['jumlah']) && !$isEmpty($row['jumlah']) ? $row['jumlah'] : '';
+
+            if ($tanggalpelaksanaan !== '' || $jeniskegiatan !== '' || $penerimadana !== '' || $penjelasankegiatan !== '' || $jumlah !== '') {
+                $hasValidData = true;
+            }
+
+            // Hanya generate jika ada data valid
+            if ($hasValidData) {
+                $output .= "D01|" . "110100000000" . "|" . $tanggalpelaksanaan . "|" . $jeniskegiatan . "|" . $penerimadana . "|" . $penjelasankegiatan . "|" . $jumlah . "\r\n";
+            }
         }
 
-        if (!empty($data_danasosial)) {
-            $footer_row = end($data_danasosial);
-            $output .= "F01|" . "Footer 1" . "|" . $footer_row['keterangan'];
-        } else {
-            $output .= "F01|" . "Footer 1" . "|";
+        foreach ($data_penjelastindak as $penjelas) {
+            if (!empty($penjelas['tindaklanjut']) && $penjelas['tindaklanjut'] !== null) {
+                $tindaklanjut = str_replace(array("\r", "\n"), ' ', $penjelas['tindaklanjut']);
+                $output .= "F01|" . $tindaklanjut . "\r\n";
+            }
         }
 
         $response = service('response');
 
-        $filename = "LTBPRK-E01100-R-A-20250531-" . $sandibpr . "-01.txt";
+        $filename = "LTBPRK-E01100-R-A-" . $exportDate . "1231-" . $sandibpr . "-01.txt";
 
         $response->setHeader('Content-Type', 'text/plain');
         $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
 
         return $response->setBody($output);
-
-
-        echo $output;
     }
-
-    public function exportAllToZip()
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-
-        $zip = new \ZipArchive();
-        $zipFileName = 'APOLO-NBP-LAPORANGCG-' . date('Y-m-d') . '.zip';
-        $zipFilePath = WRITEPATH . 'uploads/' . $zipFileName;
-
-        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
-            $this->addTxtToZip('penjelasanumum', 'exporttxtpenjelasanumum', $zip);
-            $this->addTxtToZip('tgjwbdir', 'exporttxttgjwbdir', $zip);
-            $this->addTxtToZip('tgjwbdekom', 'exporttxttgjwbdekom', $zip);
-            $this->addTxtToZip('tgjwbkomite', 'exporttxttgjwbkomite', $zip);
-            $this->addTxtToZip('strukturkomite', 'exporttxtstrukturkomite', $zip);
-            $this->addTxtToZip('sahamdirdekom', 'exporttxtsahamdirdekom', $zip);
-            $this->addTxtToZip('shmusahadirdekom', 'exporttxtshmusahadirdekom', $zip);
-            $this->addTxtToZip('shmdirdekomlain', 'exporttxtshmdirdekomlain', $zip);
-            $this->addTxtToZip('keuangandirdekompshm', 'exporttxtkeuangandirdekompshm', $zip);
-            $this->addTxtToZip('keluargadirdekompshm', 'exporttxtkeluargadirdekompshm', $zip);
-            $this->addTxtToZip('remunlaindirdekom', 'exporttxtremunlaindirdekom', $zip);
-            $this->addTxtToZip('rasiogaji', 'exporttxtrasiogaji', $zip);
-            $this->addTxtToZip('rapat', 'exporttxtrapat', $zip);
-            $this->addTxtToZip('kehadirandekom', 'exporttxtkehadirandekom', $zip);
-            $this->addTxtToZip('fraudinternal', 'exporttxtfraudinternal', $zip);
-            $this->addTxtToZip('masalahhukum', 'exporttxtmasalahhukum', $zip);
-            $this->addTxtToZip('transaksikepentingan', 'exporttxttransaksikepentingan', $zip);
-            $this->addTxtToZip('danasosial', 'exporttxtdanasosial', $zip);
-
-            $zip->close();
-
-            $this->response->setHeader('Content-Type', 'application/zip');
-            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $zipFileName . '"');
-            $this->response->setHeader('Content-Length', filesize($zipFilePath));
-
-            readfile($zipFilePath);
-
-            unlink($zipFilePath);
-        } else {
-            echo 'Gagal membuat file ZIP';
-        }
-    }
-
-    private function addTxtToZip(string $controllerName, string $methodName, \ZipArchive &$zip)
-    {
-        $controllerClassName = 'App\Controllers\\' . ucfirst($controllerName);
-        if (class_exists($controllerClassName)) {
-            $controllerInstance = new $controllerClassName();
-            if (method_exists($controllerInstance, $methodName)) {
-                $response = $controllerInstance->$methodName();
-                if ($response instanceof \CodeIgniter\HTTP\Response) {
-                    $txtContent = $response->getBody();
-
-                    $contentDisposition = $response->getHeaderLine('Content-Disposition');
-                    $fileNameInZip = $controllerName . '.txt';
-
-                    if (preg_match('/filename="([^"]+)"/', $contentDisposition, $matches)) {
-                        $fileNameInZip = $matches[1];
-                    }
-
-                    $zip->addFromString($fileNameInZip, $txtContent);
-                } else {
-                    log_message('warning', "Method '$methodName' di controller '$controllerName' tidak mengembalikan objek Response yang valid.");
-                }
-            } else {
-                log_message('warning', "Method '$methodName' tidak ditemukan di controller '$controllerName'");
-            }
-        } else {
-            log_message('warning', "Controller '$controllerName' tidak ditemukan");
-        }
-    }
-
-
-
 
 }
 

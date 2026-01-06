@@ -13,6 +13,18 @@
     ?>
     Tahun <?= esc($periode_tahun); ?>
 </div>
+
+<?php if (session()->getFlashdata('message')): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+        <strong><?= esc(session()->getFlashdata('message')); ?></strong>
+    </div>
+<?php endif; ?>
+
+<?php if (session()->getFlashdata('err')): ?>
+    <div class="alert alert-danger" role="alert"><?= esc(session()->getFlashdata('err')); ?></div>
+<?php endif; ?>
+
 <div class="container-fluid">
     <h1 class="h3 mb-4 text-gray-800"><?= $judul; ?></h1>
 
@@ -158,7 +170,7 @@
             <div class="card factor-card shadow h-100 py-3">
                 <div class="card-body">
                     <h5 class="font-weight-bold text-gray-800">Kesimpulan</h5>
-                    <form method="post" action="<?= esc(base_url('showfaktor/update')); ?>">
+                    <form method="post" action="<?= esc(base_url('ShowFaktor/update')); ?>">
                         <input type="hidden" name="id" value="<?= esc($showfaktor['id'] ?? ''); ?>">
                         <div class="form-group">
                             <label for="kesimpulan">Kesimpulan</label>
@@ -197,7 +209,7 @@
             <div class="card factor-card shadow h-100 py-3">
                 <div class="card-body">
                     <h5 class="font-weight-bold text-gray-800">Lembar Persetujuan</h5>
-                    <form method="post" action="<?= esc(base_url('showfaktor/updatettd')); ?>">
+                    <form method="post" action="<?= esc(base_url('ShowFaktor/updatettd')); ?>">
                         <input type="hidden" name="id" value="<?= esc($showfaktor['id'] ?? ''); ?>">
                         <div class="form-group">
                             <label for="dirut">Nama Direktur Utama</label>
@@ -232,8 +244,10 @@
                     <p class="text-muted text-center mb-4">Silakan unggah file PDF pendukung laporan.</p>
                     <form method="post" action="<?= base_url('pdfself/uploadPdf'); ?>" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="pdf1">Upload PDF 1 (Opsional)</label>
+                            <label for="pdf1">Upload Laporan Pokok Pelaksanaan tugas anggota Direksi yang membawahkan
+                                fungsi kepatuhan. (.PDF)</label>
                             <input type="file" class="form-control" id="pdf1" name="pdf1" accept="application/pdf">
+                            <p>Maksimal ukuran file .PDF 2 Mb</p>
                         </div>
                         <?php if (!empty($showfaktor['pdf1_filename'])): ?>
                             <div class="mt-2">
@@ -247,8 +261,9 @@
                         <?php endif; ?>
 
                         <div class="form-group">
-                            <label for="pdf2">Upload PDF 2 (Opsional)</label>
+                            <label for="pdf2">Upload Laporan pelaksanaan dan pokok hasil audit intern (.PDF)</label>
                             <input type="file" class="form-control" id="pdf2" name="pdf2" accept="application/pdf">
+                            <p>Maksimal ukuran file .PDF 2 Mb</p>
                         </div>
                         <?php if (!empty($showfaktor['pdf2_filename'])): ?>
                             <div class="mt-2">
@@ -266,16 +281,99 @@
                 </div>
             </div>
         </div>
-        <!-- <script>
-            // Script untuk menampilkan nama file yang dipilih pada custom file input
-            document.querySelectorAll('.custom-file-input').forEach(input => {
-                input.addEventListener('change', function (e) {
-                    var fileName = e.target.files[0].name;
-                    var nextSibling = e.target.nextElementSibling;
-                    nextSibling.innerText = fileName;
+        <div class="col-12 mb-4">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-body p-4 p-md-5">
+                    <h4 class="font-weight-bold text-gray-900 mb-4 text-center">Cover Laporan</h4>
+                    <p class="text-muted text-center mb-2">Silakan pilih cover untuk PDF pelaporan.</p>
+                    <form method="post" action="<?= esc(base_url('ShowFaktor/updatecover')); ?>">
+                        <input type="hidden" name="id" value="<?= esc($showfaktor['id'] ?? ''); ?>">
+                        <input type="hidden" name="cover" id="cover" value="<?= esc($showfaktor['cover'] ?? ''); ?>">
+                        <div class="container text-center" id="ratingList" name="cover">
+                            <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+                                <div class="col">
+                                    <a href="#" value="Cover.png"
+                                        class="list-group-item list-group-item-action py-1 px-2">
+                                        <img src="/assets/img/Cover.png"
+                                            class="list-group-item list-group-item-action py-1 px-2" alt="Cover"
+                                            style="max-width: 100%; max-height: 250px;">
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="#" value="Cover1.png"
+                                        class="list-group-item list-group-item-action py-1 px-2">
+                                        <img src="/assets/img/Cover1.png"
+                                            class="list-group-item list-group-item-action py-1 px-2" alt="Cover 1"
+                                            style="max-width: 100%; max-height: 250px;">
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="#" value="Cover2.png"
+                                        class="list-group-item list-group-item-action py-1 px-2">
+                                        <img src="/assets/img/Cover2.png"
+                                            class="list-group-item list-group-item-action py-1 px-2" alt="Cover 2"
+                                            style="max-width: 100%; max-height: 250px;">
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="#" value="Cover3.png"
+                                        class="list-group-item list-group-item-action py-1 px-2">
+                                        <img src="/assets/img/Cover3.png"
+                                            class="list-group-item list-group-item-action py-1 px-2" alt="Cover 3"
+                                            style="max-width: 100%; max-height: 250px;">
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="#" value="Cover4.png"
+                                        class="list-group-item list-group-item-action py-1 px-2">
+                                        <img src="/assets/img/Cover4.png"
+                                            class="list-group-item list-group-item-action py-1 px-2" alt="Cover 4"
+                                            style="max-width: 100%; max-height: 250px;">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-5">
+                            <button type="submit" class="btn btn-success">Pilih Cover</button>
+                        </div>
+                    </form>
+                </div>
+                <p class="text-muted text-center mb-4"></p>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const ratingList = document.getElementById('ratingList');
+                const listItems = ratingList.querySelectorAll('.list-group-item');
+                const selectedValueDisplay = document.getElementById('selectedValue');
+                // Changed this line to get the input by its new ID
+                const hiddenRatingInput = document.getElementById('cover');
+
+                listItems.forEach(item => {
+                    item.addEventListener('click', function (event) {
+                        event.preventDefault();
+
+                        // Remove 'active' class from all items
+                        listItems.forEach(li => li.classList.remove('active'));
+
+                        // Add 'active' class to the clicked item
+                        this.classList.add('active');
+
+                        // Get the data-value of the clicked item
+                        const selectedRating = this.getAttribute('value');
+
+                        // Update the hidden input field's value
+                        hiddenRatingInput.value = selectedRating;
+
+                        // Update the display for the selected value
+                        selectedValueDisplay.textContent = selectedRating;
+
+                        console.log('Cover yang dipilih (untuk disimpan):', selectedRating);
+                    });
                 });
             });
-        </script> -->
+        </script>
 
         <?php
         $allFactorsApproved = true;
@@ -303,17 +401,21 @@
             !empty($showfaktor['tanggal']) &&
             !empty($showfaktor['lokasi']);
 
+        $coverFieldsFilled = !empty($showfaktor['cover']);
+
+        $pdfMergeFieldsFilled = !empty($showfaktor['pdf1_filename']) && !empty($showfaktor['pdf2_filename']);
+
         // Tambahkan juga validasi untuk kesimpulan dan persetujuan faktor
-        $disablePdfButton = !($allFactorsApproved && $conclusionFieldsFilled && $formFieldsFilled);
+        $disablePdfButton = !($allFactorsApproved && $conclusionFieldsFilled && $formFieldsFilled && $coverFieldsFilled);
 
         // Prepare the alert message
         $alertMessage = '';
         $alertClass = '';
 
-        if ($allFactorsApproved && $conclusionFieldsFilled && $formFieldsFilled) {
-            $alertMessage = 'Seluruh faktor telah disetujui, dan data kesimpulan serta informasi lainnya telah terisi.';
+        if ($allFactorsApproved && $conclusionFieldsFilled && $formFieldsFilled && $coverFieldsFilled && $pdfMergeFieldsFilled) {
+            $alertMessage = 'Seluruh faktor telah disetujui, dan data kesimpulan serta informasi pendukung lainnya telah terisi.';
             $alertClass = 'alert-success';
-        } elseif (!$allFactorsApproved && !$conclusionFieldsFilled && !$formFieldsFilled) {
+        } elseif (!$allFactorsApproved && !$conclusionFieldsFilled && !$formFieldsFilled && $coverFieldsFilled) {
             $alertMessage = 'PDF tidak dapat dibuat. Persetujuan Direktur Utama untuk faktor-faktor berikut belum lengkap: ' . implode(', ', $unapprovedFactors) . '. Dan data kesimpulan serta informasi lainnya belum terisi lengkap.';
             $alertClass = 'alert-warning';
         } elseif (!$allFactorsApproved && !$formFieldsFilled) {
@@ -328,6 +430,12 @@
         } elseif (!$formFieldsFilled) {
             $alertMessage = 'PDF tidak dapat dibuat. Data informasi (Direktur Utama, Komisaris Utama, Tanggal, Lokasi) belum terisi lengkap.';
             $alertClass = 'alert-warning';
+        } elseif (!$coverFieldsFilled) {
+            $alertMessage = 'PDF tidak dapat dibuat. Cover laporan belum dipilih.';
+            $alertClass = 'alert-warning';
+        } elseif (!$pdfMergeFieldsFilled) {
+            $alertMessage = 'PDF tidak dapat dibuat. Dokumen pendukung belum di upload.';
+            $alertClass = 'alert-warning';
         }
 
         if ($alertMessage !== '') {
@@ -335,46 +443,59 @@
         }
         ?>
 
+        <div class="col-12 d-flex justify-content-center mt-2">
+            <span class="text-secondary" style="font-weight: 600;">Cek kembali seluruh data, pastikan informasi BPR dan
+                data yang diperlukan telah terisi dengan benar</span>
+        </div>
 
         <div class="col-12 d-flex justify-content-center mt-3">
             <a href="/pdfself/generateFullReport"
                 class="btn btn-outline-info shadow <?= $disablePdfButton ? 'disabled' : '' ?>" <?= $disablePdfButton ? 'aria-disabled="true"' : '' ?>>
-                <i class="fa fa-file-archive"></i> GENERATE PDF
+                <i class="fa fa-file-archive"></i> GENERATE TXT
             </a>
         </div>
+
     </div>
     <br>
-    <div class="d-flex justify-content-center">
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group me-2" role="group" aria-label="First group">
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('periode'); ?>'">Periode</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor'); ?>'">1</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor2'); ?>'">2</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor3'); ?>'">3</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor4'); ?>'">4</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor5'); ?>'">5</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor6'); ?>'">6</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor7'); ?>'">7</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor8'); ?>'">8</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor9'); ?>'">9</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor10'); ?>'">10</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor11'); ?>'">11</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('faktor12'); ?>'">12</button>
-                <button type="button" class="btn btn-outline-primary btn-sm"
-                    onclick="window.location.href='<?= base_url('showFaktor'); ?>'">All</button>
+    <div class="cardpilihfaktor">
+        <div class="cardpilihfaktor-header">
+            <h6>Pilih Faktor</h6>
+        </div>
+        <div class="cardpilihfaktor-body">
+            <div class="d-flex justify-content-center">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor'); ?>'">1</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor2'); ?>'">2</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor3'); ?>'">3</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor4'); ?>'">4</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor5'); ?>'">5</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor6'); ?>'">6</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor7'); ?>'">7</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor8'); ?>'">8</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor9'); ?>'">9</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor10'); ?>'">10</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor11'); ?>'">11</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('faktor12'); ?>'">12</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="window.location.href='<?= base_url('showFaktor'); ?>'">All</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-1">
+                <a href="<?= base_url('periode'); ?>" class="btn btn-link btn-sm">Kembali ke halaman periode</a>
             </div>
         </div>
     </div>
@@ -391,6 +512,37 @@
 
 
 <style>
+    .cardpilihfaktor {
+        width: auto;
+        max-width: 440px;
+        margin: 10px auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .cardpilihfaktor-header {
+        text-align: center;
+        background-color: #f8f9fa;
+        padding: 2px;
+        border-bottom: 1px solid #ddd;
+        font-size: 1.0rem;
+        font-weight: bold;
+    }
+
+    .cardpilihfaktor-body {
+        padding: 5px;
+    }
+
+    .cardpilihfaktor .btn-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .cardpilihfaktor .btn-group .btn {
+        margin: 1px;
+    }
+
     .btn-outline-info {
         background-color: #28a745;
         /* Warna latar belakang hijau muda */

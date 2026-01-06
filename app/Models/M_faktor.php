@@ -35,27 +35,6 @@ class M_Faktor extends Model
         return $this->builder->get()->getResultArray();
     }
 
-    public function tambahNilai($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    public function tambahKomentar($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    // Mengubah data berdasarkan ID yang diberikan
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function resetAutoIncrement()
-    {
-        $this->db->query('ALTER TABLE faktor_comments AUTO_INCREMENT = 1');
-    }
-
     // Menyaring data berdasarkan user_id, kodebpr, dan periode
     public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
     {
@@ -102,20 +81,5 @@ class M_Faktor extends Model
             ['id' => $id]
         );
     }
-
-    // Function menambah data
-    // public function tambahF($data)
-    // {
-    //     return $this->builder->insert($data);
-    // }
-
-    // Menghapus data sop berdasarkan ID yang diberikan
-    // Menggunakan metode delete() pada tabel "" dengan kondisi ID = $id
-    // public function hapus($id)
-    // {    
-    //     $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-    //     $this->builder->delete(['id' => $id]);
-    //     $this->setIncrement($lastData[0]['id']);
-    // }
 
 }

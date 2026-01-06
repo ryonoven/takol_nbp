@@ -6,18 +6,19 @@ use CodeIgniter\Model;
 class M_shmusahadirdekom extends Model
 {
     protected $table = 'shmusahadirdekom';
+    protected $primaryKey = 'id';
+    protected $allowedFields = ['nik', 'kodebpr', 'periode_id', 'user_id', 'nama', 'nik', 'usaha', 'persensaham', 'persensahamlalu', 'dekom', 'nikdekom', 'usahadekom', 'persenshmdekom', 'persenshmdekomlalu', 'pshm', 'nikpshm', 'usahapshm', 'persenpshm', 'persenpshmlalu', 'keterangan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'fullname'];
+    protected $useTimestamps = false;
 
     public function __construct()
     {
-        $this->db = db_connect();
+        parent::__construct();
         $this->builder = $this->db->table($this->table);
     }
 
-    public function checkIncrement()
+    public function getAllData()
     {
-        if (empty($this->getAllData())) {
-            $this->db->query('ALTER TABLE shmusahadirdekom AUTO_INCREMENT = 1');
-        }
+        return $this->builder->get()->getResultArray();
     }
 
     public function setIncrement($value)
@@ -28,32 +29,14 @@ class M_shmusahadirdekom extends Model
         return $query;
     }
 
-    public function getAllData($filter_columns = [])
-    {
-        $builder = $this->builder;
-
-        if (!empty($filter_columns)) {
-            foreach ($filter_columns as $column) {
-                $builder->where($column . ' IS NOT NULL', null, false);
-                $builder->where($column . ' !=', '');
-            }
-        }
-
-        return $builder->get()->getResultArray();
-    }
-
-    public function tambahsahamdir($data)
-    {
-        return $this->builder->insert($data);
-    }
-    public function tambahsahamdekom($data)
+    public function tambah($data)
     {
         return $this->builder->insert($data);
     }
 
-    public function tambahsahampshm($data)
+    public function tambahketerangan($data, $id)
     {
-        return $this->builder->insert($data);
+        return $this->builder->update($data, ['id' => $id]);
     }
 
     public function hapus($id)
@@ -63,23 +46,88 @@ class M_shmusahadirdekom extends Model
         $this->setIncrement($lastData[0]['id']);
     }
 
-    public function ubahdir($data, $id)
+    public function ubah($data, $id)
     {
         return $this->builder->update($data, ['id' => $id]);
     }
 
-    public function ubahdekom($data, $id)
+    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
     {
-        return $this->builder->update($data, ['id' => $id]);
+        return $this->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
+    }
+    // Dalam PenjelasantindakModel.php
+    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
+    {
+        return $this->db->table('shmusahadirdekom')
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->get()
+            ->getResultArray();
     }
 
-    public function ubahpshm($data, $id)
+    public function getDataByKodebpr($kodebpr)
     {
-        return $this->builder->update($data, ['id' => $id]);
+        return $this->builder()
+            ->where('kodebpr', $kodebpr)
+            ->get()
+            ->getResultArray();
     }
 
-    public function ubahketerangan($data, $id)
+    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
     {
-        return $this->builder->update($data, ['id' => $id]);
+        return $this->db->table($this->table)
+            ->select('shmusahadirdekom.*, users.fullname')
+            ->join('users', 'users.id = shmusahadirdekom.user_id', 'left')
+            ->where('shmusahadirdekom.id', $Id)
+            ->where('shmusahadirdekom.kodebpr', $kodebpr)
+            ->orderBy('shmusahadirdekom.created_at', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
+    {
+        return $this->builder
+            ->where('user_id', $userId)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode', $periode)
+            ->findAll();
+    }
+
+    public function getKomentarByFaktor($Id)
+    {
+        return $this->db->table('transparansi_comments')
+            ->where('id', $Id)
+            ->orderBy('date', 'DESC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getNilaiByFaktor($Id)
+    {
+        return $this->db->table('shmusahadirdekom')
+            ->where('id', $Id)
+            ->orderBy('date', 'DESC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
+    {
+        return $this->db->table('shmusahadirdekom')
+            ->where('id', $id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->update($data);
+    }
+
+    public function ubahBerdasarkanFaktorId($data, $shmusahadirdekom, $kodebpr, $periodeId)
+    {
+        $this->builder->where('subkategori', $shmusahadirdekom)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId);
+        return $this->builder->update($data);
     }
 }

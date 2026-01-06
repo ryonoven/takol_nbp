@@ -19,6 +19,14 @@ class M_infobpr extends Model
         return $this->where('kodebpr', $kodebpr)->first();
     }
 
+    public function getDataByKodebpr($kodebpr)
+    {
+        return $this->builder()
+            ->where('kodebpr', $kodebpr)
+            ->get()
+            ->getResultArray();
+    }
+
     public function tambahinfo($data)
     {
         return $this->insert($data);

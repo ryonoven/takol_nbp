@@ -35,6 +35,7 @@ use App\Libraries\PdfSelfassessment;
 
 class Pdfself extends Controller
 {
+    protected $db;
     protected $infobprModel;
     protected $nilaifaktorModel;
     protected $faktorModel;
@@ -198,7 +199,9 @@ class Pdfself extends Controller
         $mime = mime_content_type($pdfPath);
 
         // Kirim file ke browser
-        return $this->response->download($pdfPath, null)->setContentType($mime);
+        return $this->response->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+            ->setBody(file_get_contents($pdfPath));
     }
 
     public function getAllData()
@@ -314,8 +317,6 @@ class Pdfself extends Controller
             ->get()
             ->getResultArray();
     }
-
-
 
 
     public function generateFullReport()
@@ -805,6 +806,7 @@ class Pdfself extends Controller
                     'lokasi' => $showfaktortandatanganData['lokasi'] ?? 'Tidak ada data.',
                     'pdf1_filename' => $showfaktortandatanganData['pdf1_filename'] ?? null, // <<< PASTIKAN INI ADA
                     'pdf2_filename' => $showfaktortandatanganData['pdf2_filename'] ?? null,
+                    'cover' => $showfaktortandatanganData['cover'] ?? null,
                 ];
             } else {
                 $infottdForPdfshow = [
@@ -841,7 +843,8 @@ class Pdfself extends Controller
                 'nomor' => $infobprData['nomor'] ?? 'N/A',
                 'webbpr' => $infobprData['webbpr'] ?? 'N/A',
                 'email' => $infobprData['email'] ?? '',
-                'title' => $filename
+                'title' => $filename,
+                'cover' => $showfaktortandatanganData['cover'] ?? '',
             ]);
 
             $pdf->generateCoverPage($infobprData);
@@ -1006,7 +1009,7 @@ class Pdfself extends Controller
             // Debug path file
             log_message('debug', 'Mencari PDF 1 di: ' . $pdf1Path);
             log_message('debug', 'Mencari PDF 2 di: ' . $pdf2Path);
-            
+
             // Proses merge PDF pertama
             if (file_exists($pdf1Path) && is_readable($pdf1Path)) {
                 $pageCount = $pdf->mergeExistingPdf($pdf1Path);

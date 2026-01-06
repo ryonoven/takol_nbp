@@ -3681,7 +3681,7 @@ class PdfGenerator extends FPDF
             $this->SetFont('Arial', 'I', 8);
             $this->SetTextColor(0);
 
-            $footerText = 'Laporan Transparansi Tata Kelola PT BPR NBP 20 Tahun ' . date('Y') . ' - Halaman ' . $this->PageNo();
+            $footerText = 'Laporan Transparansi Tata Kelola PT BPR NBP Tahun ' . date('Y') . ' - Halaman ' . $this->PageNo();
 
             $textWidth = $this->GetStringWidth($footerText);
             $pageWidth = $this->GetPageWidth();

@@ -43,36 +43,98 @@ class PdfSelfassessment extends Fpdi
         $this->SetAutoPageBreak(false);
 
         $bprName = $this->headerData['namabpr'] ?? 'Nama BPR Tidak Tersedia';
+        $cover = $this->headerData['cover'] ?? 'Cover Tidak Tersedia';
+        $bprNo = $this->headerData['nomor'] ?? 'Nomor telefon Tidak Tersedia';
+        $email = $this->headerData['email'] ?? 'Email Tidak Tersedia';
+        $webbpr = $this->headerData['webbpr'] ?? 'Website Tidak Tersedia';
         $periodeYear = isset($this->headerData['tahun']) ? $this->headerData['tahun'] : date('Y');
         $periodeSemester = isset($this->headerData['semester']) && in_array($this->headerData['semester'], [1, 2]) ? $this->headerData['semester'] : 1;
 
-        // 1. Handle cover image more safely
-        $coverImagePath = FCPATH . 'assets/img/Cover.png';
+        // Handle cover image
+        $coverImagePath = FCPATH . 'assets/img/' . $cover;
         if (file_exists($coverImagePath)) {
             $this->Image($coverImagePath, 0, 0, 210, 297);
+        } else {
+            log_message('error', 'Cover image not found: ' . $coverImagePath);
         }
 
-        $this->SetFont('Arial', 'B', 18);
-        $this->SetTextColor(0, 0, 0);
+        $this->SetFont('Arial', 'B', 16);
+        $this->SetTextColor(255);
         $this->SetY(25);
-        $this->Cell(0, 15, 'Self Assessment Tata Kelola', 0, 1, 'C');
-        $this->Cell(0, 2, 'Semester ' . $periodeSemester . ' Tahun ' . $periodeYear, 0, 1, 'C');
-        $this->Cell(0, 15, $bprName, 0, 1, 'C');
+        $this->SetXY(17, 59);
+        $this->Cell(0, 10, 'SEMESTER ' . $periodeSemester . ' TAHUN ' . $periodeYear, 0, 1, 'L');
 
-        // 2. Handle logo more safely
+        // --- TAMBAHKAN JARAK ANTARA SEMESTER DAN NAMA BPR ---
+        $this->Ln(2); // Menambahkan jarak 15 unit setelah teks semester
+
+        // --- BAGIAN NAMA BPR DENGAN PEMBATASAN 25 KARAKTER ---
+        $this->SetX(17); // Pertahankan posisi X yang sama
+        $currentY = $this->GetY(); // Dapatkan posisi Y setelah Ln()
+        $this->SetXY(17, $currentY); // Set posisi baru dengan jarak yang telah ditambahkan
+        $this->SetFont('Arial', 'B', 14);
+
+        // Pisahkan nama BPR menjadi beberapa baris jika lebih dari 25 karakter
+        $maxCharPerLine = 25;
+        $nameLines = [];
+        $words = explode(' ', $bprName);
+        $currentLine = '';
+
+        foreach ($words as $word) {
+            if (strlen($currentLine) + strlen($word) + 1 <= $maxCharPerLine) {
+                $currentLine .= ($currentLine ? ' ' : '') . $word;
+            } else {
+                $nameLines[] = $currentLine;
+                $currentLine = $word;
+            }
+        }
+        if ($currentLine) {
+            $nameLines[] = $currentLine;
+        }
+
+        // Tampilkan setiap baris nama BPR
+        foreach ($nameLines as $line) {
+            $this->Cell(0, 7, $line, 0, 1, 'L');
+            $this->SetX(17); // Pertahankan posisi X untuk baris berikutnya
+        }
+        // --- AKHIR BAGIAN NAMA BPR ---
+
+        $this->SetXY(8, 228);
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(0, 90, 'Kontak: ', 0, 1, 'L');
+        $this->SetXY(8, 233);
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(0, 90, $bprNo, 0, 1, 'L');
+        $this->SetXY(8, 237);
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(0, 90, $email, 0, 1, 'L');
+        $this->SetXY(8, 242);
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(0, 90, $webbpr, 0, 1, 'L');
+
+        $this->SetTextColor(0, 0, 0);
+
+        // Handle logo
         if (!empty($infoData['logo'])) {
             $logoPath = FCPATH . 'asset/img/' . $infoData['logo'];
 
-            // Check if file exists and has valid image extension
             if (file_exists($logoPath)) {
                 $ext = strtolower(pathinfo($logoPath, PATHINFO_EXTENSION));
+
                 if (in_array($ext, ['png', 'jpg', 'jpeg'])) {
-                    $this->Image($logoPath, 155, 7, 45);
+                    list($origWidth, $origHeight) = getimagesize($logoPath);
+
+                    $maxWidth = 45;
+                    $maxHeight = 25;
+                    $ratio = min($maxWidth / $origWidth, $maxHeight / $origHeight);
+                    $newWidth = $origWidth * $ratio;
+                    $newHeight = $origHeight * $ratio;
+
+                    $this->Image($logoPath, 159, 5, $newWidth, $newHeight);
                 }
             }
         }
-        $this->isCoverPage = false;
 
+        $this->isCoverPage = false;
     }
 
     public function generateNilaiFaktor1(array $nilaifaktorData, array $infoData, array $faktorData)
@@ -3714,11 +3776,11 @@ class PdfSelfassessment extends Fpdi
             $faktorKey = ($i == 1) ? 'nfaktor' : 'nfaktor' . $i;
 
             $label = $factorDescriptions[$i] ?? 'Faktor ' . $i; // Get descriptive label or default
-            $nilaiFaktor = $infoData[$faktorKey] ?? 'Belum diisi'; // Retrieve value using the specific key
+            $nilaiFaktor = $infoData[$faktorKey] ?? 'Tidak diisi'; // Retrieve value using the specific key
 
             // Initialize color and label
             $color = [255, 255, 255]; // Default to white (no color)
-            $keterangan = 'Belum diisi'; // Default message
+            $keterangan = 'Tidak diisi'; // Default message
 
             // Determine the fill color and keterangan based on nilaiFaktor
             switch ($nilaiFaktor) {
@@ -3743,7 +3805,7 @@ class PdfSelfassessment extends Fpdi
                     $color = [44, 62, 80]; // Black
                     break;
                 default:
-                    $keterangan = ' (Belum diisi)';
+                    $keterangan = ' (Tidak diisi)';
                     $color = [255, 255, 255]; // White (no color)
                     break;
             }
@@ -3775,9 +3837,9 @@ class PdfSelfassessment extends Fpdi
         }
 
         // --- Nilai Komposit ---
-        $showfaktorSummaryAndAnalysisData = $infoData['nilaikomposit'] ?? 'Belum diisi';
+        $showfaktorSummaryAndAnalysisData = $infoData['nilaikomposit'] ?? 'Tidak diisi';
         $kompositColor = [255, 255, 255]; // Default to white (no color)
-        $kompositKeterangan = 'Belum diisi'; // Default message
+        $kompositKeterangan = 'Tidak diisi'; // Default message
 
         // Determine the fill color and keterangan based on nilaiFaktor for Nilai Komposit
         switch ($showfaktorSummaryAndAnalysisData) {
@@ -3802,7 +3864,7 @@ class PdfSelfassessment extends Fpdi
                 $kompositColor = [44, 62, 80]; // Black
                 break;
             default:
-                $kompositKeterangan = ' Belum diisi';
+                $kompositKeterangan = ' Tidak diisi';
                 $kompositColor = [255, 255, 255]; // White (no color)
                 break;
         }
@@ -3986,6 +4048,7 @@ class PdfSelfassessment extends Fpdi
         setlocale(LC_TIME, 'id_ID.utf8', 'ind');
         $tanggal = isset($infoData['tanggal']) ? strftime('%d %B %Y', strtotime($infoData['tanggal'])) : 'Tanggal Tidak Diketahui';
         $kesimpulanFaktor = $infoData['kesimpulan'] ?? 'Tidak ada penjelasan.';
+        $cover = $infoData['cover'] ?? 'Cover Tidak Diketahui';
 
         $tableWidth = 190; // Lebar tabel
         $lineHeight = 6; // Tinggi baris
@@ -4020,17 +4083,52 @@ class PdfSelfassessment extends Fpdi
 
         $this->Cell($tableWidth, $lineHeight, $bprName, 0, 1, 'C');
 
-        $this->Ln(45); // Jarak antara tanda tangan
+        $this->Ln(45); // Jarak antara informasi dan tempat tanda tangan
 
-        // Menambahkan tempat untuk nama dan tanggal tanda tangan
+        // --- MODIFIKASI DIMULAI DI SINI ---
+
+        $startY = $this->GetY(); // Dapatkan posisi Y awal sebelum mencetak nama
+        $cellWidth = $tableWidth / 2; // Lebar untuk setiap kolom nama
+        $initialXForColumns = $this->GetX(); // Dapatkan posisi X awal (margin kiri)
+
+        // Atur font untuk nama (Direktur Utama dan Komisaris Utama)
         $this->SetFont('Arial', 'BU', 12); // 'B' untuk bold dan 'U' untuk underline
-        $this->Cell($tableWidth / 2, $lineHeight, $dirut, 0, 0, 'C');
 
-        $this->Cell($tableWidth / 2, $lineHeight, $komut, 0, 1, 'C');
+        // --- Bagian Direktur Utama ---
+        // Atur posisi X dan Y untuk Direktur Utama
+        $this->SetXY($initialXForColumns, $startY);
+        // Gunakan MultiCell untuk nama Direktur Utama agar bisa wrap
+        $this->MultiCell($cellWidth, $lineHeight, $dirut, 0, 'C', false);
+        $dirutSignatureBlockEndY = $this->GetY(); // Simpan posisi Y setelah MultiCell Direktur Utama selesai
 
+        // --- Bagian Komisaris Utama ---
+        // Untuk menempatkan Komisaris Utama di samping Direktur Utama,
+        // kita perlu mengatur ulang Y ke startY dan X ke awal kolom kedua.
+        $this->SetXY($initialXForColumns + $cellWidth, $startY);
+        // Gunakan MultiCell untuk nama Komisaris Utama agar bisa wrap
+        $this->MultiCell($cellWidth, $lineHeight, $komut, 0, 'C', false);
+        $komutSignatureBlockEndY = $this->GetY(); // Simpan posisi Y setelah MultiCell Komisaris Utama selesai
+
+        // Tentukan posisi Y maksimum yang dicapai oleh salah satu dari kedua MultiCell
+        $maxSignatureBlockEndY = max($dirutSignatureBlockEndY, $komutSignatureBlockEndY);
+
+        // Pindahkan kursor ke posisi Y maksimum sebelum menggambar label
+        $this->SetY($maxSignatureBlockEndY);
+
+        // Atur font untuk label ("Direktur Utama" dan "Komisaris Utama")
         $this->SetFont('Arial', '', 12);
-        $this->Cell($tableWidth / 2, $lineHeight, 'Direktur Utama', 0, 0, 'C');
-        $this->Cell($tableWidth / 2, $lineHeight, 'Komisaris Utama', 0, 1, 'C');
+
+        // --- Label Direktur Utama ---
+        // Atur X ke awal kolom pertama untuk label
+        $this->SetX($initialXForColumns);
+        $this->Cell($cellWidth, $lineHeight, 'Direktur Utama', 0, 0, 'C');
+
+        // --- Label Komisaris Utama ---
+        // Atur X ke awal kolom kedua untuk label
+        $this->SetX($initialXForColumns + $cellWidth);
+        $this->Cell($cellWidth, $lineHeight, 'Komisaris Utama', 0, 1, 'C'); // 0, 1 untuk pindah ke baris berikutnya setelah ini
+
+        // --- MODIFIKASI SELESAI DI SINI ---
     }
 
     public function mergeExistingPdf($filepath)
@@ -4113,41 +4211,94 @@ class PdfSelfassessment extends Fpdi
 
         // Fungsi untuk menampilkan header setelah halaman cover
         if (!empty($this->headerData)) {
+            // Bagian Logo
             if (!empty($this->headerData['logo']) && file_exists($this->headerData['logo'])) {
                 try {
-                    $this->Image($this->headerData['logo'], 10, 8, 40); // Menampilkan logo
+                    // Mendapatkan ukuran asli gambar
+                    list($origWidth, $origHeight) = getimagesize($this->headerData['logo']);
+
+                    // Tentukan ukuran maksimum
+                    $maxWidth = 36;
+                    $maxHeight = 21;
+
+                    // Hitung rasio gambar
+                    $ratio = min($maxWidth / $origWidth, $maxHeight / $origHeight);
+
+                    // Hitung lebar dan tinggi baru
+                    $newWidth = $origWidth * $ratio;
+                    $newHeight = $origHeight * $ratio;
+
+                    // Menampilkan logo
+                    $this->Image($this->headerData['logo'], 10, 8, $newWidth, $newHeight);
                 } catch (Exception $e) {
                     log_message('error', 'Failed to load logo: ' . $e->getMessage());
                 }
             }
 
-            $this->SetFont('Arial', 'B', 17);
+            $this->SetFont('Arial', 'B', 16);
             $pageWidth = $this->GetPageWidth();
             $rightMargin = 10;
+            $lineHeight = 5;
 
-            // Tampilkan nama BPR di kanan atas
-            $this->SetX($pageWidth - $this->GetStringWidth($this->headerData['namabpr'] ?? '') - $rightMargin);
-            $this->Cell(0, 5, $this->headerData['namabpr'] ?? '', 0, 1);
+            // --- BAGIAN NAMA BPR ---
+            $bprName = $this->headerData['namabpr'] ?? '';
+            $maxCharPerLine = 25;
 
-            // Tampilkan alamat BPR
+            // Pecah teks menjadi baris-baris
+            $nameLines = [];
+            $words = explode(' ', $bprName);
+            $currentLine = '';
+
+            foreach ($words as $word) {
+                if (strlen($currentLine) + strlen($word) + 1 <= $maxCharPerLine) {
+                    $currentLine .= ($currentLine ? ' ' : '') . $word;
+                } else {
+                    $nameLines[] = $currentLine;
+                    $currentLine = $word;
+                }
+            }
+            if ($currentLine) {
+                $nameLines[] = $currentLine;
+            }
+
+            // Hitung lebar maksimum
+            $maxLineWidth = 0;
+            foreach ($nameLines as $line) {
+                $lineWidth = $this->GetStringWidth($line);
+                $maxLineWidth = max($maxLineWidth, $lineWidth);
+            }
+
+            // Simpan posisi Y awal
+            $startY = $this->GetY();
+
+            // Tampilkan setiap baris rata kanan
+            foreach ($nameLines as $line) {
+                $this->SetX($pageWidth - $maxLineWidth - $rightMargin);
+                $this->Cell($maxLineWidth, $lineHeight, $line, 0, 1, 'R');
+            }
+
+            // Atur posisi Y untuk konten berikutnya
+            $this->SetY($startY + (count($nameLines) * $lineHeight));
+            // --- AKHIR BAGIAN NAMA BPR ---
+
+            // Bagian Alamat
             $this->SetFont('Arial', '', 9);
-            $this->SetX($pageWidth - $this->GetStringWidth($this->headerData['alamat'] ?? '') - $rightMargin);
-            $this->Cell(0, 5, $this->headerData['alamat'] ?? '', 0, 1);
+            $addressMaxWidth = 100;
+            $xForAddressBlock = $pageWidth - $addressMaxWidth - $rightMargin;
+            $this->SetX($xForAddressBlock);
+            $this->MultiCell($addressMaxWidth, $lineHeight, $this->headerData['alamat'] ?? '', 0, 'R');
 
-            // Tampilkan nomor telepon
-            $this->SetX($pageWidth - $this->GetStringWidth('Telp: ' . $this->headerData['nomor'] ?? '') - $rightMargin);
-            $this->Cell(0, 5, 'Telp: ' . $this->headerData['nomor'] ?? '', 0, 1);
-
-            // Tampilkan website dan email
+            // Bagian Website dan Email
             $contactInfo = sprintf(
-                'Website: %s | Email: %s',
+                'Web: %s | Email: %s | %s',
                 $this->headerData['webbpr'] ?? '',
-                $this->headerData['email'] ?? ''
+                $this->headerData['email'] ?? '',
+                $this->headerData['nomor'] ?? ''
             );
             $this->SetX($pageWidth - $this->GetStringWidth($contactInfo) - $rightMargin);
-            $this->Cell(0, 5, $contactInfo, 0, 1);
+            $this->Cell(0, $lineHeight, $contactInfo, 0, 1);
 
-            $this->Ln(5); // Menambah jarak di bawah header
+            $this->Ln(6); // Jarak setelah header
         }
     }
 
@@ -4169,7 +4320,7 @@ class PdfSelfassessment extends Fpdi
         $periodeSemester = isset($this->headerData['semester']) && in_array($this->headerData['semester'], [1, 2]) ? $this->headerData['semester'] : 1;
 
         // Footer text
-        $footerText = 'Laporan Self Assessment Tata Kelola ' . $bprName . ' Periode: Semester ' . $periodeSemester . ' Tahun ' . $periodeYear;
+        $footerText = 'Laporan Self Assessment Tata Kelola ' . ' Periode: Semester ' . $periodeSemester . ' Tahun ' . $periodeYear;
 
 
         // Calculate text width and center position

@@ -6,21 +6,26 @@ use CodeIgniter\Model;
 class M_paketkebijakandirdekom extends Model
 {
     protected $table = 'paketkebijakandirdekom';
+    protected $primaryKey = 'id';
+    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'jabatan', 'penerimagajidir', 'nominalgajidir', 'penerimagajidekom', 'nominalgajidekom', 'terimatunjangandir', 'nominaltunjangandir', 'terimatunjangandekom', 'nominaltunjangandekom', 'terimatantiemdir', 'nominaltantiemdir', 'terimatantiemdekom', 'nominaltantiemdekom', 'terimashmdir', 'nominalshmdir', 'terimashmdekom', 'nominalshmdekom', 'terimaremunlaindir', 'nominalremunlaindir', 'terimaremunlaindekom', 'nominalremunlaindekom', 'terimarumahdir', 'nominalrumahdir', 'terimarumahdekom', 'nominalrumahdekom', 'terimatransportdir', 'nominaltransportdir', 'terimatransportdekom', 'nominaltransportdekom', 'terimaasuransidir', 'nominalasuransidir', 'terimaasuransidekom', 'nominalasuransidekom', 'terimafasilitasdir', 'nominalfasilitasdir', 'terimafasilitasdekom', 'nominalfasilitasdekom', 'totalremundir', 'totalfasdir', 'totaldir', 'totalremundekom', 'totalfasdekom', 'totaldekom', 'keterangan', 'fullname', 'is_approved', 'approved_by', 'approved_at','accdekom', 'accdekom_by', 'accdekom_at'];
+    protected $useTimestamps = false;
 
     public function __construct()
     {
-        $this->db = db_connect();
+        parent::__construct();
         $this->builder = $this->db->table($this->table);
-    }  
-    
-    public function checkIncrement() {
-        if(empty($this->getAllData())) {
+    }
+
+    public function checkIncrement()
+    {
+        if (empty($this->getAllData())) {
             $this->db->query('ALTER TABLE paketkebijakandirdekom AUTO_INCREMENT = 1');
         }
     }
 
-    public function setIncrement($value) {
-        $value = (int)$value;
+    public function setIncrement($value)
+    {
+        $value = (int) $value;
         $sql = 'ALTER TABLE paketkebijakandirdekom AUTO_INCREMENT = ?';
         $query = $this->db->query($sql, $value);
         return $query;
@@ -31,49 +36,57 @@ class M_paketkebijakandirdekom extends Model
         return $this->builder->get()->getResultArray();
     }
 
-    public function tambahgaji($data)
+    public function tambah($data)
     {
         return $this->builder->insert($data);
     }
 
-    public function tambahtunjangan($data)
+    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
     {
-        return $this->builder->insert($data);
+        return $this->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->findAll();
     }
 
-    public function tambahtantiem($data)
+    public function getDataByKodebpr($kodebpr)
     {
-        return $this->builder->insert($data);
+        return $this->builder()
+            ->where('kodebpr', $kodebpr)
+            ->get()
+            ->getResultArray();
     }
 
-    public function tambahsaham($data)
+    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
     {
-        return $this->builder->insert($data);
+        return $this->db->table($this->table)
+            ->select('paketkebijakandirdekom.*, users.fullname')
+            ->join('users', 'users.id = paketkebijakandirdekom.user_id', 'left')
+            ->where('paketkebijakandirdekom.id', $Id)
+            ->where('paketkebijakandirdekom.kodebpr', $kodebpr)
+            ->orderBy('paketkebijakandirdekom.created_at', 'ASC')
+            ->get()
+            ->getResultArray();
     }
 
-    public function tambahremun($data)
+    // Menyaring data berdasarkan user_id, kodebpr, dan periode
+    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
     {
-        return $this->builder->insert($data);
+        return $this->builder
+            ->where('user_id', $userId)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode', $periode)
+            ->findAll();
     }
 
-    public function tambahrumah($data)
+    public function getKomentarByFaktorId($Id)
     {
-        return $this->builder->insert($data);
-    }
-
-    public function tambahtransport($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    public function tambahasuransi($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    public function tambahfasilitas($data)
-    {
-        return $this->builder->insert($data);
+        return $this->db->table($this->table)
+            ->select('paketkebijakandirdekom.*, users.fullname')
+            ->join('users', 'users.id = paketkebijakandirdekom.user_id', 'left')
+            ->where('paketkebijakandirdekom.faktor1id', $Id) // INI KUNCI FILTERING
+            ->orderBy('paketkebijakandirdekom.created_at', 'ASC')
+            ->get()
+            ->getResultArray();
     }
 
     public function hapus($id)
@@ -87,53 +100,14 @@ class M_paketkebijakandirdekom extends Model
     {
         return $this->builder->update($data, ['id' => $id]);
     }
-    public function ubahgaji($data, $id)
+
+    public function setNullKolom($id)
     {
-        return $this->builder->update($data, ['id' => $id]);
+        return $this->builder->update(
+            ['nilai' => null, 'keterangan' => null],
+            ['id' => $id]
+        );
     }
 
-    public function ubahtunjangan($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function ubahtantiem($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-    public function ubahsaham($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function ubahremun($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function ubahrumah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function ubahtransport($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function ubahasuransi($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function ubahfasilitas($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function ubahketerangan($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
 
 }

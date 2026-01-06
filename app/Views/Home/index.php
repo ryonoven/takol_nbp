@@ -1,10 +1,10 @@
 <!-- Begin Page Content -->
-<div class="container-fluid"> 
+<div class="container-fluid">
 
     <!-- Page Heading -->
 
     <h1 class="h1 mb-4 text-black-800"></h1>
-        
+
     <?= view('Myth\Auth\Views\_message_block') ?>
 
 </div>
@@ -27,9 +27,13 @@
                 <div class="col-xxl-4 col-xl-12 mb-4">
                     <div class="card h-100">
                         <div class="card-body h-100 p-5">
-                            <h1 class="text-primary text-center">Selamat Datang di NBP Bantu Lapor</h1>
-                            <p class="text-gray-700 mb-0">Browse our fully designed UI toolkit! Browse our prebuilt app
-                                pages, components, and utilites, and be sure to look at our full documentation!</p>
+                            <h1 class="text-primary text-center">Selamat Datang di NBP Simpel</h1>
+                            <p class="text-gray-700 text-center">NBP Simpel dirancang untuk memudahkan Anda dalam
+                                pengisian laporan secara efisien dan akurat. Kami berharap aplikasi ini dapat memberikan
+                                pengalaman yang mudah dan cepat dalam menyelesaikan tugas Anda.
+                                Jika Anda membutuhkan bantuan, tim kami siap membantu. Anda diharapkan untuk mengisi
+                                informasi BPR terlebih dahulu sebelum mengisi pelaporan. Selamat bekerja dan semoga
+                                laporan Anda terselesaikan dengan baik!</p>
                         </div>
                     </div>
                 </div>
@@ -41,8 +45,8 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
-                                    <div class="text-white-75 small">Laporan Tata Kelola</div>
-                                    <div class="text-lg fw-bold">Self Assessment</div>
+                                    <div class="text-white-75 small">Laporan</div>
+                                    <div class="text-lg fw-bold">Tata Kelola (GCG)</div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="calendar"></i>
                             </div>
@@ -58,14 +62,15 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
-                                    <div class="text-white-75 small">Laporan Tata Kelola</div>
+                                    <div class="text-white-75 small">Laporan</div>
                                     <div class="text-lg fw-bold">Transparansi Tahunan</div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">View Report</a>
+                            <a class="text-white stretched-link" href="<?= base_url('periodetransparansi') ?>">Mulai
+                                Pelaporan</a>
                             <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -75,18 +80,37 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
-                                    <div class="text-white-75 small">Laporan Tata Kelola</div>
-                                    <div class="text-lg fw-bold">Risk Assessment</div>
+                                    <div class="text-white-75 small">Laporan</div>
+                                    <div class="text-lg fw-bold">Manajemen Risiko</div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="check-square"></i>
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">View Tasks</a>
+                            <a class="text-white stretched-link" href="<?= base_url('periodeprofilresiko') ?>">Mulai
+                                Pelaporan</a>
                             <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
-                </div>                
+                </div>
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="me-3">
+                                    <div class="text-white-75 small">Laporan</div>
+                                    <div class="text-lg fw-bold">Tingkat Kesehatan Bank (TKS)</div>
+                                </div>
+                                <i class="feather-xl text-white-50" data-feather="check-square"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between small">
+                            <a class="text-white stretched-link" href="<?= base_url('periodetks') ?>">Mulai
+                                Pelaporan</a>
+                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -109,70 +133,173 @@
 </div>
 
 <style>
+    /* Global Styles */
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #F8F9FA;
+        /* Sangat terang, hampir putih */
+        color: #212529;
+        /* Dark grey untuk teks utama */
+    }
+
+    /* Container Fluid - Main Content Background */
     .container-fluid {
-        background-color: #f8f9fc;
+        background-color: #F8F9FA;
+        /* Konsisten dengan body background */
+        padding-top: 20px;
+        /* Sedikit padding atas */
+        padding-bottom: 20px;
+        /* Sedikit padding bawah */
     }
 
+    /* Page Header (Top Section with Gradient) */
     .page-header {
-        background: linear-gradient(135deg, #6c757d, #343a40);
+        /* Menggunakan gradien yang lebih halus atau warna solid yang profesional */
+        background: linear-gradient(135deg, #141863, #0056B3);
+        /* background-color: #007BFF; */
+        /* Atau bisa juga solid blue */
         color: white;
-        border-radius: 10px;
-        padding: 20px 0;
+        padding-top: 40px;
+        /* Menambah padding agar lebih lapang */
+        padding-bottom: 80px;
+        /* Sedikit rounded corner */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Sedikit bayangan untuk kedalaman */
     }
 
-    h1 {
+    /* Page Heading inside container-fluid, not in header */
+    h1.h1 {
+        color: #212529;
+        /* Warna teks heading umum */
+        font-size: 2.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* "Selamat Datang di NBP Simpel" Text */
+    h1.text-primary {
+        color: #007BFF !important;
+        /* Biru utama untuk judul selamat datang */
         font-size: 2.5rem;
         font-weight: bold;
-        color: #007bff;
+        margin-bottom: 1rem;
     }
 
+    /* Description paragraph */
+    p.text-gray-700 {
+        color: #495057 !important;
+        /* Abu-abu sedang untuk teks deskripsi */
+        line-height: 1.6;
+    }
+
+    /* Card General Styling */
     .card {
-        border-radius: 15px;
+        border-radius: 12px;
+        /* Radius sudut kartu yang lebih seragam */
         transition: all 0.3s ease-in-out;
+        border: none;
+        /* Menghilangkan border default */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        /* Bayangan yang lebih lembut */
     }
 
     .card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
+        /* Sedikit naik saat dihover */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        /* Bayangan yang lebih jelas saat dihover */
     }
 
     .card-body {
-        padding: 30px;
-        text-align: center;
+        padding: 25px;
+        /* Menyesuaikan padding di dalam kartu */
+        text-align: left;
+        /* Teks di dalam kartu lebih baik rata kiri */
     }
 
+    /* Card Footer */
     .card-footer {
-        background-color: rgba(0, 0, 0, 0.05);
-        border-radius: 0 0 15px 15px;
+        background-color: rgba(0, 0, 0, 0.03);
+        /* Latar belakang footer kartu yang sangat tipis */
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        /* Sedikit garis pemisah */
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        padding: 12px 25px;
+        /* Padding footer */
     }
 
-    .text-lg {
-        font-size: 1.25rem;
-        font-weight: bold;
+    /* Specific Card Colors */
+    .card.bg-success {
+        background-color: #28A745 !important;
+        /* Hijau untuk "Self Assessment" */
     }
 
-    .text-white-75 {
-        opacity: 0.75;
+    .card.bg-warning {
+        background-color: #FFC107 !important;
+        /* Kuning untuk "Transparansi Tahunan" */
     }
 
+    .card.bg-primary {
+        /* Mengganti warna "Risk Assessment" menjadi abu-abu gelap atau merah peringatan */
+        background-color: #6C757D !important;
+        /* Abu-abu netral untuk "Risk Assessment" */
+        /* Atau jika ingin lebih tegas sebagai 'risiko', bisa pakai: */
+        /* background-color: #DC3545 !important; */
+        /* Merah untuk peringatan */
+    }
+
+    /* Text inside cards */
+    .card-body .text-white-75 {
+        color: rgba(255, 255, 255, 0.85) !important;
+        /* Warna teks keterangan (misal "Laporan") */
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .card-body .text-lg.fw-bold {
+        font-size: 1.35rem;
+        /* Ukuran teks judul kartu */
+        font-weight: 600;
+        /* Sedikit lebih tebal */
+        color: white;
+        /* Pastikan teks judul kartu putih */
+    }
+
+    /* Icons inside cards */
     .feather-xl {
-        font-size: 36px;
+        font-size: 40px;
+        /* Ukuran ikon sedikit lebih besar */
+        opacity: 0.7;
+        /* Sedikit transparansi untuk ikon */
     }
 
-    .text-primary {
-        color: #007bff !important;
+    /* Links in card footer */
+    .card-footer a.text-white {
+        color: white !important;
+        text-decoration: none;
+        font-weight: 500;
     }
 
-    .text-success {
-        color: #28a745 !important;
+    .card-footer a.text-white:hover {
+        text-decoration: underline;
     }
 
-    .text-warning {
-        color: #ffc107 !important;
+    /* Arrow icon in card footer */
+    .card-footer .text-white i {
+        color: white !important;
+        font-size: 0.9rem;
     }
 
-    .text-danger {
-        color: #dc3545 !important;
+    /* Margin top for main content relative to header */
+    .mt-n5 {
+        margin-top: -6rem !important;
+        /* Sesuaikan ini jika perlu agar card masuk ke header */
+    }
+
+    /* Ensure text in content is visible */
+    .text-black-800 {
+        color: #212529 !important;
+        /* Pastikan judul halaman umum terlihat */
     }
 </style>
 

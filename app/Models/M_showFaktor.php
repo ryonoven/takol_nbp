@@ -39,7 +39,8 @@ class M_showfaktor extends Model
         'negatifproses',
         'negatifhasil',
         'pdf1_filename',
-        'pdf2_filename'
+        'pdf2_filename',
+        'cover'
     ]; // Fields yang dapat diisi
 
     public function ubah($data, $id)
@@ -51,6 +52,12 @@ class M_showfaktor extends Model
     {
         return $this->builder->update($data, ['id' => $id]);
     }
+
+    public function updatecover($data, $id)
+    {
+        return $this->builder->update($data, ['id' => $id]);
+    }
+
     // Fungsi untuk menghitung nilai rata-rata faktor
     public function hitungRataRata($kodebpr, $periodeId)
     {
@@ -69,6 +76,9 @@ class M_showfaktor extends Model
             'nfaktor11' => new M_nilaifaktor11(),
             'nfaktor12' => new M_nilaifaktor12()
         ];
+
+        // Ambil nilai Faktor 4 untuk pengecekan
+        
 
         $totalNilai = 0;
         $countValid = 0;

@@ -28,7 +28,7 @@
         <div class="col-md-6 mb-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Buat Periode Baru</h4>
+                    <h4 class="mb-0">Buat Periode Baru untuk Laporan Self Assessment Tata Kelola</h4>
                 </div>
                 <div class="card-body">
                     <form action="<?= base_url('periode/handlePeriode') ?>" method="post" novalidate>
@@ -65,7 +65,7 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-info text-white">
-                    <h4 class="mb-0">Pilih Periode Yang Sudah Ada</h4>
+                    <h4 class="mb-0">Pilih Periode Pelaporan Self Assessment Yang Sudah Ada</h4>
                 </div>
                 <div class="card-body">
                     <?php if (empty($periodes)): ?>
