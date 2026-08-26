@@ -37,49 +37,37 @@ class M_profilrisikocommentsread extends Model
     protected $beforeDelete = [];
     protected $afterDelete = [];
 
-    /**
-     * Mark a specific comment as read by a specific user.
-     * Inserts a record if it doesn't exist.
-     */
     public function markAsRead(int $commentId, int $userId)
     {
-        // Check if the record already exists to prevent duplicates
         $existingRead = $this->where('comment_id', $commentId)
             ->where('user_id', $userId)
             ->first();
 
         if (empty($existingRead)) {
-            // Insert new read record
             return $this->insert([
                 'comment_id' => $commentId,
                 'user_id' => $userId,
                 'read_at' => date('Y-m-d H:i:s')
             ]);
         }
-        // If it already exists, just return the existing ID (or true for success)
+
         return $existingRead['id'];
     }
 
-    /**
-     * Get the count of comments related to a factor that a specific user has NOT read.
-     *
-     * @param int $Id
-     * @param string $kodebpr
-     * @param string $subkategori
-     * @param int $userId
-     * @param int $periodeId
-     * @return int
-     */
-    public function countUnreadCommentsForUserByFactor($faktorId, $subkategori, $kodebpr, $userId, $periodeId): int
-    {
-        // Get all comment IDs for the given factor, kodebpr, and periode
+    public function countUnreadCommentsForUserByFactor(
+        $faktorId,
+        $subkategori,
+        $kodebpr,
+        $userId,
+        $periodeId
+    ): int {
         $commentsInFactor = $this->db->table('profilrisiko_comments')
             ->select('id')
             ->where('faktor1id', $faktorId)
             ->where('subkategori', $subkategori)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->where('user_id !=', $userId) // We only care about comments from *other* users
+            ->where('user_id !=', $userId)
             ->get()
             ->getResultArray();
 
@@ -89,7 +77,6 @@ class M_profilrisikocommentsread extends Model
 
         $commentIds = array_column($commentsInFactor, 'id');
 
-        // Count how many of these comments are NOT in the comment_reads table for this user
         $readCommentIds = $this->db->table('profilrisiko_reads')
             ->select('comment_id')
             ->whereIn('comment_id', $commentIds)
@@ -99,55 +86,133 @@ class M_profilrisikocommentsread extends Model
 
         $readCommentIds = array_column($readCommentIds, 'comment_id');
 
-        // Total comments by others - comments by others read by this user
         return count($commentIds) - count($readCommentIds);
     }
 
-    public function markAllAsReadForFactor($faktorId, $subkategori, $kodebpr, $userId, $periodeId)
+    public function markUserCommentsAsRead()
     {
-        // Get all unread comment IDs for this factor
-        $sql = "
-            SELECT pc.id
-            FROM profilrisiko_comments pc
-            WHERE pc.faktor1id = ?
-            AND pc.subkategori = ?
-            AND pc.kodebpr = ?
-            AND pc.periode_id = ?
-            AND pc.user_id != ?
-            AND pc.id NOT IN (
-                SELECT comment_id 
-                FROM profilrisiko_reads 
-                WHERE user_id = ?
-            )
-        ";
-
-        $comments = $this->db->query($sql, [
-            $faktorId,
-            $subkategori,
-            $kodebpr,
-            $periodeId,
-            $userId,
-            $userId
-        ])->getResultArray();
-
-        log_message('info', "🔍 Found " . count($comments) . " unread comments for factor {$faktorId}, user {$userId}");
-
-        if (empty($comments)) {
-            log_message('info', "No unread comments to mark for factor {$faktorId}");
-            return 0;
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
         }
 
-        $markedCount = 0;
+        $faktorId = $this->request->getPost('faktor_id');
+        $subkategori = $this->request->getPost('subkategori');
 
-        // Mark each as read
-        foreach ($comments as $comment) {
-            if ($this->markAsRead($comment['id'], $userId)) {
-                $markedCount++;
+        if (
+            !$faktorId ||
+            !$subkategori ||
+            !$this->userKodebpr ||
+            !$this->userId ||
+            !$this->periodeId
+        ) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error']);
+        }
+
+        $marked = $this->commentReadsModel->markAllAsReadForFactor(
+            $faktorId,
+            $subkategori,
+            $this->userKodebpr,
+            $this->userId,
+            $this->periodeId
+        );
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'marked_count' => $marked
+        ]);
+    }
+
+    public function getAllUnreadCountsBatch(
+        string $subkategori,
+        string $kodebpr,
+        int $userId,
+        $periodeId,
+        array $faktorIds
+    ): array {
+        // Ambil semua komentar dari orang lain untuk semua faktor sekaligus
+        $comments = $this->db->table('profilrisiko_comments')
+            ->select('id, faktor1id')
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('user_id !=', $userId)
+            ->whereIn('faktor1id', $faktorIds)
+            ->get()
+            ->getResultArray();
+
+        if (empty($comments)) {
+            return [];
+        }
+
+        // Ambil semua comment_id yang sudah dibaca user ini
+        $allCommentIds = array_column($comments, 'id');
+
+        $readIds = $this->db->table('profilrisiko_reads')
+            ->select('comment_id')
+            ->whereIn('comment_id', $allCommentIds)
+            ->where('user_id', $userId)
+            ->get()
+            ->getResultArray();
+
+        $readIds = array_column($readIds, 'comment_id');
+
+        // Hitung unread per faktor
+        $counts = [];
+        foreach ($comments as $c) {
+            $fid = (int) $c['faktor1id'];
+            if (!isset($counts[$fid])) {
+                $counts[$fid] = 0;
+            }
+            if (!in_array($c['id'], $readIds)) {
+                $counts[$fid]++;
             }
         }
 
-        log_message('info', "✅ Successfully marked {$markedCount} comments as read for factor {$faktorId}, user {$userId}");
+        return $counts;
+    }
 
-        return $markedCount;
+    public function markAllAsReadForFactor(
+        $faktorId,
+        string $subkategori,
+        string $kodebpr,
+        int $userId,
+        $periodeId
+    ): int {
+        // Ambil semua komentar dari orang lain di faktor ini
+        $comments = $this->db->table('profilrisiko_comments')
+            ->select('id')
+            ->where('faktor1id', $faktorId)
+            ->where('subkategori', $subkategori)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('user_id !=', $userId)
+            ->get()
+            ->getResultArray();
+
+        if (empty($comments)) {
+            return 0;
+        }
+
+        $marked = 0;
+        foreach ($comments as $comment) {
+            $already = $this->db->table('profilrisiko_reads')
+                ->where('comment_id', $comment['id'])
+                ->where('user_id', $userId)
+                ->get()
+                ->getRowArray();
+
+            if (!$already) {
+                $this->db->table('profilrisiko_reads')->insert([
+                    'comment_id' => $comment['id'],
+                    'user_id' => $userId,
+                    'read_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+                $marked++;
+            }
+        }
+
+        return $marked;
     }
 }

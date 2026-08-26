@@ -7,7 +7,24 @@ class M_tgjwbkomite extends Model
 {
     protected $table = 'tgjwbkomite';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'kodebpr', 'periode_id', 'komite', 'tugastgjwbkomite', 'jumlahrapat', 'prokerkomite', 'hasilprokerkomite', 'tindakkomite', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'accdekom2', 'accdekom2_by', 'accdekom3', 'accdekom3_by', 'accdekom4', 'accdekom4_by', 'accdekom5', 'accdekom5_by', 'accdir2', 'accdir2_by'];
+    protected $allowedFields = [
+        'komite',
+        'tugastgjwbkomite',
+        'jumlahrapat',
+        'prokerkomite',
+        'hasilprokerkomite',
+        'is_null_record',
+        'periode_id',
+        'user_id',
+        'kodebpr',
+        'fullname',
+        'accdekom',
+        'accdekom_by',
+        'accdekom_at',
+        'is_approved',
+        'approved_by',
+        'approved_at',
+    ];
     protected $useTimestamps = false;
 
     public function __construct()
@@ -59,7 +76,7 @@ class M_tgjwbkomite extends Model
             ->where('periode_id', $periodeId)
             ->findAll();
     }
-    // Dalam PenjelasantindakModel.php
+
     public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
     {
         return $this->db->table('tgjwbkomite')
@@ -127,7 +144,6 @@ class M_tgjwbkomite extends Model
 
     public function ubahBerdasarkanFaktorId($data, $Tgjwbkomite, $kodebpr, $periodeId)
     {
-        // Pastikan update hanya terjadi untuk faktor4id, kodebpr, dan periode_id yang sesuai
         $this->builder->where('subkategori', $Tgjwbkomite)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId);

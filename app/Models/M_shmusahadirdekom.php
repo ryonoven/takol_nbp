@@ -7,7 +7,7 @@ class M_shmusahadirdekom extends Model
 {
     protected $table = 'shmusahadirdekom';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nik', 'kodebpr', 'periode_id', 'user_id', 'nama', 'nik', 'usaha', 'persensaham', 'persensahamlalu', 'dekom', 'nikdekom', 'usahadekom', 'persenshmdekom', 'persenshmdekomlalu', 'pshm', 'nikpshm', 'usahapshm', 'persenpshm', 'persenpshmlalu', 'keterangan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'fullname'];
+    protected $allowedFields = ['nik', 'kodebpr', 'periode_id', 'user_id', 'nama', 'jenisid', 'nik', 'jabatan', 'usaha', 'persensaham', 'persensahamlalu', 'dekom', 'nikdekom', 'usahadekom', 'persenshmdekom', 'persenshmdekomlalu', 'pshm', 'nikpshm', 'usahapshm', 'persenpshm', 'persenpshmlalu', 'keterangan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'fullname', 'is_null_record'];
     protected $useTimestamps = false;
 
     public function __construct()

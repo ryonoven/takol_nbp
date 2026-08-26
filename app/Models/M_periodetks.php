@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 
 class M_periodetks extends Model
 {
-    protected $table = 'periodetks';
+    protected $table = 'periode_semesteran';
     protected $primaryKey = 'id';
     protected $allowedFields = ['user_id', 'kodebpr', 'tahun', 'semester', 'jenispelaporan', 'modalinti', 'totalaset'];
     protected $useTimestamps = true;

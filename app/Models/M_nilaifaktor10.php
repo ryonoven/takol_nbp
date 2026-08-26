@@ -7,7 +7,35 @@ class M_nilaifaktor10 extends Model
 {
     protected $table = 'nilaifaktor10';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['faktor10id', 'nilai', 'keterangan', 'user_id', 'fullname', 'kodebpr', 'created_at', 'periode_id', 'nfaktor10', 'penjelasfaktor', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at', 'accdekom2', 'accdekom2_by', 'accdir2', 'accdir2_by'];
+    protected $allowedFields = [
+        'faktor10id',
+        'nilai',
+        'keterangan',
+        'user_id',
+        'fullname',
+        'kodebpr',
+        'created_at',
+        'periode_id',
+        'nfaktor10',
+        'penjelasfaktor',
+        'is_approved',
+        'approved_by',
+        'approved_at',
+        'accdekom',
+        'accdekom_by',
+        'accdekom_at',
+        'accdekom2',
+        'accdekom2_by',
+        'accdir2',
+        'accdir2_by',
+        // tambahan untuk kesimpulan Faktor 10:
+        'positifstruktur',
+        'negatifstruktur',
+        'positifproses',
+        'negatifproses',
+        'positifhasil',
+        'negatifhasil'
+    ];
     protected $useTimestamps = false;
 
     public function __construct()
@@ -36,8 +64,6 @@ class M_nilaifaktor10 extends Model
             ->where('periode_id', $periodeId)
             ->findAll();
     }
-
-    // Di dalam App\Models\M_nilaifaktor10
 
     public function getDataByKodebpr($kodebpr)
     {
@@ -86,25 +112,22 @@ class M_nilaifaktor10 extends Model
 
     public function hapus($faktor10Id)
     {
-        // Menghapus data berdasarkan faktor10id
         $deleteResult = $this->builder->delete(['faktor10id' => $faktor10Id]);
 
-        // Periksa apakah penghapusan berhasil
         if ($deleteResult) {
-            return true; // Berhasil
+            return true;
         } else {
-            return false; // Gagal
+            return false;
         }
     }
 
     public function approveFaktorByKodebprAndPeriode($kodebpr, $periodeId)
     {
-        // Update nilai is_approved menjadi 1 untuk faktor10id = 6, berdasarkan kodebpr dan periode_id
         return $this->builder
             ->where('faktor10id', 6)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->set(['is_approved' => 1]) // Mengatur is_approved menjadi 1
+            ->set(['is_approved' => 1])
             ->update();
     }
 
@@ -118,7 +141,7 @@ class M_nilaifaktor10 extends Model
         return $this->builder->update($data);
     }
 
-    public function hitungRataRata($faktor10Id, $kodebpr)
+    public function hitungRataRata($faktor10Id, $kodebpr, $periodeId = null)
     {
 
         $periodeId = session('active_periode');
@@ -157,11 +180,11 @@ class M_nilaifaktor10 extends Model
         }
     }
 
-    public function insertOrUpdateRataRata($rataRata, $faktor10Id, $kodebpr)
+    public function insertOrUpdateRataRata($rataRata, $faktor10Id, $kodebpr, $periodeId = null)
     {
         // Get the authenticated user ID and fullname
         $userId = service('authentication')->id();
-        $userModel = new \App\Models\M_user();
+        $userModel = new M_user();
         $user = $userModel->find($userId);
         $fullname = $user['fullname'] ?? 'Unknown';
 
@@ -184,23 +207,18 @@ class M_nilaifaktor10 extends Model
 
         $currentDateTime = date('Y-m-d H:i:s');
 
-        // Prepare the data to be inserted or updated
         $data = [
             'faktor10id' => 6,
             'nfaktor10' => $rataRata,
-            'penjelasfaktor' => $penjelasfaktor, // Store explanation in penjelasfaktor column
+            'penjelasfaktor' => $penjelasfaktor,
             'fullname' => $fullname,
             'user_id' => $userId,
             'kodebpr' => $kodebpr,
             'created_at' => $currentDateTime,
-            // 'is_approved' => $associatedNilai['is_approved'] ?? 0,
-            // 'approved_by' => $userId,
-            // 'approved_at' => $currentDateTime,
-            'periode_id' => $periodeId, // Use the current date for the period
+            'periode_id' => $periodeId,
             'keterangan' => 'Nilai rata-rata faktor 1-5'
         ];
 
-        // If the record exists, update it. Otherwise, insert a new record.
         if ($existing) {
             return $this->update($existing['id'], $data);
         } else {

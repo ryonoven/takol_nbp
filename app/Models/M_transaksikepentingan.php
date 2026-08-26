@@ -7,7 +7,7 @@ class M_transaksikepentingan extends Model
 {
     protected $table = 'transaksikepentingan';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['namapihakbenturan', 'jbtbenturan', 'nikbenturan', 'pengambilkeputusan', 'jbtpengambilkeputusan', 'nikpengambilkeputusan', 'jenistransaksi', 'nilaitransaksi', 'tindakbenturan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'kodebpr', 'periode_id', 'user_id'];
+    protected $allowedFields = ['namapihakbenturan', 'jbtbenturan', 'nikbenturan', 'pengambilkeputusan', 'jbtpengambilkeputusan', 'nikpengambilkeputusan', 'jenistransaksi', 'nilaitransaksi', 'tindakbenturan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'kodebpr', 'periode_id', 'user_id', 'is_null_record'];
     protected $useTimestamps = false;
 
     public function __construct()

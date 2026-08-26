@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 class M_Faktor6 extends Model
 {
     protected $table = 'faktor6';
-    protected $primaryKey = 'id'; // Ganti dengan primary key tabel Anda
+    protected $primaryKey = 'id';
     protected $allowedFields = ['is_approved', 'approved_by', 'approved_at'];
     protected $useTimestamps = false;
     public function __construct()

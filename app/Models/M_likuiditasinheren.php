@@ -27,7 +27,8 @@ class M_likuiditasinheren extends Model
         'accdekom_by',
         'accdekom_at',
         'read_at',
-        'comment_id'
+        'comment_id',
+        'is_manual'
     ];
     protected $useTimestamps = false;
     protected $returnType = 'array';
@@ -198,7 +199,7 @@ class M_likuiditasinheren extends Model
         }
 
         $data = [
-            'faktor1id' => 115,
+            'faktor1id' => $faktorId,
             'penilaiankredit' => $rataRata,
             'fullname' => $fullname,
             'user_id' => $userId,

@@ -7,7 +7,7 @@ class M_sahamdirdekom extends Model
 {
     protected $table = 'sahamdirdekom';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nik', 'nama', 'persensaham', 'nikdekom', 'dekom', 'persensahamdekom', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'user_id', 'kodebpr', 'periode_id', 'fullname'];
+    protected $allowedFields = ['nik', 'nama', 'persensaham', 'nik', 'jabatan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'user_id', 'kodebpr', 'periode_id', 'fullname', 'is_null_record'];
     protected $useTimestamps = false;
 
     public function __construct()
@@ -15,6 +15,14 @@ class M_sahamdirdekom extends Model
         parent::__construct();
         $this->builder = $this->db->table($this->table);
     }
+
+    public function checkIncrement()
+    {
+        if (empty($this->getAllData())) {
+            $this->db->query('ALTER TABLE sahamdirdekom AUTO_INCREMENT = 1');
+        }
+    }
+
     public function getAllData()
     {
         return $this->builder->get()->getResultArray();

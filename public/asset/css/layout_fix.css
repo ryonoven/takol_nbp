@@ -1,0 +1,233 @@
+/* ============================================
+   LAYOUT WRAPPER FIX - Menghilangkan Gap
+   ============================================ */
+
+/* Reset dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+/* Wrapper utama */
+#wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Content wrapper */
+#content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fc;
+}
+
+/* Content area */
+#content {
+    flex: 1;
+    padding: 1.5rem;
+    margin: 0;
+    width: 100%;
+}
+
+/* Desktop Layout */
+@media (min-width: 992px) {
+    #wrapper {
+        display: flex;
+    }
+
+    #content-wrapper {
+        margin-left: 280px;
+        width: calc(100% - 280px);
+    }
+}
+
+/* Mobile & Tablet Layout */
+@media (max-width: 991px) {
+    #wrapper {
+        display: block;
+    }
+
+    #content-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    #content {
+        padding: 1rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 576px) {
+    #content {
+        padding: 0.75rem;
+    }
+}
+
+/* ============================================
+   SIDEBAR POSITIONING FIX
+   ============================================ */
+
+.sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    z-index: 999;
+}
+
+/* Desktop: Sidebar selalu terlihat */
+@media (min-width: 992px) {
+    .sidebar {
+        left: 0 !important;
+    }
+}
+
+/* Mobile: Sidebar tersembunyi, muncul saat active */
+@media (max-width: 991px) {
+    .sidebar {
+        left: -280px !important;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.active {
+        left: 0 !important;
+    }
+}
+
+/* ============================================
+   TOPBAR POSITIONING FIX
+   ============================================ */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 997;
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Desktop: Topbar full width dikurangi sidebar */
+@media (min-width: 992px) {
+    .topbar {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* Mobile: Topbar dengan ruang untuk toggle button */
+@media (max-width: 991px) {
+    .topbar {
+        padding-left: 70px !important;
+        padding-right: 1rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .topbar {
+        padding-left: 60px !important;
+        padding-right: 0.75rem !important;
+    }
+}
+
+/* ============================================
+   TOGGLE BUTTON POSITIONING
+   ============================================ */
+
+.sidebar-toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1050;
+    /* Di atas topbar dan sidebar */
+}
+
+@media (min-width: 992px) {
+    .sidebar-toggle-btn {
+        display: none !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar-toggle-btn {
+        display: flex !important;
+    }
+}
+
+/* ============================================
+   OVERLAY
+   ============================================ */
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ============================================
+   PREVENT HORIZONTAL SCROLL
+   ============================================ */
+
+body.sidebar-open {
+    overflow: hidden;
+}
+
+@media (max-width: 991px) {
+    body.sidebar-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+}
+
+/* ============================================
+   CONTAINER FIXES
+   ============================================ */
+
+.container,
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 576px) {
+
+    .container,
+    .container-fluid {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}

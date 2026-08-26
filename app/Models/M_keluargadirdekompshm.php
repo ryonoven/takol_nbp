@@ -7,7 +7,7 @@ class M_keluargadirdekompshm extends Model
 {
     protected $table = 'keluargadirdekompshm';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nik', 'nama', 'jabatan', 'hubkeldir', 'hubkeldekom', 'hubpkelshm', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'kodebpr', 'periode_id', 'user_id'];
+    protected $allowedFields = ['nik', 'nama', 'jabatan', 'hubkeldir', 'hubkeldekom', 'hubpkelshm', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'kodebpr', 'periode_id', 'user_id', 'is_null_record'];
     protected $useTimestamps = false;
 
     public function __construct()

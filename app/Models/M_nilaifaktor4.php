@@ -7,14 +7,13 @@ class M_nilaifaktor4 extends Model
 {
     protected $table = 'nilaifaktor4';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['faktor4id', 'nilai', 'keterangan', 'user_id', 'fullname', 'kodebpr', 'created_at', 'periode_id', 'nfaktor4', 'penjelasfaktor', 'is_approved', 'approved_by', 'accdekom_at', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom2', 'accdekom2_by', 'accdir2', 'accdir2_by'];
+    protected $allowedFields = ['faktor4id', 'nilai', 'keterangan', 'user_id', 'fullname', 'kodebpr', 'created_at', 'periode_id', 'nfaktor4', 'penjelasfaktor', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at', 'accdekom2', 'accdekom2_by', 'accdir2', 'accdir2_by', 'positifstruktur', 'negatifstruktur', 'positifproses', 'negatifproses', 'positifhasil', 'negatifhasil'];
     protected $useTimestamps = false;
-
 
     public function __construct()
     {
-        parent::__construct(); // Call parent constructor for Model initialization
-        $this->builder = $this->db->table($this->table); // Get builder for this table
+        parent::__construct();
+        $this->builder = $this->db->table($this->table);
     }
     public function insertNilai($data)
     {
@@ -26,6 +25,7 @@ class M_nilaifaktor4 extends Model
         // return $this->findAll();
         return $this->builder->get()->getResultArray();
     }
+
     public function tambahNilai($data, $faktor4Id, $kodebpr)
     {
         return $this->builder->insert($data);
@@ -37,8 +37,6 @@ class M_nilaifaktor4 extends Model
             ->where('periode_id', $periodeId)
             ->findAll();
     }
-
-    // Di dalam App\Models\M_nilaifaktor4
 
     public function getDataByKodebpr($kodebpr)
     {
@@ -87,32 +85,28 @@ class M_nilaifaktor4 extends Model
 
     public function hapus($faktor4Id)
     {
-        // Menghapus data berdasarkan faktor4id
         $deleteResult = $this->builder->delete(['faktor4id' => $faktor4Id]);
 
-        // Periksa apakah penghapusan berhasil
         if ($deleteResult) {
-            return true; // Berhasil
+            return true;
         } else {
-            return false; // Gagal
+            return false;
         }
     }
 
     public function approveFaktorByKodebprAndPeriode($kodebpr, $periodeId)
     {
-        // Update nilai is_approved menjadi 1 untuk faktor4id = 12, berdasarkan kodebpr dan periode_id
         return $this->builder
-            ->where('faktor4id', 12)
+            ->where('faktor4id', 8)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->set(['is_approved' => 1]) // Mengatur is_approved menjadi 1
+            ->set(['is_approved' => 1])
             ->update();
     }
 
 
     public function ubahBerdasarkanFaktorId($data, $faktor4Id, $kodebpr, $periodeId)
     {
-        // Pastikan update hanya terjadi untuk faktor4id, kodebpr, dan periode_id yang sesuai
         $this->builder->where('faktor4id', $faktor4Id)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId);
@@ -123,11 +117,10 @@ class M_nilaifaktor4 extends Model
     {
 
         $periodeId = session('active_periode');
-        // Ambil semua nilai untuk faktor4id dari 1 sampai 11
         $query = $this->builder()
             ->select('nilai')
             ->where('faktor4id >=', 1)
-            ->where('faktor4id <=', 11)
+            ->where('faktor4id <=', 7)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->get();
@@ -143,10 +136,8 @@ class M_nilaifaktor4 extends Model
                 $count++;
             }
 
-            // Hitung rata-rata
             $rataRata = $totalNilai / $count;
 
-            // Pembulatan: >= .5 ke atas, < .5 ke bawah
             $desimal = $rataRata - floor($rataRata);
             if ($desimal >= 0.5) {
                 return ceil($rataRata);
@@ -154,30 +145,24 @@ class M_nilaifaktor4 extends Model
                 return floor($rataRata);
             }
         } else {
-            return 0; // Jika tidak ada data
+            return 0;
         }
     }
 
     public function insertOrUpdateRataRata($rataRata, $faktor4Id, $kodebpr)
     {
-        // Get the authenticated user ID and fullname
         $userId = service('authentication')->id();
         $userModel = new \App\Models\M_user();
         $user = $userModel->find($userId);
         $fullname = $user['fullname'] ?? 'Unknown';
 
         $periodeId = session('active_periode');
-
-        // Sementara, nanti diganti
-        $userId = $userId ?? 0;  // If userId is not found, set to 1
-        $kodebpr = $user['kodebpr'] ?? 'default_kodebpr';  // 
-
-        // Get the penjelasan (explanation) for rataRata (based on its value)
+        $userId = $userId ?? 0;
+        $kodebpr = $user['kodebpr'] ?? 'default_kodebpr';
         $penjelasfaktor = $this->getPenjelasanNilai($rataRata);
-
         $rataRata = $this->hitungRataRata($faktor4Id, $kodebpr);
 
-        // Check if the record already exists for faktor4id = 12
+        // FIX: cari row kesimpulan (faktor4id=12), bukan faktor4id=8
         $existing = $this->where('faktor4id', 12)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
@@ -185,23 +170,18 @@ class M_nilaifaktor4 extends Model
 
         $currentDateTime = date('Y-m-d H:i:s');
 
-        // Prepare the data to be inserted or updated
         $data = [
             'faktor4id' => 12,
             'nfaktor4' => $rataRata,
-            'penjelasfaktor' => $penjelasfaktor, // Store explanation in penjelasfaktor column
+            'penjelasfaktor' => $penjelasfaktor,
             'fullname' => $fullname,
             'user_id' => $userId,
             'kodebpr' => $kodebpr,
             'created_at' => $currentDateTime,
-            // 'is_approved' => $associatedNilai['is_approved'] ?? 0,
-            // 'approved_by' => $userId,
-            // 'approved_at' => $currentDateTime,
-            'periode_id' => $periodeId, // Use the current date for the period
-            'keterangan' => 'Nilai rata-rata faktor 1-11'
+            'periode_id' => $periodeId,
+            'keterangan' => 'Nilai rata-rata faktor 1-5'
         ];
 
-        // If the record exists, update it. Otherwise, insert a new record.
         if ($existing) {
             return $this->update($existing['id'], $data);
         } else {
@@ -214,29 +194,33 @@ class M_nilaifaktor4 extends Model
         switch ($rataRata) {
             case 1:
                 return "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan sangat memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang sangat baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. Masing-masing komite memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga tugas dan tanggung jawab terlaksana dengan iktikad baik, penuh tanggung jawab, dan kehati-hatian, serta hasil kinerja komite dapat dipertanggungjawabkan sepenuhnya kepada Dewan Komisaris dan Direksi.\n" .
-                    "b. Masing-masing komite telah memiliki dan menginikan secara berkala pedoman dan tata tertib kerja komite sehingga pelaksanaan tugas terlaksana dengan memperhatikan pedoman dan tata tertib kerja.";
+                    "a. BPR telah memiliki, mengevaluasi, dan menginikan secara berkala kebijakan, sistem dan prosedur tertulis terkait BMPK dengan ruang lingkup sangat memadai, serta melaksanakan kebijakan, sistem dan prosedur, termasuk sosialisasi kebijakan BMPK secara berkala kepada seluruh sumber daya manusia BPR.\n" .
+                    "b. Proses pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit besar telah memenuhi Peraturan Otoritas Jasa Keuangan mengenai BMPK dan memperhatikan prinsip kehati-hatian maupun peraturan perundang-undangan, termasuk melakukan pemantauan terhadap seluruh proses pemberian kredit secara berkala sehingga tidak terdapat pelanggaran dan pelampauan BMPK.\n" .
+                    "c. Laporan pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit yang melanggar dan/atau melampaui BMPK telah disampaikan secara berkala kepada Otoritas Jasa Keuangan secara lengkap, akurat, kini, utuh, dan tepat waktu sesuai ketentuan Otoritas Jasa Keuangan.";
             case 2:
                 return "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. Masing-masing komite memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga tugas dan tanggung jawab terlaksana dengan baik namun terdapat kelemahan dalam tugas dan tanggung jawab yang tidak signifikan dan dapat diperbaiki dengan segera serta hasil kinerja komite dapat dipertanggungjawabkan kepada Dewan Komisaris dan Direksi.\n" .
-                    "b. Masing-masing komite telah memiliki dan menginikan pedoman dan tata tertib kerja komite sehingga pelaksanaan tugas terlaksana dengan memperhatikan pedoman dan tata tertib kerja.";
+                    "a. BPR telah memiliki, mengevaluasi, dan menginikan kebijakan, sistem dan prosedur tertulis terkait BMPK dengan ruang lingkup memadai, serta melaksanakan kebijakan, sistem dan prosedur, termasuk sosialisasi kebijakan BMPK kepada seluruh sumber daya manusia BPR.\n" .
+                    "b. Proses pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit besar sebagian besar telah memenuhi Peraturan Otoritas Jasa Keuangan mengenai BMPK dan memperhatikan prinsip kehati hatian maupun peraturan perundang-undangan, termasuk melakukan pemantauan terhadap proses pemberian kredit sehingga penyelesaian pelanggaran dan/atau pelampauan BMPK dilakukan dengan segera.\n" .
+                    "c. Laporan pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit yang melanggar dan/atau melampaui BMPK telah disampaikan secara berkala kepada Otoritas Jasa Keuangan secara lengkap, akurat, kini, utuh, dan tepat waktu sesuai ketentuan Otoritas Jasa Keuangan.";
             case 3:
                 return "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan cukup memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang cukup baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. Masing-masing komite memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga tugas dan tanggung jawab terlaksana dengan cukup baik namun terdapat kelemahan dalam tugas dan tanggung jawab dan dapat diperbaiki serta hasil kinerja komite dapat dipertanggungjawabkan kepada Dewan Komisaris dan Direksi.\n" .
-                    "b. Masing-masing komite telah memiliki pedoman dan tata tertib kerja komite sehingga pelaksanaan tugas terlaksana dengan memperhatikan pedoman dan tata tertib kerja.";
+                    "a. BPR telah memiliki dan mengevaluasi kebijakan, sistem dan prosedur tertulis terkait BMPK dengan ruang lingkup cukup memadai, serta melaksanakan kebijakan, sistem dan prosedur, termasuk sosialisasi kebijakan BMPK kepada seluruh sumber daya manusia BPR.\n" .
+                    "b. Proses pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit besar telah memenuhi sebagian Peraturan Otoritas Jasa Keuangan mengenai BMPK dan memperhatikan prinsip kehati-hatian maupun peraturan perundang-undangan, termasuk melakukan pemantauan terhadap proses pemberian kredit sehingga penyelesaian pelanggaran dan/atau pelampauan BMPK dilakukan dengan baik.\n" .
+                    "c. Laporan pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit yang melanggar dan/atau melampaui BMPK telah disampaikan kepada Otoritas Jasa Keuangan secara lengkap, akurat, kini, utuh, dan tepat waktu sesuai ketentuan Otoritas Jasa Keuangan.";
             case 4:
                 return "Belum sepenuhnya terpenuhi struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan kurang memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang kurang baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. Masing-masing komite memenuhi sebagian persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab kurang berjalan dengan baik serta hasil kinerja komite tidak sepenuhnya dapat dipertanggungjawabkan kepada Dewan Komisaris dan Direksi.\n" .
-                    "b. Masing-masing komite telah memiliki pedoman dan tata tertib kerja komite namun ruang lingkup belum sesuai dengan ketentuan sehingga pelaksanaan tugas tidak sepenuhnya terlaksana dengan memperhatikan pedoman dan tata tertib kerja.";
+                    "a. BPR telah memiliki kebijakan, sistem dan prosedur tertulis terkait BMPK namun ruang lingkup kurang memadai, sehingga pelaksanaan penyelesaian pelanggaran dan/atau pelampauan BMPK tidak terlaksana dengan baik.\n" .
+                    "b. Proses pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit besar hanya memenuhi sebagian kecil Peraturan Otoritas Jasa Keuangan mengenai BMPK dan memperhatikan prinsip kehati hatian maupun peraturan perundang-undangan, termasuk tidak sepenuhnya melakukan pemantauan terhadap proses pemberian kredit sehingga penyelesaian pelanggaran dan/atau pelampauan BMPK tidak dilakukan dengan baik.\n" .
+                    "c. Laporan pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit yang melanggar dan/atau melampaui BMPK tidak sepenuhnya disampaikan kepada Otoritas Jasa Keuangan secara lengkap, akurat, kini, utuh, dan tepat waktu sesuai ketentuan Otoritas Jasa Keuangan.";
             case 5:
                 return "Tidak terpenuhi struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan tidak memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang tidak baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. Masing-masing komite tidak memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab tidak berjalan dengan baik serta hasil kinerja komite tidak dapat dipertanggungjawabkan kepada Dewan Komisaris dan Direksi.\n" .
-                    "b. Masing-masing komite tidak memiliki pedoman dan tata tertib kerja komite sehingga pelaksanaan tugas tidak dapat terlaksana dengan baik.";
+                    "a. BPR tidak memiliki kebijakan, sistem dan prosedur tertulis terkait BMPK namun ruang lingkup, sehingga pelaksanaan penyelesaian pelanggaran dan/atau pelampauan BMPK tidak terlaksana dengan baik.\n" .
+                    "b. Proses pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit besar tidak memenuhi Peraturan Otoritas Jasa Keuangan mengenai BMPK dan memperhatikan prinsip kehati-hatian maupun peraturan perundang-undangan, termasuk tidak melakukan pemantauan terhadap proses pemberian kredit sehingga penyelesaian pelanggaran dan/atau pelampauan BMPK tidak dilakukan dengan baik.\n" .
+                    "c. Laporan pemberian kredit oleh BPR kepada pihak terkait dan/atau pemberian kredit yang melanggar dan/atau melampaui BMPK tidak disampaikan kepada Otoritas Jasa Keuangan secara lengkap, akurat, kini, utuh, dan tepat waktu sesuai ketentuan Otoritas Jasa Keuangan.";
             default:
                 return "Nilai tidak valid.";
         }
     }
-
 
     public function ubah($data, $faktor4Id, $kodebpr, $periodeId)
     {
@@ -255,7 +239,5 @@ class M_nilaifaktor4 extends Model
             ->where('periode_id', $periodeId)
             ->update($data);
     }
-
-
 
 }

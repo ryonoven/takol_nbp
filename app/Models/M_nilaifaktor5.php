@@ -1,20 +1,20 @@
 <?php
 namespace App\Models;
-
 use CodeIgniter\Model;
 
 class M_nilaifaktor5 extends Model
 {
     protected $table = 'nilaifaktor5';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['faktor5id', 'nilai', 'keterangan', 'user_id', 'fullname', 'kodebpr', 'created_at', 'periode_id', 'nfaktor5', 'penjelasfaktor', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at', 'accdekom2', 'accdekom2_by', 'accdir2', 'accdir2_by'];
+    protected $allowedFields = ['faktor5id', 'nilai', 'keterangan', 'user_id', 'fullname', 'kodebpr', 'created_at', 'periode_id', 'nfaktor5', 'penjelasfaktor', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at', 'accdekom2', 'accdekom2_by', 'accdir2', 'accdir2_by', 'positifstruktur', 'negatifstruktur', 'positifproses', 'negatifproses', 'positifhasil', 'negatifhasil'];
     protected $useTimestamps = false;
-
+    private static $rataRataCache = [];
+    private static $penjelasanCache = [];
 
     public function __construct()
     {
-        parent::__construct(); // Call parent constructor for Model initialization
-        $this->builder = $this->db->table($this->table); // Get builder for this table
+        parent::__construct();
+        $this->builder = $this->db->table($this->table);
     }
     public function insertNilai($data)
     {
@@ -23,9 +23,20 @@ class M_nilaifaktor5 extends Model
 
     public function getAllData()
     {
-        // return $this->findAll();
         return $this->builder->get()->getResultArray();
     }
+
+    public function getAllDataWithNilai($kodebpr, $periodeId)
+    {
+        return $this->db->table('faktor5 as f')
+            ->select('f.*, n.nilai, n.keterangan, n.id as nilai_id, n.accdekom, n.accdekom2, n.accdir2, n.is_approved, n.positifstruktur, n.negatifstruktur, n.positifproses, n.negatifproses, n.positifhasil, n.negatifhasil')
+            ->join('nilaifaktor5 as n', 'n.faktor5id = f.id AND n.kodebpr = ' . $this->db->escape($kodebpr) . ' AND n.periode_id = ' . $this->db->escape($periodeId), 'left')
+            ->where('f.id <=', 5)
+            ->orderBy('f.id', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
     public function tambahNilai($data, $faktor5Id, $kodebpr)
     {
         return $this->builder->insert($data);
@@ -37,8 +48,6 @@ class M_nilaifaktor5 extends Model
             ->where('periode_id', $periodeId)
             ->findAll();
     }
-
-    // Di dalam App\Models\M_nilaifaktor5
 
     public function getDataByKodebpr($kodebpr)
     {
@@ -70,12 +79,11 @@ class M_nilaifaktor5 extends Model
         return $this->db->table($this->table)
             ->select('nilaifaktor5.*, users.fullname')
             ->join('users', 'users.id = nilaifaktor5.user_id', 'left')
-            ->where('nilaifaktor5.faktor5id', $faktor5Id) // INI KUNCI FILTERING
+            ->where('nilaifaktor5.faktor5id', $faktor5Id)
             ->orderBy('nilaifaktor5.created_at', 'ASC')
             ->get()
             ->getResultArray();
     }
-
 
     public function setIncrement($value)
     {
@@ -85,123 +93,89 @@ class M_nilaifaktor5 extends Model
         return $query;
     }
 
-    public function hapus($faktor5Id)
-    {
-        // Menghapus data berdasarkan faktor5id
-        $deleteResult = $this->builder->delete(['faktor5id' => $faktor5Id]);
-
-        // Periksa apakah penghapusan berhasil
-        if ($deleteResult) {
-            return true; // Berhasil
-        } else {
-            return false; // Gagal
-        }
-    }
-
     public function approveFaktorByKodebprAndPeriode($kodebpr, $periodeId)
     {
-        // Update nilai is_approved menjadi 1 untuk faktor5id = 6, berdasarkan kodebpr dan periode_id
         return $this->builder
             ->where('faktor5id', 6)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->set(['is_approved' => 1]) // Mengatur is_approved menjadi 1
+            ->set(['is_approved' => 1])
             ->update();
     }
 
-
     public function ubahBerdasarkanFaktorId($data, $faktor5Id, $kodebpr, $periodeId)
     {
-        // Pastikan update hanya terjadi untuk faktor5id, kodebpr, dan periode_id yang sesuai
-        $this->builder->where('faktor5id', $faktor5Id)
+        return $this->builder()
+            ->where('faktor5id', $faktor5Id)
             ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
+            ->where('periode_id', $periodeId)
+            ->update($data);
     }
 
-    public function hitungRataRata($faktor5Id, $kodebpr)
+    public function hitungRataRata($faktor5Id, $kodebpr, $periodeId = null)
     {
+        if ($periodeId === null) {
+            $periodeId = session('active_periode');
+        }
 
-        $periodeId = session('active_periode');
-        // Ambil semua nilai untuk faktor5id dari 1 sampai 5
-        $query = $this->builder()
-            ->select('nilai')
+        $cacheKey = "{$faktor5Id}_{$kodebpr}_{$periodeId}";
+        if (isset(self::$rataRataCache[$cacheKey])) {
+            return self::$rataRataCache[$cacheKey];
+        }
+
+        $result = $this->db->table($this->table)
+            ->selectAvg('nilai', 'avg_nilai')
             ->where('faktor5id >=', 1)
             ->where('faktor5id <=', 5)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->get();
+            ->get()
+            ->getRowArray();
 
-        $results = $query->getResultArray();
+        $avgNilai = $result['avg_nilai'] ?? 0;
 
-        if (count($results) > 0) {
-            $totalNilai = 0;
-            $count = 0;
-
-            foreach ($results as $row) {
-                $totalNilai += $row['nilai'];
-                $count++;
-            }
-
-            // Hitung rata-rata
-            $rataRata = $totalNilai / $count;
-
-            // Pembulatan: >= .5 ke atas, < .5 ke bawah
-            $desimal = $rataRata - floor($rataRata);
-            if ($desimal >= 0.5) {
-                return ceil($rataRata);
-            } else {
-                return floor($rataRata);
-            }
+        if ($avgNilai > 0) {
+            $rataRata = ($avgNilai - floor($avgNilai) >= 0.5) ? ceil($avgNilai) : floor($avgNilai);
         } else {
-            return 0; // Jika tidak ada data
+            $rataRata = 0;
         }
+
+        self::$rataRataCache[$cacheKey] = (int) $rataRata;
+
+        return (int) $rataRata;
     }
 
-    public function insertOrUpdateRataRata($rataRata, $faktor5Id, $kodebpr)
+    public function insertOrUpdateRataRata($rataRata, $faktor5Id, $kodebpr, $periodeId = null)
     {
-        // Get the authenticated user ID and fullname
+        if ($periodeId === null) {
+            $periodeId = session('active_periode');
+        }
+
         $userId = service('authentication')->id();
-        $userModel = new \App\Models\M_user();
+        $userModel = new M_user();
         $user = $userModel->find($userId);
         $fullname = $user['fullname'] ?? 'Unknown';
 
-        $periodeId = session('active_periode');
-
-        // Sementara, nanti diganti
-        $userId = $userId ?? 0;  // If userId is not found, set to 1
-        $kodebpr = $user['kodebpr'] ?? 'default_kodebpr';  // 
-
-        // Get the penjelasan (explanation) for rataRata (based on its value)
         $penjelasfaktor = $this->getPenjelasanNilai($rataRata);
+        $currentDateTime = date('Y-m-d H:i:s');
 
-        $rataRata = $this->hitungRataRata($faktor5Id, $kodebpr);
+        $data = [
+            'faktor5id' => 6,
+            'nfaktor5' => $rataRata,
+            'penjelasfaktor' => $penjelasfaktor,
+            'fullname' => $fullname,
+            'user_id' => $userId,
+            'kodebpr' => $kodebpr,
+            'created_at' => $currentDateTime,
+            'periode_id' => $periodeId,
+            'keterangan' => 'Nilai rata-rata faktor 1-6'
+        ];
 
-        // Check if the record already exists for faktor5id = 6
         $existing = $this->where('faktor5id', 6)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->first();
 
-        $currentDateTime = date('Y-m-d H:i:s');
-
-        // Prepare the data to be inserted or updated
-        $data = [
-            'faktor5id' => 6,
-            'nfaktor5' => $rataRata,
-            'penjelasfaktor' => $penjelasfaktor, // Store explanation in penjelasfaktor column
-            'fullname' => $fullname,
-            'user_id' => $userId,
-            'kodebpr' => $kodebpr,
-            'created_at' => $currentDateTime,
-            // 'is_approved' => $associatedNilai['is_approved'] ?? 0,
-            // 'approved_by' => $userId,
-            // 'approved_at' => $currentDateTime,
-            'periode_id' => $periodeId, // Use the current date for the period
-            'keterangan' => 'Nilai rata-rata faktor 1-5'
-        ];
-
-        // If the record exists, update it. Otherwise, insert a new record.
         if ($existing) {
             return $this->update($existing['id'], $data);
         } else {
@@ -211,35 +185,43 @@ class M_nilaifaktor5 extends Model
 
     public function getPenjelasanNilai($rataRata)
     {
-        switch ($rataRata) {
-            case 1:
-                return "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan sangat memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang sangat baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. BPR telah memiliki dan menginikan secara berkala kebijakan benturan kepentingan dengan ruang lingkup sangat memadai.\n" .
-                    "b. Tidak terdapat transaksi yang memiliki benturan kepentingan.\n" .
-                    "c. Pelaksanaan tugas, fungsi, dan wewenang Direksi, Dewan Komisaris, Pejabat Eksekutif, dan pegawai BPR terkait dengan penanganan benturan kepentingan dilakukan secara sangat baik.";
-            case 2:
-                return "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. BPR telah memiliki dan menginikan kebijakan benturan kepentingan dengan ruang lingkup memadai, serta berhasil menangani benturan kepentingan dengan baik sesuai dengan kebijakan.\n" .
-                    "b. Tidak terdapat transaksi yang memiliki benturan kepentingan dan apabila terdapat benturan kepentingan ditangani dengan baik serta tidak menimbulkan kerugian atau mengurangi keuntungan BPR, diungkapkan seluruhnya dalam setiap keputusan, dan telah terdokumentasi dengan sangat baik.\n" .
-                    "c. Pelaksanaan tugas, fungsi, dan wewenang Direksi, Dewan Komisaris, Pejabat Eksekutif, dan pegawai BPR terkait dengan penanganan benturan kepentingan dilakukan secara baik.";
-            case 3:
-                return "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan cukup memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang cukup baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. BPR telah memiliki kebijakan benturan kepentingan dengan ruang lingkup cukup memadai, serta penanganan benturan kepentingan dilakukan dengan cukup baik sesuai dengan kebijakan.\n" .
-                    "b. Terdapat benturan kepentingan yang belum sepenuhnya ditangani dan menimbulkan kerugian atau mengurangi keuntungan BPR, diungkapkan seluruhnya dalam setiap keputusan, dan telah terdokumentasi dengan baik.\n" .
-                    "c. Pelaksanaan tugas, fungsi, dan wewenang Direksi, Dewan Komisaris, Pejabat Eksekutif, dan pegawai BPR terkait dengan penanganan benturan kepentingan dilakukan secara cukup baik.";
-            case 4:
-                return "Belum sepenuhnya terpenuhi struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan kurang memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang kurang baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. BPR telah memiliki kebijakan benturan kepentingan dengan ruang lingkup kurang memadai, sehingga penanganan benturan kepentingan kurang berhasil.\n" .
-                    "b. Terdapat benturan kepentingan yang belum sepenuhnya ditangani dan menimbulkan kerugian atau mengurangi keuntungan BPR, diungkapkan sebagian dalam setiap keputusan, dan terdokumentasi dengan kurang baik.\n" .
-                    "c. Pelaksanaan tugas, fungsi, dan wewenang Direksi, Dewan Komisaris, Pejabat Eksekutif, dan pegawai BPR terkait dengan penanganan benturan kepentingan dilakukan secara kurang baik.";
-            case 5:
-                return "Tidak terpenuhi struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan tidak memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang tidak baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
-                    "a. BPR tidak memiliki kebijakan benturan kepentingan, sehingga penanganan benturan kepentingan tidak berhasil.\n" .
-                    "b. Seluruh benturan kepentingan tidak ditangani dan menimbulkan kerugian atau mengurangi keuntungan BPR, tidak diungkapkan dalam setiap keputusan, dan tidak terdokumentasi.\n" .
-                    "c. Pelaksanaan tugas, fungsi, dan wewenang Direksi, Dewan Komisaris, Pejabat Eksekutif, dan pegawai BPR terkait dengan penanganan benturan kepentingan dilakukan secara tidak baik.";
-            default:
-                return "Nilai tidak valid.";
+        $rataRata = (int) $rataRata;
+
+        if (isset(self::$penjelasanCache[$rataRata])) {
+            return self::$penjelasanCache[$rataRata];
         }
+
+        $penjelasan = match ($rataRata) {
+            1 => "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan sangat memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang sangat baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
+            "a. Dewan Komisaris memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab, termasuk pengambilan keputusan berjalan dengan sangat baik serta hasil kinerja Dewan Komisaris dapat dipertanggungjawabkan sepenuhnya kepada pemegang saham melalui RUPS.\n" .
+            "b. Dewan Komisaris telah memiliki dan menginikan secara berkala pedoman dan tata tertib kerja anggota Dewan Komisaris sehingga pelaksanaan tugas dan pengambilan keputusan rapat Dewan Komisaris terlaksana dengan memperhatikan pedoman dan tata tertib kerja.\n" .
+            "c. Dewan Komisaris memiliki kemauan dan kemampuan, serta upaya untuk membudayakan pembelajaran secara berkala dan berkelanjutan, sehingga terdapat peningkatan pengetahuan, keahlian, dan kemampuan.\n" .
+            "d. Dewan Komisaris telah memiliki dan menginikan secara berkala kebijakan remunerasi dan nominasi sehingga pelaksanaan tugas terlaksana dengan memperhatikan kebijakan remunerasi dan nominasi.",
+            2 => "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
+            "a. Dewan Komisaris memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab, termasuk pengambilan keputusan berjalan dengan baik serta hasil kinerja Dewan Komisaris dapat dipertanggungjawabkan kepada pemegang saham melalui RUPS.\n" .
+            "b. Dewan Komisaris telah memiliki dan menginikan pedoman dan tata tertib kerja anggota Dewan Komisaris sehingga pelaksanaan tugas dan pengambilan keputusan rapat Dewan Komisaris terlaksana dengan memperhatikan pedoman dan tata tertib kerja.\n" .
+            "c. Dewan Komisaris memiliki kemauan dan kemampuan, serta upaya untuk membudayakan pembelajaran secara berkala, sehingga terdapat peningkatan pengetahuan, keahlian, dan kemampuan.\n" .
+            "d. Dewan Komisaris telah memiliki dan menginikan kebijakan remunerasi dan nominasi sehingga pelaksanaan tugas terlaksana dengan memperhatikan kebijakan remunerasi dan nominasi.",
+            3 => "Memenuhi kondisi terpenuhinya struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan cukup memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang cukup baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
+            "a. Dewan Komisaris memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab, termasuk pengambilan keputusan berjalan dengan cukup baik serta hasil kinerja Dewan Komisaris dapat dipertanggungjawabkan kepada pemegang saham melalui RUPS.\n" .
+            "b. Dewan Komisaris telah memiliki pedoman dan tata tertib kerja anggota Dewan Komisaris sehingga pelaksanaan tugas dan pengambilan keputusan rapat Dewan Komisaris terlaksana dengan memperhatikan pedoman dan tata tertib kerja.\n" .
+            "c. Dewan Komisaris memiliki kemauan dan kemampuan, serta upaya untuk membudayakan pembelajaran, sehingga terdapat peningkatan pengetahuan, keahlian, dan kemampuan.\n" .
+            "d. Dewan Komisaris telah memiliki kebijakan remunerasi dan nominasi sehingga pelaksanaan tugas terlaksana dengan memperhatikan kebijakan remunerasi dan nominasi.",
+            4 => "Belum sepenuhnya terpenuhi struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan kurang memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang kurang baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
+            "a. Dewan Komisaris memenuhi sebagian persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab, termasuk pengambilan keputusan berjalan dengan kurang baik serta hasil kinerja Dewan Komisaris tidak sepenuhnya dapat dipertanggungjawabkan kepada pemegang saham melalui RUPS.\n" .
+            "b. Dewan Komisaris telah memiliki pedoman dan tata tertib kerja anggota Dewan Komisaris namun ruang lingkup belum sesuai dengan ketentuan sehingga pelaksanaan tugas dan pengambilan keputusan rapat Dewan Komisaris tidak terlaksana dengan baik.\n" .
+            "c. Dewan Komisaris kurang memiliki kemauan dan kemampuan, serta upaya untuk membudayakan pembelajaran secara berkala, sehingga tidak terdapat peningkatan pengetahuan, keahlian, dan kemampuan.\n" .
+            "d. Dewan Komisaris telah memiliki kebijakan remunerasi dan nominasi namun ruang lingkup belum sesuai dengan ketentuan sehingga pelaksanaan tugas tidak terlaksana dengan baik.",
+            5 => "Tidak terpenuhi struktur dan/atau infrastruktur sesuai ketentuan, proses penerapan tata kelola dilakukan dengan tidak memadai, dan ditunjukkan dengan hasil penerapan tata kelola yang tidak baik. Contoh/ilustrasi kondisi yang dapat menjadi indikator tersebut antara lain:\n\n" .
+            "a. Dewan Komisaris tidak memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab, termasuk pengambilan keputusan tidak berjalan dengan baik dan hasil kinerja Dewan Komisaris tidak dapat dipertanggungjawabkan kepada pemegang saham melalui RUPS.\n" .
+            "b. Dewan Komisaris tidak memenuhi seluruh persyaratan yang harus dipenuhi selama menjabat sesuai dengan ketentuan sehingga pelaksanaan tugas dan tanggung jawab, termasuk pengambilan keputusan tidak berjalan dengan baik dan hasil kinerja Dewan Komisaris tidak dapat dipertanggungjawabkan kepada pemegang saham melalui RUPS. Dewan Komisaris tidak memiliki pedoman dan tata tertib kerja anggota Dewan Komisaris sehingga pelaksanaan tugas dan pengambilan keputusan rapat Dewan Komisaris tidak dapat terlaksana dengan baik.\n" .
+            "c. Dewan Komisaris tidak memiliki kemauan dan kemampuan, serta upaya untuk membudayakan pembelajaran secara berkala, sehingga tidak terdapat peningkatan pengetahuan, keahlian, dan kemampuan.\n" .
+            "d. Dewan Komisaris tidak memiliki kebijakan remunerasi dan nominasi sehingga pelaksanaan tugas tidak dapat terlaksana dengan baik.",
+
+            default => "Nilai tidak valid (nilai harus antara 1-5)."
+        };
+        self::$penjelasanCache[$rataRata] = $penjelasan;
+        return $penjelasan;
     }
 
 
@@ -261,6 +243,10 @@ class M_nilaifaktor5 extends Model
             ->update($data);
     }
 
-
+    public function clearCache()
+    {
+        self::$rataRataCache = [];
+        self::$penjelasanCache = [];
+    }
 
 }

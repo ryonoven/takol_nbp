@@ -47,8 +47,8 @@ class PdfSelfassessment extends Fpdi
         $bprNo = $this->headerData['nomor'] ?? 'Nomor telefon Tidak Tersedia';
         $email = $this->headerData['email'] ?? 'Email Tidak Tersedia';
         $webbpr = $this->headerData['webbpr'] ?? 'Website Tidak Tersedia';
-        $periodeYear = isset($this->headerData['tahun']) ? $this->headerData['tahun'] : date('Y');
-        $periodeSemester = isset($this->headerData['semester']) && in_array($this->headerData['semester'], [1, 2]) ? $this->headerData['semester'] : 1;
+        $periodeYear = $this->headerData['tahun'] ?? date('Y');
+        $periodeSemester = $this->headerData['semester'] ?? 1;
 
         // Handle cover image
         $coverImagePath = FCPATH . 'assets/img/' . $cover;
@@ -1083,7 +1083,7 @@ class PdfSelfassessment extends Fpdi
         });
 
         $this->SetFont('Arial', 'B', 13);
-        $this->Cell(0, 10, 'Faktor 4. Pelaksanaan Tugas, Tanggung Jawab, dan Wewenang Dewan Komisaris', 0, 1, 'L'); // Judul Faktor 2
+        $this->Cell(0, 10, 'Faktor 4. Kelengkapan dan Pelaksanaan Tugas Komite', 0, 1, 'L'); // Judul Faktor 2
         $this->Ln(1);
 
         $this->SetFillColor(20, 24, 99);
@@ -2091,20 +2091,19 @@ class PdfSelfassessment extends Fpdi
     public function generateAnalisaFaktor7(array $infoData)
     {
         $this->AddPage();
-        $this->Ln(1); // Spacing before the new table
-        $tableWidth = 190; // Total width for the content area (adjust as per your PDF margins)
-        $lineHeight = 6;   // Base line height for MultiCell content
+        $this->Ln(1);
+        $tableWidth = 190;
+        $lineHeight = 6;
 
         // --- Main Title for Factor 7 Analysis (Header for the entire section) ---
-        $this->SetFillColor(20, 24, 99); // Dark blue header background
-        $this->SetTextColor(255); // White text
+        $this->SetFillColor(20, 24, 99);
+        $this->SetTextColor(255);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(0, 10, 'Analisa Faktor Positif dan Negatif (Faktor 7)', 1, 1, 'C', true); // Factor 7 Title
-        $this->SetTextColor(0); // Reset text color to black
-
-        // Define column widths for the '1)' / '2)' and 'Faktor Positif/Negatif' header row
+        $this->SetTextColor(0);
+        
         $col1Width = 8;
-        $col2Width = $tableWidth - $col1Width; // Remaining width for 'Faktor Positif/Negatif' label
+        $col2Width = $tableWidth - $col1Width;
 
         // --- Section A: Struktur dan Infrastruktur ---
         $this->SetFont('Arial', 'B', 11);
@@ -2130,7 +2129,6 @@ class PdfSelfassessment extends Fpdi
 
         // Faktor Negatif Struktur
         $this->SetFont('Arial', 'B', 11);
-        // Calculate space needed for the '2) Faktor Negatif' header row
         $this->checkPageBreak($lineHeight);
         $this->Cell($col1Width, $lineHeight, '2)', '1', 0, 'C');
         $this->SetFont('Arial', 'B', 11);
@@ -2186,7 +2184,6 @@ class PdfSelfassessment extends Fpdi
 
         // --- Section C: Hasil Penerapan Tata Kelola ---
         $this->SetFont('Arial', 'B', 11);
-        // Check for space for Category C title
         $this->checkPageBreak(7 + 5);
         $this->Cell($tableWidth, $lineHeight, 'C. Hasil Penerapan Tata Kelola', '1', 1, 'L');
         $this->SetFont('Arial', 'B', 11);
@@ -2220,18 +2217,17 @@ class PdfSelfassessment extends Fpdi
         $this->SetFont('Arial', '', 10);
         $this->MultiCell($tableWidth, $lineHeight, $negatifHasilText, '1', 'J', false);
 
-        // Final bottom border (optional, if you want a single line at the very end of the section)
         $this->Cell($tableWidth, 0, '', 'T', 1, 'C');
     }
 
     public function generateNilaiFaktor8(array $nilaifaktor8Data, array $infoData, array $faktor8Data)
     {
         usort($nilaifaktor8Data, function ($a, $b) {
-            return $a['faktor8id'] <=> $b['faktor8id']; // Urutkan berdasarkan faktor2id
+            return $a['faktor8id'] <=> $b['faktor8id'];
         });
 
         $this->SetFont('Arial', 'B', 13);
-        $this->Cell(0, 10, 'Faktor 8. Penerapan Fungsi Audit Ekstern', 0, 1, 'L'); // Judul Faktor 8
+        $this->Cell(0, 10, 'Faktor 8. Penerapan Fungsi Audit Ekstern', 0, 1, 'L');
         $this->Ln(1);
 
         $this->SetFillColor(20, 24, 99);
@@ -2378,9 +2374,9 @@ class PdfSelfassessment extends Fpdi
     public function generateAnalisaFaktor8(array $infoData)
     {
         $this->AddPage();
-        $this->Ln(1); // Spacing before the new table
-        $tableWidth = 190; // Total width for the content area (adjust as per your PDF margins)
-        $lineHeight = 6;   // Base line height for MultiCell content
+        $this->Ln(1); 
+        $tableWidth = 190;
+        $lineHeight = 6;
 
         // --- Main Title for Factor 8 Analysis (Header for the entire section) ---
         $this->SetFillColor(20, 24, 99); // Dark blue header background
@@ -2506,7 +2502,6 @@ class PdfSelfassessment extends Fpdi
 
         $this->SetFont('Arial', '', 10);
         $this->MultiCell($tableWidth, $lineHeight, $negatifHasilText, '1', 'J', false);
-        // Rect call removed
 
         // Final bottom border (optional, if you want a single line at the very end of the section)
         $this->Cell($tableWidth, 0, '', 'T', 1, 'C');
@@ -3391,7 +3386,7 @@ class PdfSelfassessment extends Fpdi
         $this->MultiCell($tableWidth, $lineHeight, $negatifHasilText, '1', 'J', false);
 
         // Garis bawah penutup tabel
-        $this->Cell($tableWidth, 0, '', 'T', 1, 'C'); // Top border only
+        $this->Cell($tableWidth, 0, '', 'T', 1, 'C');
     }
 
     public function generateNilaiFaktor12(array $nilaifaktor12Data, array $infoData, array $faktor12Data)
@@ -3684,21 +3679,15 @@ class PdfSelfassessment extends Fpdi
         $this->SetFont('Arial', '', 10);
         $this->MultiCell($tableWidth, $lineHeight, $negatifHasilText, '1', 'J', false);
 
-        // Garis bawah penutup tabel
-        $this->Cell($tableWidth, 0, '', 'T', 1, 'C'); // Top border only
+        $this->Cell($tableWidth, 0, '', 'T', 1, 'C');
     }
 
     public function getNfaktorData($kodebpr, $periodeId)
     {
-        // Inisialisasi array untuk menampung data nfaktor
         $nfaktorData = [];
-
-        // Menarik data nfaktor dari berbagai tabel model yang relevan
-        // IMPORTANT: The keys here will be used to store the values in $nfaktorData
-        // and should match what you intend to access in generateKesimpulanSeluruhFaktor.
         $models = [
-            'M_nilaifaktor' => 'nfaktor',    // Stores as 'nfaktor'
-            'M_nilaifaktor2' => 'nfaktor2',  // Stores as 'nfaktor2'
+            'M_nilaifaktor' => 'nfaktor',
+            'M_nilaifaktor2' => 'nfaktor2',
             'M_nilaifaktor3' => 'nfaktor3',
             'M_nilaifaktor4' => 'nfaktor4',
             'M_nilaifaktor5' => 'nfaktor5',
@@ -3711,26 +3700,21 @@ class PdfSelfassessment extends Fpdi
             'M_nilaifaktor12' => 'nfaktor12',
         ];
 
-        // Loop untuk mengambil data nfaktor dari setiap model
-        foreach ($models as $model => $keyToStore) { // Use $keyToStore for clarity
+        foreach ($models as $model => $keyToStore) {
             $modelInstance = new $model();
-
-            // Ambil data berdasarkan kodebpr dan periode_id
             $data = $modelInstance
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
                 ->first();
 
-            // Simpan nilai nfaktor ke dalam array menggunakan keyToStore
-            $nfaktorData[$keyToStore] = $data['nfaktor'] ?? 'Belum Dinilai'; // Default 'Belum Dinilai' jika tidak ada data
+            $nfaktorData[$keyToStore] = $data['nfaktor'] ?? 'Belum Dinilai';
         }
 
-        // Kembalikan array nfaktor
         return $nfaktorData;
     }
     public function generateKesimpulanSeluruhFaktor(array $infoData)
     {
-        // --- Main Title (Kesimpulan Akhir) ---
+        // --- Main Title ---
         $this->SetFillColor(255, 255, 255);
         $this->SetTextColor(0);
         $this->SetFont('Arial', 'B', 20);
@@ -3775,12 +3759,12 @@ class PdfSelfassessment extends Fpdi
             // Construct the key based on the factor number, with 'nfaktor' for the first one
             $faktorKey = ($i == 1) ? 'nfaktor' : 'nfaktor' . $i;
 
-            $label = $factorDescriptions[$i] ?? 'Faktor ' . $i; // Get descriptive label or default
-            $nilaiFaktor = $infoData[$faktorKey] ?? 'Tidak diisi'; // Retrieve value using the specific key
+            $label = $factorDescriptions[$i] ?? 'Faktor ' . $i; 
+            $nilaiFaktor = $infoData[$faktorKey] ?? 'Tidak diisi';
 
             // Initialize color and label
-            $color = [255, 255, 255]; // Default to white (no color)
-            $keterangan = 'Tidak diisi'; // Default message
+            $color = [255, 255, 255];
+            $keterangan = 'Tidak diisi';
 
             // Determine the fill color and keterangan based on nilaiFaktor
             switch ($nilaiFaktor) {
@@ -4139,7 +4123,27 @@ class PdfSelfassessment extends Fpdi
                 return false;
             }
 
-            $pageCount = $this->setSourceFile($filepath);
+            $pathToUse = $filepath;
+            $tempNormalizedFile = null;
+
+            try {
+                $pageCount = $this->setSourceFile($pathToUse);
+            } catch (\Exception $e) {
+                // FPDI gagal parsing -> kemungkinan PDF versi 1.5+ (cross-ref stream)
+                log_message('warning', 'setSourceFile gagal untuk ' . $filepath . ': ' . $e->getMessage() . '. Mencoba normalisasi via Ghostscript.');
+
+                $normalizer = new \App\Libraries\PdfNormalizer();
+                $tempNormalizedFile = $normalizer->normalizeToV14($filepath);
+
+                if (!$tempNormalizedFile) {
+                    log_message('error', 'Normalisasi gagal atau Ghostscript tidak tersedia untuk: ' . $filepath);
+                    return false;
+                }
+
+                $pathToUse = $tempNormalizedFile;
+                $pageCount = $this->setSourceFile($pathToUse); // retry dengan file hasil normalisasi
+            }
+
             log_message('debug', 'Found ' . $pageCount . ' pages in: ' . $filepath);
 
             // Matikan header/footer untuk halaman yang diimpor
@@ -4165,6 +4169,11 @@ class PdfSelfassessment extends Fpdi
                 }
             }
 
+            // Bersihkan file temp hasil normalisasi
+            if ($tempNormalizedFile && file_exists($tempNormalizedFile)) {
+                unlink($tempNormalizedFile);
+            }
+
             return $pageCount;
         } catch (\Exception $e) {
             log_message('error', 'PDF merge failed: ' . $e->getMessage());
@@ -4172,9 +4181,39 @@ class PdfSelfassessment extends Fpdi
         }
     }
 
+    private function sanitizeText($txt): string
+    {
+        if ($txt === null || $txt === '') {
+            return '';
+        }
+
+        $txt = (string) $txt;
+
+        // Sanitize semua jenis line ending jadi \n
+        $txt = str_replace(["\r\n", "\r"], "\n", $txt);
+
+        // Menghilangkan non-breaking space & zero-width space
+        $txt = str_replace(["\xC2\xA0", "\xE2\x80\x8B"], [' ', ''], $txt);
+
+        // Ganti newline & tab literal jadi spasi (biar tidak dianggap baris baru oleh MultiCell)
+        $txt = preg_replace('/[\n\r\t]+/', ' ', $txt);
+
+        // Rapikan spasi berlebih
+        $txt = preg_replace('/\s{2,}/', ' ', $txt);
+
+        return trim($txt);
+    }
+
+    public function MultiCell($w, $h, $txt, $border = 0, $align = 'J', $fill = false, $ln = 1)
+    {
+        parent::MultiCell($w, $h, $this->sanitizeText($txt), $border, $align, $fill, $ln);
+    }
+
     // Improved NbLines calculation with word wrapping
     private function NbLines($w, $txt)
     {
+        $txt = $this->sanitizeText($txt);
+
         if (empty($txt))
             return 1;
 
@@ -4185,10 +4224,9 @@ class PdfSelfassessment extends Fpdi
 
         foreach ($words as $word) {
             $wordWidth = 0;
-            // Calculate word width
             for ($i = 0; $i < mb_strlen($word); $i++) {
                 $char = mb_substr($word, $i, 1);
-                $wordWidth += $this->CurrentFont['cw'][$char] ?? 500; // Default width if char not found
+                $wordWidth += $this->CurrentFont['cw'][$char] ?? 500;
             }
 
             if ($lineWidth + $wordWidth > $maxWidth) {
@@ -4206,18 +4244,15 @@ class PdfSelfassessment extends Fpdi
     public function Header()
     {
         if ($this->isCoverPage) {
-            return; // Skip header untuk halaman cover
+            return;
         }
 
         // Fungsi untuk menampilkan header setelah halaman cover
         if (!empty($this->headerData)) {
-            // Bagian Logo
             if (!empty($this->headerData['logo']) && file_exists($this->headerData['logo'])) {
                 try {
-                    // Mendapatkan ukuran asli gambar
                     list($origWidth, $origHeight) = getimagesize($this->headerData['logo']);
 
-                    // Tentukan ukuran maksimum
                     $maxWidth = 36;
                     $maxHeight = 21;
 

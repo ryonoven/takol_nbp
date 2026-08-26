@@ -4,15 +4,18 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use App\Models\M_faktor4;
 use App\Models\M_user;
-use App\Models\M_faktor4komentar;
 use App\Models\M_nilaifaktor4;
 use App\Models\M_infobpr;
-use App\Models\M_periode;
+// use App\Models\M_periode;
+use App\Models\M_periodesemesteran;
+use App\Models\M_faktor4komentar;
 use App\Models\M_commentreads4;
+use App\Models\M_showfaktor;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Faktor4 extends Controller
 {
+    protected $db;
     protected $auth;
     protected $faktor4Model;
     protected $userModel;
@@ -23,6 +26,7 @@ class Faktor4 extends Controller
     protected $session;
     protected $userKodebpr;
     protected $commentReads4Model;
+    protected $showfaktorModel;
 
     protected $userInGroupPE;
     protected $userInGroupAdmin;
@@ -36,15 +40,16 @@ class Faktor4 extends Controller
 
     public function __construct()
     {
-        // PENTING: Panggil constructor parent di awal
         date_default_timezone_set('Asia/Jakarta');
+        $this->db = \Config\Database::connect();
         $this->faktor4Model = new M_faktor4();
-        $this->periodeModel = new M_periode();
-        $this->userModel = new M_user(); // Pastikan inisialisasi M_user
-        $this->komentarModel = new M_faktor4komentar();
+        $this->periodeModel = new M_periodesemesteran();
+        $this->userModel = new M_user();
         $this->nilai4Model = new M_nilaifaktor4();
         $this->infobprModel = new M_infobpr();
+        $this->komentarModel = new M_faktor4komentar();
         $this->commentReads4Model = new M_commentreads4();
+        $this->showfaktorModel = new M_showfaktor();
         helper('url');
         $this->session = service('session');
         $this->auth = service('authentication');
@@ -69,184 +74,46 @@ class Faktor4 extends Controller
     public function index()
     {
         if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
+            return redirect()->to(session('redirect_url') ?? '/login');
         }
 
         if (!session('active_periode')) {
             return redirect()->to('/periode');
         }
 
-        $user = $this->userModel->find(user_id());
         $periodeId = session('active_periode');
-        $periodeDetail = $this->periodeModel->getPeriodeDetail($periodeId);
         $kodebpr = $this->userKodebpr;
-        $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
 
-        //Cek komisaris telah approves
-        $canApprove = true; // Inisialisasi variabel dengan nilai true
+        $canApprove = $this->checkAllFaktorsApproved($kodebpr, $periodeId);
 
-        // Loop untuk memeriksa faktor4id dari 1 hingga 11
-        for ($faktor4Id = 1; $faktor4Id <= 12; $faktor4Id++) {
-            $accdekomValue = $this->nilai4Model
-                ->where('faktor4id', $faktor4Id)
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->first();  // Dapatkan data pertama yang sesuai
-
-            // Jika salah satu accdekom tidak bernilai 1, set $canApprove menjadi false
-            if (!isset($accdekomValue) || $accdekomValue['accdekom'] != 1) {
-                $canApprove = false;
-                break; // Jika ditemukan satu yang tidak bernilai 1, keluar dari loop
-            }
-        }
-
-        // Mengambil nilai accdekom untuk faktor4id 1 hingga 12
-        $accdekomApproved = true;
-        for ($faktor4Id = 1; $faktor4Id <= 11; $faktor4Id++) {
-            $nilaiAccdekom = $this->nilai4Model
-                ->where('faktor4id', $faktor4Id)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', session('active_periode'))
-                ->first();
-
-            if (!$nilaiAccdekom || $nilaiAccdekom['accdekom'] != 1) {
-                $accdekomApproved = false;
-                break;
-            }
-        }
-
-        // Ambil data dengan filter periode dan kodebpr
-        $nilaiData = $this->nilai4Model
-            ->where('periode_id', $periodeId)
-            ->where('kodebpr', $kodebpr)
-            ->findAll();
-
-        $data['periode'] = $this->periodeModel->find($periodeId);
-
-        $komentarList = $this->komentarModel
+        $accdekomApproved = $this->db->table('nilaifaktor4')
+            ->select('COUNT(*) as total, SUM(CASE WHEN accdekom = 1 THEN 1 ELSE 0 END) as approved')
+            ->whereIn('faktor4id', range(1, 11))
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->findAll();
+            ->get()
+            ->getRowArray();
 
-        $userId = $this->auth->id();
-        $user = $this->userModel->find($userId);
-        $infobprId = $this->auth->id();
-        $infobpr = $this->infobprModel->find($infobprId);
-        $fullname = $user['fullname'] ?? 'Unknown';
-        $kodebpr = $user['kodebpr'] ?? null;
+        $accdekomApproved = $accdekomApproved['total'] > 0 &&
+            $accdekomApproved['total'] == $accdekomApproved['approved'];
 
-        if (!$kodebpr) {
-            // Handle jika user tidak memiliki kodebpr
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        $user = $this->userModel->find(user_id());
+        $periodeDetail = $this->periodeModel->getPeriodeDetail($periodeId);
+        $bprData = $this->infobprModel->getBprByKode($kodebpr);
+
+        $prevSemLabel = '';
+        $prevTahunLabel = '';
+        if ($periodeDetail) {
+            $cs = (int) ($periodeDetail['semester'] ?? 1);
+            $ct = (int) ($periodeDetail['tahun'] ?? date('Y'));
+            $prevSemLabel = $cs == 1 ? 2 : 1;
+            $prevTahunLabel = $cs == 1 ? $ct - 1 : $ct;
         }
 
-        $faktorData = $this->faktor4Model->getAllData();
-        $factorsWithDetails = [];
-
-        // Memeriksa apakah nilai sudah disetujui untuk faktor4id 1-8
-        $allApproved = true;
-        $requiredFaktorIds = range(1, 12); // Membuat array dari 1 hingga 12
-        foreach ($requiredFaktorIds as $faktor4Id) {
-            $associatedNilai = $this->nilai4Model
-                ->where('faktor4id', $faktor4Id)
-                ->where('kodebpr', $kodebpr)
-                ->first();
-
-            if ($associatedNilai === null || $associatedNilai['is_approved'] != 1) {
-                $allApproved = false;
-                break;
-            }
-        }
-
-        // foreach ($requiredFaktorIds as $faktor4Id) {
-        //     // Ambil nilai untuk faktor4id
-        //     $associatedNilai = $this->nilai4Model->where('faktor4id', $faktor4Id)->first();
-
-        //     // Jika nilai tidak ada atau is_approved bukan 1, set $allApproved ke false
-        //     if ($associatedNilai === null || $associatedNilai['is_approved'] != 1) {
-        //         $allApproved = false;
-        //         break; // Jika ada yang belum disetujui, hentikan pengecekan
-        //     }
-        // }
-
-
-        foreach ($faktorData as $faktorItem) {
-            $faktor4Id = $faktorItem['id'];
-
-            // Retrieve the latest associated nilai (value) for this factor
-            $associatedNilai = $this->nilai4Model
-                ->where('faktor4id', $faktor4Id)
-                ->where('kodebpr', $kodebpr)
-                ->orderBy('created_at', 'DESC')
-                ->first();
-
-            // Calculate the average value (rata-rata) for this factor
-            $rataRata = $this->nilai4Model->hitungRataRata($faktor4Id, $kodebpr);
-
-            // Get explanation for the calculated average value (rata-rata)
-            $penjelasfaktor = $this->nilai4Model->getPenjelasanNilai($rataRata);
-
-            // Insert or update the calculated average value (rata-rata) into the database
-            $this->nilai4Model->insertOrUpdateRataRata($rataRata, $faktor4Id, $kodebpr);
-
-            // Fetch the kodebpr from the authenticated user's data
-            $userModel = new \App\Models\M_user(); // Make sure the user model is loaded
-            $userId = service('authentication')->id(); // Get authenticated user ID
-            $user = $userModel->find($userId); // Fetch user details using the user ID
-            $kodebpr = $user['kodebpr'] ?? null; // Fetch the 'kodebpr' for the user
-
-            $lastVisit = session('last_visit_komentar') ?? date('Y-m-d H:i:s', strtotime('-1 day'));
-            session()->set('last_visit_komentar', date('Y-m-d H:i:s'));
-
-            // Handle cases where kodebpr is not found (optional, set a default or handle error)
-            if (!$kodebpr) {
-                $kodebpr = 'default_kodebpr'; // Replace with a default value or handle as necessary
-            }
-
-            // Prepare the data with the necessary fields for each factor
-            $factorsWithDetails[] = [
-                'id' => $faktorItem['id'],
-                'sph' => $faktorItem['sph'],
-                'sub_category' => $faktorItem['sub_category'],
-                'nilai' => $associatedNilai['nilai'] ?? null,
-                'nfaktor4' => $rataRata,
-                'penjelasfaktor' => $penjelasfaktor,
-                'keterangan' => $associatedNilai['keterangan'] ?? null,
-                'kodebpr' => $kodebpr, // Use dynamically fetched kodebpr
-                'is_approved' => $associatedNilai['is_approved'] ?? 0,
-                'approved_at' => $associatedNilai['approved_at'] ?? 0,
-                'positifstruktur' => $associatedNilai['positifstruktur'] ?? null,
-                'negatifstruktur' => $associatedNilai['negatifstruktur'] ?? null,
-                'positifproses' => $associatedNilai['positifproses'] ?? null,
-                'negatifproses' => $associatedNilai['negatifproses'] ?? null,
-                'positifhasil' => $associatedNilai['positifhasil'] ?? null,
-                'negatifhasil' => $associatedNilai['negatifhasil'] ?? null,
-                'periode_id' => $associatedNilai['periode_id'] ?? null,
-                'accdekom' => $associatedNilai['accdekom'] ?? null,
-                'accdekom_by' => $associatedNilai['accdekom_by'] ?? null,
-                'accdekom_at' => $associatedNilai['accdekom_at'] ?? 0,
-                'accdekom2' => $associatedNilai['accdekom2'] ?? null,
-                'accdekom2_by' => $associatedNilai['accdekom2_by'] ?? null,
-                'accdir2' => $associatedNilai['accdir2'] ?? null,
-                'accdir2_by' => $associatedNilai['accdir2_by'] ?? null,
-                // Add any other columns as needed
-                // 'nama_kolom_lain_faktor' => $faktorItem['nama_kolom_lain_faktor'],
-            ];
-        }
-        $data['lastVisit'] = $lastVisit;
         $data = [
             'judul' => 'Faktor 4',
-            'faktor4' => $faktorData,
-            'userId' => $userId,
-            'faktors4' => $factorsWithDetails,
-            'rataRata' => $rataRata,
-            'penjelasfaktor' => $penjelasfaktor,
-            // 'komentarList' => $komentarList, // Hapus ini atau set ke array kosong
-            'komentarList' => $komentarList,
-            // 'nilaiList' => $nilaiData,
-            'userInGroupPE' => $this->userInGroupPE, // Gunakan properti yang sudah diinisialisasi
+            'userId' => user_id(),
+            'userInGroupPE' => $this->userInGroupPE,
             'userInGroupAdmin' => $this->userInGroupAdmin,
             'userInGroupDekom' => $this->userInGroupDekom,
             'userInGroupDekom2' => $this->userInGroupDekom2,
@@ -255,27 +122,220 @@ class Faktor4 extends Controller
             'userInGroupDekom5' => $this->userInGroupDekom5,
             'userInGroupDireksi' => $this->userInGroupDireksi,
             'userInGroupDireksi2' => $this->userInGroupDireksi2,
-            // 'faktor4Id' => $faktor4Id, // Tidak perlu dikirim ke view jika tidak digunakan
-            'fullname' => $fullname,
-            'allApproved' => $allApproved,
-            'kodebpr' => $this->userKodebpr,
-            'nilaiData' => $nilaiData,
-            'komentarModel' => $this->komentarModel,
-            'commentReads4Model' => $this->commentReads4Model,
-            'lastVisit' => $lastVisit,
+            'fullname' => $user['fullname'] ?? 'Unknown',
+            'kodebpr' => $kodebpr,
             'periodeId' => $periodeId,
             'periodeDetail' => $periodeDetail,
             'bprData' => $bprData,
             'canApprove' => $canApprove,
             'accdekomApproved' => $accdekomApproved,
+            'prevSemLabel' => $prevSemLabel,
+            'prevTahunLabel' => $prevTahunLabel,
         ];
 
-        // Pastikan $data dikirimkan ke view
         echo view('templates/v_header', $data);
         echo view('templates/v_sidebar');
         echo view('templates/v_topbar');
-        echo view('faktor4/index', $data);
+        echo view('Laporansemester/Tatakelola/faktor4gcg', $data);
         echo view('templates/v_footer');
+    }
+
+    private function checkAllFaktorsApproved($kodebpr, $periodeId)
+    {
+        $result = $this->db->table('nilaifaktor4')
+            ->select('COUNT(*) as total, SUM(CASE WHEN accdekom = 1 THEN 1 ELSE 0 END) as approved')
+            ->whereIn('faktor4id', range(1, 11))
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->get()
+            ->getRowArray();
+
+        return $result['total'] > 0 && $result['total'] == $result['approved'];
+    }
+
+    public function getFactorsData()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = session('active_periode');
+
+            if (!$kodebpr || !$periodeId) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Kodebpr atau periode tidak valid'
+                ]);
+            }
+
+            $builder = $this->db->table('faktor4 as f');
+            $builder->select('f.*, n.nilai, n.keterangan, n.id as nilai_id, n.accdekom, n.accdekom2, n.accdir2, n.is_approved, n.positifstruktur, n.negatifstruktur, n.positifproses, n.negatifproses, n.positifhasil, n.negatifhasil, n.accdekom_at, n.approved_at');
+            $builder->join('nilaifaktor4 as n', 'n.faktor4id = f.id AND n.kodebpr = ' . $this->db->escape($kodebpr) . ' AND n.periode_id = ' . $this->db->escape($periodeId), 'left');
+            $builder->where('f.id <=', 12);
+            $builder->orderBy('f.id', 'ASC');
+
+            $query = $builder->get();
+            $faktorData = $query->getResultArray();
+
+            $grouped = [
+                'struktur' => [],
+                'proses' => [],
+                'hasil' => [],
+                'kesimpulan' => null
+            ];
+
+            foreach ($faktorData as $item) {
+                $category = strtolower($item['sph'] ?? '');
+                if (in_array($category, ['struktur', 'proses', 'hasil'])) {
+                    $grouped[$category][] = $item;
+                }
+
+                $kesimpulan = $this->db->table('nilaifaktor4')
+                    ->where('faktor4id', 12)
+                    ->where('kodebpr', $kodebpr)
+                    ->where('periode_id', $periodeId)
+                    ->get()
+                    ->getRowArray();
+
+                $grouped['kesimpulan'] = $kesimpulan;
+            }
+
+            $rataRata = $this->nilai4Model->hitungRataRata(1, $kodebpr);
+
+            $penjelasanFromDB = $this->db->table('nilaifaktor4')
+                ->select('penjelasfaktor')
+                ->where('faktor4id', 12)
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->get()
+                ->getRowArray();
+
+            $penjelasan = $penjelasanFromDB['penjelasfaktor'] ?? $this->nilai4Model->getPenjelasanNilai($rataRata);
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data' => $grouped,
+                'rataRata' => $rataRata,
+                'penjelasan' => $penjelasan
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in getFactorsData: ' . $e->getMessage());
+            return $this->response->setStatusCode(500)->setJSON([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan sistem'
+            ]);
+        }
+    }
+
+    public function getApprovalStatus()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = session('active_periode');
+
+            if (!$kodebpr || !$periodeId) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Data tidak lengkap'
+                ]);
+            }
+
+            $builder = $this->db->table('nilaifaktor4');
+            $builder->select('accdekom, accdekom_at, is_approved, approved_at');
+            $builder->where('faktor4id', 12); // ✅ Hanya cek id 12
+            $builder->where('kodebpr', $kodebpr);
+            $builder->where('periode_id', $periodeId);
+
+            $nilai = $builder->get()->getRowArray();
+
+            // ✅ Jika data id 12 belum ada, buat default
+            if (!$nilai) {
+                $dekomApproved = false;
+                $dekomApprovedAt = null;
+                $dirApproved = false;
+                $dirApprovedAt = null;
+            } else {
+                $dekomApproved = $nilai['accdekom'] == 1;
+                $dekomApprovedAt = $nilai['accdekom_at'];
+                $dirApproved = $nilai['is_approved'] == 1;
+                $dirApprovedAt = $nilai['approved_at'];
+            }
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'dekom_approved' => $dekomApproved,
+                'dekom_approved_at' => $dekomApprovedAt,
+                'dir_approved' => $dirApproved,
+                'dir_approved_at' => $dirApprovedAt,
+                'can_approve_dir' => $dekomApproved // ✅ Direktur bisa approve jika dekom sudah approve
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in getApprovalStatus: ' . $e->getMessage());
+            return $this->response->setStatusCode(500)->setJSON([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan sistem'
+            ]);
+        }
+    }
+
+    public function getAllUnreadCounts()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+
+        try {
+            $kodebpr = $this->userKodebpr;
+            $userId = user_id();
+            $periodeId = session('active_periode');
+
+            if (!$kodebpr || !$userId || !$periodeId) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Data tidak lengkap',
+                    'counts' => []
+                ]);
+            }
+
+            $result = [];
+
+            for ($faktor4Id = 1; $faktor4Id <= 12; $faktor4Id++) {
+                $count = $this->commentReads4Model->countUnreadComments(
+                    $kodebpr,
+                    $userId,
+                    $periodeId,
+                    $faktor4Id
+                );
+
+                if ($count > 0) {
+                    $result[$faktor4Id] = $count;
+                }
+            }
+
+            // ✅ Tambahkan log untuk debug
+            log_message('info', '[getAllUnreadCounts] Result: ' . json_encode($result));
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'counts' => $result
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', '[getAllUnreadCounts] Error: ' . $e->getMessage());
+            return $this->response->setStatusCode(500)->setJSON([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan sistem',
+                'counts' => []
+            ]);
+        }
     }
 
     public function cekKomentarBaru()
@@ -295,18 +355,35 @@ class Faktor4 extends Controller
         return $this->response->setJSON($results);
     }
 
-
-    // Fungsi untuk AJAX request komentar
     public function getKomentarByFaktorId($faktor4Id)
     {
         if (!$this->request->isAJAX() || !is_numeric($faktor4Id)) {
             return $this->response->setStatusCode(404)->setBody('Not Found');
         }
 
-        $kodebpr = $this->userKodebpr; // Ambil kodebpr dari property
+        $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
 
-        $komentarList = $this->komentarModel->getKomentarByFaktorId($faktor4Id, $kodebpr, $periodeId);
+        $komentarList = $this->komentarModel->getKomentarByPeriode($kodebpr, $periodeId, $faktor4Id);
+
+        return $this->response->setJSON($komentarList);
+    }
+
+    public function getKomentar()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(404)->setBody('Not Found');
+        }
+
+        $faktor4Id = $this->request->getGet('faktor4_id');
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        $komentarList = $this->komentarModel->getKomentarByPeriode(
+            $kodebpr,
+            $periodeId,
+            $faktor4Id
+        );
 
         return $this->response->setJSON($komentarList);
     }
@@ -314,19 +391,15 @@ class Faktor4 extends Controller
     public function getNilaiByFaktorId($faktor4Id)
     {
         if (!$this->request->isAJAX() || !is_numeric($faktor4Id)) {
-            // log_message('debug', 'Invalid AJAX or faktor4Id: ' . $faktor4Id); // Tambahkan log untuk debug
             return $this->response->setStatusCode(404)->setBody('Not Found');
         }
 
         $nilaiList = $this->nilai4Model->getNilaiByFaktorId($faktor4Id);
-
-        // log_message('debug', 'Comments returned for faktor4Id ' . $faktor4Id . ': ' . json_encode($komentarList)); // Tambahkan log untuk debug
         return $this->response->setJSON($nilaiList);
     }
 
     public function tambahNilai()
     {
-        date_default_timezone_set('Asia/Jakarta');
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
@@ -356,15 +429,12 @@ class Faktor4 extends Controller
                 return redirect()->back();
             } else {
                 $periodeId = session('active_periode');
-                // Get the current authenticated user ID
                 $userId = service('authentication')->id();
 
-                // Fetch user data to get kodebpr
-                $userModel = new \App\Models\M_user(); // Make sure M_user model is used
+                $userModel = new M_user();
                 $user = $userModel->find($userId);
-                $kodebpr = $user['kodebpr'] ?? null; // Fetch the kodebpr from the user record
+                $kodebpr = $user['kodebpr'] ?? null;
 
-                // If kodebpr is not found, set to a default value (optional)
                 if (!$kodebpr) {
                     return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
                 }
@@ -375,19 +445,19 @@ class Faktor4 extends Controller
                     'nilai' => $this->request->getPost('nilai'),
                     'keterangan' => $this->request->getPost('keterangan'),
                     'fullname' => $this->request->getPost('fullname'),
-                    'user_id' => $userId, // Dynamically set the user ID
+                    'user_id' => $userId,
                     'kodebpr' => $kodebpr,
                     'periode_id' => $periodeId,
+                    'accdekom' => 0,
+                    'is_approved' => 0,
                     'created_at' => date('Y-m-d H:i:s'),
                 ];
 
                 $this->nilai4Model->tambahNilai($data, $faktor4Id, $kodebpr);
 
-                // Calculate average value from faktor4id 1–8
                 $rataRata = $this->nilai4Model->hitungRataRata($faktor4Id, $kodebpr);
                 $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
 
-                // Save to faktor4id 1 in nfaktor column (insert or update)
                 $this->nilai4Model->insertOrUpdateRataRata($rataRata, 1, $kodebpr);
 
                 session()->setFlashdata('message', 'Nilai berhasil ditambahkan');
@@ -401,57 +471,123 @@ class Faktor4 extends Controller
 
     public function tambahKomentar()
     {
-        date_default_timezone_set('Asia/Jakarta');
         if (!$this->auth->check()) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setStatusCode(401)->setJSON([
+                    'status' => 'error',
+                    'message' => 'Unauthorized'
+                ]);
+            }
             return redirect()->to('/login');
         }
 
-        if (isset($_POST['tambahKomentar'])) {
-            $userId = service('authentication')->id();
-            $user = $this->userModel->find($userId);
-            $kodebpr = $user['kodebpr'] ?? null;
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'komentar' => [
+                'label' => 'Komentar',
+                'rules' => 'required|min_length[3]|max_length[1000]',
+                'errors' => [
+                    'required' => 'Komentar tidak boleh kosong',
+                    'min_length' => 'Komentar minimal 3 karakter',
+                    'max_length' => 'Komentar maksimal 1000 karakter'
+                ]
+            ],
+            'faktor4_id' => [
+                'label' => 'Faktor ID',
+                'rules' => 'required|numeric',
+                'errors' => ['required' => 'Faktor ID tidak valid']
+            ]
+        ]);
 
-            if (!$kodebpr) {
-                session()->setFlashdata('error', 'User tidak memiliki kode BPR yang valid');
-                return redirect()->back();
+        if (!$validation->withRequest($this->request)->run()) {
+            $errors = $validation->getErrors();
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'status' => 'error',
+                    'message' => implode(', ', $errors)
+                ]);
             }
 
-            $val = $this->validate([
-                'komentar' => [
-                    'label' => 'Komentar',
-                    'rules' => 'required',
-                    'errors' => ['required' => '{field} tidak boleh kosong.']
-                ],
-            ]);
+            session()->setFlashdata('err', implode('<br>', $errors));
+            return redirect()->back();
+        }
 
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                return redirect()->back();
+        $userId = user_id();
+        $user = $this->userModel->find($userId);
+        $kodebpr = $user['kodebpr'] ?? null;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            $errorMsg = 'Kode BPR atau Periode tidak valid';
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'status' => 'error',
+                    'message' => $errorMsg
+                ]);
             }
 
+            session()->setFlashdata('error', $errorMsg);
+            return redirect()->back();
+        }
+
+        $faktor4Id = $this->request->getPost('faktor4_id');
+        $komentar = trim($this->request->getPost('komentar'));
+        $fullname = $this->request->getPost('fullname');
+
+        try {
             $data = [
-                'faktor4id' => $this->request->getPost('faktor4_id'),
-                'komentar' => $this->request->getPost('komentar'),
-                'fullname' => $this->request->getPost('fullname'),
+                'faktor4id' => $faktor4Id,
+                'komentar' => $komentar,
+                'fullname' => $fullname,
                 'user_id' => $userId,
                 'kodebpr' => $kodebpr,
-                'periode_id' => session('active_periode'), // Pastikan ini diisi
+                'periode_id' => $periodeId,
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
-            $this->komentarModel->insertKomentar($data);
-            session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
-            return redirect()->to(base_url('faktor4') . '?modal_komentar=' . $this->request->getPost('faktor4_id'));
-        }
+            $result = $this->komentarModel->insertKomentar($data);
 
-        return redirect()->to(base_url('faktor4'));
+            if ($result) {
+                if ($this->request->isAJAX()) {
+                    $komentarList = $this->komentarModel->getKomentarByPeriode(
+                        $kodebpr,
+                        $periodeId,
+                        $faktor4Id
+                    );
+
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'message' => 'Komentar berhasil ditambahkan',
+                        'comments' => $komentarList
+                    ]);
+                }
+
+                return redirect()->back()->with('message', 'Komentar berhasil ditambahkan');
+            } else {
+                throw new \Exception('Gagal menyimpan komentar');
+            }
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error tambahKomentar: ' . $e->getMessage());
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Gagal menambahkan komentar: ' . $e->getMessage()
+                ]);
+            }
+
+            return redirect()->back()->with('error', 'Gagal menambahkan komentar');
+        }
     }
 
     public function ubah()
     {
         $faktor4id = $this->request->getPost('faktor4id');
         $userId = service('authentication')->id();
-        $userModel = new \App\Models\M_user(); // Ensure M_user model is used
+        $userModel = new M_user();
         $user = $userModel->find($userId);
         $kodebpr = $user['kodebpr'] ?? null;
 
@@ -464,13 +600,11 @@ class Faktor4 extends Controller
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
         }
 
-        // Periksa periode aktif
         $periodeId = session('active_periode');
         if (!$periodeId) {
             return redirect()->back()->with('error', 'Periode tidak valid');
         }
 
-        // Ambil data yang akan diubah
         $data = [
             'nilai' => $this->request->getPost('nilai'),
             'keterangan' => $this->request->getPost('keterangan'),
@@ -480,9 +614,7 @@ class Faktor4 extends Controller
             'kodebpr' => $kodebpr,
         ];
 
-        // Pastikan update berdasarkan faktor4id, kodebpr, dan periode_id
         if ($this->nilai4Model->ubahBerdasarkanFaktorId($data, $faktor4id, $kodebpr, $periodeId)) {
-            // Update accdekom dan is_approved untuk faktor4id 11
             $this->nilai4Model->where('faktor4id', 12)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
@@ -499,16 +631,9 @@ class Faktor4 extends Controller
 
     public function ubahkesimpulan()
     {
-        // Cek apakah ada faktor4id
-        $faktor4Id = $this->request->getPost('faktor4id');
-
-        if (!$faktor4Id) {
-            session()->setFlashdata('err', 'ID Faktor tidak ditemukan.');
-            return redirect()->to(base_url('faktor4'));
-        }
-
+        $faktor4Id = 12;
         $userId = service('authentication')->id();
-        $userModel = new \App\Models\M_user(); // Pastikan model M_user digunakan
+        $userModel = new M_user();
         $user = $userModel->find($userId);
         $kodebpr = $user['kodebpr'] ?? null;
 
@@ -516,13 +641,11 @@ class Faktor4 extends Controller
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
         }
 
-        // Periksa periode aktif
         $periodeId = session('active_periode');
         if (!$periodeId) {
             return redirect()->back()->with('error', 'Periode tidak valid');
         }
 
-        // Ambil data yang akan diubah
         $data = [
             'positifstruktur' => $this->request->getPost('positifstruktur'),
             'negatifstruktur' => $this->request->getPost('negatifstruktur'),
@@ -534,8 +657,25 @@ class Faktor4 extends Controller
             'accdekom' => 0
         ];
 
-        // Pastikan update berdasarkan faktor4id, kodebpr, dan periode_id
-        if ($this->nilai4Model->ubahBerdasarkanFaktorId($data, $faktor4Id, $kodebpr, $periodeId)) {
+        $existing = $this->nilai4Model
+            ->where('faktor4id', $faktor4Id)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->first();
+
+        if ($existing) {
+            $success = $this->nilai4Model->update($existing['id'], $data);
+        } else {
+            $data['faktor4id'] = $faktor4Id;
+            $data['kodebpr'] = $kodebpr;
+            $data['periode_id'] = $periodeId;
+            $data['user_id'] = $userId;
+            $data['fullname'] = $user['fullname'] ?? 'Unknown';
+            $data['created_at'] = date('Y-m-d H:i:s');
+            $success = $this->nilai4Model->insert($data);
+        }
+
+        if ($success) {
             session()->setFlashdata('message', 'Data berhasil diubah');
         } else {
             session()->setFlashdata('err', 'Gagal mengubah data');
@@ -544,52 +684,6 @@ class Faktor4 extends Controller
         return redirect()->to(base_url('faktor4'));
     }
 
-    public function excel()
-    {
-        $data = [
-            'faktor4' => $this->faktor4Model->getAllData() // <<< PERBAIKI DI SINI: $this->model -> $this->faktor4Model
-        ];
-
-        echo view('faktor4/excel', $data);
-    }
-
-    public function hapus($id)
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()->to($redirectURL);
-        }
-
-        // Memanggil fungsi hapus pada model dan menyimpan hasilnya dalam variabel $success
-        $this->nilai4Model->hapus($id);
-        session()->setFlashdata('message', 'Data berhasil dihapus');
-
-        return redirect()->to(base_url('faktor4'));
-
-    }
-
-    public function setNullKolom($id)
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-
-        $success = $this->faktor4Model->setNullKolom($id);
-
-        if ($success) {
-            session()->setFlashdata('message', 'Data berhasil dihapus');
-        } else {
-            session()->setFlashdata('err', 'Data gagal dihapus');
-        }
-
-        return redirect()->to(base_url('faktor4'));
-    }
-
-    // Fungsi approve dan unapprove sudah menggunakan $this->faktor4Model dengan benar
     public function approve($idNilai = null)
     {
         if ($idNilai === null) {
@@ -597,23 +691,20 @@ class Faktor4 extends Controller
             return redirect()->back();
         }
 
-        // Ambil data dari tabel nilaifaktor berdasarkan faktor4_id
         $nilaiFaktor4 = $this->nilai4Model->find($idNilai);
         if (!$nilaiFaktor4) {
             session()->setFlashdata('err', 'Data tidak ditemukan.');
             return redirect()->back();
         }
-        // Memeriksa apakah nilai faktor4 sudah diapprove atau tidak
-        date_default_timezone_set('Asia/Jakarta');
+
         $userId = service('authentication')->id();
 
         $dataUpdate = [
-            'is_approved' => 1,  // Status disetujui
-            'approved_by' => $userId,  // Menyimpan siapa yang memberikan approval
-            'approved_at' => date('Y-m-d H:i:s'),  // Waktu persetujuan
+            'is_approved' => 1,
+            'approved_by' => $userId,
+            'approved_at' => date('Y-m-d H:i:s'),
         ];
 
-        // Update status approval di tabel nilaifaktor
         if ($this->nilai4Model->update($idNilai, $dataUpdate)) {
             session()->setFlashdata('message', 'Data berhasil disetujui.');
             return redirect()->back();
@@ -630,24 +721,20 @@ class Faktor4 extends Controller
             return redirect()->back();
         }
 
-        // Ambil data dari tabel nilaifaktor berdasarkan faktor4_id
         $nilaiFaktor4 = $this->nilai4Model->find($idNilai);
         if (!$nilaiFaktor4) {
             session()->setFlashdata('err', 'Data tidak ditemukan.');
             return redirect()->back();
         }
 
-        date_default_timezone_set('Asia/Jakarta');
         $userId = service('authentication')->id();
 
-        // Data untuk diupdate
         $dataUpdate = [
-            'is_approved' => 0,  // Status tidak disetujui
+            'is_approved' => 0,
             'approved_by' => $userId,
             'approved_at' => date('Y-m-d H:i:s')
         ];
 
-        // Update status approval di tabel nilaifaktor
         if ($this->nilai4Model->update($idNilai, $dataUpdate)) {
             session()->setFlashdata('message', 'Data approval dibatalkan.');
             return redirect()->back();
@@ -659,55 +746,66 @@ class Faktor4 extends Controller
 
     public function approveSemua()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        // Validasi data penting
-        if (!$kodebpr || !$periodeId) {
-            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
-            return redirect()->back();
-        }
-
-        // Cek dulu apakah ada data yang akan diupdate
-        $count = $this->nilai4Model
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->countAllResults();
-
-        if ($count === 0) {
-            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
-            return redirect()->back();
-        }
-
-        // Data untuk diupdate
-        $dataUpdate = [
-            'is_approved' => 1,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
+        $this->db->transStart();
 
         try {
-            // Lakukan update
-            $updated = $this->nilai4Model
+            $userId = service('authentication')->id();
+            $kodebpr = $this->userKodebpr;
+            $periodeId = session('active_periode');
+
+            if (!$kodebpr || !$periodeId) {
+                $this->db->transRollback();
+                session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
+                return redirect()->back();
+            }
+
+            // Cek apakah komisaris sudah approve
+            $dekomApproval = $this->db->table('nilaifaktor4')
+                ->where('faktor4id', 12)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
-                ->update(null, $dataUpdate); // Parameter pertama null untuk update semua yang sesuai kriteria
+                ->where('accdekom', 1)
+                ->get()
+                ->getRowArray();
 
-            if (!$updated) {
+            if (!$dekomApproval) {
+                $this->db->transRollback();
+                session()->setFlashdata('err', 'Komisaris harus menyetujui terlebih dahulu');
+                return redirect()->back();
+            }
+
+            $dataUpdate = [
+                'is_approved' => 1,
+                'approved_by' => $userId,
+                'approved_at' => date('Y-m-d H:i:s'),
+            ];
+
+            // ✅ Update id 12
+            $this->db->table('nilaifaktor4')
+                ->where('faktor4id', 12)
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update($dataUpdate);
+
+            // ✅ Update juga id 1-11 jika ada
+            $this->db->table('nilaifaktor4')
+                ->whereIn('faktor4id', range(1, 11))
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update($dataUpdate);
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
                 session()->setFlashdata('err', 'Gagal mengupdate data approval');
                 return redirect()->back();
             }
 
-            // Hitung ulang rata-rata
-            $rataRata = $this->nilai4Model->hitungRataRata(1, $kodebpr, $periodeId);
-            $this->nilai4Model->insertOrUpdateRataRata($rataRata, 1, $kodebpr, $periodeId);
-
-            session()->setFlashdata('message', 'Semua faktor4 berhasil disetujui.');
+            session()->setFlashdata('message', 'Semua faktor berhasil disetujui.');
             return redirect()->back();
 
         } catch (\Exception $e) {
+            $this->db->transRollback();
             log_message('error', 'Error in approveSemua: ' . $e->getMessage());
             session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
             return redirect()->back();
@@ -716,56 +814,52 @@ class Faktor4 extends Controller
 
     public function unapproveSemua()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $userId = service('authentication')->id();
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        // Validasi data penting
-        if (!$kodebpr || !$periodeId) {
-            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
-            return redirect()->back();
-        }
-
-        // Cek dulu apakah ada data yang akan diupdate
-        $count = $this->nilai4Model
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->countAllResults();
-
-        if ($count === 0) {
-            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
-            return redirect()->back();
-        }
-
-        // Data untuk diupdate
-        $dataUpdate = [
-            'is_approved' => 0,
-            'approved_by' => $userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
+        $this->db->transStart();
 
         try {
-            // Lakukan update
-            $updated = $this->nilai4Model
+            $userId = service('authentication')->id();
+            $kodebpr = $this->userKodebpr;
+            $periodeId = session('active_periode');
+
+            if (!$kodebpr || !$periodeId) {
+                $this->db->transRollback();
+                session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
+                return redirect()->back();
+            }
+
+            $dataUpdate = [
+                'is_approved' => 0,
+                'approved_by' => null,
+                'approved_at' => null,
+            ];
+
+            // ✅ Update id 12
+            $this->db->table('nilaifaktor4')
+                ->where('faktor4id', 12)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
-                ->update(null, $dataUpdate); // Parameter pertama null untuk update semua yang sesuai kriteria
+                ->update($dataUpdate);
 
-            if (!$updated) {
+            // ✅ Update juga id 1-11 jika ada
+            $this->db->table('nilaifaktor4')
+                ->whereIn('faktor4id', range(1, 11))
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update($dataUpdate);
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
                 session()->setFlashdata('err', 'Gagal mengupdate data approval');
                 return redirect()->back();
             }
 
-            // Hitung ulang rata-rata
-            $rataRata = $this->nilai4Model->hitungRataRata(1, $kodebpr, $periodeId);
-            $this->nilai4Model->insertOrUpdateRataRata($rataRata, 1, $kodebpr, $periodeId);
-
-            session()->setFlashdata('message', 'Semua faktor4 berhasil disetujui.');
+            session()->setFlashdata('message', 'Semua approval berhasil dibatalkan.');
             return redirect()->back();
 
         } catch (\Exception $e) {
-            log_message('error', 'Error in approveSemua: ' . $e->getMessage());
+            $this->db->transRollback();
+            log_message('error', 'Error in unapproveSemua: ' . $e->getMessage());
             session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
             return redirect()->back();
         }
@@ -773,56 +867,63 @@ class Faktor4 extends Controller
 
     public function approveSemuaKom()
     {
-        date_default_timezone_set('Asia/Jakarta');
         $userId = service('authentication')->id();
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
 
-        // Validasi data penting
         if (!$kodebpr || !$periodeId) {
             session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
             return redirect()->back();
         }
 
-        // Cek dulu apakah ada data yang akan diupdate
-        $count = $this->nilai4Model
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->countAllResults();
-
-        if ($count === 0) {
-            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
-            return redirect()->back();
-        }
-
-        // Data untuk diupdate
-        $dataUpdate = [
-            'accdekom' => 1,
-            'accdekom_by' => $userId,
-            'accdekom_at' => date('Y-m-d H:i:s'),
-        ];
-
         try {
-            // Lakukan update
-            $updated = $this->nilai4Model
+            // Cek apakah record id 12 sudah ada
+            $existing = $this->nilai4Model
+                ->where('faktor4id', 12)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
-                ->update(null, $dataUpdate); // Parameter pertama null untuk update semua yang sesuai kriteria
+                ->first();
 
-            if (!$updated) {
-                session()->setFlashdata('err', 'Gagal mengupdate data approval');
-                return redirect()->back();
+            $dataUpdate = [
+                'accdekom' => 1,
+                'accdekom_by' => $userId,
+                'accdekom_at' => date('Y-m-d H:i:s'),
+            ];
+
+            if ($existing) {
+                // ✅ Jika sudah ada, update
+                $this->nilai4Model
+                    ->where('faktor4id', 12)
+                    ->where('kodebpr', $kodebpr)
+                    ->where('periode_id', $periodeId)
+                    ->update(null, $dataUpdate);
+            } else {
+                // ✅ Jika belum ada, insert baru
+                $dataInsert = array_merge([
+                    'faktor4id' => 12,
+                    'kodebpr' => $kodebpr,
+                    'periode_id' => $periodeId,
+                    'user_id' => $userId,
+                    'nilai' => null,
+                    // 'keterangan' => '',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ], $dataUpdate);
+
+                $this->nilai4Model->insert($dataInsert);
             }
 
-            // Hitung ulang rata-rata
-            $rataRata = $this->nilai4Model->hitungRataRata(1, $kodebpr, $periodeId);
-            $this->nilai4Model->insertOrUpdateRataRata($rataRata, 1, $kodebpr, $periodeId);
+            // ✅ Update juga id 1-11 jika ada
+            $this->nilai4Model
+                ->whereIn('faktor4id', range(1, 11))
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update(null, $dataUpdate);
 
-            session()->setFlashdata('message', 'Semua faktor4 berhasil disetujui.');
+            session()->setFlashdata('message', 'Semua faktor berhasil disetujui.');
             return redirect()->back();
 
         } catch (\Exception $e) {
-            log_message('error', 'Error in approveSemua: ' . $e->getMessage());
+            log_message('error', 'Error in approveSemuaKom: ' . $e->getMessage());
             session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
             return redirect()->back();
         }
@@ -830,60 +931,55 @@ class Faktor4 extends Controller
 
     public function unapprovekom()
     {
-        date_default_timezone_set('Asia/Jakarta');
         $userId = service('authentication')->id();
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
 
-        // Validasi data penting
         if (!$kodebpr || !$periodeId) {
             session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
             return redirect()->back();
         }
 
-        // Data untuk diupdate
-        $dataUpdate = [
-            'accdekom' => 0,
-            'accdekom_by' => $userId,
-            'accdekom_at' => date('Y-m-d H:i:s'),
-            'is_approved' => 0,
-        ];
-
         try {
-            $updated = $this->nilai4Model
-                ->where('faktor4id', 12)  // Only update where faktor4id = 12
+            $dataUpdate = [
+                'accdekom' => 0,
+                'accdekom_by' => $userId,
+                'accdekom_at' => date('Y-m-d H:i:s'),
+                'is_approved' => 0,
+                'approved_by' => null,
+                'approved_at' => null,
+            ];
+
+            // ✅ Update id 12
+            $this->nilai4Model
+                ->where('faktor4id', 12)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
-                ->update(null, $dataUpdate); // Parameter pertama null untuk update semua yang sesuai kriteria
+                ->update(null, $dataUpdate);
 
-            if (!$updated) {
-                session()->setFlashdata('err', 'Gagal mengupdate data approval untuk faktor4');
-                return redirect()->back();
-            }
+            // ✅ Update juga id 1-11 jika ada
+            $this->nilai4Model
+                ->whereIn('faktor4id', range(1, 11))
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update(null, $dataUpdate);
 
-            // Optionally, recalculate the average (if needed)
-            // $rataRata = $this->nilai4Model->hitungRataRata(1, $kodebpr, $periodeId);
-            // $this->nilai4Model->insertOrUpdateRataRata($rataRata, 1, $kodebpr, $periodeId);
-
-            session()->setFlashdata('message', 'Faktor 4 berhasil di-unapprove.');
+            session()->setFlashdata('message', 'Semua approval berhasil dibatalkan.');
             return redirect()->back();
 
         } catch (\Exception $e) {
-            log_message('error', 'Error in unapproveSemuaKom: ' . $e->getMessage());
+            log_message('error', 'Error in unapprovekom: ' . $e->getMessage());
             session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
             return redirect()->back();
         }
     }
 
-    // Controller
     public function accdekom()
     {
-        // Pastikan metode POST
         if ($this->request->getMethod() !== 'post') {
             return $this->response->setStatusCode(405, 'Method Not Allowed');
         }
 
-        // Ambil data dari request
         $faktor4id = $this->request->getPost('faktor4id');
         $kodebpr = $this->request->getPost('kodebpr');
         $periodeId = $this->request->getPost('periode_id');
@@ -892,7 +988,6 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak lengkap']);
         }
 
-        // Ambil data faktor4 berdasarkan faktor4id, kodebpr, dan periode_id
         $nilaiFaktor4 = $this->nilai4Model
             ->where('faktor4id', $faktor4id)
             ->where('kodebpr', $kodebpr)
@@ -903,24 +998,27 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak ditemukan']);
         }
 
-        $dataUpdateForFaktor12 = [
+        $dataUpdateForFaktor4 = [
             'accdekom' => 0,
             'is_approved' => 0,
-            'accdekom_by' => service('authentication')->id(), // ID pengguna yang menyetujui
+            'accdekom_by' => service('authentication')->id(),
             'accdekom_at' => date('Y-m-d H:i:s'),
         ];
 
-        // Update record untuk faktor1id 12
-        $this->nilai4Model->where('faktor4id', 12)->update(null, $dataUpdateForFaktor12);
+        // $this->nilai4Model->where('faktor4id', 12)->update(null, $dataUpdateForFaktor4);
 
-        // Update status approval
+        $this->nilai4Model->where('faktor4id', 12)
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->update(null, $dataUpdateForFaktor4);
+
+
         $dataUpdate = [
             'accdekom' => 1,
-            'accdekom_by' => service('authentication')->id(), // ID pengguna yang menyetujui
+            'accdekom_by' => service('authentication')->id(),
             'accdekom_at' => date('Y-m-d H:i:s'),
         ];
 
-        // Update record dalam database
         if ($this->nilai4Model->update($nilaiFaktor4['id'], $dataUpdate)) {
             return redirect()->to('/faktor4')->with('message', 'Faktor berhasil disetujui');
         } else {
@@ -928,15 +1026,12 @@ class Faktor4 extends Controller
         }
 
     }
-
-    public function unapprovedekom()
+    public function unapproveddekom()
     {
-        // Pastikan metode POST
         if ($this->request->getMethod() !== 'post') {
             return $this->response->setStatusCode(405, 'Method Not Allowed');
         }
 
-        // Ambil data dari request
         $faktor4id = $this->request->getPost('faktor4id');
         $kodebpr = $this->request->getPost('kodebpr');
         $periodeId = $this->request->getPost('periode_id');
@@ -945,7 +1040,6 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak lengkap']);
         }
 
-        // Ambil data faktor4 berdasarkan faktor4id, kodebpr, dan periode_id
         $nilaiFaktor4 = $this->nilai4Model
             ->where('faktor4id', $faktor4id)
             ->where('kodebpr', $kodebpr)
@@ -956,17 +1050,14 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak ditemukan']);
         }
 
-        // Update status approval
         $dataUpdate = [
             'accdekom' => 0,
-            'accdekom_by' => service('authentication')->id(), // ID pengguna yang menyetujui
+            'accdekom_by' => service('authentication')->id(),
             'accdekom_at' => date('Y-m-d H:i:s'),
             'is_approved' => 0
         ];
 
-        // Update record dalam database
         if ($this->nilai4Model->update($nilaiFaktor4['id'], $dataUpdate)) {
-            // Update accdekom untuk faktor4id 12
             $this->nilai4Model->where('faktor4id', 12)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
@@ -983,12 +1074,10 @@ class Faktor4 extends Controller
 
     public function accdekom2()
     {
-        // Pastikan metode POST
         if ($this->request->getMethod() !== 'post') {
             return $this->response->setStatusCode(405, 'Method Not Allowed');
         }
 
-        // Ambil data dari request
         $faktor4id = $this->request->getPost('faktor4id');
         $kodebpr = $this->request->getPost('kodebpr');
         $periodeId = $this->request->getPost('periode_id');
@@ -997,7 +1086,6 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak lengkap']);
         }
 
-        // Ambil data faktor4 berdasarkan faktor4id, kodebpr, dan periode_id
         $nilaiFaktor4 = $this->nilai4Model
             ->where('faktor4id', $faktor4id)
             ->where('kodebpr', $kodebpr)
@@ -1008,14 +1096,12 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak ditemukan']);
         }
 
-        // Update status approval
         $dataUpdate = [
             'accdekom2' => 1,
-            'accdekom2_by' => service('authentication')->id(), // ID pengguna yang menyetujui
+            'accdekom2_by' => service('authentication')->id(),
             'approved_at' => date('Y-m-d H:i:s'),
         ];
 
-        // Update record dalam database
         if ($this->nilai4Model->update($nilaiFaktor4['id'], $dataUpdate)) {
             return redirect()->to('/faktor4')->with('message', 'Faktor berhasil disetujui');
         } else {
@@ -1024,14 +1110,12 @@ class Faktor4 extends Controller
 
     }
 
-    public function unapprovedekom2()
+    public function unapproveddekom2()
     {
-        // Pastikan metode POST
         if ($this->request->getMethod() !== 'post') {
             return $this->response->setStatusCode(405, 'Method Not Allowed');
         }
 
-        // Ambil data dari request
         $faktor4id = $this->request->getPost('faktor4id');
         $kodebpr = $this->request->getPost('kodebpr');
         $periodeId = $this->request->getPost('periode_id');
@@ -1040,7 +1124,6 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak lengkap']);
         }
 
-        // Ambil data faktor4 berdasarkan faktor4id, kodebpr, dan periode_id
         $nilaiFaktor4 = $this->nilai4Model
             ->where('faktor4id', $faktor4id)
             ->where('kodebpr', $kodebpr)
@@ -1051,14 +1134,12 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak ditemukan']);
         }
 
-        // Update status approval
         $dataUpdate = [
             'accdekom2' => 0,
-            'accdekom2_by' => service('authentication')->id(), // ID pengguna yang menyetujui
+            'accdekom2_by' => service('authentication')->id(),
             'approved_at' => date('Y-m-d H:i:s'),
         ];
 
-        // Update record dalam database
         if ($this->nilai4Model->update($nilaiFaktor4['id'], $dataUpdate)) {
             return redirect()->to('/faktor4')->with('message', 'Faktor belum disetujui dekom');
         } else {
@@ -1069,12 +1150,10 @@ class Faktor4 extends Controller
 
     public function accdir2()
     {
-        // Pastikan metode POST
         if ($this->request->getMethod() !== 'post') {
             return $this->response->setStatusCode(405, 'Method Not Allowed');
         }
 
-        // Ambil data dari request
         $faktor4id = $this->request->getPost('faktor4id');
         $kodebpr = $this->request->getPost('kodebpr');
         $periodeId = $this->request->getPost('periode_id');
@@ -1083,7 +1162,6 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak lengkap']);
         }
 
-        // Ambil data faktor4 berdasarkan faktor4id, kodebpr, dan periode_id
         $nilaiFaktor4 = $this->nilai4Model
             ->where('faktor4id', $faktor4id)
             ->where('kodebpr', $kodebpr)
@@ -1094,14 +1172,12 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak ditemukan']);
         }
 
-        // Update status approval
         $dataUpdate = [
             'accdir2' => 1,
-            'accdir2_by' => service('authentication')->id(), // ID pengguna yang menyetujui
+            'accdir2_by' => service('authentication')->id(),
             'approved_at' => date('Y-m-d H:i:s'),
         ];
 
-        // Update record dalam database
         if ($this->nilai4Model->update($nilaiFaktor4['id'], $dataUpdate)) {
             return redirect()->to('/faktor4')->with('message', 'Faktor berhasil disetujui');
         } else {
@@ -1110,14 +1186,12 @@ class Faktor4 extends Controller
 
     }
 
-    public function unapprovedir2()
+    public function unapproveddir2()
     {
-        // Pastikan metode POST
         if ($this->request->getMethod() !== 'post') {
             return $this->response->setStatusCode(405, 'Method Not Allowed');
         }
 
-        // Ambil data dari request
         $faktor4id = $this->request->getPost('faktor4id');
         $kodebpr = $this->request->getPost('kodebpr');
         $periodeId = $this->request->getPost('periode_id');
@@ -1126,7 +1200,6 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak lengkap']);
         }
 
-        // Ambil data faktor4 berdasarkan faktor4id, kodebpr, dan periode_id
         $nilaiFaktor4 = $this->nilai4Model
             ->where('faktor4id', $faktor4id)
             ->where('kodebpr', $kodebpr)
@@ -1137,14 +1210,12 @@ class Faktor4 extends Controller
             return $this->response->setJSON(['success' => false, 'message' => 'Data tidak ditemukan']);
         }
 
-        // Update status approval
         $dataUpdate = [
             'accdir2' => 0,
-            'accdir2_by' => service('authentication')->id(), // ID pengguna yang menyetujui
+            'accdir2_by' => service('authentication')->id(),
             'approved_at' => date('Y-m-d H:i:s'),
         ];
 
-        // Update record dalam database
         if ($this->nilai4Model->update($nilaiFaktor4['id'], $dataUpdate)) {
             return redirect()->to('/faktor4')->with('message', 'Faktor belum disetujui dekom');
         } else {
@@ -1155,20 +1226,17 @@ class Faktor4 extends Controller
 
     public function checkAccDekomApproval()
     {
-        // Get the user and periode
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
 
-        // Check if accdekom is 1 for faktor4id 1 to 11
         $allApproved = true;
-        for ($faktor4Id = 1; $faktor4Id <= 11; $faktor4Id++) {
+        for ($faktor4Id = 1; $faktor4Id <= 12; $faktor4Id++) {
             $nilaiFaktor4 = $this->nilai4Model
                 ->where('faktor4id', $faktor4Id)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
                 ->first();
 
-            // If accdekom is not 1, set $allApproved to false and break
             if (!$nilaiFaktor4 || $nilaiFaktor4['accdekom'] != 1) {
                 $allApproved = false;
                 break;
@@ -1178,10 +1246,13 @@ class Faktor4 extends Controller
         return $allApproved;
     }
 
-    public function getUnreadCommentCountForFactor()
+    public function getUnreadCount()
     {
         if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+            return $this->response->setStatusCode(403)->setJSON([
+                'status' => 'error',
+                'message' => 'Forbidden'
+            ]);
         }
 
         $faktor4Id = $this->request->getGet('faktor4_id');
@@ -1189,15 +1260,23 @@ class Faktor4 extends Controller
         $userId = user_id();
         $periodeId = session('active_periode');
 
-        if (!$faktor4Id || !$kodebpr || !$userId || !$periodeId) {
-            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
-        }
+        $count = $this->commentReads4Model->countUnreadComments(
+            $kodebpr,
+            $userId,
+            $periodeId,
+            $faktor4Id
+        );
 
-        $count = $this->commentReads4Model->countUnreadCommentsForUserByFactor($faktor4Id, $kodebpr, $userId, $periodeId);
-
-        return $this->response->setJSON(['unread_count' => $count]);
+        return $this->response->setJSON([
+            'status' => 'success',
+            'count' => $count
+        ]);
     }
 
+    public function getUnreadCommentCountForFactor()
+    {
+        return $this->getUnreadCount();
+    }
 
     public function markUserCommentsAsRead()
     {
@@ -1206,7 +1285,7 @@ class Faktor4 extends Controller
         }
 
         $faktor4Id = $this->request->getPost('faktor4_id');
-        $kodebpr = $this->userKodebpr; // Get from property
+        $kodebpr = $this->userKodebpr;
         $userId = user_id();
         $periodeId = session('active_periode');
 
@@ -1214,12 +1293,11 @@ class Faktor4 extends Controller
             return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
         }
 
-        // Get all comment IDs for this factor, kodebpr, periode, and not by the current user
         $commentsToMark = $this->komentarModel->select('id')
             ->where('faktor4id', $faktor4Id)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->where('user_id !=', $userId) // Mark comments from others as read
+            ->where('user_id !=', $userId)
             ->findAll();
 
         if (!empty($commentsToMark)) {
@@ -1231,15 +1309,13 @@ class Faktor4 extends Controller
         return $this->response->setJSON(['status' => 'success', 'message' => 'Comments marked as read for this user.']);
     }
 
-
-    // Make sure your saveKomentar also sets is_read to 0 for new comments:
     public function saveKomentar()
     {
         $data = [
             'faktor4id' => $this->request->getPost('faktor4_id'),
             'kodebpr' => $this->request->getPost('kodebpr'),
             'komentar' => $this->request->getPost('komentar'),
-            'is_read' => 0, // <--- Ensure this is set to 0 for new comments
+            'is_read' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'user_id' => session()->get('user_id')
         ];
@@ -1248,4 +1324,350 @@ class Faktor4 extends Controller
         return $this->response->setJSON(['status' => 'comment_saved']);
     }
 
+    public function syncFromPrevPeriode()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = session('active_periode');
+
+            if (!$kodebpr || !$periodeId) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Kode BPR atau periode tidak valid.'
+                ]);
+            }
+
+            $currentPeriode = $this->periodeModel->find($periodeId);
+            if (!$currentPeriode) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Periode aktif tidak ditemukan.'
+                ]);
+            }
+
+            $cs = (int) $currentPeriode['semester'];
+            $ct = (int) $currentPeriode['tahun'];
+
+            $prevSemester = $cs == 1 ? 2 : 1;
+            $prevTahun = $cs == 1 ? $ct - 1 : $ct;
+
+            $prevPeriode = $this->periodeModel
+                ->where('kodebpr', $kodebpr)
+                ->where('semester', $prevSemester)
+                ->where('tahun', $prevTahun)
+                ->first();
+
+            if (!$prevPeriode) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => "Data periode Semester {$prevSemester} Tahun {$prevTahun} tidak ditemukan."
+                ]);
+            }
+
+            // Ambil nilaifaktor4 dari periode sebelumnya (faktor 1-12)
+            $prevData = $this->db->table('nilaifaktor4')
+                ->whereIn('faktor4id', range(1, 12))
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $prevPeriode['id'])
+                ->get()
+                ->getResultArray();
+
+            if (empty($prevData)) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => "Tidak ada data pada periode Semester {$prevSemester} Tahun {$prevTahun}."
+                ]);
+            }
+
+            $userId = $this->auth->id();
+            $now = date('Y-m-d H:i:s');
+            $synced = 0;
+
+            foreach ($prevData as $row) {
+                $existing = $this->db->table('nilaifaktor4')
+                    ->where('faktor4id', $row['faktor4id'])
+                    ->where('kodebpr', $kodebpr)
+                    ->where('periode_id', $periodeId)
+                    ->get()
+                    ->getRowArray();
+
+                $insertData = [
+                    'faktor4id' => $row['faktor4id'],
+                    'nilai' => $row['nilai'],
+                    'keterangan' => $row['keterangan'],
+                    'fullname' => $row['fullname'] ?? null,
+                    'positifstruktur' => $row['positifstruktur'] ?? null,
+                    'negatifstruktur' => $row['negatifstruktur'] ?? null,
+                    'positifproses' => $row['positifproses'] ?? null,
+                    'negatifproses' => $row['negatifproses'] ?? null,
+                    'positifhasil' => $row['positifhasil'] ?? null,
+                    'negatifhasil' => $row['negatifhasil'] ?? null,
+                    'kodebpr' => $kodebpr,
+                    'periode_id' => $periodeId,
+                    'user_id' => $userId,
+                    'accdekom' => 0,
+                    'accdekom2' => 0,
+                    'accdir2' => 0,
+                    'is_approved' => 0
+                ];
+
+                if (in_array($row['faktor4id'], [8, 12])) {
+                    $insertData['nfaktor4'] = $row['nfaktor4'] ?? null;
+                    $insertData['penjelasfaktor'] = $row['penjelasfaktor'] ?? null;
+                }
+
+                if ($existing) {
+                    $this->db->table('nilaifaktor4')
+                        ->where('id', $existing['id'])
+                        ->update($insertData);
+                } else {
+                    $insertData['created_at'] = $now;
+                    $this->db->table('nilaifaktor4')->insert($insertData);
+                }
+
+                $synced++;
+            }
+
+            // Hitung ulang rata-rata setelah sync
+            $rataRata = $this->nilai4Model->hitungRataRata(1, $kodebpr);
+            $this->nilai4Model->insertOrUpdateRataRata($rataRata, 1, $kodebpr);
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => "Berhasil menyinkronkan {$synced} data dari Semester {$prevSemester} Tahun {$prevTahun}. Semua approval direset dan perlu disetujui ulang.",
+                'synced' => $synced,
+                'from' => "Semester {$prevSemester} Tahun {$prevTahun}"
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Faktor4 syncFromPrevPeriode error: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function exporttxtfaktor4()
+    {
+        if (!$this->auth->check()) {
+            $redirectURL = session('redirect_url') ?? '/login';
+            unset($_SESSION['redirect_url']);
+            return redirect()->to($redirectURL);
+        }
+
+        // Parameters
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        // Profil risiko
+        $faktor = $this->showfaktorModel
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->first();
+
+        // Periode detail
+        $periodeDetail = $this->periodeModel->find($periodeId);
+
+        $modalinti = $periodeDetail['modalinti'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
+        $jenispelaporan = $periodeDetail['jenispelaporan'];
+        $kategori = $periodeDetail['kategori'];
+
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
+
+        // Fetch data
+        $data_faktor = $this->nilai4Model
+            ->getDataByKodebprAndPeriode($kodebpr, $periodeId);
+
+        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
+        // BPR Info
+        $sandibpr = '';
+        $kodejenis = '';
+        if (!empty($data_infobpr)) {
+            $infobpr = $data_infobpr[0];
+            $sandibpr = $infobpr['sandibpr'] ?? '';
+            $kodejenis = $infobpr['kodejenis'] ?? '';
+        }
+
+        // Hitung rata-rata untuk cek apakah ada data
+        $rataRata = $this->nilai4Model->hitungRataRata(1, $kodebpr);
+        $nfaktor = round($rataRata, 2);
+
+        $output = '';
+
+        // HEADER - Selalu ada
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|1004|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
+
+        // Cek apakah ada data atau nfaktor = 0
+        if (empty($data_faktor) || $nfaktor == 0) {
+            // Hanya generate header saja
+            // Filename
+            $filename = "TKSBPRKS-1004-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+
+            // Response
+            $response = service('response');
+            $response->setHeader('Content-Type', 'text/plain');
+            $response->setHeader(
+                'Content-Disposition',
+                'attachment; filename="' . $filename . '"'
+            );
+
+            return $response->setBody($output);
+        }
+
+        // Sanitizer
+        function sanitizeTxtfaktor4($text)
+        {
+            // Replace newlines with space
+            $text = str_replace(["\r", "\n"], ' ', $text);
+
+            // Replace special characters
+            $text = str_replace(
+                [
+                    "\u{201C}",
+                    "\u{201D}", // " "
+                    "\u{2018}",
+                    "\u{2019}", // ' '
+                    '%',
+                    '|'
+                ],
+                [
+                    '"',
+                    '"',
+                    "'",
+                    "'",
+                    ' persen ',
+                    ' '
+                ],
+                $text
+            );
+
+            // Remove non-printable ASCII characters
+            $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
+
+            // Trim and remove multiple spaces
+            return trim(preg_replace('/\s+/', ' ', $text));
+        }
+
+        $kodeMap = [
+            1 => 'S0401',
+            2 => 'S0402',
+            3 => 'P0403',
+            4 => 'P0404',
+            5 => 'P0405',
+            6 => 'P0406',
+            7 => 'P0407',
+            8 => 'P0408',
+            9 => 'H0401',
+            10 => 'H0402',
+            11 => 'H0403'
+        ];
+
+        // Index data by faktor4id
+        $indexedData = [];
+        foreach ($data_faktor as $row) {
+            if (isset($row['faktor4id'])) {
+                $indexedData[$row['faktor4id']] = $row;
+            }
+        }
+
+        // Baris kosong S0400
+        $output .= "D01|S0400|\r\n";
+
+        // Struktur (S0401 - S0402)
+        for ($faktor4Id = 1; $faktor4Id <= 2; $faktor4Id++) {
+            $kode = $kodeMap[$faktor4Id];
+            if (isset($indexedData[$faktor4Id])) {
+                $row = $indexedData[$faktor4Id];
+                $keterangan = sanitizeTxtfaktor4($row['keterangan'] ?? '-');
+            } else {
+                $keterangan = '';
+            }
+            $output .= "D01|{$kode}|{$keterangan}\r\n";
+        }
+
+        // Baris kosong P0400
+        $output .= "D01|P0400|\r\n";
+
+        // Proses (P0403 - P0408)
+        for ($faktor4Id = 3; $faktor4Id <= 8; $faktor4Id++) {
+            $kode = $kodeMap[$faktor4Id];
+            if (isset($indexedData[$faktor4Id])) {
+                $row = $indexedData[$faktor4Id];
+                $keterangan = sanitizeTxtfaktor4($row['keterangan'] ?? '-');
+            } else {
+                $keterangan = '';
+            }
+            $output .= "D01|{$kode}|{$keterangan}\r\n";
+        }
+
+        // Baris kosong H0400
+        $output .= "D01|H0400|\r\n";
+
+        // Hasil (H0401 - H0403)
+        for ($faktor4Id = 9; $faktor4Id <= 11; $faktor4Id++) {
+            $kode = $kodeMap[$faktor4Id];
+            if (isset($indexedData[$faktor4Id])) {
+                $row = $indexedData[$faktor4Id];
+                $keterangan = sanitizeTxtfaktor4($row['keterangan'] ?? '-');
+            } else {
+                $keterangan = '';
+            }
+            $output .= "D01|{$kode}|{$keterangan}\r\n";
+        }
+
+        // Ambil data kesimpulan dari salah satu faktor (biasanya faktor 1 atau yang memiliki data kesimpulan)
+        $kesimpulanData = null;
+        foreach ($indexedData as $row) {
+            if (isset($row['positifstruktur']) && !empty($row['positifstruktur'])) {
+                $kesimpulanData = $row;
+                break;
+            }
+        }
+
+        // Data kesimpulan (F0401 - F0407)
+        $positifstruktur = sanitizeTxtfaktor4($kesimpulanData['positifstruktur'] ?? '');
+        $negatifstruktur = sanitizeTxtfaktor4($kesimpulanData['negatifstruktur'] ?? '');
+        $positifproses = sanitizeTxtfaktor4($kesimpulanData['positifproses'] ?? '');
+        $negatifproses = sanitizeTxtfaktor4($kesimpulanData['negatifproses'] ?? '');
+        $positifhasil = sanitizeTxtfaktor4($kesimpulanData['positifhasil'] ?? '');
+        $negatifhasil = sanitizeTxtfaktor4($kesimpulanData['negatifhasil'] ?? '');
+
+        $output .= "D01|F0401|{$positifstruktur}\r\n";
+        $output .= "D01|F0402|{$negatifstruktur}\r\n";
+        $output .= "D01|F0403|{$positifproses}\r\n";
+        $output .= "D01|F0404|{$negatifproses}\r\n";
+        $output .= "D01|F0405|{$positifhasil}\r\n";
+        $output .= "D01|F0406|{$negatifhasil}\r\n";
+        $output .= "D01|F0407|{$nfaktor}\r\n";
+
+        // Filename
+        $filename = "TKSBPRKS-1004-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+
+        // Response
+        $response = service('response');
+        $response->setHeader('Content-Type', 'text/plain');
+        $response->setHeader(
+            'Content-Disposition',
+            'attachment; filename="' . $filename . '"'
+        );
+
+        return $response->setBody($output);
+    }
 }

@@ -7,9 +7,12 @@ use App\Models\M_user;
 use App\Models\M_profilrisikocomments;
 use App\Models\M_reputasiinheren;
 use App\Models\M_infobpr;
-use App\Models\M_periodeprofilresiko;
+// use App\Models\M_periodeprofilresiko;
+use App\Models\M_periodesemesteran;
 use App\Models\M_profilrisikocommentsread;
 use App\Models\M_showprofilresiko;
+use App\Models\M_showtks;
+use App\Models\M_periodetks;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Reputasiinheren extends Controller
@@ -28,6 +31,8 @@ class Reputasiinheren extends Controller
     protected $userId;
     protected $periodeId;
     protected $showprofilresikoModel;
+    protected $showtksModel;
+    protected $periodetksModel;
     protected $userGroups = [];
 
     public function __construct()
@@ -37,13 +42,15 @@ class Reputasiinheren extends Controller
         $this->db = \Config\Database::connect();
 
         $this->paramprofilrisikoModel = new M_paramprofilrisiko();
-        $this->periodeModel = new M_periodeprofilresiko();
+        $this->periodeModel = new M_periodesemesteran();
         $this->userModel = new M_user();
         $this->komentarModel = new M_profilrisikocomments();
         $this->nilaiModel = new M_reputasiinheren();
         $this->infobprModel = new M_infobpr();
         $this->commentReadsModel = new M_profilrisikocommentsread();
         $this->showprofilresikoModel = new M_showprofilresiko();
+        $this->showtksModel = new M_showtks();
+        $this->periodetksModel = new M_periodetks();
 
         helper('url');
         $this->session = service('session');
@@ -117,20 +124,6 @@ class Reputasiinheren extends Controller
             'periode_id' => $this->periodeId
         ])->first();
 
-        //     $approvalData = $this->nilaiModel
-        //         ->select('
-        //     COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) as filled_count,
-        //     SUM(CASE WHEN is_approved = 1 THEN 1 ELSE 0 END) as approved_count
-        // ')
-        //         ->where('kodebpr', $this->userKodebpr)
-        //         ->where('periode_id', $this->periodeId)
-        //         ->whereIn('faktor1id', range(138, 148))
-        //         ->first();
-
-        //     $allFilled = ($approvalData['filled_count'] == 11); // 138-148 = 11
-        //     $allApproved = ($allFilled && $approvalData['approved_count'] == 11);
-        //     $canApprove = $allFilled;
-
         $requiredFaktor = array_merge(range(138, 146), [148]);
         $totalRequired = count($requiredFaktor);
 
@@ -149,6 +142,7 @@ class Reputasiinheren extends Controller
         $canApprove = $allFilled;
 
         $user = $this->userModel->find($this->userId);
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
 
         $data = [
             'judul' => 'Penilaian Risiko Reputasi Inheren',
@@ -173,13 +167,14 @@ class Reputasiinheren extends Controller
             'nilai14' => $nilai14,
             'penilaianConfig' => $this->getPenilaianConfig(),
             'loadDataViaAjax' => true,
+            'showtks' => $showtks,
 
         ];
 
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('risikoreputasi/index', $data)
+            . view('Laporansemester/Profilrisiko/reputasiinheren', $data)
             . view('templates/v_footer');
     }
 
@@ -715,6 +710,89 @@ class Reputasiinheren extends Controller
         }
     }
 
+    public function ubahPeringkat13Manual()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        $penilaiankredit = $this->request->getPost('penilaiankredit');
+
+        if (!$penilaiankredit || !in_array($penilaiankredit, ['1', '2', '3', '4', '5'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Pilih peringkat yang valid']);
+        }
+
+        $penjelasanMapping = [
+            '1' => 'Tingkat Risiko Reputasi Inheren: Sangat Rendah',
+            '2' => 'Tingkat Risiko Reputasi Inheren: Rendah',
+            '3' => 'Tingkat Risiko Reputasi Inheren: Sedang',
+            '4' => 'Tingkat Risiko Reputasi Inheren: Tinggi',
+            '5' => 'Tingkat Risiko Reputasi Inheren: Sangat Tinggi'
+        ];
+
+        try {
+            $this->nilaiModel
+                ->where('faktor1id', 148)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $penilaiankredit,
+                    'penjelasanpenilaian' => $penjelasanMapping[$penilaiankredit],
+                    'is_manual' => 1,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ])
+                ->update();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'peringkat' => $penilaiankredit,
+                'is_manual' => 1
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function resetPeringkat13Auto()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        try {
+            $rataRata = $this->nilaiModel->hitungRataRata(148, $this->userKodebpr, $this->periodeId);
+            $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
+
+            $penjelasanMapping = [
+                '1' => 'Tingkat Risiko Reputasi Inheren: Sangat Rendah',
+                '2' => 'Tingkat Risiko Reputasi Inheren: Rendah',
+                '3' => 'Tingkat Risiko Reputasi Inheren: Sedang',
+                '4' => 'Tingkat Risiko Reputasi Inheren: Tinggi',
+                '5' => 'Tingkat Risiko Reputasi Inheren: Sangat Tinggi'
+            ];
+
+            $this->nilaiModel
+                ->where('faktor1id', 148)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $rataRata,
+                    'penjelasanpenilaian' => $penjelasanMapping[$rataRata],
+                    'is_manual' => 0,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ])
+                ->update();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'peringkat' => $rataRata,
+                'is_manual' => false
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
     public function tambahNilai()
     {
         if (!$this->request->isAJAX()) {
@@ -956,14 +1034,19 @@ class Reputasiinheren extends Controller
     public function approveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Kode BPR atau Periode ID tidak valid'
+                ]);
+            }
             return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
         }
 
-        // Faktor wajib: 138–148
+        // Faktor wajib: 138–146 + 148 (147=Lainnya opsional)
         $requiredFaktor = array_merge(range(138, 146), [148]);
-        $totalRequired = count($requiredFaktor);
+        $totalRequired = count($requiredFaktor); // 10
 
-        // Cek semua faktor wajib sudah diisi
         $checkData = $this->nilaiModel
             ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count')
             ->where('kodebpr', $this->userKodebpr)
@@ -972,12 +1055,16 @@ class Reputasiinheren extends Controller
             ->first();
 
         if ((int) $checkData['filled_count'] < $totalRequired) {
-            return redirect()->back()
-                ->with('err', 'Semua faktor wajib harus diisi terlebih dahulu');
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Semua faktor wajib harus diisi terlebih dahulu'
+                ]);
+            }
+            return redirect()->back()->with('err', 'Semua faktor wajib harus diisi terlebih dahulu');
         }
 
         try {
-            // Approve semua faktor wajib
             $this->db->table('reputasiinheren')
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
@@ -988,9 +1075,23 @@ class Reputasiinheren extends Controller
                     'approved_at' => date('Y-m-d H:i:s')
                 ]);
 
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Semua data berhasil disetujui.'
+                ]);
+            }
             return redirect()->back()->with('message', 'Semua data berhasil disetujui.');
+
         } catch (\Exception $e) {
-            log_message('error', 'Error in approveSemua: ' . $e->getMessage());
+            log_message('error', 'Error in approveSemua (Reputasiinheren): ' . $e->getMessage());
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+                ]);
+            }
             return redirect()->back()->with('err', 'Terjadi kesalahan sistem');
         }
     }
@@ -998,10 +1099,17 @@ class Reputasiinheren extends Controller
     public function unapproveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Kode BPR atau Periode ID tidak valid'
+                ]);
+            }
             return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
         }
 
         try {
+            // Unapprove semua faktor 138–148 (termasuk 147 Lainnya)
             $this->db->table('reputasiinheren')
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
@@ -1012,9 +1120,23 @@ class Reputasiinheren extends Controller
                     'approved_at' => date('Y-m-d H:i:s')
                 ]);
 
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Semua data berhasil dibatalkan persetujuannya.'
+                ]);
+            }
             return redirect()->back()->with('message', 'Semua data berhasil dibatalkan persetujuannya.');
+
         } catch (\Exception $e) {
-            log_message('error', 'Error in unapproveSemua: ' . $e->getMessage());
+            log_message('error', 'Error in unapproveSemua (Reputasiinheren): ' . $e->getMessage());
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+                ]);
+            }
             return redirect()->back()->with('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
@@ -1681,15 +1803,21 @@ class Reputasiinheren extends Controller
 
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
 
-        $tanggal = new \DateTime($profilResiko['tanggal']);
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         $data_risikoreputasi = $this->nilaiModel
             ->getDataByKodebprAndPeriode($kodebpr, $periodeId);
@@ -1748,7 +1876,7 @@ class Reputasiinheren extends Controller
         }
 
         $output = '';
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0501|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0501|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         // Jika TIDAK ADA data utama → STOP (header saja)
         if (!$hasMainData) {
@@ -1756,7 +1884,7 @@ class Reputasiinheren extends Controller
                 ->setHeader('Content-Type', 'text/plain')
                 ->setHeader(
                     'Content-Disposition',
-                    'attachment; filename="PRBPRKS-0501-' . $jenispelaporan . '-S-' . $titleDate . '-' . $sandibpr . '-01.txt"'
+                    'attachment; filename="TKSBPRKS-0501-'. $jenispelaporan . '-S-' . $titleDate . '-' . $sandibpr . '-01.txt"'
                 )
                 ->setBody($output);
         }
@@ -1774,7 +1902,7 @@ class Reputasiinheren extends Controller
 
             $kode = $kodeMap[$faktorId];
             $penilaiankredit = sanitizeTxtRepInheren($row['penilaiankredit'] ?? '');
-            $keterangan = sanitizeTxtRepInheren($row['keterangan'] ?? '');
+            $keterangan = sanitizeTxtRepInheren($row['keterangan'] ?? '-');
 
             $output .= "D01|{$kode}|{$penilaiankredit}|{$keterangan}\r\n";
         }
@@ -1785,12 +1913,189 @@ class Reputasiinheren extends Controller
             sanitizeTxtRepInheren($row5299['penilaiankredit'] ?? '') . "|" .
             sanitizeTxtRepInheren($row5299['keterangan'] ?? '') . "\r\n";
 
-        $filename = "PRBPRKS-0501-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0501-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         return service('response')
             ->setHeader('Content-Type', 'text/plain')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->setBody($output);
+    }
+
+    public function exporttxtrisikoreputasiinherentks()
+    {
+        if (!$this->auth->check()) {
+            $redirectURL = session('redirect_url') ?? '/login';
+            unset($_SESSION['redirect_url']);
+            return redirect()->to($redirectURL);
+        }
+
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+
+        $periodeTKS = $this->periodetksModel->find($periodeId);
+
+        if (!$periodeTKS) {
+            return redirect()->back()->with('error', 'Periode TKS tidak ditemukan');
+        }
+
+        // Use helper method to get matching Profil Risiko periode ID
+        $periodeProfilRisikoId = $this->getMatchingProfilRisikoPeriodeId($periodeId);
+
+        if (!$periodeProfilRisikoId) {
+            return redirect()->back()->with('error', 'Tidak ada periode Profil Risiko yang cocok dengan semester dan tahun periode TKS');
+        }
+
+        $modalinti = $periodeTKS['modalinti'];
+        $jenispelaporan = $periodeTKS['jenispelaporan'];
+        $kategori = $periodeTKS['kategori'];
+
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-01-31";
+        } else {
+            $exportDate = "{$tahun}-06-30";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
+
+        $data_risikoreputasi = $this->nilaiModel
+            ->getDataByKodebprAndPeriode($kodebpr, $periodeProfilRisikoId);
+
+        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
+        $sandibpr = '';
+        $kodejenis = '';
+        if (!empty($data_infobpr)) {
+            $infobpr = $data_infobpr[0];
+            $sandibpr = $infobpr['sandibpr'] ?? '';
+            $kodejenis = $infobpr['kodejenis'] ?? '';
+        }
+
+        function sanitizeTxtRepInheren($text)
+        {
+            $text = str_replace(["\r", "\n"], ' ', $text);
+            $text = str_replace(
+                ['“', '”', '‘', '’', '%', '|'],
+                ['"', '"', "'", "'", ' persen ', ' '],
+                $text
+            );
+            $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
+            return trim(preg_replace('/\s+/', ' ', $text));
+        }
+
+        $kodeMap = [
+            138 => '5210',
+            139 => '5211',
+            140 => '5212',
+            141 => '5220',
+            142 => '5221',
+            143 => '5222',
+            144 => '5230',
+            145 => '5231',
+            146 => '5232',
+            147 => '5299', // kondisional
+            148 => '5292',
+        ];
+
+        // Index data
+        $indexedData = [];
+        foreach ($data_risikoreputasi as $row) {
+            if (isset($row['faktor1id'])) {
+                $indexedData[$row['faktor1id']] = $row;
+            }
+        }
+
+        // Cek apakah ADA data 138–146
+        $hasMainData = false;
+        foreach (range(138, 146) as $fid) {
+            if (isset($indexedData[$fid])) {
+                $hasMainData = true;
+                break;
+            }
+        }
+
+        $output = '';
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0501|{$modalinti}|{$kategori}||\r\n";
+
+        // Jika TIDAK ADA data utama → STOP (header saja)
+        if (!$hasMainData) {
+            return service('response')
+                ->setHeader('Content-Type', 'text/plain')
+                ->setHeader(
+                    'Content-Disposition',
+                    'attachment; filename="TKSBPRKS-0501-' . $jenispelaporan . '-S-' . $titleDate . '-' . $sandibpr . '-01.txt"'
+                )
+                ->setBody($output);
+        }
+
+        // Generate data 138–146 & 148 (jika ada)
+        foreach ($indexedData as $faktorId => $row) {
+
+            if (!isset($kodeMap[$faktorId])) {
+                continue;
+            }
+
+            if ($faktorId == 147) {
+                continue; // 5299 diproses terpisah
+            }
+
+            $kode = $kodeMap[$faktorId];
+            $penilaiankredit = sanitizeTxtRepInheren($row['penilaiankredit'] ?? '');
+            $keterangan = sanitizeTxtRepInheren($row['keterangan'] ?? '-');
+
+            $output .= "D01|{$kode}|{$penilaiankredit}|{$keterangan}\r\n";
+        }
+
+        // WAJIB generate 5299 jika ada data utama
+        $row5299 = $indexedData[147] ?? [];
+        $output .= "D01|5299|" .
+            sanitizeTxtRepInheren($row5299['penilaiankredit'] ?? '') . "|" .
+            sanitizeTxtRepInheren($row5299['keterangan'] ?? '') . "\r\n";
+
+        $filename = "TKSBPRKS-0501-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+
+        return service('response')
+            ->setHeader('Content-Type', 'text/plain')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
+    }
+
+    private function getMatchingProfilRisikoPeriodeId($periodeTKSId)
+    {
+        $periodeTKS = $this->periodetksModel->find($periodeTKSId);
+
+        if (!$periodeTKS) {
+            return null;
+        }
+
+        $periodeProfilRisikoList = $this->periodeModel->where([
+            'semester' => $periodeTKS['semester'],
+            'tahun' => $periodeTKS['tahun'],
+            'kodebpr' => $this->userKodebpr
+        ])->findAll();
+
+        if (empty($periodeProfilRisikoList)) {
+            return null;
+        }
+
+        return $periodeProfilRisikoList[0]['id'];
+    }
+
+    private function formatDateForDisplay($date)
+    {
+        if (empty($date) || $date === '0000-00-00') {
+            return '';
+        }
+
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            return $date;
+        }
+
+        $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
+        return $dateObj ? $dateObj->format('d/m/Y') : '';
     }
 
 }

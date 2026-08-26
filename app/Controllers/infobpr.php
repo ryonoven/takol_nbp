@@ -8,6 +8,7 @@ class infobpr extends Controller
 {
     protected $model;
     protected $auth;
+    protected $session;
     public function __construct()
     {
         $this->model = new M_infobpr();
@@ -35,6 +36,7 @@ class infobpr extends Controller
         $data = [
             'judul' => 'Informasi BPR',
             'infobpr' => $this->model->getBprByKode($kodebpr),
+            'useDropify' => true,
         ];
 
         echo view('templates/v_header', $data);
@@ -110,7 +112,6 @@ class infobpr extends Controller
             ],
         ];
 
-        // Tambah validasi logo jika ada upload
         if ($logoRules !== '') {
             $validationRules['logo'] = $logoRules;
         }
@@ -129,13 +130,11 @@ class infobpr extends Controller
                 'webbpr' => $this->request->getPost('webbpr'),
             ];
 
-            // Proses upload logo jika ada file valid
             if ($file && $file->isValid() && !$file->hasMoved()) {
                 $namaBaru = $file->getRandomName();
                 $file->move('./asset/img', $namaBaru);
                 $data['logo'] = $namaBaru;
 
-                // Hapus logo lama jika sedang update
                 if (!empty($id)) {
                     $oldData = $this->model->find($id);
                     if ($oldData && !empty($oldData['logo']) && file_exists('./asset/img/' . $oldData['logo'])) {

@@ -7,7 +7,7 @@ class M_tgjwbdekom extends Model
 {
     protected $table = 'tgjwbdekom';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nik', 'dekom', 'tugastgjwbdekom', 'user_id', 'fullname', 'is_approved', 'approved_by', 'approved_at', 'dirut', 'accdekom', 'accdekom_by', 'accdekom_at', 'komut', 'periode_id', 'kodebpr'];
+    protected $allowedFields = ['nik', 'dekom', 'jabatan', 'tugastgjwbdekom', 'user_id', 'fullname', 'is_approved', 'approved_by', 'approved_at', 'dirut', 'accdekom', 'accdekom_by', 'accdekom_at', 'komut', 'periode_id', 'kodebpr'];
     protected $useTimestamps = false;
 
     public function __construct()

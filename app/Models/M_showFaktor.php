@@ -18,8 +18,8 @@ use App\Models\M_nilaifaktor12;
 
 class M_showfaktor extends Model
 {
-    protected $table = 'showfaktor'; // Nama tabel di database
-    protected $primaryKey = 'id'; // Primary key tabel
+    protected $table = 'showfaktor';
+    protected $primaryKey = 'id';
     protected $allowedFields = [
         'kodebpr',
         'periode_id',
@@ -40,8 +40,9 @@ class M_showfaktor extends Model
         'negatifhasil',
         'pdf1_filename',
         'pdf2_filename',
-        'cover'
-    ]; // Fields yang dapat diisi
+        'pdf3_filename',
+        'cover',
+    ];
 
     public function ubah($data, $id)
     {
@@ -77,23 +78,19 @@ class M_showfaktor extends Model
             'nfaktor12' => new M_nilaifaktor12()
         ];
 
-        // Ambil nilai Faktor 4 untuk pengecekan
-        
-
         $totalNilai = 0;
         $countValid = 0;
 
         // Loop untuk menghitung total dan jumlah nilai valid
         foreach ($allnfaktor as $field => $model) {
-            // Ambil nilai dari setiap faktor yang sesuai
-            $nilai = $model->select($field) // Ambil nilai berdasarkan field (nfaktor, nfaktor2, dll)
+            $nilai = $model->select($field)
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
                 ->orderBy('created_at', 'DESC')
-                ->first(); // Mengambil nilai terakhir
+                ->first();
 
             if ($nilai && is_numeric($nilai[$field])) {
-                $totalNilai += $nilai[$field]; // Menambahkan nilai ke total
+                $totalNilai += $nilai[$field];
                 $countValid++;
             }
         }
@@ -105,26 +102,21 @@ class M_showfaktor extends Model
     // Fungsi untuk menghitung nilai komposit
     public function hitungNilaiKomposit($kodebpr, $periodeId)
     {
-        // Menggunakan hitungRataRata untuk mendapatkan rata-rata
         $nilaikomposit = $this->hitungRataRata($kodebpr, $periodeId);
 
-        // Pembulatan nilai komposit
         return ($nilaikomposit - floor($nilaikomposit)) >= 0.5 ? ceil($nilaikomposit) : floor($nilaikomposit);
     }
 
     // Menyimpan atau memperbarui data ke tabel showfaktor
     public function simpanShowFaktor($data)
     {
-        // Periksa apakah data dengan kodebpr dan periode_id sudah ada
         $existingData = $this->where('kodebpr', $data['kodebpr'])
             ->where('periode_id', $data['periode_id'])
             ->first();
 
         if ($existingData) {
-            // Jika ada, update data yang ada
             $this->update($existingData['id'], $data);
         } else {
-            // Jika tidak ada, simpan data baru
             $this->save($data);
         }
     }
@@ -164,5 +156,22 @@ class M_showfaktor extends Model
             default:
                 return 'text-muted';
         }
+    }
+
+    public function getByKodebprAndPeriode($kodebpr, $periodeId)
+    {
+        return $this->where([
+            'kodebpr' => $kodebpr,
+            'periode_id' => $periodeId
+        ])->first();
+    }
+
+    public function getBySemesterTahunKodebpr($kodebpr, $semester, $tahun)
+    {
+        return $this->select('id, kodebpr, semester, tahun, nilaikomposit, peringkatkomposit, kesimpulan')
+            ->where('kodebpr', $kodebpr)
+            ->where('semester', $semester)
+            ->where('tahun', $tahun)
+            ->first();
     }
 }

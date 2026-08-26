@@ -7,7 +7,7 @@ class M_shmdirdekomlain extends Model
 {
     protected $table = 'shmdirdekomlain';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'nama', 'jabatan' ,'nik', 'jenisperusahaan', 'kodebank', 'perusahaan', 'persensaham', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at'];
+    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'nama', 'jabatan' ,'nik', 'jenisperusahaan', 'kodebank', 'perusahaan', 'persensaham', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at', 'is_null_record'];
     protected $useTimestamps = false;
 
     public function __construct()

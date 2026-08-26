@@ -7,9 +7,12 @@ use App\Models\M_user;
 use App\Models\M_profilrisikocomments;
 use App\Models\M_stratejikkpmr;
 use App\Models\M_infobpr;
-use App\Models\M_periodeprofilresiko;
+// use App\Models\M_periodeprofilresiko;
+use App\Models\M_periodesemesteran;
 use App\Models\M_profilrisikocommentsread;
 use App\Models\M_showprofilresiko;
+use App\Models\M_showtks;
+use App\Models\M_periodetks;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Stratejikkpmr extends Controller
@@ -28,6 +31,8 @@ class Stratejikkpmr extends Controller
     protected $userId;
     protected $periodeId;
     protected $showprofilresikoModel;
+    protected $showtksModel;
+    protected $periodetksModel;
     protected $userGroups = [];
 
     public function __construct()
@@ -37,13 +42,15 @@ class Stratejikkpmr extends Controller
         $this->db = \Config\Database::connect();
 
         $this->paramprofilrisikoModel = new M_paramprofilrisiko();
-        $this->periodeModel = new M_periodeprofilresiko();
+        $this->periodeModel = new M_periodesemesteran();
         $this->userModel = new M_user();
         $this->komentarModel = new M_profilrisikocomments();
         $this->nilaiModel = new M_stratejikkpmr();
         $this->infobprModel = new M_infobpr();
         $this->commentReadsModel = new M_profilrisikocommentsread();
         $this->showprofilresikoModel = new M_showprofilresiko();
+        $this->showtksModel = new M_showtks();
+        $this->periodetksModel = new M_periodetks();
 
         helper('url');
         $this->session = service('session');
@@ -130,6 +137,7 @@ class Stratejikkpmr extends Controller
         $allFilled = ($approvalData['filled_count'] == 18); // 182-199 = 18
         $allApproved = ($allFilled && $approvalData['approved_count'] == 18);
         $canApprove = $allFilled;
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
 
         $user = $this->userModel->find($this->userId);
 
@@ -156,13 +164,14 @@ class Stratejikkpmr extends Controller
             'nilai14' => $nilai14,
             'penilaianConfig' => $this->getPenilaianConfig(),
             'loadDataViaAjax' => true,
+            'showtks' => $showtks,
 
         ];
 
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('risikostratejik/stratejikkpmr', $data)
+            . view('Laporansemester/Profilrisiko/stratejikkpmr', $data)
             . view('templates/v_footer');
     }
 
@@ -904,6 +913,89 @@ class Stratejikkpmr extends Controller
         }
     }
 
+    public function ubahPeringkat13Manual()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        $penilaiankredit = $this->request->getPost('penilaiankredit');
+
+        if (!$penilaiankredit || !in_array($penilaiankredit, ['1', '2', '3', '4', '5'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Pilih peringkat yang valid']);
+        }
+
+        $penjelasanMapping = [
+            '1' => 'Tingkat Risiko Stratejik KPMR: Sangat Rendah',
+            '2' => 'Tingkat Risiko Stratejik KPMR: Rendah',
+            '3' => 'Tingkat Risiko Stratejik KPMR: Sedang',
+            '4' => 'Tingkat Risiko Stratejik KPMR: Tinggi',
+            '5' => 'Tingkat Risiko Stratejik KPMR: Sangat Tinggi'
+        ];
+
+        try {
+            $this->nilaiModel
+                ->where('faktor1id', 199)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $penilaiankredit,
+                    'penjelasanpenilaian' => $penjelasanMapping[$penilaiankredit],
+                    'is_manual' => 1,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ])
+                ->update();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'peringkat' => $penilaiankredit,
+                'is_manual' => 1
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function resetPeringkat13Auto()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        try {
+            $rataRata = $this->nilaiModel->hitungRataRata(199, $this->userKodebpr, $this->periodeId);
+            $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
+
+            $penjelasanMapping = [
+                '1' => 'Tingkat Risiko Stratejik KPMR: Sangat Rendah',
+                '2' => 'Tingkat Risiko Stratejik KPMR: Rendah',
+                '3' => 'Tingkat Risiko Stratejik KPMR: Sedang',
+                '4' => 'Tingkat Risiko Stratejik KPMR: Tinggi',
+                '5' => 'Tingkat Risiko Stratejik KPMR: Sangat Tinggi'
+            ];
+
+            $this->nilaiModel
+                ->where('faktor1id', 199)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $rataRata,
+                    'penjelasanpenilaian' => $penjelasanMapping[$rataRata],
+                    'is_manual' => 0,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ])
+                ->update();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'peringkat' => $rataRata,
+                'is_manual' => false
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
     public function tambahNilai()
     {
         if (!$this->request->isAJAX()) {
@@ -1146,17 +1238,26 @@ class Stratejikkpmr extends Controller
     public function approveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Kode BPR atau Periode ID tidak valid']);
+            }
             return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
         }
 
+        $requiredFaktor = range(182, 199); // 18 faktor
+        $totalRequired = count($requiredFaktor);
+
         $checkData = $this->nilaiModel
-            ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) as filled_count')
+            ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count')
             ->where('kodebpr', $this->userKodebpr)
             ->where('periode_id', $this->periodeId)
-            ->whereIn('faktor1id', range(182, 199))
+            ->whereIn('faktor1id', $requiredFaktor)
             ->first();
 
-        if ($checkData['filled_count'] < 18) {
+        if ((int) $checkData['filled_count'] < $totalRequired) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Semua faktor harus diisi terlebih dahulu']);
+            }
             return redirect()->back()->with('err', 'Semua faktor harus diisi terlebih dahulu');
         }
 
@@ -1164,23 +1265,29 @@ class Stratejikkpmr extends Controller
             $this->db->table('stratejikkpmr')
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
-                ->whereIn('faktor1id', range(182, 199))
-                ->update([
-                    'is_approved' => 1,
-                    'approved_by' => $this->userId,
-                    'approved_at' => date('Y-m-d H:i:s')
-                ]);
+                ->whereIn('faktor1id', $requiredFaktor)
+                ->update(['is_approved' => 1, 'approved_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')]);
 
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Semua data berhasil disetujui.']);
+            }
             return redirect()->back()->with('message', 'Semua data berhasil disetujui.');
+
         } catch (\Exception $e) {
-            log_message('error', 'Error in approveSemua: ' . $e->getMessage());
-            return redirect()->back()->with('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
+            log_message('error', 'Error in approveSemua (Stratejikkpmr): ' . $e->getMessage());
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()]);
+            }
+            return redirect()->back()->with('err', 'Terjadi kesalahan sistem');
         }
     }
 
     public function unapproveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Kode BPR atau Periode ID tidak valid']);
+            }
             return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
         }
 
@@ -1189,15 +1296,18 @@ class Stratejikkpmr extends Controller
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
                 ->whereIn('faktor1id', range(182, 199))
-                ->update([
-                    'is_approved' => 0,
-                    'approved_by' => $this->userId,
-                    'approved_at' => date('Y-m-d H:i:s')
-                ]);
+                ->update(['is_approved' => 0, 'approved_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')]);
 
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Semua data berhasil dibatalkan persetujuannya.']);
+            }
             return redirect()->back()->with('message', 'Semua data berhasil dibatalkan persetujuannya.');
+
         } catch (\Exception $e) {
-            log_message('error', 'Error in unapproveSemua: ' . $e->getMessage());
+            log_message('error', 'Error in unapproveSemua (Stratejikkpmr): ' . $e->getMessage());
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()]);
+            }
             return redirect()->back()->with('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
@@ -1373,41 +1483,31 @@ class Stratejikkpmr extends Controller
 
     public function getAllUnreadCounts()
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ]);
+        if (!$this->request->hasHeader('X-Requested-With')) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
         }
 
         if (!$this->userKodebpr || !$this->userId || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Missing data'
-            ]);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Missing data']);
         }
 
         $faktorIds = range(182, 199);
+        $subkategori = 'STRATEJIKKPMR';
         $counts = [];
 
         foreach ($faktorIds as $faktorId) {
             $count = $this->commentReadsModel->countUnreadCommentsForUserByFactor(
                 $faktorId,
-                "STRATEJIKKPMR",
+                $subkategori,
                 $this->userKodebpr,
                 $this->userId,
                 $this->periodeId
             );
-
-            if ($count > 0) {
+            if ($count > 0)
                 $counts[$faktorId] = $count;
-            }
         }
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'counts' => $counts
-        ]);
+        return $this->response->setJSON(['status' => 'success', 'counts' => $counts]);
     }
 
     public function simpanNilai14()
@@ -1915,15 +2015,21 @@ class Stratejikkpmr extends Controller
         $output = "";
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
-        $tanggal = new \DateTime($profilResiko['tanggal']);
 
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         // Fetch data
         $data_stratejikkpmr = $this->nilaiModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
@@ -1982,7 +2088,7 @@ class Stratejikkpmr extends Controller
         $output = "";
 
         // Header
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0602|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0602|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         usort($data_stratejikkpmr, function ($a, $b) {
             return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
@@ -2003,7 +2109,7 @@ class Stratejikkpmr extends Controller
         }
 
         // Filename
-        $filename = "PRBPRKS-0602-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0602-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         // Response
         $response = service('response');
@@ -2011,5 +2117,172 @@ class Stratejikkpmr extends Controller
         $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
 
         return $response->setBody($output);
+    }
+
+    public function exporttxtrisikostratejikkpmrtks()
+    {
+        // Authentication check
+        if (!$this->auth->check()) {
+            $redirectURL = session('redirect_url') ?? '/login';
+            unset($_SESSION['redirect_url']);
+            return redirect()->to($redirectURL);
+        }
+
+        // Get parameters
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+
+        // Get periode detail
+        $periodeTKS = $this->periodetksModel->find($periodeId);
+
+        if (!$periodeTKS) {
+            return redirect()->back()->with('error', 'Periode TKS tidak ditemukan');
+        }
+
+        // Use helper method to get matching Profil Risiko periode ID
+        $periodeProfilRisikoId = $this->getMatchingProfilRisikoPeriodeId($periodeId);
+
+        if (!$periodeProfilRisikoId) {
+            return redirect()->back()->with('error', 'Tidak ada periode Profil Risiko yang cocok dengan semester dan tahun periode TKS');
+        }
+
+        $output = "";
+        $modalinti = $periodeTKS['modalinti'];
+        $jenispelaporan = $periodeTKS['jenispelaporan'];
+        $kategori = $periodeTKS['kategori'];
+
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-01-31";
+        } else {
+            $exportDate = "{$tahun}-06-30";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
+
+        // Fetch data
+        $data_stratejikkpmr = $this->nilaiModel->getDataByKodebprAndPeriode($kodebpr, $periodeProfilRisikoId);
+        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
+        // BPR Info
+        $sandibpr = '';
+        $kodejenis = '';
+        if (!empty($data_infobpr)) {
+            $infobpr = $data_infobpr[0];
+            $sandibpr = $infobpr['sandibpr'] ?? '';
+            $kodejenis = $infobpr['kodejenis'] ?? '';
+        }
+
+        function sanitizeTxtStraKpmr($text)
+        {
+            // ganti enter
+            $text = str_replace(["\r", "\n"], ' ', $text);
+
+            // ganti karakter tipografi ke ASCII
+            $text = str_replace(
+                ['“', '”', '‘', '’', '%', '|'],
+                ['"', '"', "'", "'", ' persen ', ' '],
+                $text
+            );
+
+            // hilangkan karakter non-ASCII
+            $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
+
+            // rapikan spasi
+            return trim(preg_replace('/\s+/', ' ', $text));
+        }
+
+        // Mapping kode per faktor1id
+        $kodeMap = [
+            182 => '6310',
+            183 => '6311',
+            184 => '6312',
+            185 => '6313',
+            186 => '6314',
+            187 => '6315',
+            188 => '6316',
+            189 => '6320',
+            190 => '6321',
+            191 => '6322',
+            192 => '6323',
+            193 => '6330',
+            194 => '6331',
+            195 => '6332',
+            196 => '6340',
+            197 => '6341',
+            198 => '6342',
+            199 => '6350',
+        ];
+
+        $output = "";
+
+        // Header
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0602|{$modalinti}|{$kategori}||\r\n";
+
+        usort($data_stratejikkpmr, function ($a, $b) {
+            return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
+        });
+
+        // Data rows
+        foreach ($data_stratejikkpmr as $row) {
+            $faktorId = $row['faktor1id'] ?? null;
+            if (!isset($kodeMap[$faktorId])) {
+                continue; // <- skip data yang tidak punya kode
+            }
+            $kode = $kodeMap[$faktorId] ?? ''; // ambil kode sesuai faktor
+
+            $penilaiankredit = sanitizeTxtStraKpmr($row['penilaiankredit']);
+            $keterangan = sanitizeTxtStraKpmr($row['keterangan']);
+
+            $output .= "D01|{$kode}|{$penilaiankredit}|{$keterangan}\r\n";
+        }
+
+        // Filename
+        $filename = "TKSBPRKS-0602-R-S-{$titleDate}-{$sandibpr}-01.txt";
+
+        // Response
+        $response = service('response');
+        $response->setHeader('Content-Type', 'text/plain');
+        $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+
+        return $response->setBody($output);
+    }
+
+    private function getMatchingProfilRisikoPeriodeId($periodeTKSId)
+    {
+        $periodeTKS = $this->periodetksModel->find($periodeTKSId);
+
+        if (!$periodeTKS) {
+            return null;
+        }
+
+        $periodeProfilRisikoList = $this->periodeModel->where([
+            'semester' => $periodeTKS['semester'],
+            'tahun' => $periodeTKS['tahun'],
+            'kodebpr' => $this->userKodebpr
+        ])->findAll();
+
+        if (empty($periodeProfilRisikoList)) {
+            return null;
+        }
+
+        return $periodeProfilRisikoList[0]['id'];
+    }
+
+    private function formatDateForDisplay($date)
+    {
+        if (empty($date) || $date === '0000-00-00') {
+            return '';
+        }
+
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            return $date;
+        }
+
+        $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
+        return $dateObj ? $dateObj->format('d/m/Y') : '';
     }
 }

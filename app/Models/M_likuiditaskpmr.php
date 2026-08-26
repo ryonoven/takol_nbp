@@ -27,7 +27,8 @@ class M_likuiditaskpmr extends Model
         'accdekom_by',
         'accdekom_at',
         'read_at',
-        'comment_id'
+        'comment_id',
+        'is_manual'
     ];
     protected $useTimestamps = false;
     protected $returnType = 'array';
@@ -162,9 +163,10 @@ class M_likuiditaskpmr extends Model
     private function getCachedUser($userId)
     {
         if (!isset($this->userCache[$userId])) {
-            $userModel = new \App\Models\M_user();
+            $userModel = new M_user();
             $this->userCache[$userId] = $userModel->find($userId);
         }
+        
         return $this->userCache[$userId];
     }
 
@@ -181,7 +183,7 @@ class M_likuiditaskpmr extends Model
         $fullname = $user['fullname'] ?? 'Unknown';
         $kodebpr = $kodebpr ?? $user['kodebpr'] ?? 'default_kodebpr';
 
-        $rataRata = $this->hitungRataRata($faktorId, $kodebpr, $periodeId);
+        // $rataRata = $this->hitungRataRata($faktorId, $kodebpr, $periodeId);
 
         $existing = $this->where([
             'faktor1id' => 135,

@@ -35,7 +35,7 @@ class Periodeprofilresiko extends BaseController
         echo view('templates/v_header', $data);
         echo view('templates/v_sidebar');
         echo view('templates/v_topbar');
-        echo view('periodeprofilresiko/index', $data);
+        echo view('Periode/profilrisiko', $data);
         echo view('templates/v_footer');
     }
 
@@ -70,24 +70,17 @@ class Periodeprofilresiko extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        // Cek duplikasi periodeprofilresiko
+        // Cek duplikasi berdasarkan tahun dan semester saja
         $existing = $this->periodeprofilresikoModel->where([
             'kodebpr' => $user['kodebpr'],
             'tahun' => $this->request->getPost('tahun'),
-            'semester' => $this->request->getPost('semester'),
-            'jenispelaporan' => $this->request->getPost('jenispelaporan'),
-            'modalinti' => $this->request->getPost('modalinti'),
-            'totalaset' => $this->request->getPost('totalaset'),
-            'kantorcabang' => $this->request->getPost('kantorcabang'),
-            'atmdebit' => $this->request->getPost('atmdebit'),
-            'kategori' => $this->request->getPost('kategori')
-
+            'semester' => $this->request->getPost('semester')
         ])->first();
 
         if ($existing) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Periode ini sudah ada');
+                ->with('error', 'Periode Semester ' . $this->request->getPost('semester') . ' Tahun ' . $this->request->getPost('tahun') . ' sudah ada. Silakan pilih periode yang berbeda.');
         }
 
         $periodeId = $this->periodeprofilresikoModel->insert([

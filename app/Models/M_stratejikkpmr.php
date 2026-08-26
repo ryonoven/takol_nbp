@@ -26,7 +26,8 @@ class M_stratejikkpmr extends Model
         'accdekom_by',
         'accdekom_at',
         'read_at',
-        'comment_id'
+        'comment_id',
+        'is_manual'
     ];
     protected $useTimestamps = false;
     protected $returnType = 'array';

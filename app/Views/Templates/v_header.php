@@ -11,9 +11,17 @@
 
     <title><?= $judul; ?></title>
 
+    <?php if (!empty($extraCss)): ?>
+        <?php foreach ($extraCss as $css): ?>
+            <link rel="stylesheet" href="<?= base_url('assets/css/' . $css . '.css') ?>">
+        <?php endforeach; ?>
+    <?php endif; ?>
+
     <!-- Custom fonts for this template-->
     <link href="/asset/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css' integrity='sha512-In/+MILhf6UMDJU4ZhDL0R0fEpsp4D3Le23m6+ujDWXwl3whwpucJG1PEmI3B07nyJx+875ccs+yX2CqQJUxUw==' crossorigin='anonymous'/>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css'
+        integrity='sha512-In/+MILhf6UMDJU4ZhDL0R0fEpsp4D3Le23m6+ujDWXwl3whwpucJG1PEmI3B07nyJx+875ccs+yX2CqQJUxUw=='
+        crossorigin='anonymous' />
 
     <!-- Custom styles for this template-->
     <link href="/asset/css/sb-admin-2.min.css" rel="stylesheet">
@@ -24,7 +32,7 @@
                 margin-top: 30px;
                 margin-bottom: 10px;
             }
-    
+
             .navbar-nav,
             .btn,
             th:nth-child(7),

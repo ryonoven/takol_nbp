@@ -10,9 +10,9 @@
             </nav>
 
             <!-- Sidebar Toggle (Topbar) -->
-            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <!-- <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                 <i class="fa fa-bars"></i>
-            </button>
+            </button> -->
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
@@ -22,9 +22,7 @@
                     <a class="nav-link2 dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <div class="topbar-divider d-none d-sm-block"></div>
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= user()->fullname; ?></span>
-                        <img class="img-profile rounded-circle"
-                            src="<?= base_url(); ?>/asset/img/<?= user()->user_image; ?>">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= user()->fullname; ?></span>                        
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

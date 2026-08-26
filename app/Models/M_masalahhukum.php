@@ -7,7 +7,7 @@ class M_masalahhukum extends Model
 {
     protected $table = 'masalahhukum';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'hukumperdataselesai', 'hukumpidanaselesai', 'totalselesai', 'hukumperdataproses', 'hukumpidanaproses', 'totalproses', 'fullname', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at'];
+    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'hukumperdataselesai', 'hukumpidanaselesai', 'totalselesai', 'hukumperdataproses', 'hukumpidanaproses', 'totalproses', 'fullname', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at', 'is_null_record'];
     protected $useTimestamps = false;
 
     public function __construct()

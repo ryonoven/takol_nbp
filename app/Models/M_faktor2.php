@@ -3,14 +3,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class M_Faktor2 extends Model
+class M_faktor2 extends Model
 {
     protected $table = 'faktor2';
-    protected $primaryKey = 'id'; // Ganti dengan primary key tabel Anda
-    protected $allowedFields = ['is_approved', 'approved_by', 'approved_at'];
+    protected $primaryKey = 'id';
+    protected $allowedFields = ['sub_category', 'sph'];
     protected $useTimestamps = false;
+
     public function __construct()
     {
+        parent::__construct();
         $this->db = db_connect();
         $this->builder = $this->db->table($this->table);
     }
@@ -26,8 +28,7 @@ class M_Faktor2 extends Model
     {
         $value = (int) $value;
         $sql = 'ALTER TABLE faktor2 AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        return $this->db->query($sql, [$value]);
     }
 
     public function getAllData()
@@ -35,65 +36,33 @@ class M_Faktor2 extends Model
         return $this->builder->get()->getResultArray();
     }
 
-    public function tambahNilai($data)
+    public function getAllDataWithNilai($kodebpr, $periodeId)
     {
-        return $this->builder->insert($data);
-    }
-
-    public function tambahKomentar($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    // Mengubah data berdasarkan ID yang diberikan
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function resetAutoIncrement()
-    {
-        $this->db->query('ALTER TABLE faktor2_comments AUTO_INCREMENT = 1');
-    }
-
-    // Menyaring data berdasarkan user_id, kodebpr, dan periode
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->nilai2Model->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($faktor2Id)
-    {
-        return $this->db->table('faktor2_comments')
-            ->where('faktor2id', $faktor2Id)
-            ->orderBy('date', 'DESC')
+        return $this->db->table($this->table)
+            ->select('faktor2.*, nilaifaktor2.nilai, nilaifaktor2.keterangan, nilaifaktor2.is_approved, 
+                      nilaifaktor2.approved_at, nilaifaktor2.approved_by, nilaifaktor2.accdekom, 
+                      nilaifaktor2.accdekom_by, nilaifaktor2.accdekom_at, nilaifaktor2.accdekom2,
+                      nilaifaktor2.accdekom2_by, nilaifaktor2.accdir2, nilaifaktor2.accdir2_by,
+                      nilaifaktor2.positifstruktur, nilaifaktor2.negatifstruktur,
+                      nilaifaktor2.positifproses, nilaifaktor2.negatifproses,
+                      nilaifaktor2.positifhasil, nilaifaktor2.negatifhasil,
+                      nilaifaktor2.periode_id, nilaifaktor2.kodebpr, nilaifaktor2.nfaktor')
+            ->join('nilaifaktor2', 'faktor2.id = nilaifaktor2.faktor1id AND nilaifaktor2.kodebpr = ' . $this->db->escape($kodebpr) . ' AND nilaifaktor2.periode_id = ' . $this->db->escape($periodeId), 'left')
+            ->orderBy('faktor2.id', 'ASC')
             ->get()
             ->getResultArray();
     }
 
-
-    public function getNilaiByFaktor($faktor2Id)
+    public function getDataByCategory($category, $kodebpr, $periodeId)
     {
-        return $this->db->table('nilaifaktor2')
-            ->where('faktor2id', $faktor2Id)
-            ->orderBy('date', 'DESC')
+        return $this->db->table($this->table)
+            ->select('faktor2.*, nilaifaktor2.nilai, nilaifaktor2.keterangan, nilaifaktor2.is_approved')
+            ->join('nilaifaktor2', 'faktor2.id = nilaifaktor2.faktor1id AND nilaifaktor2.kodebpr = ' . $this->db->escape($kodebpr) . ' AND nilaifaktor2.periode_id = ' . $this->db->escape($periodeId), 'left')
+            ->where('faktor2.sph', $category)
+            ->orderBy('faktor2.id', 'ASC')
             ->get()
             ->getResultArray();
     }
-
-    // Di dalam model M_faktor.php
-    public function getAllDataWithApprovalStatus()
-    {
-        // Mengambil data dari tabel faktor2 dan nilaifaktor2 dengan join
-        return $this->db->table('nilaifaktor2')
-            ->select('faktor2.id, faktor2.sub_category, nilaifaktor2.nilai, nilaifaktor2.keterangan, nilaifaktor2.is_approved, nilaifaktor2.approved_at')
-            ->join('nilaifaktor2', 'faktor2.id = nilaifaktor2.faktor2id', 'left')
-            ->get()->getResultArray();
-    }
-
 
     public function setNullKolom($id)
     {
@@ -103,19 +72,12 @@ class M_Faktor2 extends Model
         );
     }
 
-    // Function menambah data
-    // public function tambahF($data)
-    // {
-    //     return $this->builder->insert($data);
-    // }
-
-    // Menghapus data sop berdasarkan ID yang diberikan
-    // Menggunakan metode delete() pada tabel "" dengan kondisi ID = $id
-    // public function hapus($id)
-    // {    
-    //     $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-    //     $this->builder->delete(['id' => $id]);
-    //     $this->setIncrement($lastData[0]['id']);
-    // }
+    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
+    {
+        return $this->where([
+            'kodebpr' => $kodebpr,
+            'periode_id' => $periodeId
+        ])->findAll();
+    }
 
 }

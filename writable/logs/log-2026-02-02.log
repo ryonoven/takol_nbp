@@ -1,0 +1,786 @@
+INFO - 2026-02-02 08:04:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:04:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:04:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:04:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:04:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:04:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:04:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-02-02 08:05:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-02-02 08:05:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 08:11:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:11:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:11:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 08:11:43 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 08:22:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:22:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:22:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:22:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:22:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:22:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:22:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:23:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:24:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:24:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:24:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:24:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:25:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:25:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:25:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:25:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:25:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:26:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:26:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:26:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:26:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:26:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:26:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:27:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:27:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:27:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:28:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:29:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:30:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:30:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:30:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:30:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:31:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:31:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:31:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:31:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:31:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:31:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:32:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:32:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:32:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:32:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:33:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:33:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:33:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:33:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:34:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:34:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:34:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:34:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:34:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:34:24 --> Komposit TKS Calculation: {"nkomposittks":2.0999999999999996,"peringkatkomposittks":2,"nkomposittksbefore":2.65,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:34:24 --> Data to save: {"kodebpr":"001811","periode_id":"1","tahun":"2024","nkredit":2,"kesimpulan1":"Kaji ulang terbatas, rencana tindak dilaporkan triwulanan","noperasional":2,"kesimpulan2":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank,","nkepatuhan":2,"kesimpulan3":"Seluruh data sudah sesuai","nlikuiditas":1,"kesimpulan4":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nreputasi":null,"kesimpulan5":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nstratejik":null,"kesimpulan6":null,"ntotalrisk":2,"nbelumkredit":3,"nbelumoperasional":2,"nbelumkepatuhan":2,"nbelumlikuiditas":2,"nbelumreputasi":null,"nbelumstratejik":null,"nbelumtotalrisk":2,"nprofilrisiko":"3","nprofilrisikobefore":"4","nfaktorprofilrisiko":"0.75","nfaktorprofilrisikobefore":"1.00","ntatakelola":"2","ntatakelolabefore":"2","nfaktortakol":"0.90","nfaktortakolbefore":"0.60","nrentabilitas":"1","nrentabilitasbefore":"1","nfaktorrentabilitas":"0.15","nfaktorrentabilitasbefore":"0.15","npermodalan":"1","npermodalanbefore":"3","nfaktorpermodalan":"0.30","nfaktorpermodalanbefore":"0.90","nkomposittks":2.0999999999999996,"nkomposittksbefore":2.65,"peringkatkomposittks":2,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:34:24 --> Komposit recalculated for kodebpr: 001811, periode: 1
+INFO - 2026-02-02 08:34:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:39:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:39:38 --> Komposit TKS Calculation: {"nkomposittks":2.0999999999999996,"peringkatkomposittks":2,"nkomposittksbefore":2.65,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:39:38 --> Data to save: {"kodebpr":"001811","periode_id":"1","tahun":"2024","nkredit":2,"kesimpulan1":"Kaji ulang terbatas, rencana tindak dilaporkan triwulanan","noperasional":2,"kesimpulan2":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank,","nkepatuhan":2,"kesimpulan3":"Seluruh data sudah sesuai","nlikuiditas":1,"kesimpulan4":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nreputasi":null,"kesimpulan5":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nstratejik":null,"kesimpulan6":null,"ntotalrisk":2,"nbelumkredit":3,"nbelumoperasional":2,"nbelumkepatuhan":2,"nbelumlikuiditas":2,"nbelumreputasi":null,"nbelumstratejik":null,"nbelumtotalrisk":2,"nprofilrisiko":"3","nprofilrisikobefore":"4","nfaktorprofilrisiko":"0.75","nfaktorprofilrisikobefore":"1.00","ntatakelola":"2","ntatakelolabefore":"2","nfaktortakol":"0.90","nfaktortakolbefore":"0.60","nrentabilitas":"1","nrentabilitasbefore":"1","nfaktorrentabilitas":"0.15","nfaktorrentabilitasbefore":"0.15","npermodalan":"1","npermodalanbefore":"3","nfaktorpermodalan":"0.30","nfaktorpermodalanbefore":"0.90","nkomposittks":2.0999999999999996,"nkomposittksbefore":2.65,"peringkatkomposittks":2,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:39:38 --> Komposit recalculated for kodebpr: 001811, periode: 1
+INFO - 2026-02-02 08:39:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:40:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:40:29 --> Komposit TKS Calculation: {"nkomposittks":2.0999999999999996,"peringkatkomposittks":2,"nkomposittksbefore":2.65,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:40:29 --> Data to save: {"kodebpr":"001811","periode_id":"1","tahun":"2024","nkredit":2,"kesimpulan1":"Kaji ulang terbatas, rencana tindak dilaporkan triwulanan","noperasional":2,"kesimpulan2":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank,","nkepatuhan":2,"kesimpulan3":"Seluruh data sudah sesuai","nlikuiditas":1,"kesimpulan4":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nreputasi":null,"kesimpulan5":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nstratejik":null,"kesimpulan6":null,"ntotalrisk":2,"nbelumkredit":3,"nbelumoperasional":2,"nbelumkepatuhan":2,"nbelumlikuiditas":2,"nbelumreputasi":null,"nbelumstratejik":null,"nbelumtotalrisk":2,"nprofilrisiko":"3","nprofilrisikobefore":"4","nfaktorprofilrisiko":"0.75","nfaktorprofilrisikobefore":"1.00","ntatakelola":"2","ntatakelolabefore":"2","nfaktortakol":"0.90","nfaktortakolbefore":"0.60","nrentabilitas":"1","nrentabilitasbefore":"1","nfaktorrentabilitas":"0.15","nfaktorrentabilitasbefore":"0.15","npermodalan":"1","npermodalanbefore":"3","nfaktorpermodalan":"0.30","nfaktorpermodalanbefore":"0.90","nkomposittks":2.0999999999999996,"nkomposittksbefore":2.65,"peringkatkomposittks":2,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:40:29 --> Komposit recalculated for kodebpr: 001811, periode: 1
+INFO - 2026-02-02 08:40:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:40:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:40:49 --> Komposit TKS Calculation: {"nkomposittks":2.0999999999999996,"peringkatkomposittks":2,"nkomposittksbefore":2.65,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:40:49 --> Data to save: {"kodebpr":"001811","periode_id":"1","tahun":"2024","nkredit":2,"kesimpulan1":"Kaji ulang terbatas, rencana tindak dilaporkan triwulanan","noperasional":2,"kesimpulan2":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank,","nkepatuhan":2,"kesimpulan3":"Seluruh data sudah sesuai","nlikuiditas":1,"kesimpulan4":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nreputasi":null,"kesimpulan5":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nstratejik":null,"kesimpulan6":null,"ntotalrisk":2,"nbelumkredit":3,"nbelumoperasional":2,"nbelumkepatuhan":2,"nbelumlikuiditas":2,"nbelumreputasi":null,"nbelumstratejik":null,"nbelumtotalrisk":2,"nprofilrisiko":"3","nprofilrisikobefore":"4","nfaktorprofilrisiko":"0.75","nfaktorprofilrisikobefore":"1.00","ntatakelola":"2","ntatakelolabefore":"2","nfaktortakol":"0.90","nfaktortakolbefore":"0.60","nrentabilitas":"1","nrentabilitasbefore":"1","nfaktorrentabilitas":"0.15","nfaktorrentabilitasbefore":"0.15","npermodalan":"1","npermodalanbefore":"3","nfaktorpermodalan":"0.30","nfaktorpermodalanbefore":"0.90","nkomposittks":2.0999999999999996,"nkomposittksbefore":2.65,"peringkatkomposittks":2,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:40:49 --> Komposit recalculated for kodebpr: 001811, periode: 1
+INFO - 2026-02-02 08:41:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 08:44:17 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 08:44:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:44:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:45:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:45:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:45:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:45:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:45:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:45:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:46:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:46:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:46:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:46:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:46:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:46:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:46:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:47:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:47:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:47:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:47:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:47:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:47:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:11 --> Komposit TKS Calculation: {"nkomposittks":2.0999999999999996,"peringkatkomposittks":2,"nkomposittksbefore":2.65,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:48:11 --> Data to save: {"kodebpr":"001811","periode_id":"1","tahun":"2024","nkredit":2,"kesimpulan1":"Kaji ulang terbatas, rencana tindak dilaporkan triwulanan","noperasional":2,"kesimpulan2":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank,","nkepatuhan":2,"kesimpulan3":"Seluruh data sudah sesuai","nlikuiditas":1,"kesimpulan4":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening.\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nreputasi":null,"kesimpulan5":"Pada periode penilaian Semester I tahun 2025 terdapat parameter Risiko Inheren yg menjadi fokus perhatian BPR NBP 32, antara lain:\n1. Risiko Kredit, Kredit bermasalah (NPL) posisi Juni 2025 mengalami kenaikan yg signifikan jika dibandingkan dengan posisi Juni 2024 sebesar Rp2.057.411.300,- atau setara dgn 51.28%. Salah satu faktor kenaikan NPL didominasi oleh Produk Kosppi dgn total OS NPL sebesar\u00a0Rp711.649.100 sebanyak 21 rekening, Namun pada periode pelaporan BPR telah menyelesaikan AYDA sebesar Rp168.000.000,- sebanyak 1 rekening\n2. sehingga berdampak pada risiko gagal bayar, hal ini disebabkan karena faktor kesalahan analisa dari petugas yang melakukan proses pemberian kredit, Namun BPR mencoba memberikan pelatihan, sosialisasi dan refreshment terkait AKM (analisa kredit mikro). Risiko Operasional,\u00a0masih terdapat analisa kredit yang tidak sesuai dengan profil debitur (smt 1 thn 2024)\n3. pada periode pelaporan masih terdapat kekosongan pada beberapa bagian unit kerja dan adanya rangkap jabatan, namun manajement masih terus berusaha memenuhi struktur organisasi sesuai dengan ketentuan. Risiko Kepatuhan, Pada proses tata kelola yang baik stuktur organisasi harus terpenuhi,\n4. dengan membuat perencanaan dlm jangka 1 minggu kedepan untuk menjaga posisi Likuiditas agar tetap sehat, pada posisi pelaporan Cash Ratio sebesar 15.37% dimana mengalami kanaikan jika dibandingkan dengan Juni 2024 sebesar 14.52%, sehingga BPR masih dapat memenuhi kewajiban jatuh tempo kepada pihak ketiga. Risiko Likuiditas, BPR telah membentuk Tim ALCO dlm hal mengatasi Likuiditas Bank.","nstratejik":null,"kesimpulan6":null,"ntotalrisk":2,"nbelumkredit":3,"nbelumoperasional":2,"nbelumkepatuhan":2,"nbelumlikuiditas":2,"nbelumreputasi":null,"nbelumstratejik":null,"nbelumtotalrisk":2,"nprofilrisiko":"3","nprofilrisikobefore":"4","nfaktorprofilrisiko":"0.75","nfaktorprofilrisikobefore":"1.00","ntatakelola":"2","ntatakelolabefore":"2","nfaktortakol":"0.90","nfaktortakolbefore":"0.60","nrentabilitas":"1","nrentabilitasbefore":"1","nfaktorrentabilitas":"0.15","nfaktorrentabilitasbefore":"0.15","npermodalan":"1","npermodalanbefore":"3","nfaktorpermodalan":"0.30","nfaktorpermodalanbefore":"0.90","nkomposittks":2.0999999999999996,"nkomposittksbefore":2.65,"peringkatkomposittks":2,"peringkatkomposittksbefore":3}
+INFO - 2026-02-02 08:48:11 --> Komposit recalculated for kodebpr: 001811, periode: 1
+INFO - 2026-02-02 08:48:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:48:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 08:48:35 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 08:55:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 08:55:36 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 08:55:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:55:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:55:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:55:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:55:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:55:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:56:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:57:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:58:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:59:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:59:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 08:59:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:00:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:00:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:00:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:00:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:01:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:01:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:01:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:01:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:01:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:01:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:02:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:03:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:04:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:05:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:05:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:05:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:05:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:06:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:06:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:06:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:06:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:06:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:06:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:07:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:07:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:07:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:07:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:08:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:08:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:08:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:08:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:10:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-02-02 09:10:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-02-02 09:10:33 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 09:10:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:10:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-02-02 09:10:45 --> Cannot declare class App\Controllers\Periodeprofilresiko, because the name is already in use
+in APPPATH\Views\Periode\profilrisiko.php on line 8.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+INFO - 2026-02-02 09:11:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:12:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:15:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:15:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:25:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:25:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:26:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-02-02 09:26:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-02-02 09:26:18 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 09:31:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-02-02 09:31:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-02-02 09:31:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 09:31:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:31:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:31:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:43:11 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:43:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:43:19 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:43:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:44:46 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:44:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:44:54 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:44:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:44:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:46:06 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:46:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:46:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:46:13 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:46:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:48:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:48:28 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:48:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:48:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:48:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:48:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:48:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:48:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:48:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:48:41 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:49:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:49:52 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 09:49:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:49:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:49:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:49:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:49:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:49:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 09:49:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 09:49:59 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:34:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:34:55 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:40:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:40:56 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:40:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:41:04 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:41:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:41:35 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:41:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:41:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:41:43 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:46:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:46:50 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:46:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:46:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:46:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:46:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:46:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:46:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:46:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:46:55 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:50:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:50:24 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:50:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:50:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:50:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:50:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:50:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:50:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 10:50:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:50:33 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:53:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:53:20 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 10:54:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 10:54:10 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 11:01:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:01:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:01:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:01:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:01:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:01:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:02:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:02:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:02:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:02:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:02:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:02:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:03:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:04:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:04:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:04:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:04:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:04:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:04:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:05:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:06:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 11:07:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-02-02 11:07:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-02-02 11:07:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 14:05:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-02-02 14:05:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-02-02 14:05:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 14:05:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-02-02 14:05:56 --> Invalid file: "Periodesemester/gcg.php"
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 33.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render()
+ 3 APPPATH\Controllers\Periode.php(40): view()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Periode->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 14:08:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:08:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-02-02 14:08:08 --> Invalid file: "Periodesemester/profilrisiko.php"
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 33.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render()
+ 3 APPPATH\Controllers\Periodeprofilresiko.php(38): view()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Periodeprofilresiko->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 14:09:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:09:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-02-02 14:09:22 --> Invalid file: "Periodesemester/tks.php"
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 33.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render()
+ 3 APPPATH\Controllers\Periodetks.php(38): view()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Periodetks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 14:09:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:09:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-02-02 14:09:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-02-02 14:09:50 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-02-02 14:11:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:11:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:18:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:18:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 14:18:57 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 3
+INFO - 2026-02-02 14:19:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:19:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:19:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 14:19:34 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 14:20:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:20:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:20:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:20:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:20:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:20:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:20:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:20:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:21:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:21:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:21:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:21:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:21:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:21:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:22:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:22:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:22:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:22:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:22:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:22:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:23:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:23:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 14:23:10 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 14:23:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:23:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:23:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:23:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:23:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:24:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:24:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:25:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:26:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:27:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:27:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:27:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:28:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:28:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:28:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:28:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:28:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:28:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:29:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:29:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:29:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:29:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:29:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:29:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:30:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:30:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:30:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:30:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:30:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:30:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:31:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:31:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:31:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:31:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:32:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:33:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:33:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:33:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:33:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:33:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:33:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:34:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:35:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:35:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:35:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:35:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:35:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:35:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:36:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:36:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:36:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:36:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:37:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:38:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:39:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:40:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:40:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:40:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:40:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:41:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:41:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:41:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:41:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:41:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:41:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:42:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:43:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:43:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:43:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:43:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:43:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:43:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:44:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:45:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:45:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:45:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:46:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:46:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:46:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:46:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:46:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:46:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:48:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:48:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:48:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:48:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:48:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:48:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:49:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:49:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:49:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:49:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:49:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:49:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:50:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:50:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:50:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:50:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:50:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:50:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:51:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:51:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:51:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:51:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:52:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:53:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:53:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:53:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:53:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:53:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:53:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:54:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:54:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:54:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:54:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:54:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:54:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:55:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:56:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:57:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:57:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:57:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:57:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:57:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:57:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:58:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:58:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 14:59:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-02-02 15:00:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 15:00:30 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1
+INFO - 2026-02-02 15:17:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-02-02 15:17:37 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 1

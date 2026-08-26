@@ -1,0 +1,2015 @@
+INFO - 2026-01-18 15:14:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-01-18 15:14:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 11.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-01-18 15:14:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 12.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 15:14:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 15:14:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:07:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:08:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:08:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-01-18 16:08:10 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 475.
+ 1 APPPATH\Controllers\Showtks.php(475): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(375): App\Controllers\Showtks->calculateTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(203): App\Controllers\Showtks->calculateAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-01-18 16:08:10 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 506.
+ 1 APPPATH\Controllers\Showtks.php(506): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(423): App\Controllers\Showtks->calculatebelumTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(204): App\Controllers\Showtks->calculatebelumAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:08:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-01-18 16:08:18 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 475.
+ 1 APPPATH\Controllers\Showtks.php(475): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(375): App\Controllers\Showtks->calculateTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(203): App\Controllers\Showtks->calculateAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-01-18 16:08:18 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 506.
+ 1 APPPATH\Controllers\Showtks.php(506): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(423): App\Controllers\Showtks->calculatebelumTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(204): App\Controllers\Showtks->calculatebelumAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:16:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-01-18 16:16:21 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 475.
+ 1 APPPATH\Controllers\Showtks.php(475): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(375): App\Controllers\Showtks->calculateTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(203): App\Controllers\Showtks->calculateAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-01-18 16:16:21 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 506.
+ 1 APPPATH\Controllers\Showtks.php(506): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(423): App\Controllers\Showtks->calculatebelumTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(204): App\Controllers\Showtks->calculatebelumAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:16:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:16:44 --> Invalid file: "showtks/export_all_pdf_zip.php"
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 33.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH\Common.php(1180): CodeIgniter\View\View->render()
+ 3 APPPATH\Controllers\Showtks.php(1604): view()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->exportAllPDFToZipView()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:16:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:16:48 --> Undefined array key "kantorcabang"
+in APPPATH\Controllers\Showtks.php on line 745.
+ 1 APPPATH\Controllers\Showtks.php(745): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 APPPATH\Controllers\Showtks.php(1688): App\Controllers\Showtks->exporttxtlapprofrisk()
+ 3 APPPATH\Controllers\Showtks.php(1658): App\Controllers\Showtks->addTxtToZip()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->exportAllToZip()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:23:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:23:33 --> Undefined array key "atmdebit"
+in APPPATH\Controllers\Showtks.php on line 746.
+ 1 APPPATH\Controllers\Showtks.php(746): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 APPPATH\Controllers\Showtks.php(1680): App\Controllers\Showtks->exporttxtlapprofrisk()
+ 3 APPPATH\Controllers\Showtks.php(1650): App\Controllers\Showtks->addTxtToZip()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->exportAllToZip()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:23:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-01-18 16:23:35 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 475.
+ 1 APPPATH\Controllers\Showtks.php(475): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(375): App\Controllers\Showtks->calculateTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(203): App\Controllers\Showtks->calculateAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-01-18 16:23:35 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 506.
+ 1 APPPATH\Controllers\Showtks.php(506): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(423): App\Controllers\Showtks->calculatebelumTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(204): App\Controllers\Showtks->calculatebelumAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:23:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:23:44 --> Undefined array key "atmdebit"
+in APPPATH\Controllers\Showtks.php on line 746.
+ 1 APPPATH\Controllers\Showtks.php(746): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 APPPATH\Controllers\Showtks.php(1680): App\Controllers\Showtks->exporttxtlapprofrisk()
+ 3 APPPATH\Controllers\Showtks.php(1650): App\Controllers\Showtks->addTxtToZip()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->exportAllToZip()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:24:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-01-18 16:24:26 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 475.
+ 1 APPPATH\Controllers\Showtks.php(475): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(375): App\Controllers\Showtks->calculateTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(203): App\Controllers\Showtks->calculateAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-01-18 16:24:26 --> [DEPRECATED] strtoupper(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Controllers\Showtks.php on line 506.
+ 1 APPPATH\Controllers\Showtks.php(506): strtoupper(null)
+ 2 APPPATH\Controllers\Showtks.php(423): App\Controllers\Showtks->calculatebelumTotalRisk([...])
+ 3 APPPATH\Controllers\Showtks.php(204): App\Controllers\Showtks->calculatebelumAllRiskValues('001811', '1')
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Showtks))
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:24:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:24:32 --> Undefined array key "kategori"
+in APPPATH\Controllers\Showtks.php on line 748.
+ 1 APPPATH\Controllers\Showtks.php(748): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 APPPATH\Controllers\Showtks.php(1680): App\Controllers\Showtks->exporttxtlapprofrisk()
+ 3 APPPATH\Controllers\Showtks.php(1650): App\Controllers\Showtks->addTxtToZip()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->exportAllToZip()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:28:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:28:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:32:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:36:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:36:02 --> Call to undefined method App\Models\M_showtks::getByKodebprAndPeriode
+in SYSTEMPATH\Model.php on line 838.
+ 1 APPPATH\Controllers\Showtks.php(362): CodeIgniter\Model->__call()
+ 2 APPPATH\Controllers\Showtks.php(203): App\Controllers\Showtks->calculateAllRiskValues()
+ 3 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 5 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:36:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:36:19 --> Call to undefined method App\Models\M_showtks::simpanProfilRisiko
+in SYSTEMPATH\Model.php on line 838.
+ 1 APPPATH\Controllers\Showtks.php(216): CodeIgniter\Model->__call()
+ 2 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+ 3 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:36:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-01-18 16:36:29 --> mysqli_sql_exception: Unknown column 'updated_at' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Models\M_showtks.php(117): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\app\Controllers\Showtks.php(216): App\Models\M_showtks->simpanProfilRisiko()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Showtks->index()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+CRITICAL - 2026-01-18 16:36:29 --> Unknown column 'updated_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Models\M_showtks.php(117): CodeIgniter\Model->update()
+ 9 APPPATH\Controllers\Showtks.php(216): App\Models\M_showtks->simpanProfilRisiko()
+10 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->index()
+11 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+12 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+13 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:36:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:42:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:47:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:47:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:47:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:47:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:47:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:47:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:48:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:48:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:48:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:48:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:49:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-01-18 16:49:28 --> Call to undefined method App\Models\M_showtks::getDataByKodebprAndPeriode
+in SYSTEMPATH\Model.php on line 838.
+ 1 APPPATH\Controllers\Showtks.php(755): CodeIgniter\Model->__call()
+ 2 APPPATH\Controllers\Showtks.php(1681): App\Controllers\Showtks->exporttxtlapprofrisk()
+ 3 APPPATH\Controllers\Showtks.php(1651): App\Controllers\Showtks->addTxtToZip()
+ 4 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Showtks->exportAllToZip()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 16:49:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:49:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:54:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 16:54:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:05:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:05:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-01-18 17:05:41 --> Method 'exporttxtrisikokredittks' tidak ditemukan di controller 'Risikokredit'
+INFO - 2026-01-18 17:13:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:14:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:14:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:15:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:15:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:36:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:36:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:37:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:37:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:38:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:38:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:39:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:39:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:53:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 17:53:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:00:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:00:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:00:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:01:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:05:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:05:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:07:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:07:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:10:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:10:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:19:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:19:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:25:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:26:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:26:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:27:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:27:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:34:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:35:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:35:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:41:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:42:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:46:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:46:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 18:46:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 19:02:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 19:02:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 19:07:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 19:07:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 19:22:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 19:22:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 19:22:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 20:05:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 20:13:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 20:13:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 20:14:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 20:17:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 20:40:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 20:40:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:35:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:35:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:35:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:34 --> AutoSave request - Field: labarugibelumpajak, Value: 2222222
+INFO - 2026-01-18 21:37:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:36 --> AutoSave request - Field: ratarataaset, Value: 111111
+INFO - 2026-01-18 21:37:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:39 --> AutoSave request - Field: lababelumpajakbefore, Value: 222222
+INFO - 2026-01-18 21:37:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:41 --> AutoSave request - Field: ratarataasetbefore, Value: 11111
+INFO - 2026-01-18 21:37:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:45 --> AutoSave request - Field: ratarataaset, Value: 11111
+INFO - 2026-01-18 21:37:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:47 --> AutoSave request - Field: ratarataaset, Value: 1111
+INFO - 2026-01-18 21:37:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:50 --> AutoSave request - Field: labarugibelumpajak, Value: 22222
+INFO - 2026-01-18 21:37:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:37:53 --> AutoSave request - Field: labarugibelumpajak, Value: 22222
+INFO - 2026-01-18 21:38:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:38:33 --> AutoSave request - Field: labarugibelumpajak, Value: 22222222
+INFO - 2026-01-18 21:38:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:38:34 --> AutoSave request - Field: ratarataaset, Value: 11111
+INFO - 2026-01-18 21:38:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:38:36 --> AutoSave request - Field: ratarataaset, Value: 111111
+INFO - 2026-01-18 21:38:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:38:37 --> AutoSave request - Field: ratarataaset, Value: 1111111
+INFO - 2026-01-18 21:38:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:38:38 --> AutoSave request - Field: ratarataaset, Value: 11111111
+INFO - 2026-01-18 21:38:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:38:39 --> AutoSave request - Field: ratarataaset, Value: 111111111
+INFO - 2026-01-18 21:38:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:38:43 --> AutoSave request - Field: ratarataaset, Value: 111111111
+INFO - 2026-01-18 21:39:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:39:03 --> AutoSave request - Field: ratarataaset, Value: 1111111112
+INFO - 2026-01-18 21:39:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:39:07 --> AutoSave request - Field: ratarataaset, Value: 2222
+INFO - 2026-01-18 21:39:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:39:08 --> AutoSave request - Field: ratarataaset, Value: 222
+INFO - 2026-01-18 21:39:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:39:10 --> AutoSave request - Field: ratarataaset, Value: 222
+INFO - 2026-01-18 21:40:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:42 --> AutoSave request - Field: pendapatanbunga, Value: 111111
+INFO - 2026-01-18 21:45:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:44 --> AutoSave request - Field: bebanbunga, Value: 2222
+INFO - 2026-01-18 21:45:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:47 --> AutoSave request - Field: ratarataasetproduktif, Value: 2214124
+INFO - 2026-01-18 21:45:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:51 --> AutoSave request - Field: pendapatanbungabefore, Value: 221312
+INFO - 2026-01-18 21:45:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:54 --> AutoSave request - Field: bebanbungabefore, Value: 213213
+ERROR - 2026-01-18 21:45:54 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:45:54 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:45:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:57 --> AutoSave request - Field: bebanbungabefore, Value: 21322
+ERROR - 2026-01-18 21:45:57 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:45:57 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:45:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:45:59 --> AutoSave request - Field: ratarataasetprodbefore, Value: 321321
+INFO - 2026-01-18 21:46:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:46:01 --> AutoSave request - Field: ratarataasetprodbefore, Value: 321321
+INFO - 2026-01-18 21:46:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:34 --> AutoSave request - Field: pendapatanbunga, Value: 21313
+INFO - 2026-01-18 21:50:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:36 --> AutoSave request - Field: bebanbunga, Value: 2131
+INFO - 2026-01-18 21:50:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:37 --> AutoSave request - Field: bebanbunga, Value: 2131
+INFO - 2026-01-18 21:50:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:39 --> AutoSave request - Field: ratarataasetproduktif, Value: 31231
+INFO - 2026-01-18 21:50:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:41 --> AutoSave request - Field: bebanbunga, Value: 2131231
+INFO - 2026-01-18 21:50:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:44 --> AutoSave request - Field: pendapatanbungabefore, Value: 2131231
+INFO - 2026-01-18 21:50:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:46 --> AutoSave request - Field: bebanbungabefore, Value: 321312
+ERROR - 2026-01-18 21:50:46 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:50:46 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:50:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:48 --> AutoSave request - Field: ratarataasetprodbefore, Value: 312312
+INFO - 2026-01-18 21:50:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:52 --> AutoSave request - Field: bebanbungabefore, Value: 1
+ERROR - 2026-01-18 21:50:52 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:50:52 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:50:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:50:56 --> AutoSave request - Field: bebanbungabefore, Value: 1
+ERROR - 2026-01-18 21:50:56 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:50:56 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:51:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:51:54 --> AutoSave request - Field: bebanoperasional, Value: 45
+INFO - 2026-01-18 21:51:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:51:56 --> AutoSave request - Field: bebanoperasional, Value: 4556
+INFO - 2026-01-18 21:51:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:51:57 --> AutoSave request - Field: pendapatanoperasional, Value: 675
+INFO - 2026-01-18 21:52:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:00 --> AutoSave request - Field: bebanoperasionalbefore, Value: 6567
+INFO - 2026-01-18 21:52:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:02 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 7667
+ERROR - 2026-01-18 21:52:02 --> mysqli_sql_exception: Unknown column 'pendapatanoperasionalbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:52:02 --> Unknown column 'pendapatanoperasionalbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:52:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:10 --> AutoSave request - Field: labarugibelumpajak, Value: 7686
+INFO - 2026-01-18 21:52:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:12 --> AutoSave request - Field: ratarataaset, Value: 776
+INFO - 2026-01-18 21:52:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:14 --> AutoSave request - Field: ratarataaset, Value: 776
+INFO - 2026-01-18 21:52:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:16 --> AutoSave request - Field: lababelumpajakbefore, Value: 89798
+INFO - 2026-01-18 21:52:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:18 --> AutoSave request - Field: ratarataasetbefore, Value: 9889
+INFO - 2026-01-18 21:52:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:30 --> AutoSave request - Field: pendapatanoperasional, Value: 6757
+INFO - 2026-01-18 21:52:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:33 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 76678
+ERROR - 2026-01-18 21:52:33 --> mysqli_sql_exception: Unknown column 'pendapatanoperasionalbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:52:33 --> Unknown column 'pendapatanoperasionalbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:52:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:36 --> AutoSave request - Field: bebanoperasionalbefore, Value: 65678
+INFO - 2026-01-18 21:52:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:39 --> AutoSave request - Field: bebanoperasionalbefore, Value: 65678
+INFO - 2026-01-18 21:52:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:41 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 
+ERROR - 2026-01-18 21:52:41 --> mysqli_sql_exception: Unknown column 'pendapatanoperasionalbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:52:41 --> Unknown column 'pendapatanoperasionalbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:52:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:51 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 
+ERROR - 2026-01-18 21:52:51 --> mysqli_sql_exception: Unknown column 'pendapatanoperasionalbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:52:51 --> Unknown column 'pendapatanoperasionalbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:52:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:52:52 --> AutoSave request - Field: bebanbungabefore, Value: 8
+ERROR - 2026-01-18 21:52:52 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:52:52 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:53:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:53:04 --> AutoSave request - Field: bebanbungabefore, Value: 8
+ERROR - 2026-01-18 21:53:04 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:53:04 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:56:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:21 --> AutoSave request - Field: bebanbungabefore, Value: 2123
+ERROR - 2026-01-18 21:56:21 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 21:56:21 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 21:56:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:25 --> AutoSave request - Field: bebanoperasionalbefore, Value: 2321
+INFO - 2026-01-18 21:56:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:27 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 321
+INFO - 2026-01-18 21:56:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:30 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 321
+INFO - 2026-01-18 21:56:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:32 --> AutoSave request - Field: pendapatanoperasional, Value: 2312
+INFO - 2026-01-18 21:56:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:35 --> AutoSave request - Field: bebanoperasional, Value: 32131
+INFO - 2026-01-18 21:56:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:56:44 --> AutoSave request - Field: bebanoperasional, Value: 32131
+INFO - 2026-01-18 21:58:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:59:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:59:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 21:59:58 --> AutoSave request - Field: deskripsirentabilitas, Value: 22
+INFO - 2026-01-18 22:00:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:00 --> AutoSave request - Field: analisarentabilitas, Value: 11
+INFO - 2026-01-18 22:00:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:07 --> AutoSave request - Field: analisarentabilitas, Value: 11
+INFO - 2026-01-18 22:00:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:08 --> AutoSave request - Field: deskripsirentabilitas, Value: jadi
+INFO - 2026-01-18 22:00:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:12 --> AutoSave request - Field: analisarentabilitas, Value: jadi
+INFO - 2026-01-18 22:00:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:16 --> AutoSave request - Field: pendapatanbunga, Value: 2131
+INFO - 2026-01-18 22:00:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:18 --> AutoSave request - Field: bebanbunga, Value: 212
+INFO - 2026-01-18 22:00:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:19 --> AutoSave request - Field: ratarataasetproduktif, Value: 12
+INFO - 2026-01-18 22:00:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:22 --> AutoSave request - Field: pendapatanbungabefore, Value: 31231
+INFO - 2026-01-18 22:00:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:25 --> AutoSave request - Field: ratarataasetprodbefore, Value: 3123
+INFO - 2026-01-18 22:00:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:28 --> AutoSave request - Field: bebanbungabefore, Value: 321
+ERROR - 2026-01-18 22:00:28 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:00:28 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:00:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:00:31 --> AutoSave request - Field: bebanbungabefore, Value: 321
+ERROR - 2026-01-18 22:00:31 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:00:31 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:02:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:02:46 --> AutoSave request - Field: bebanbungabefore, Value: 3211
+ERROR - 2026-01-18 22:02:46 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:02:46 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:02:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:02:48 --> AutoSave request - Field: bebanbungabefore, Value: 321
+ERROR - 2026-01-18 22:02:48 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:02:48 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(745): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:02:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:02:52 --> AutoSave request - Field: bebanoperasional, Value: 222
+INFO - 2026-01-18 22:02:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:02:54 --> AutoSave request - Field: pendapatanoperasional, Value: 111
+INFO - 2026-01-18 22:02:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:02:57 --> AutoSave request - Field: bebanoperasionalbefore, Value: 22
+INFO - 2026-01-18 22:02:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:02:59 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 11
+INFO - 2026-01-18 22:03:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:03 --> AutoSave request - Field: pendapatanoperasional, Value: 1111
+INFO - 2026-01-18 22:03:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:09 --> AutoSave request - Field: pendapatanoperasional, Value: 11111
+INFO - 2026-01-18 22:03:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:11 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 112
+INFO - 2026-01-18 22:03:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:18 --> AutoSave request - Field: labarugibelumpajak, Value: 221
+INFO - 2026-01-18 22:03:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:20 --> AutoSave request - Field: ratarataaset, Value: 122
+INFO - 2026-01-18 22:03:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:22 --> AutoSave request - Field: lababelumpajakbefore, Value: 2121
+INFO - 2026-01-18 22:03:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:25 --> AutoSave request - Field: ratarataasetbefore, Value: 213
+INFO - 2026-01-18 22:03:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:03:59 --> AutoSave request - Field: ratarataasetbefore, Value: 213
+INFO - 2026-01-18 22:04:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:04:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:04:52 --> AutoSave request - Field: bebanbungabefore, Value: 22
+ERROR - 2026-01-18 22:04:52 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:04:52 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:04:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:04:54 --> AutoSave request - Field: bebanbungabefore, Value: 22
+ERROR - 2026-01-18 22:04:54 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:04:54 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:05:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:05:11 --> AutoSave request - Field: bebanbungabefore, Value: 221
+ERROR - 2026-01-18 22:05:11 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:05:11 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:05:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:05:15 --> AutoSave request - Field: bebanbungabefore, Value: 221
+ERROR - 2026-01-18 22:05:15 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:05:15 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:06:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:06:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:06:49 --> AutoSave request - Field: bebanoperasionalbefore, Value: 112
+INFO - 2026-01-18 22:06:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:06:54 --> AutoSave request - Field: bebanbungabefore, Value: 112
+ERROR - 2026-01-18 22:06:54 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:06:54 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:06:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:06:58 --> AutoSave request - Field: bebanbungabefore, Value: 112
+ERROR - 2026-01-18 22:06:58 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:06:58 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:10:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:10:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:10:42 --> AutoSave request - Field: bebanbungabefore, Value: 1212
+ERROR - 2026-01-18 22:10:42 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:10:42 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:10:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:10:45 --> AutoSave request - Field: bebanbungabefore, Value: 1212
+ERROR - 2026-01-18 22:10:45 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:10:45 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:12:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:12:17 --> AutoSave request - Field: bebanbungabefore, Value: 12126
+ERROR - 2026-01-18 22:12:17 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:12:17 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:12:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:12:21 --> AutoSave request - Field: bebanbungabefore, Value: 12126
+ERROR - 2026-01-18 22:12:21 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:12:21 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:14:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:14:44 --> AutoSave request - Field: bebanbungabefore, Value: 121262
+ERROR - 2026-01-18 22:14:44 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:14:44 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:14:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:14:48 --> AutoSave request - Field: bebanbungabefore, Value: 121262
+ERROR - 2026-01-18 22:14:48 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:14:48 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:17:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:17:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:17:16 --> AutoSave request - Field: bebanbungabefore, Value: 2
+ERROR - 2026-01-18 22:17:16 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:17:16 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:17:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:17:21 --> AutoSave request - Field: bebanbungabefore, Value: 2
+ERROR - 2026-01-18 22:17:21 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:17:21 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:18:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:18:04 --> AutoSave request - Field: bebanbungabefore, Value: 22
+ERROR - 2026-01-18 22:18:04 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:18:04 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:18:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:18:07 --> AutoSave request - Field: bebanbungabefore, Value: 22
+ERROR - 2026-01-18 22:18:07 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:18:07 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:18:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:18:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:18:49 --> AutoSave request - Field: bebanbungabefore, Value: 3
+ERROR - 2026-01-18 22:18:49 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:18:49 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:18:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:18:54 --> AutoSave request - Field: bebanbungabefore, Value: 3
+ERROR - 2026-01-18 22:18:54 --> mysqli_sql_exception: Unknown column 'pendapatanbungabersihbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:18:54 --> Unknown column 'pendapatanbungabersihbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:20:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:20:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:20:19 --> AutoSave request - Field: bebanbungabefore, Value: 3
+INFO - 2026-01-18 22:20:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:20:23 --> AutoSave request - Field: ratarataasetprodbefore, Value: 33
+INFO - 2026-01-18 22:20:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:20:26 --> AutoSave request - Field: pendapatanbungabefore, Value: 22
+ERROR - 2026-01-18 22:20:26 --> mysqli_sql_exception: Unknown column 'pendapatanbungabefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:20:26 --> Unknown column 'pendapatanbungabefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:20:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:20:27 --> AutoSave request - Field: pendapatanbungabefore, Value: 2223
+ERROR - 2026-01-18 22:20:27 --> mysqli_sql_exception: Unknown column 'pendapatanbungabefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:20:27 --> Unknown column 'pendapatanbungabefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:20:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:20:29 --> AutoSave request - Field: pendapatanbungabefore, Value: 332
+ERROR - 2026-01-18 22:20:29 --> mysqli_sql_exception: Unknown column 'pendapatanbungabefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:20:29 --> Unknown column 'pendapatanbungabefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:20:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:20:31 --> AutoSave request - Field: pendapatanbungabefore, Value: 332
+ERROR - 2026-01-18 22:20:31 --> mysqli_sql_exception: Unknown column 'pendapatanbungabefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 22:20:31 --> Unknown column 'pendapatanbungabefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tksrentabilitas.php(746): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tksrentabilitas->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 22:21:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:23 --> AutoSave request - Field: bebanbungabefore, Value: 33
+INFO - 2026-01-18 22:21:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:26 --> AutoSave request - Field: pendapatanbungabefore, Value: 323
+INFO - 2026-01-18 22:21:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:28 --> AutoSave request - Field: ratarataasetprodbefore, Value: 1221
+INFO - 2026-01-18 22:21:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:31 --> AutoSave request - Field: ratarataasetproduktif, Value: 13123
+INFO - 2026-01-18 22:21:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:33 --> AutoSave request - Field: bebanbunga, Value: 21312
+INFO - 2026-01-18 22:21:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:35 --> AutoSave request - Field: pendapatanbunga, Value: 31231
+INFO - 2026-01-18 22:21:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:42 --> AutoSave request - Field: bebanoperasional, Value: 32131
+INFO - 2026-01-18 22:21:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:44 --> AutoSave request - Field: bebanoperasional, Value: 32131123
+INFO - 2026-01-18 22:21:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:46 --> AutoSave request - Field: pendapatanoperasional, Value: 32131
+INFO - 2026-01-18 22:21:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:48 --> AutoSave request - Field: bebanoperasionalbefore, Value: 32131
+INFO - 2026-01-18 22:21:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:50 --> AutoSave request - Field: bebanoperasionalbefore, Value: 32131321
+INFO - 2026-01-18 22:21:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:52 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 21312
+INFO - 2026-01-18 22:21:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:54 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 2131221
+INFO - 2026-01-18 22:21:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:56 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 213122132
+INFO - 2026-01-18 22:21:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:21:58 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 21312213212
+INFO - 2026-01-18 22:22:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:00 --> AutoSave request - Field: bebanoperasionalbefore, Value: 321313212131
+INFO - 2026-01-18 22:22:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:06 --> AutoSave request - Field: bebanoperasionalbefore, Value: 321313212131
+INFO - 2026-01-18 22:22:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:31 --> AutoSave request - Field: labarugibelumpajak, Value: 3232
+INFO - 2026-01-18 22:22:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:33 --> AutoSave request - Field: ratarataaset, Value: 1341
+INFO - 2026-01-18 22:22:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:35 --> AutoSave request - Field: ratarataaset, Value: 1341
+INFO - 2026-01-18 22:22:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:37 --> AutoSave request - Field: lababelumpajakbefore, Value: 14131
+INFO - 2026-01-18 22:22:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:39 --> AutoSave request - Field: lababelumpajakbefore, Value: 14131321
+INFO - 2026-01-18 22:22:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:41 --> AutoSave request - Field: lababelumpajakbefore, Value: 14131321321
+INFO - 2026-01-18 22:22:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:43 --> AutoSave request - Field: lababelumpajakbefore, Value: 14131
+INFO - 2026-01-18 22:22:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:45 --> AutoSave request - Field: lababelumpajakbefore, Value: 14131
+INFO - 2026-01-18 22:22:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:46 --> AutoSave request - Field: ratarataasetbefore, Value: 31231
+INFO - 2026-01-18 22:22:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:55 --> AutoSave request - Field: pendapatanoperasional, Value: 321313
+INFO - 2026-01-18 22:22:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:22:58 --> AutoSave request - Field: pendapatanoperasional, Value: 321
+INFO - 2026-01-18 22:23:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:23:00 --> AutoSave request - Field: bebanoperasional, Value: 3213
+INFO - 2026-01-18 22:23:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:23:03 --> AutoSave request - Field: bebanoperasional, Value: 321
+INFO - 2026-01-18 22:23:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:23:06 --> AutoSave request - Field: pendapatanoperasionalbefore, Value: 2131
+INFO - 2026-01-18 22:23:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:23:08 --> AutoSave request - Field: bebanoperasionalbefore, Value: 321
+INFO - 2026-01-18 22:23:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:23:10 --> AutoSave request - Field: bebanoperasionalbefore, Value: 32131
+INFO - 2026-01-18 22:23:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:23:13 --> AutoSave request - Field: bebanoperasionalbefore, Value: 3213
+INFO - 2026-01-18 22:23:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:23:17 --> AutoSave request - Field: bebanoperasionalbefore, Value: 3213
+INFO - 2026-01-18 22:23:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:26:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:28:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:29:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 22:29:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:00:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:16:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:10 --> AutoSave Permodalan - Field: modalintibefore, Value: 12121
+INFO - 2026-01-18 23:17:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:13 --> AutoSave Permodalan - Field: modalpelengkapbefore, Value: 2131
+INFO - 2026-01-18 23:17:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:14 --> AutoSave Permodalan - Field: modalpelengkapbefore, Value: 212
+INFO - 2026-01-18 23:17:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:16 --> AutoSave Permodalan - Field: atmrbefore, Value: 0312
+INFO - 2026-01-18 23:17:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:18 --> AutoSave Permodalan - Field: atmrbefore, Value: 32
+INFO - 2026-01-18 23:17:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:19 --> AutoSave Permodalan - Field: atmrbefore, Value: 324
+INFO - 2026-01-18 23:17:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:21 --> AutoSave Permodalan - Field: atmrbefore, Value: 32452
+INFO - 2026-01-18 23:17:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:27 --> AutoSave Permodalan - Field: modalintiapbbefore, Value: 43242
+INFO - 2026-01-18 23:17:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:29 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 432
+ERROR - 2026-01-18 23:17:29 --> mysqli_sql_exception: Unknown column 'totalasetbermasalahbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 23:17:29 --> Unknown column 'totalasetbermasalahbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 23:17:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:31 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 43234
+ERROR - 2026-01-18 23:17:31 --> mysqli_sql_exception: Unknown column 'totalasetbermasalahbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 23:17:31 --> Unknown column 'totalasetbermasalahbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 23:17:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:17:38 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 43234
+ERROR - 2026-01-18 23:17:38 --> mysqli_sql_exception: Unknown column 'totalasetbermasalahbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 23:17:38 --> Unknown column 'totalasetbermasalahbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 23:18:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:18:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:18:24 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 343
+ERROR - 2026-01-18 23:18:24 --> mysqli_sql_exception: Unknown column 'rasiomiapbbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 23:18:24 --> Unknown column 'rasiomiapbbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 23:18:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:18:27 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 343
+ERROR - 2026-01-18 23:18:27 --> mysqli_sql_exception: Unknown column 'rasiomiapbbefore' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+#6 C:\xampp\htdocs\nbp\system\Model.php(756): CodeIgniter\BaseModel->update()
+#7 C:\xampp\htdocs\nbp\app\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+#8 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-01-18 23:18:27 --> Unknown column 'rasiomiapbbefore' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query()
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2476): CodeIgniter\Database\BaseConnection->query()
+ 5 SYSTEMPATH\Model.php(396): CodeIgniter\Database\BaseBuilder->update()
+ 6 SYSTEMPATH\BaseModel.php(943): CodeIgniter\Model->doUpdate()
+ 7 SYSTEMPATH\Model.php(756): CodeIgniter\BaseModel->update()
+ 8 APPPATH\Controllers\Tkspermodalan.php(248): CodeIgniter\Model->update()
+ 9 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Tkspermodalan->autoSave()
+10 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-01-18 23:19:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:19:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:19:42 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 322
+INFO - 2026-01-18 23:19:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:19:44 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 3221
+INFO - 2026-01-18 23:19:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:19:46 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 32214
+INFO - 2026-01-18 23:19:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:19:48 --> AutoSave Permodalan - Field: totalasetbermasalahbefore, Value: 322142
+INFO - 2026-01-18 23:19:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:20:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:20:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:23:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:23:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:23:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:25:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-01-18 23:28:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

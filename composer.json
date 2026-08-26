@@ -11,10 +11,11 @@
         "ext-mbstring": "*",
         "dompdf/dompdf": "^3.1",
         "laminas/laminas-escaper": "^2.9",
-        "phpoffice/phpspreadsheet": "^4.1",
+        "phpoffice/phpspreadsheet": "^5.8",
         "psr/log": "^1.1",
         "setasign/fpdf": "^1.8",
-        "setasign/fpdi": "^2.6"
+        "setasign/fpdi": "^2.6",
+        "tecnickcom/tcpdf": "^6.10"
     },
     "require-dev": {
         "kint-php/kint": "^5.0.4",

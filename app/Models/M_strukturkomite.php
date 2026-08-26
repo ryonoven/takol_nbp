@@ -7,7 +7,7 @@ class M_strukturkomite extends Model
 {
     protected $table = 'strukturkomite';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'kodebpr', 'periode_id', 'anggotakomite', 'nikkomite', 'keahlian', 'fullname', 'jbtaudit', 'jbtpantauresiko', 'jbtremunerasi', 'jbtmanrisk', 'jbtlain', 'independen', 'tindakstrukturkomite', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'date', 'accdekom2', 'accdekom2_by', 'accdekom3', 'accdekom3_by', 'accdekom4', 'accdekom4_by', 'accdekom5', 'accdekom5_by', 'accdir2', 'accdir2_by'];
+    protected $allowedFields = ['user_id', 'kodebpr', 'periode_id', 'anggotakomite', 'nikkomite', 'keahlian', 'fullname', 'jbtaudit', 'jbtpantauresiko', 'jbtremunerasi', 'jbtmanrisk', 'jbtlain', 'independen', 'tindakstrukturkomite', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'date', 'accdekom2', 'accdekom2_by', 'accdekom3', 'accdekom3_by', 'accdekom4', 'accdekom4_by', 'accdekom5', 'accdekom5_by', 'accdir2', 'accdir2_by', 'is_null_record'];
     protected $useTimestamps = false;
 
     public function __construct()

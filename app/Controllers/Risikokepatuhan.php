@@ -7,9 +7,12 @@ use App\Models\M_user;
 use App\Models\M_profilrisikocomments;
 use App\Models\M_risikokepatuhan;
 use App\Models\M_infobpr;
-use App\Models\M_periodeprofilresiko;
+// use App\Models\M_periodeprofilresiko;
+use App\Models\M_periodesemesteran;
 use App\Models\M_profilrisikocommentsread;
 use App\Models\M_showprofilresiko;
+use App\Models\M_showtks;
+use App\Models\M_periodetks;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Risikokepatuhan extends Controller
@@ -28,6 +31,8 @@ class Risikokepatuhan extends Controller
     protected $userId;
     protected $periodeId;
     protected $showprofilresikoModel;
+    protected $showtksModel;
+    protected $periodetksModel;
     protected $userGroups = [];
 
     public function __construct()
@@ -37,13 +42,15 @@ class Risikokepatuhan extends Controller
         $this->db = \Config\Database::connect();
 
         $this->paramprofilrisikoModel = new M_paramprofilrisiko();
-        $this->periodeModel = new M_periodeprofilresiko();
+        $this->periodeModel = new M_periodesemesteran();
         $this->userModel = new M_user();
         $this->komentarModel = new M_profilrisikocomments();
         $this->nilaiModel = new M_risikokepatuhan();
         $this->infobprModel = new M_infobpr();
         $this->commentReadsModel = new M_profilrisikocommentsread();
         $this->showprofilresikoModel = new M_showprofilresiko();
+        $this->showtksModel = new M_showtks();
+        $this->periodetksModel = new M_periodetks();
 
         helper('url');
         $this->session = service('session');
@@ -134,6 +141,8 @@ class Risikokepatuhan extends Controller
         $allApproved = ($allFilled && $approvalData['approved_count'] == $totalRequired);
         $canApprove = $allFilled;
 
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+
         $user = $this->userModel->find($this->userId);
 
         $data = [
@@ -159,13 +168,14 @@ class Risikokepatuhan extends Controller
             'nilai14' => $nilai14,
             'penilaianConfig' => $this->getPenilaianConfig(),
             'loadDataViaAjax' => true,
+            'showtks' => $showtks,
 
         ];
 
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('risikokepatuhan/index', $data)
+            . view('Laporansemester/Profilrisiko/kepatuhaninheren', $data)
             . view('templates/v_footer');
     }
 
@@ -656,6 +666,89 @@ class Risikokepatuhan extends Controller
         }
     }
 
+    public function ubahPeringkat13Manual()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        $penilaiankredit = $this->request->getPost('penilaiankredit');
+
+        if (!$penilaiankredit || !in_array($penilaiankredit, ['1', '2', '3', '4', '5'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Pilih peringkat yang valid']);
+        }
+
+        $penjelasanMapping = [
+            '1' => 'Tingkat Risiko Kepatuhan Inheren: Sangat Rendah',
+            '2' => 'Tingkat Risiko Kepatuhan Inheren: Rendah',
+            '3' => 'Tingkat Risiko Kepatuhan Inheren: Sedang',
+            '4' => 'Tingkat Risiko Kepatuhan Inheren: Tinggi',
+            '5' => 'Tingkat Risiko Kepatuhan Inheren: Sangat Tinggi'
+        ];
+
+        try {
+            $this->nilaiModel
+                ->where('faktor1id', 81)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $penilaiankredit,
+                    'penjelasanpenilaian' => $penjelasanMapping[$penilaiankredit],
+                    'is_manual' => 1,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ])
+                ->update();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'peringkat' => $penilaiankredit,
+                'is_manual' => 1
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function resetPeringkat13Auto()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        try {
+            $rataRata = $this->nilaiModel->hitungRataRata(81, $this->userKodebpr, $this->periodeId);
+            $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
+
+            $penjelasanMapping = [
+                '1' => 'Tingkat Risiko Kepatuhan Inheren: Sangat Rendah',
+                '2' => 'Tingkat Risiko Kepatuhan Inheren: Rendah',
+                '3' => 'Tingkat Risiko Kepatuhan Inheren: Sedang',
+                '4' => 'Tingkat Risiko Kepatuhan Inheren: Tinggi',
+                '5' => 'Tingkat Risiko Kepatuhan Inheren: Sangat Tinggi'
+            ];
+
+            $this->nilaiModel
+                ->where('faktor1id', 81)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $rataRata,
+                    'penjelasanpenilaian' => $penjelasanMapping[$rataRata],
+                    'is_manual' => 0,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ])
+                ->update();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'peringkat' => $rataRata,
+                'is_manual' => false
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
     public function tambahNilai()
     {
         if (!$this->request->isAJAX()) {
@@ -896,14 +989,19 @@ class Risikokepatuhan extends Controller
     public function approveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Kode BPR atau Periode ID tidak valid'
+                ]);
+            }
             return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
         }
 
-        // Faktor wajib: 73–81
+        // Faktor wajib: 73–79 + 81 (80 = Lainnya, opsional)
         $requiredFaktor = array_merge(range(73, 79), [81]);
-        $totalRequired = count($requiredFaktor);
+        $totalRequired = count($requiredFaktor); // 8
 
-        // Cek semua faktor wajib sudah diisi
         $checkData = $this->nilaiModel
             ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count')
             ->where('kodebpr', $this->userKodebpr)
@@ -912,12 +1010,16 @@ class Risikokepatuhan extends Controller
             ->first();
 
         if ((int) $checkData['filled_count'] < $totalRequired) {
-            return redirect()->back()
-                ->with('err', 'Semua faktor wajib harus diisi terlebih dahulu');
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Semua faktor wajib harus diisi terlebih dahulu'
+                ]);
+            }
+            return redirect()->back()->with('err', 'Semua faktor wajib harus diisi terlebih dahulu');
         }
 
         try {
-            // Approve semua faktor wajib
             $this->db->table('risikokepatuhan')
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
@@ -928,9 +1030,23 @@ class Risikokepatuhan extends Controller
                     'approved_at' => date('Y-m-d H:i:s')
                 ]);
 
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Semua data berhasil disetujui.'
+                ]);
+            }
             return redirect()->back()->with('message', 'Semua data berhasil disetujui.');
+
         } catch (\Exception $e) {
-            log_message('error', 'Error in approveSemua: ' . $e->getMessage());
+            log_message('error', 'Error in approveSemua (Kepatuhan): ' . $e->getMessage());
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+                ]);
+            }
             return redirect()->back()->with('err', 'Terjadi kesalahan sistem');
         }
     }
@@ -938,6 +1054,12 @@ class Risikokepatuhan extends Controller
     public function unapproveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Kode BPR atau Periode ID tidak valid'
+                ]);
+            }
             return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
         }
 
@@ -952,9 +1074,23 @@ class Risikokepatuhan extends Controller
                     'approved_at' => date('Y-m-d H:i:s')
                 ]);
 
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Semua data berhasil dibatalkan persetujuannya.'
+                ]);
+            }
             return redirect()->back()->with('message', 'Semua data berhasil dibatalkan persetujuannya.');
+
         } catch (\Exception $e) {
-            log_message('error', 'Error in unapproveSemua: ' . $e->getMessage());
+            log_message('error', 'Error in unapproveSemua (Kepatuhan): ' . $e->getMessage());
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+                ]);
+            }
             return redirect()->back()->with('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
@@ -1605,15 +1741,21 @@ class Risikokepatuhan extends Controller
         // Periode detail
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
 
-        $tanggal = new \DateTime($profilResiko['tanggal']);
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         // Fetch data
         $data_risikokepatuhan = $this->nilaiModel
@@ -1667,7 +1809,7 @@ class Risikokepatuhan extends Controller
         $output = '';
 
         // HEADER
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0301|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0301|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         // DETAIL — loop berdasarkan kodeMap
         foreach ($kodeMap as $faktorId => $kode) {
@@ -1675,7 +1817,7 @@ class Risikokepatuhan extends Controller
             if (isset($indexedData[$faktorId])) {
                 $row = $indexedData[$faktorId];
                 $penilaiankredit = sanitizeTxtKepInheren($row['penilaiankredit'] ?? '');
-                $keterangan = sanitizeTxtKepInheren($row['keterangan'] ?? '');
+                $keterangan = sanitizeTxtKepInheren($row['keterangan'] ?? '-');
             } else {
                 // data tidak diisi user
                 $penilaiankredit = '';
@@ -1686,7 +1828,7 @@ class Risikokepatuhan extends Controller
         }
 
         // Filename
-        $filename = "PRBPRKS-0301-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0301-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         // Response
         $response = service('response');
@@ -1697,5 +1839,405 @@ class Risikokepatuhan extends Controller
         );
 
         return $response->setBody($output);
+    }
+
+    public function exporttxtrisikokepatuhantks()
+    {
+        if (!$this->auth->check()) {
+            $redirectURL = session('redirect_url') ?? '/login';
+            unset($_SESSION['redirect_url']);
+            return redirect()->to($redirectURL);
+        }
+
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+        $periodeTKS = $this->periodetksModel->find($periodeId);
+
+        if (!$periodeTKS) {
+            return redirect()->back()->with('error', 'Periode TKS tidak ditemukan');
+        }
+
+        $periodeProfilRisikoId = $this->getMatchingProfilRisikoPeriodeId($periodeId);
+
+        if (!$periodeProfilRisikoId) {
+            return redirect()->back()->with('error', 'Tidak ada periode Profil Risiko yang cocok dengan semester dan tahun periode TKS');
+        }
+
+        $output = "";
+
+        // Periode detail
+        $modalinti = $periodeTKS['modalinti'];
+        $jenispelaporan = $periodeTKS['jenispelaporan'];
+        $kategori = $periodeTKS['kategori'];
+
+        $tanggal = new \DateTime($showtks['tanggal']);
+        $titleDate = $tanggal->format('Ymd');
+        $exportDate = $tanggal->format('Y-m-d');
+
+        $data_risikokepatuhan = $this->nilaiModel
+            ->getDataByKodebprAndPeriode($kodebpr, $periodeProfilRisikoId);
+
+        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
+        $sandibpr = '';
+        $kodejenis = '';
+        if (!empty($data_infobpr)) {
+            $infobpr = $data_infobpr[0];
+            $sandibpr = $infobpr['sandibpr'] ?? '';
+            $kodejenis = $infobpr['kodejenis'] ?? '';
+        }
+
+        function sanitizeTxtKepInheren($text)
+        {
+            $text = str_replace(["\r", "\n"], ' ', $text);
+            $text = str_replace(
+                ['“', '”', '‘', '’', '%', '|'],
+                ['"', '"', "'", "'", ' persen ', ' '],
+                $text
+            );
+            $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
+            return trim(preg_replace('/\s+/', ' ', $text));
+        }
+
+        $kodeMap = [
+            73 => '3210',
+            74 => '3211',
+            75 => '3212',
+            76 => '3220',
+            77 => '3221',
+            78 => '3222',
+            79 => '3223',
+            80 => '3299',
+            81 => '3292',
+        ];
+
+        $indexedData = [];
+        foreach ($data_risikokepatuhan as $row) {
+            if (isset($row['faktor1id'])) {
+                $indexedData[$row['faktor1id']] = $row;
+            }
+        }
+
+        $output = '';
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0301|{$modalinti}|{$kategori}||\r\n";
+
+        foreach ($kodeMap as $faktorId => $kode) {
+
+            if (isset($indexedData[$faktorId])) {
+                $row = $indexedData[$faktorId];
+                $penilaiankredit = sanitizeTxtKepInheren($row['penilaiankredit'] ?? '');
+                $keterangan = sanitizeTxtKepInheren($row['keterangan'] ?? '-');
+            } else {
+                $penilaiankredit = '';
+                $keterangan = '';
+            }
+
+            $output .= "D01|{$kode}|{$penilaiankredit}|{$keterangan}\r\n";
+        }
+
+        $filename = "TKSBPRKS-0301-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+
+        $response = service('response');
+        $response->setHeader('Content-Type', 'text/plain');
+        $response->setHeader(
+            'Content-Disposition',
+            'attachment; filename="' . $filename . '"'
+        );
+
+        return $response->setBody($output);
+    }
+
+    private function getMatchingProfilRisikoPeriodeId($periodeTKSId)
+    {
+        $periodeTKS = $this->periodetksModel->find($periodeTKSId);
+
+        if (!$periodeTKS) {
+            return null;
+        }
+
+        $periodeProfilRisikoList = $this->periodeModel->where([
+            'semester' => $periodeTKS['semester'],
+            'tahun' => $periodeTKS['tahun'],
+            'kodebpr' => $this->userKodebpr
+        ])->findAll();
+
+        if (empty($periodeProfilRisikoList)) {
+            return null;
+        }
+
+        return $periodeProfilRisikoList[0]['id'];
+    }
+
+    private function formatDateForDisplay($date)
+    {
+        if (empty($date) || $date === '0000-00-00') {
+            return '';
+        }
+
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            return $date;
+        }
+
+        $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
+        return $dateObj ? $dateObj->format('d/m/Y') : '';
+    }
+
+    public function checkPrevPeriode()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+        if (!$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
+        }
+
+        $currentPeriode = $this->periodeModel->find($this->periodeId);
+        if (!$currentPeriode) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Periode tidak ditemukan']);
+        }
+
+        $prevPeriode = $this->resolvePrevPeriode($currentPeriode);
+        if (!$prevPeriode) {
+            return $this->response->setJSON([
+                'status' => 'no_prev',
+                'message' => 'Tidak ada periode sebelumnya yang terdaftar',
+            ]);
+        }
+
+        // COUNT data yang sudah ada di periode aktif
+        $currentCount = (int) $this->db->table('risikokepatuhan')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $this->periodeId)
+            ->whereIn('faktor1id', range(73, 80))
+            ->where('penilaiankredit IS NOT NULL')
+            ->countAllResults();
+
+        // COUNT data di periode sebelumnya
+        $prevCount = (int) $this->db->table('risikokepatuhan')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $prevPeriode['id'])
+            ->whereIn('faktor1id', range(73, 80))
+            ->where('penilaiankredit IS NOT NULL')
+            ->countAllResults();
+
+        if ($prevCount === 0) {
+            return $this->response->setJSON([
+                'status' => 'no_data',
+                'message' => "Tidak ada data pada periode Semester {$prevPeriode['semester']} Tahun {$prevPeriode['tahun']}",
+                'prev_info' => [
+                    'semester' => $prevPeriode['semester'],
+                    'tahun' => $prevPeriode['tahun'],
+                ],
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => 'available',
+            'prev_info' => [
+                'semester' => $prevPeriode['semester'],
+                'tahun' => $prevPeriode['tahun'],
+                'faktor_count' => $prevCount,
+            ],
+            'current_has_data' => $currentCount > 0,
+            'message' => "Data periode Semester {$prevPeriode['semester']} Tahun {$prevPeriode['tahun']} tersedia ({$prevCount} faktor)",
+        ]);
+    }
+
+    public function syncFromPrevPeriode()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+        if (!$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
+        }
+
+        $forceOverwrite = (int) $this->request->getPost('force_overwrite') === 1;
+
+        $currentPeriode = $this->periodeModel->find($this->periodeId);
+        if (!$currentPeriode) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Periode tidak ditemukan']);
+        }
+
+        $prevPeriode = $this->resolvePrevPeriode($currentPeriode);
+        if (!$prevPeriode) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Periode sebelumnya tidak ditemukan']);
+        }
+
+        $syncFaktorIds = range(73, 80);
+
+        $prevRows = $this->db->table('risikokepatuhan')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $prevPeriode['id'])
+            ->whereIn('faktor1id', $syncFaktorIds)
+            ->get()->getResultArray();
+
+        if (empty($prevRows)) {
+            return $this->response->setJSON([
+                'status' => 'no_data',
+                'message' => "Tidak ada data pada periode Semester {$prevPeriode['semester']} Tahun {$prevPeriode['tahun']}",
+            ]);
+        }
+
+        $existingRows = $this->db->table('risikokepatuhan')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $this->periodeId)
+            ->whereIn('faktor1id', $syncFaktorIds)
+            ->get()->getResultArray();
+
+        $existingLookup = [];
+        foreach ($existingRows as $row) {
+            $existingLookup[(int) $row['faktor1id']] = $row;
+        }
+
+        $user = $this->userModel->find($this->userId);
+        $now = date('Y-m-d H:i:s');
+
+        $copyFields = ['penilaiankredit', 'penjelasanpenilaian', 'keterangan'];
+
+        $toInsert = [];
+        $toUpdate = [];
+        $syncedFaktors = [];
+        $skippedFaktors = [];
+
+        foreach ($prevRows as $prev) {
+            $fid = (int) $prev['faktor1id'];
+            if (empty($prev['penilaiankredit'])) {
+                continue;
+            }
+
+            $rowData = [];
+            foreach ($copyFields as $field) {
+                $rowData[$field] = $prev[$field] ?? null;
+            }
+            $rowData['user_id'] = $this->userId;
+            $rowData['fullname'] = $user['fullname'] ?? 'Unknown';
+            $rowData['kodebpr'] = $this->userKodebpr;
+            $rowData['periode_id'] = $this->periodeId;
+            $rowData['faktor1id'] = $fid;
+            $rowData['is_approved'] = 0;
+            $rowData['accdir2'] = 0;
+            $rowData['is_manual'] = 0;
+
+            if (isset($existingLookup[$fid])) {
+                $existing = $existingLookup[$fid];
+                if (!$forceOverwrite && !empty($existing['penilaiankredit'])) {
+                    $skippedFaktors[] = $fid;
+                    continue;
+                }
+                $toUpdate[] = ['id' => $existing['id'], 'data' => array_merge($rowData, ['updated_at' => $now])];
+            } else {
+                $toInsert[] = array_merge($rowData, ['created_at' => $now]);
+            }
+            $syncedFaktors[] = $fid;
+        }
+
+        if (empty($syncedFaktors)) {
+            return $this->response->setJSON([
+                'status' => 'no_change',
+                'message' => empty($skippedFaktors)
+                    ? 'Tidak ada data yang bisa disinkronisasi'
+                    : 'Semua data sudah terisi. Centang "Timpa data" jika ingin mengganti.',
+                'skipped' => count($skippedFaktors),
+            ]);
+        }
+
+        $this->db->transStart();
+
+        try {
+            if (!empty($toInsert)) {
+                $this->db->table('risikokepatuhan')->insertBatch($toInsert);
+            }
+
+            foreach ($toUpdate as $upd) {
+                $this->db->table('risikokepatuhan')
+                    ->where('id', $upd['id'])
+                    ->update($upd['data']);
+            }
+
+            $categoryMapping = [
+                73 => [74, 75],
+                76 => [77, 78, 79],
+            ];
+            foreach ($categoryMapping as $catId => $childIds) {
+                if (array_intersect($syncedFaktors, $childIds)) {
+                    $this->calculateAndSaveCategoryAverage(
+                        $catId,
+                        $childIds,
+                        $this->userKodebpr,
+                        $this->periodeId
+                    );
+                }
+            }
+
+            if (array_intersect($syncedFaktors, [73, 74, 75, 76, 77, 78, 79, 80])) {
+                $rataRata = $this->nilaiModel->hitungRataRata(81, $this->userKodebpr, $this->periodeId);
+                $this->nilaiModel->insertOrUpdateRataRata($rataRata, 81, $this->userKodebpr, $this->periodeId);
+            }
+
+            $this->db->table('risikokepatuhan')
+                ->where('faktor1id', 81)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->update(['accdir2' => 0, 'is_approved' => 0]);
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Transaksi database gagal');
+            }
+
+            $msg = sprintf(
+                '%d faktor berhasil disinkronisasi dari Semester %s Tahun %s',
+                count($syncedFaktors),
+                $prevPeriode['semester'],
+                $prevPeriode['tahun']
+            );
+            if (!empty($skippedFaktors)) {
+                $msg .= sprintf('. %d faktor dilewati (sudah terisi)', count($skippedFaktors));
+            }
+
+            $nilai81 = $this->nilaiModel->where([
+                'faktor1id' => 81,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => $this->periodeId,
+            ])->first();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => $msg,
+                'synced_count' => count($syncedFaktors),
+                'skipped_count' => count($skippedFaktors),
+                'peringkat13' => $nilai81['penilaiankredit'] ?? null,
+                'prev_periode' => [
+                    'semester' => $prevPeriode['semester'],
+                    'tahun' => $prevPeriode['tahun'],
+                ],
+            ]);
+
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            log_message('error', 'syncFromPrevPeriode [Kepatuhan] error: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Gagal sinkronisasi: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function resolvePrevPeriode(array $currentPeriode): ?array
+    {
+        $semester = (int) $currentPeriode['semester'];
+        $tahun = (int) $currentPeriode['tahun'];
+
+        [$prevSemester, $prevTahun] = $semester === 1
+            ? [2, $tahun - 1]
+            : [1, $tahun];
+
+        return $this->periodeModel
+            ->where('semester', $prevSemester)
+            ->where('tahun', $prevTahun)
+            ->first() ?: null;
     }
 }

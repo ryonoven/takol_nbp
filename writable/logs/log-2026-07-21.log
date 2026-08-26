@@ -1,0 +1,784 @@
+INFO - 2026-07-21 11:45:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:45:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-07-21 11:45:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-07-21 11:45:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 11:45:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-07-21 11:46:27 --> [DEPRECATED] Creation of dynamic property App\Controllers\Admin::$session is deprecated in APPPATH\Controllers\Admin.php on line 13.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Admin->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-07-21 11:46:28 --> [DEPRECATED] Creation of dynamic property App\Controllers\Admin::$auth is deprecated in APPPATH\Controllers\Admin.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Admin->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-07-21 11:46:28 --> [DEPRECATED] Creation of dynamic property App\Controllers\Admin::$authorize is deprecated in APPPATH\Controllers\Admin.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Admin->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 11:46:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:46:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:47:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:47:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:47:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:48:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:48:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:48:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:50:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 11:52:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:26:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:28:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:30:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:32:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:35:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:37:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:39:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:41:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 12:43:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:19:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:20:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:24:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:24:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:24:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:24:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:27:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:27:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 13:27:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:04:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:04:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-07-21 15:04:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-07-21 15:04:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 15:04:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:04:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:04:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:04:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:05:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:05:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:05:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:05:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:05:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:05:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:06:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:07:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-07-21 15:07:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-07-21 15:07:52 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 15:11:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:11:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:12:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:12:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:13:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:15:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:17:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-07-21 15:17:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-07-21 15:17:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 15:17:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:18:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:19:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:21:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:22:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:23:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:23:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:23:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 15:23:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-07-21 16:28:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:28:24 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:28:24 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:28:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:28:28 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:28:29 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:28:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:28:33 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:28:33 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:28:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:28:37 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:28:37 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:29:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:29:30 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:29:30 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:29:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:29:35 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:29:35 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:29:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:29:39 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:29:39 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:29:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:29:43 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:29:43 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:29:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:29:48 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:29:48 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-07-21 16:29:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-21 16:29:52 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:173
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(173): mysqli->real_connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#8 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#9 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#11 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#12 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:218
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(391): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+#3 C:\xampp\htdocs\nbp\system\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\nbp\system\BaseModel.php(557): CodeIgniter\Model->doFind()
+#5 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+#6 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+#7 C:\xampp\htdocs\nbp\app\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+#8 C:\xampp\htdocs\nbp\system\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+#9 C:\xampp\htdocs\nbp\system\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+#10 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#11 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#13 {main}
+CRITICAL - 2026-07-21 16:29:52 --> Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+in SYSTEMPATH\Database\BaseConnection.php on line 427.
+ 1 SYSTEMPATH\Database\BaseConnection.php(574): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH\Model.php(200): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(557): CodeIgniter\Model->doFind()
+ 5 APPPATH\ThirdParty\myth-auth\src\Authentication\AuthenticationBase.php(130): CodeIgniter\BaseModel->find()
+ 6 APPPATH\ThirdParty\myth-auth\src\Authentication\LocalAuthenticator.php(67): Myth\Auth\Authentication\AuthenticationBase->isLoggedIn()
+ 7 APPPATH\ThirdParty\myth-auth\src\Filters\LoginFilter.php(29): Myth\Auth\Authentication\LocalAuthenticator->check()
+ 8 SYSTEMPATH\Filters\Filters.php(173): Myth\Auth\Filters\LoginFilter->before()
+ 9 SYSTEMPATH\CodeIgniter.php(471): CodeIgniter\Filters\Filters->run()
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')

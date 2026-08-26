@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\M_periodetransparansi;
+use App\Models\M_periodetahunan;
 use CodeIgniter\Controller;
 use App\Models\M_showtransparansi;
 use App\Models\M_infobpr;
@@ -118,7 +118,7 @@ class ShowTransparansi extends Controller
     private function getPeriodeModel()
     {
         if (!$this->periodetransparansiModel) {
-            $this->periodetransparansiModel = new M_periodetransparansi();
+            $this->periodetransparansiModel = new M_periodetahunan();
         }
         return $this->periodetransparansiModel;
     }
@@ -144,7 +144,7 @@ class ShowTransparansi extends Controller
 
         $id = $showtransparansi['id'] ?? null;
 
-        $allShowTransparansi = $this->showtransparansiModel->findAll(); // untuk tabel
+        $allShowTransparansi = $this->showtransparansiModel->findAll();
 
         log_message('debug', 'ShowTransparansi: User ID: ' . $this->auth->id() . ', Kode BPR: ' . $kodebpr . ', Periode ID: ' . $periodeId);
 
@@ -155,118 +155,46 @@ class ShowTransparansi extends Controller
         $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
         $bprData = $this->infobprModel->getBprByKode($kodebpr);
 
+        $penjelasanRow = $this->penjelasanumumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $tgjwbdirRow = $this->tgjwbdirModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $tgjwbdekomRow = $this->tgjwbdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $tgjwbkomiteRow = $this->tgjwbkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $strukturkomiteRow = $this->strukturkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $sahamdirdekomRow = $this->sahamdirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $shmusahadirdekomRow = $this->shmusahadirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $shmdirdekomlainRow = $this->shmdirdekomlainModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $keuanganRow = $this->keuangandirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $keluargaRow = $this->keluargadirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $paketRow = $this->paketkebijakandirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $rasiogajiRow = $this->rasiogajiModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $rapatRow = $this->rapatModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $kehadiranRow = $this->kehadirandekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $fraudRow = $this->fraudinternalModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $masalahRow = $this->masalahhukumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $transaksiRow = $this->transaksikepentinganModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $danasosialRow = $this->danasosialModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+
         $transparan = [
-            [
-                'name' => '1. Penjelasan Umum Penerapan Tata Kelola',
-                'link' => base_url('Penjelasanumum'),
-                'accdekom' => $this->penjelasanumumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->penjelasanumumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '2. Pelaksanaan Tugas dan Tanggung Jawab Anggota Direksi',
-                'link' => base_url('Tgjwbdir'),
-                'accdekom' => $this->tgjwbdirModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->tgjwbdirModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '3. Pelaksanaan Tugas dan Tanggung Jawab Anggota Dewan Komisaris',
-                'link' => base_url('Tgjwbdekom'),
-                'accdekom' => $this->tgjwbdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->tgjwbdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '4. Tugas, Tanggung Jawab, Program Kerja, dan Realisasi Program Kerja Komite',
-                'link' => base_url('Tgjwbkomite'),
-                'accdekom' => $this->tgjwbkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->tgjwbkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '5. Struktur, Keanggotaan, Keahlian, dan Independensi Anggota Komite',
-                'link' => base_url('Strukturkomite'),
-                'accdekom' => $this->strukturkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->strukturkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '6. Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada BPR',
-                'link' => base_url('Sahamdirdekom'),
-                'accdekom' => $this->sahamdirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->sahamdirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '7. Kepemilikan Saham Anggota Direksi, Dewan Komisaris, dan Pemegang Saham pada Kelompok Usaha BPR',
-                'link' => base_url('Shmusahadirdekom'),
-                'accdekom' => $this->shmusahadirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->shmusahadirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '8. Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada Perusahaan Lain',
-                'link' => base_url('Shmdirdekomlain'),
-                'accdekom' => $this->shmdirdekomlainModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->shmdirdekomlainModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '9. Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR',
-                'link' => base_url('Keuangandirdekompshm'),
-                'accdekom' => $this->keuangandirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->keuangandirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '10. Hubungan Keluarga Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR',
-                'link' => base_url('Keluargadirdekompshm'),
-                'accdekom' => $this->keluargadirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->keluargadirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '11. Paket/Kebijakan Remunerasi dan Fasilitas Lain bagi Direksi dan Dewan Komisaris',
-                'link' => base_url('Paketkebijakandirdekom'),
-                'accdekom' => $this->paketkebijakandirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->paketkebijakandirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '12. Rasio Gaji Tertinggi dan Gaji Terendah',
-                'link' => base_url('Rasiogaji'),
-                'accdekom' => $this->rasiogajiModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->rasiogajiModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '13. Pelaksanaan Rapat dalam 1 (satu) tahun',
-                'link' => base_url('Rapat'),
-                'accdekom' => $this->rapatModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->rapatModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '14. Kehadiran Anggota Dewan Komisaris',
-                'link' => base_url('Kehadirandekom'),
-                'accdekom' => $this->kehadirandekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->kehadirandekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '15. Jumlah Penyimpangan Intern (Internal Fraud)',
-                'link' => base_url('Fraudinternal'),
-                'accdekom' => $this->fraudinternalModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->fraudinternalModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '16. Permasalahan Hukum yang Dihadapi',
-                'link' => base_url('Masalahhukum'),
-                'accdekom' => $this->masalahhukumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->masalahhukumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '17. Transaksi yang Mengandung Benturan Kepentingan',
-                'link' => base_url('Transaksikepentingan'),
-                'accdekom' => $this->transaksikepentinganModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->transaksikepentinganModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => '18. Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik',
-                'link' => base_url('Danasosial'),
-                'accdekom' => $this->danasosialModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['accdekom'] ?? null,
-                'is_approved' => $this->danasosialModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first()['is_approved'] ?? null,
-            ],
+            ['name' => '1. Penjelasan Umum Penerapan Tata Kelola', 'link' => base_url('Penjelasanumum'), 'accdekom' => $penjelasanRow['accdekom'] ?? null, 'is_approved' => $penjelasanRow['is_approved'] ?? null, 'has_data' => !empty($penjelasanRow)],
+            ['name' => '2. Pelaksanaan Tugas dan Tanggung Jawab Anggota Direksi', 'link' => base_url('Tgjwbdir'), 'accdekom' => $tgjwbdirRow['accdekom'] ?? null, 'is_approved' => $tgjwbdirRow['is_approved'] ?? null, 'has_data' => !empty($tgjwbdirRow)],
+            ['name' => '3. Pelaksanaan Tugas dan Tanggung Jawab Anggota Dewan Komisaris', 'link' => base_url('Tgjwbdekom'), 'accdekom' => $tgjwbdekomRow['accdekom'] ?? null, 'is_approved' => $tgjwbdekomRow['is_approved'] ?? null, 'has_data' => !empty($tgjwbdekomRow)],
+            ['name' => '4. Tugas, Tanggung Jawab, Program Kerja, dan Realisasi Program Kerja Komite', 'link' => base_url('Tgjwbkomite'), 'accdekom' => $tgjwbkomiteRow['accdekom'] ?? null, 'is_approved' => $tgjwbkomiteRow['is_approved'] ?? null, 'has_data' => !empty($tgjwbkomiteRow)],
+            ['name' => '5. Struktur, Keanggotaan, Keahlian, dan Independensi Anggota Komite', 'link' => base_url('Strukturkomite'), 'accdekom' => $strukturkomiteRow['accdekom'] ?? null, 'is_approved' => $strukturkomiteRow['is_approved'] ?? null, 'has_data' => !empty($strukturkomiteRow)],
+            ['name' => '6. Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada BPR', 'link' => base_url('Sahamdirdekom'), 'accdekom' => $sahamdirdekomRow['accdekom'] ?? null, 'is_approved' => $sahamdirdekomRow['is_approved'] ?? null, 'has_data' => !empty($sahamdirdekomRow)],
+            ['name' => '7. Kepemilikan Saham Anggota Direksi, Dewan Komisaris, dan Pemegang Saham pada Kelompok Usaha BPR', 'link' => base_url('Shmusahadirdekom'), 'accdekom' => $shmusahadirdekomRow['accdekom'] ?? null, 'is_approved' => $shmusahadirdekomRow['is_approved'] ?? null, 'has_data' => !empty($shmusahadirdekomRow)],
+            ['name' => '8. Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada Perusahaan Lain', 'link' => base_url('Shmdirdekomlain'), 'accdekom' => $shmdirdekomlainRow['accdekom'] ?? null, 'is_approved' => $shmdirdekomlainRow['is_approved'] ?? null, 'has_data' => !empty($shmdirdekomlainRow)],
+            ['name' => '9. Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR', 'link' => base_url('Keuangandirdekompshm'), 'accdekom' => $keuanganRow['accdekom'] ?? null, 'is_approved' => $keuanganRow['is_approved'] ?? null, 'has_data' => !empty($keuanganRow)],
+            ['name' => '10. Hubungan Keluarga Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR', 'link' => base_url('Keluargadirdekompshm'), 'accdekom' => $keluargaRow['accdekom'] ?? null, 'is_approved' => $keluargaRow['is_approved'] ?? null, 'has_data' => !empty($keluargaRow)],
+            ['name' => '11. Paket/Kebijakan Remunerasi dan Fasilitas Lain bagi Direksi dan Dewan Komisaris', 'link' => base_url('Paketkebijakandirdekom'), 'accdekom' => $paketRow['accdekom'] ?? null, 'is_approved' => $paketRow['is_approved'] ?? null, 'has_data' => !empty($paketRow)],
+            ['name' => '12. Rasio Gaji Tertinggi dan Gaji Terendah', 'link' => base_url('Rasiogaji'), 'accdekom' => $rasiogajiRow['accdekom'] ?? null, 'is_approved' => $rasiogajiRow['is_approved'] ?? null, 'has_data' => !empty($rasiogajiRow)],
+            ['name' => '13. Pelaksanaan Rapat dalam 1 (satu) tahun', 'link' => base_url('Rapat'), 'accdekom' => $rapatRow['accdekom'] ?? null, 'is_approved' => $rapatRow['is_approved'] ?? null, 'has_data' => !empty($rapatRow)],
+            ['name' => '14. Kehadiran Anggota Dewan Komisaris', 'link' => base_url('Kehadirandekom'), 'accdekom' => $kehadiranRow['accdekom'] ?? null, 'is_approved' => $kehadiranRow['is_approved'] ?? null, 'has_data' => !empty($kehadiranRow)],
+            ['name' => '15. Jumlah Penyimpangan Intern (Internal Fraud)', 'link' => base_url('Fraudinternal'), 'accdekom' => $fraudRow['accdekom'] ?? null, 'is_approved' => $fraudRow['is_approved'] ?? null, 'has_data' => !empty($fraudRow)],
+            ['name' => '16. Permasalahan Hukum yang Dihadapi', 'link' => base_url('Masalahhukum'), 'accdekom' => $masalahRow['accdekom'] ?? null, 'is_approved' => $masalahRow['is_approved'] ?? null, 'has_data' => !empty($masalahRow)],
+            ['name' => '17. Transaksi yang Mengandung Benturan Kepentingan', 'link' => base_url('Transaksikepentingan'), 'accdekom' => $transaksiRow['accdekom'] ?? null, 'is_approved' => $transaksiRow['is_approved'] ?? null, 'has_data' => !empty($transaksiRow)],
+            ['name' => '18. Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik', 'link' => base_url('Danasosial'), 'accdekom' => $danasosialRow['accdekom'] ?? null, 'is_approved' => $danasosialRow['is_approved'] ?? null, 'has_data' => !empty($danasosialRow)],
         ];
 
-        // Kirim data ke view
         $data = [
             'judul' => 'Laporan Transparansi Tata Kelola',
             'bprData' => $bprData,
@@ -287,44 +215,9 @@ class ShowTransparansi extends Controller
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('ShowTransparansi/index', $data)
+            . view('Laporantahunan/Transparansi/ShowTransparansi', $data)
             . view('templates/v_footer');
     }
-
-    // private function hitungPeringkatKomposit($nilaikomposit)
-    // {
-    //     if ($nilaikomposit == 1) {
-    //         return 'Sangat Baik';
-    //     } elseif ($nilaikomposit == 2) {
-    //         return 'Baik';
-    //     } elseif ($nilaikomposit == 3) {
-    //         return 'Cukup';
-    //     } elseif ($nilaikomposit == 4) {
-    //         return 'Kurang Baik';
-    //     } elseif ($nilaikomposit == 5) {
-    //         return 'Buruk';
-    //     } else {
-    //         return 'Nilai komposit tidak valid';
-    //     }
-    // }
-
-    // private function getColorClassForPeringkat($peringkatkomposit)
-    // {
-    //     switch ($peringkatkomposit) {
-    //         case 'Sangat Baik':
-    //             return 'text-success';
-    //         case 'Baik':
-    //             return 'text-info';
-    //         case 'Cukup':
-    //             return 'text-warning';
-    //         case 'Kurang Baik':
-    //             return 'text-danger';
-    //         case 'Buruk':
-    //             return 'text-dark';
-    //         default:
-    //             return 'text-muted';
-    //     }
-    // }
 
     public function update()
     {
@@ -380,7 +273,7 @@ class ShowTransparansi extends Controller
         }
 
         $zip = new \ZipArchive();
-        $zipFileName = 'APOLO-NBP-LAPORANGCG-' . date('Y-m-d') . '.zip'; /// MASUKIN NAMA BPRNYA SAMA PERIODE
+        $zipFileName = 'NBPSIMPEL-LAPORAN TRANSPARANSI TAHUNAN -' . date('Y') . "-12-31" . '.zip';
         $zipFilePath = WRITEPATH . 'uploads/' . $zipFileName;
 
         if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
@@ -394,7 +287,7 @@ class ShowTransparansi extends Controller
             $this->addTxtToZip('keuangandirdekompshm', 'exporttxtkeuangandirdekompshm', $zip);
             $this->addTxtToZip('keluargadirdekompshm', 'exporttxtkeluargadirdekompshm', $zip);
             $this->addTxtToZip('paketkebijakandirdekom', 'exporttxtpaketkebijakandirdekom', $zip);
-            $this->addTxtToZip('remunlaindirdekom', 'exporttxtremunlaindirdekom', $zip);
+            // $this->addTxtToZip('remunlaindirdekom', 'exporttxtremunlaindirdekom', $zip);
             $this->addTxtToZip('rasiogaji', 'exporttxtrasiogaji', $zip);
             $this->addTxtToZip('rapat', 'exporttxtrapat', $zip);
             $this->addTxtToZip('kehadirandekom', 'exporttxtkehadirandekom', $zip);

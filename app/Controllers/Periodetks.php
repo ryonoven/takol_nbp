@@ -35,7 +35,7 @@ class Periodetks extends BaseController
         echo view('templates/v_header', $data);
         echo view('templates/v_sidebar');
         echo view('templates/v_topbar');
-        echo view('periodetks/index', $data);
+        echo view('Periode/tks', $data);
         echo view('templates/v_footer');
     }
 
@@ -68,21 +68,16 @@ class Periodetks extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        // Cek duplikasi periodetks
         $existing = $this->periodetksModel->where([
             'kodebpr' => $user['kodebpr'],
             'tahun' => $this->request->getPost('tahun'),
-            'semester' => $this->request->getPost('semester'),
-            'jenispelaporan' => $this->request->getPost('jenispelaporan'),
-            'modalinti' => $this->request->getPost('modalinti'),
-            'totalaset' => $this->request->getPost('totalaset')
-
+            'semester' => $this->request->getPost('semester')
         ])->first();
 
         if ($existing) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Periode ini sudah ada');
+                ->with('error', 'Periode Semester ' . $this->request->getPost('semester') . ' Tahun ' . $this->request->getPost('tahun') . ' sudah ada. Silakan pilih periode yang berbeda.');
         }
 
         $periodeId = $this->periodetksModel->insert([
@@ -92,7 +87,7 @@ class Periodetks extends BaseController
             'semester' => $this->request->getPost('semester'),
             'jenispelaporan' => $this->request->getPost('jenispelaporan'),
             'modalinti' => $this->request->getPost('modalinti'),
-            'totalaset' => $this->request->getPost('totalaset')         
+            'totalaset' => $this->request->getPost('totalaset')
         ]);
 
         $this->setActivePeriode($periodeId);
@@ -106,7 +101,6 @@ class Periodetks extends BaseController
         $periodeId = $this->request->getPost('periode_id');
         $user = $this->userModel->find(user_id());
 
-        // Validasi kepemilikan tks
         $periodetks = $this->periodetksModel->where([
             'id' => $periodeId,
             'kodebpr' => $user['kodebpr']
@@ -119,7 +113,6 @@ class Periodetks extends BaseController
 
         $this->setActivePeriode($periodeId);
 
-        // Redirect ke halaman faktor dengan filter periodetks
         return redirect()->to('/Showtks')
             ->with('message', 'Periode berhasil dipilih');
     }
@@ -128,7 +121,6 @@ class Periodetks extends BaseController
     {
         $user = $this->userModel->find(user_id());
 
-        // Validasi kepemilikan periodetks
         $periodetks = $this->periodetksModel->where([
             'id' => $id,
             'kodebpr' => $user['kodebpr']

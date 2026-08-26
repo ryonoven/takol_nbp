@@ -9,95 +9,221 @@ class M_commentreads extends Model
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
-
     protected $returnType = 'array';
-    protected $useSoftDeletes = false; 
+    protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['comment_id', 'user_id', 'read_at'];
+    protected $allowedFields = [
+        'comment_id',
+        'user_id',
+        'is_read',
+        'read_at',
+        'created_at'
+    ];
 
     protected bool $allowEmptyInserts = false;
+    protected $useTimestamps = false;
 
-    protected $useTimestamps = true; 
-    protected $dateFormat = 'datetime';
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
-
-    // Validation
     protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
 
-    // Callbacks
-    protected $beforeInsert = [];
-    protected $afterInsert = [];
-    protected $beforeUpdate = [];
-    protected $afterUpdate = [];
-    protected $beforeFind = [];
-    protected $afterFind = [];
-    protected $beforeDelete = [];
-    protected $afterDelete = [];
-
     /**
-     * Mark a specific comment as read by a specific user.
-     * Inserts a record if it doesn't exist.
+     * Mark a specific comment as read by a specific user
      */
     public function markAsRead(int $commentId, int $userId)
     {
-        // Check if the record already exists to prevent duplicates
         $existingRead = $this->where('comment_id', $commentId)
             ->where('user_id', $userId)
             ->first();
 
         if (empty($existingRead)) {
-            // Insert new read record
             return $this->insert([
                 'comment_id' => $commentId,
                 'user_id' => $userId,
-                'read_at' => date('Y-m-d H:i:s')
+                'is_read' => 1,
+                'read_at' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s')
             ]);
         }
-        // If it already exists, just return the existing ID (or true for success)
-        return $existingRead['id'];
+
+        return $this->update($existingRead['id'], [
+            'is_read' => 1,
+            'read_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     /**
-     * Get the count of comments related to a factor that a specific user has NOT read.
-     *
-     * @param int $faktorId
-     * @param string $kodebpr
-     * @param int $userId
-     * @param int $periodeId
-     * @return int
+     * ✅ UPDATED: Count unread comments untuk user berdasarkan faktor
+     * Sekarang support parameter $faktorId opsional
+     */
+    public function countUnreadComments($kodebpr, $userId, $periodeId, $faktorId = null)
+    {
+        $builder = $this->db->table('faktor_comments')
+            ->select('faktor_comments.id')
+            ->where('faktor_comments.kodebpr', $kodebpr)
+            ->where('faktor_comments.periode_id', $periodeId)
+            ->where('faktor_comments.user_id !=', $userId); // Tidak hitung komentar sendiri
+
+        // ✅ TAMBAHAN: Filter berdasarkan faktor_id jika diberikan
+        if ($faktorId !== null) {
+            $builder->where('faktor_comments.faktor1id', $faktorId);
+        }
+
+        $builder->join(
+            'comment_reads',
+            'comment_reads.comment_id = faktor_comments.id AND comment_reads.user_id = ' . $userId,
+            'left'
+        )
+            ->where('comment_reads.id IS NULL'); // Hanya yang belum dibaca
+
+        return $builder->countAllResults();
+    }
+
+    /**
+     * ✅ DEPRECATED: Method lama (tetap ada untuk backward compatibility)
+     * Gunakan countUnreadComments() untuk consistency
      */
     public function countUnreadCommentsForUserByFactor($faktorId, $kodebpr, $userId, $periodeId): int
     {
-        // Get all comment IDs for the given factor, kodebpr, and periode
-        $commentsInFactor = $this->db->table('faktor_comments')
+        return $this->countUnreadComments($kodebpr, $userId, $periodeId, $faktorId);
+    }
+
+    /**
+     * ✅ BARU: Mark all comments as read untuk periode dan faktor tertentu
+     */
+    public function markAllAsReadForPeriode($kodebpr, $userId, $periodeId, $faktorId = null)
+    {
+        $builder = $this->db->table('faktor_comments')
             ->select('id')
-            ->where('faktor1id', $faktorId)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->where('user_id !=', $userId) // We only care about comments from *other* users
-            ->get()
-            ->getResultArray();
+            ->where('user_id !=', $userId); // Tidak mark komentar sendiri
 
-        if (empty($commentsInFactor)) {
+        // ✅ TAMBAHAN: Filter berdasarkan faktor_id jika diberikan
+        if ($faktorId !== null) {
+            $builder->where('faktor1id', $faktorId);
+        }
+
+        $comments = $builder->get()->getResultArray();
+
+        $marked = 0;
+        foreach ($comments as $comment) {
+            // Cek apakah sudah pernah di-mark
+            $exists = $this->where('comment_id', $comment['id'])
+                ->where('user_id', $userId)
+                ->first();
+
+            if (!$exists) {
+                $this->insert([
+                    'comment_id' => $comment['id'],
+                    'user_id' => $userId,
+                    'is_read' => 1,
+                    'read_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+                $marked++;
+            } else if ($exists['is_read'] == 0) {
+                // Update jika exists tapi belum di-mark as read
+                $this->update($exists['id'], [
+                    'is_read' => 1,
+                    'read_at' => date('Y-m-d H:i:s')
+                ]);
+                $marked++;
+            }
+        }
+
+        return $marked;
+    }
+
+    /**
+     * ✅ BARU: Check if a comment has been read by a user
+     */
+    public function isCommentRead(int $commentId, int $userId): bool
+    {
+        $result = $this->where('comment_id', $commentId)
+            ->where('user_id', $userId)
+            ->where('is_read', 1)
+            ->first();
+
+        return !empty($result);
+    }
+
+    /**
+     * ✅ BARU: Get list komentar yang sudah dibaca
+     */
+    public function getReadComments($userId, $kodebpr, $periodeId, $faktorId = null)
+    {
+        $builder = $this->db->table($this->table . ' as r');
+        $builder->select('r.*, c.faktor1id, c.komentar, c.created_at as comment_created_at')
+            ->join('faktor_comments as c', 'c.id = r.comment_id')
+            ->where('r.user_id', $userId)
+            ->where('c.kodebpr', $kodebpr)
+            ->where('c.periode_id', $periodeId);
+
+        if ($faktorId !== null) {
+            $builder->where('c.faktor1id', $faktorId);
+        }
+
+        return $builder->get()->getResultArray();
+    }
+
+    /**
+     * ✅ BARU: Get unread comments detail
+     */
+    public function getUnreadComments($userId, $kodebpr, $periodeId, $faktorId = null)
+    {
+        $builder = $this->db->table('faktor_comments as c');
+        $builder->select('c.*, u.fullname')
+            ->join('users as u', 'u.id = c.user_id', 'left')
+            ->where('c.kodebpr', $kodebpr)
+            ->where('c.periode_id', $periodeId)
+            ->where('c.user_id !=', $userId);
+
+        if ($faktorId !== null) {
+            $builder->where('c.faktor1id', $faktorId);
+        }
+
+        $builder->where('c.id NOT IN (
+            SELECT comment_id 
+            FROM comment_reads 
+            WHERE user_id = ' . $this->db->escape($userId) . '
+            AND is_read = 1
+        )', null, false);
+
+        return $builder->get()->getResultArray();
+    }
+
+    /**
+     * ✅ BARU: Batch mark multiple comments as read
+     */
+    public function batchMarkAsRead(array $commentIds, int $userId)
+    {
+        if (empty($commentIds)) {
             return 0;
         }
 
-        $commentIds = array_column($commentsInFactor, 'id');
+        $data = [];
+        foreach ($commentIds as $commentId) {
+            // Check if already exists
+            $exists = $this->where('comment_id', $commentId)
+                ->where('user_id', $userId)
+                ->first();
 
-        // Count how many of these comments are NOT in the comment_reads table for this user
-        $readCommentIds = $this->db->table('comment_reads')
-            ->select('comment_id')
-            ->whereIn('comment_id', $commentIds)
-            ->where('user_id', $userId)
-            ->get()
-            ->getResultArray();
+            if (!$exists) {
+                $data[] = [
+                    'comment_id' => $commentId,
+                    'user_id' => $userId,
+                    'is_read' => 1,
+                    'read_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+            }
+        }
 
-        $readCommentIds = array_column($readCommentIds, 'comment_id');
+        if (!empty($data)) {
+            return $this->insertBatch($data);
+        }
 
-        // Total comments by others - comments by others read by this user
-        return count($commentIds) - count($readCommentIds);
+        return 0;
     }
-}   
+}

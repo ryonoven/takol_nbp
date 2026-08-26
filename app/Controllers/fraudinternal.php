@@ -5,13 +5,13 @@ use CodeIgniter\Controller;
 use App\Models\M_fraudinternal;
 use App\Models\M_infobpr;
 use App\Models\M_user;
-use App\Models\M_periodetransparansi;
+use App\Models\M_periodetahunan;
 use App\Models\M_transparansicomments;
 use App\Models\M_transparansicommentsread;
 use App\Models\M_penjelastindak;
 use Myth\Auth\Config\Services as AuthServices;
 
-class fraudinternal extends Controller
+class Fraudinternal extends Controller
 {
     protected $auth;
     protected $session;
@@ -29,6 +29,45 @@ class fraudinternal extends Controller
     private $userPermissions = null;
     private $userData = null;
 
+    private const CACHE_TTL = 30;
+    private const POLL_MIN_MS = 10000;
+    private const SUBKAT = 'Fraudinternal';
+
+    private const FIELDS = [
+        'fraudtahunlaporandir',
+        'fraudtahunsebelumdir',
+        'selesaitahunlaporandir',
+        'prosestahunlaporandir',
+        'prosestahunsebelumdir',
+        'belumtahunlaporandir',
+        'belumtahunsebelumdir',
+        'hukumtahunlaporandir',
+        'fraudtahunlaporandekom',
+        'fraudtahunsebelumdekom',
+        'selesaitahunlaporandekom',
+        'prosestahunlaporandekom',
+        'prosestahunsebelumdekom',
+        'belumtahunlaporandekom',
+        'belumtahunsebelumdekom',
+        'hukumtahunlaporandekom',
+        'fraudtahunlaporankartap',
+        'fraudtahunsebelumkartap',
+        'selesaitahunlaporankartap',
+        'prosestahunlaporankartap',
+        'prosestahunsebelumkartap',
+        'belumtahunlaporankartap',
+        'belumtahunsebelumkartap',
+        'hukumtahunlaporankartap',
+        'fraudtahunlaporankontrak',
+        'fraudtahunsebelumkontrak',
+        'selesaitahunlaporankontrak',
+        'prosestahunlaporankontrak',
+        'prosestahunsebelumkontrak',
+        'belumtahunlaporankontrak',
+        'belumtahunsebelumkontrak',
+        'hukumtahunlaporankontrak',
+    ];
+
     public function __construct()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -41,63 +80,36 @@ class fraudinternal extends Controller
         }
     }
 
-    private function getFraudinternalModel()
+    private function getFraudinternalModel(): M_fraudinternal
     {
-        if (!$this->fraudinternalModel) {
-            $this->fraudinternalModel = new M_fraudinternal();
-        }
-        return $this->fraudinternalModel;
+        return $this->fraudinternalModel ??= new M_fraudinternal();
+    }
+    private function getUserModel(): M_user
+    {
+        return $this->userModel ??= new M_user();
+    }
+    private function getPeriodeModel(): M_periodetahunan
+    {
+        return $this->periodeModel ??= new M_periodetahunan();
+    }
+    private function getKomentarModel(): M_transparansicomments
+    {
+        return $this->komentarModel ??= new M_transparansicomments();
+    }
+    private function getCommentReadsModel(): M_transparansicommentsread
+    {
+        return $this->commentReadsModel ??= new M_transparansicommentsread();
+    }
+    private function getPenjelastindakModel(): M_penjelastindak
+    {
+        return $this->penjelastindakModel ??= new M_penjelastindak();
+    }
+    private function getInfobprModel(): M_infobpr
+    {
+        return $this->infobprModel ??= new M_infobpr();
     }
 
-    private function getUserModel()
-    {
-        if (!$this->userModel) {
-            $this->userModel = new M_user();
-        }
-        return $this->userModel;
-    }
-
-    private function getPeriodeModel()
-    {
-        if (!$this->periodeModel) {
-            $this->periodeModel = new M_periodetransparansi();
-        }
-        return $this->periodeModel;
-    }
-
-    private function getKomentarModel()
-    {
-        if (!$this->komentarModel) {
-            $this->komentarModel = new M_transparansicomments();
-        }
-        return $this->komentarModel;
-    }
-
-    private function getCommentReadsModel()
-    {
-        if (!$this->commentReadsModel) {
-            $this->commentReadsModel = new M_transparansicommentsread();
-        }
-        return $this->commentReadsModel;
-    }
-
-    private function getPenjelastindakModel()
-    {
-        if (!$this->penjelastindakModel) {
-            $this->penjelastindakModel = new M_penjelastindak();
-        }
-        return $this->penjelastindakModel;
-    }
-
-    private function getInfobprModel()
-    {
-        if (!$this->infobprModel) {
-            $this->infobprModel = new M_infobpr();
-        }
-        return $this->infobprModel;
-    }
-
-    private function loadUserData()
+    private function loadUserData(): void
     {
         if ($this->userData === null && $this->userId) {
             $this->userData = $this->getUserModel()->find($this->userId);
@@ -105,1073 +117,654 @@ class fraudinternal extends Controller
         }
     }
 
-    private function getUserPermissions()
+    private function getUserPermissions(): array
     {
         if ($this->userPermissions === null && $this->userId) {
             $authorize = AuthServices::authorization();
-
-            $this->userPermissions = [
-                'pe' => $authorize->inGroup('pe', $this->userId),
-                'admin' => $authorize->inGroup('admin', $this->userId),
-                'dekom' => $authorize->inGroup('dekom', $this->userId),
-                'dekom2' => $authorize->inGroup('dekom2', $this->userId),
-                'dekom3' => $authorize->inGroup('dekom3', $this->userId),
-                'dekom4' => $authorize->inGroup('dekom4', $this->userId),
-                'dekom5' => $authorize->inGroup('dekom5', $this->userId),
-                'direksi' => $authorize->inGroup('direksi', $this->userId),
-                'direksi2' => $authorize->inGroup('direksi2', $this->userId),
-            ];
+            $uid = $this->userId;
+            foreach (['pe', 'admin', 'dekom', 'dekom2', 'dekom3', 'dekom4', 'dekom5', 'direksi', 'direksi2'] as $g) {
+                $this->userPermissions[$g] = $authorize->inGroup($g, $uid);
+            }
         }
-        return $this->userPermissions;
+        return $this->userPermissions ?? [];
     }
 
     private function checkAuthentication()
     {
         if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
+            $url = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
+            return redirect()->to($url);
         }
         return null;
     }
 
-    private function getIndexData($periodeId, $kodebpr)
+    private function jsonOk(string $msg, array $extra = [])
     {
-        $subkategori = 'Fraudinternal';
+        return $this->response->setJSON(array_merge(
+            ['status' => 'success', 'message' => $msg, 'csrf_hash' => csrf_hash(), 'ts' => time()],
+            $extra
+        ));
+    }
 
-        $fraudinternalData = $this->getFraudinternalModel()
-            ->select('*, accdekom, accdekom_by, accdekom_at, is_approved, approved_by, approved_at')
-            ->where('periode_id', $periodeId)
-            ->where('kodebpr', $kodebpr)
-            ->limit(10)
-            ->findAll();
+    private function jsonErr(string $msg, int $code = 200)
+    {
+        return $this->response->setStatusCode($code)->setJSON([
+            'status' => 'error',
+            'message' => $msg,
+            'csrf_hash' => csrf_hash(),
+        ]);
+    }
 
-        $komentarList = $this->getKomentarModel()
-            ->where('subkategori', $subkategori)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
+    private function requireAjax()
+    {
+        if (!$this->request->isAJAX())
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        return null;
+    }
 
-        $penjelastindak = $this->getPenjelastindakModel()
-            ->getDataPenjelasByKodebprAndPeriode($subkategori, $kodebpr, $periodeId);
+    private function requireAuth()
+    {
+        if (!$this->auth->check())
+            return $this->response->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
+        return null;
+    }
 
-        return [
-            'fraudinternal' => $fraudinternalData,
-            'komentarList' => $komentarList,
-            'penjelastindak' => $penjelastindak
-        ];
+    private function requireEditor()
+    {
+        $p = $this->getUserPermissions();
+        if (!($p['pe'] ?? false) && !($p['admin'] ?? false)) {
+            return $this->response->setStatusCode(403)->setJSON([
+                'status' => 'error',
+                'message' => 'Anda tidak memiliki akses untuk mengubah data ini',
+            ]);
+        }
+        return null;
+    }
+
+    private function deriveApprovalBundle(array $rows): array
+    {
+        $allDekom = !empty($rows) && array_reduce($rows, fn($c, $r) => $c && (int) $r['accdekom'] === 1, true);
+        $allDirut = !empty($rows) && array_reduce($rows, fn($c, $r) => $c && (int) $r['is_approved'] === 1, true);
+        return compact('allDekom', 'allDirut');
     }
 
     public function index()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
-
-        if (!session('active_periode')) {
+        if ($r = $this->checkAuthentication())
+            return $r;
+        if (!session('active_periode'))
             return redirect()->to('/Periodetransparansi');
-        }
 
-        $periodeId = session('active_periode');
+        $periodeId = (int) session('active_periode');
         $kodebpr = $this->userKodebpr;
-
-        if (!$kodebpr) {
+        if (!$kodebpr)
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
 
-        $indexData = $this->getIndexData($periodeId, $kodebpr);
+        $perms = $this->getUserPermissions();
 
-        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
-        $bprData = $this->getInfobprModel()->getBprByKode($kodebpr);
+        $fraudRow = $this->getFraudinternalModel()
+            ->where('periode_id', $periodeId)->where('kodebpr', $kodebpr)->first();
 
-        $permissions = $this->getUserPermissions();
-
-        $accdekomData = $this->fraudinternalModel
-            ->select('accdekom, accdekom_by, accdekom_at')
-            ->where('periode_id', $periodeId)
-            ->where('kodebpr', $kodebpr)
-            ->findAll();
-
-        $accdirutData = $this->fraudinternalModel
-            ->select('is_approved, approved_by, approved_at')
-            ->where('periode_id', $periodeId)
-            ->where('kodebpr', $kodebpr)
-            ->findAll();
-
-        $lastVisit = session('last_visit_komentar') ?? date('Y-m-d H:i:s', strtotime('-1 day'));
-        session()->set('last_visit_komentar', date('Y-m-d H:i:s'));
-
-        $canApprove = true;
-
-        // Ambil semua data dengan kondisi yang sesuai
-        $accdekomValues = $this->fraudinternalModel
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();  // Mengambil semua data yang sesuai
-
-        // Loop melalui setiap data
-        foreach ($accdekomValues as $accdekomValue) {
-            if ($accdekomValue['accdekom'] != 1) {
-                // Jika ada data yang accdekom tidak 1, set canApprove ke false
-                $canApprove = false;
-                break;  // Tidak perlu melanjutkan jika sudah ditemukan yang tidak valid
-            }
-        }
+        $rows = $fraudRow ? [$fraudRow] : [];
+        $approval = $this->deriveApprovalBundle($rows);
+        $accdekomData = array_map(fn($r) => ['accdekom' => $r['accdekom'], 'accdekom_at' => $r['accdekom_at'] ?? null], $rows);
+        $accdirutData = array_map(fn($r) => ['is_approved' => $r['is_approved'], 'approved_at' => $r['approved_at'] ?? null], $rows);
 
         $data = [
             'judul' => '15. Jumlah Penyimpangan Internal (Internal Fraud)',
-            'fraudinternal' => $indexData['fraudinternal'],
-            'userInGroupPE' => $permissions['pe'],
-            'userInGroupAdmin' => $permissions['admin'],
-            'userInGroupDekom' => $permissions['dekom'],
-            'userInGroupDekom2' => $permissions['dekom2'],
-            'userInGroupDekom3' => $permissions['dekom3'],
-            'userInGroupDekom4' => $permissions['dekom4'],
-            'userInGroupDekom5' => $permissions['dekom5'],
-            'userInGroupDireksi' => $permissions['direksi'],
-            'userInGroupDireksi2' => $permissions['direksi2'],
+            'fraudinternal' => $rows,
+            'fraudRow' => $fraudRow,
+            'userId' => $this->userId,
+            'userInGroupPE' => $perms['pe'] ?? false,
+            'userInGroupAdmin' => $perms['admin'] ?? false,
+            'userInGroupDekom' => $perms['dekom'] ?? false,
+            'userInGroupDekom2' => $perms['dekom2'] ?? false,
+            'userInGroupDekom3' => $perms['dekom3'] ?? false,
+            'userInGroupDekom4' => $perms['dekom4'] ?? false,
+            'userInGroupDekom5' => $perms['dekom5'] ?? false,
+            'userInGroupDireksi' => $perms['direksi'] ?? false,
+            'userInGroupDireksi2' => $perms['direksi2'] ?? false,
             'fullname' => $this->userData['fullname'] ?? 'Unknown',
             'kodebpr' => $kodebpr,
-            'komentarModel' => $this->getKomentarModel(),
-            'commentReadsModel' => $this->getCommentReadsModel(),
-            'lastVisit' => $lastVisit,
             'periodeId' => $periodeId,
-            'periodeDetail' => $periodeDetail,
-            'bprData' => $bprData,
+            'periodeDetail' => $this->getPeriodeModel()->getPeriodeDetail($periodeId),
+            'bprData' => $this->getInfobprModel()->getBprByKode($kodebpr),
             'accdekomData' => $accdekomData,
             'accdirutData' => $accdirutData,
-            'periodetransparansi' => $this->getPeriodeModel()->find($periodeId),
-            'penjelastindak' => $indexData['penjelastindak'],
-            'canApprove' => $canApprove
+            'penjelastindak' => $this->getPenjelastindakModel()
+                ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId),
+            'canApprove' => $approval['allDekom'],
+            'pollIntervalMs' => self::POLL_MIN_MS,
+            'canEdit' => (($perms['pe'] ?? false) || ($perms['admin'] ?? false)),
         ];
 
         echo view('templates/v_header', $data);
         echo view('templates/v_sidebar');
         echo view('templates/v_topbar');
-        echo view('fraudinternal/index', $data);
+        echo view('Laporantahunan/Transparansi/fraudinternal', $data);
         echo view('templates/v_footer');
     }
 
     public function tambahfraudajax()
     {
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+        if ($e = $this->requireEditor())
+            return $e;
 
-        if (!$this->auth->check()) {
-            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
-        }
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
 
-        if ($this->request->getMethod() === 'post') {
-            // Validate the incoming data
-            $validation = \Config\Services::validation();
-            $val = $this->validate([
-                'fraudtahunlaporandir' => 'required',
-                'fraudtahunsebelumdir' => 'required',
-                'selesaitahunlaporandir' => 'required',
-                'prosestahunlaporandir' => 'required',
-                'prosestahunsebelumdir' => 'required',
-                'belumtahunlaporandir' => 'required',
-                'belumtahunsebelumdir' => 'required',
-                'hukumtahunlaporandir' => 'required',
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Kode BPR atau periode tidak valid');
 
-                'fraudtahunlaporandekom' => 'required',
-                'fraudtahunsebelumdekom' => 'required',
-                'selesaitahunlaporandekom' => 'required',
-                'prosestahunlaporandekom' => 'required',
-                'prosestahunsebelumdekom' => 'required',
-                'belumtahunlaporandekom' => 'required',
-                'belumtahunsebelumdekom' => 'required',
-                'hukumtahunlaporandekom' => 'required',
-
-                'fraudtahunlaporankartap' => 'required',
-                'fraudtahunsebelumkartap' => 'required',
-                'selesaitahunlaporankartap' => 'required',
-                'prosestahunlaporankartap' => 'required',
-                'prosestahunsebelumkartap' => 'required',
-                'belumtahunlaporankartap' => 'required',
-                'belumtahunsebelumkartap' => 'required',
-                'hukumtahunlaporankartap' => 'required',
-
-                'fraudtahunlaporankontrak' => 'required',
-                'fraudtahunsebelumkontrak' => 'required',
-                'selesaitahunlaporankontrak' => 'required',
-                'prosestahunlaporankontrak' => 'required',
-                'prosestahunsebelumkontrak' => 'required',
-                'belumtahunlaporankontrak' => 'required',
-                'belumtahunsebelumkontrak' => 'required',
-                'hukumtahunlaporankontrak' => 'required'
-            ]);
-
-            if (!$val) {
-                return $this->response->setJSON(['status' => 'error', 'message' => $validation->listErrors()]);
-            } else {
-                // Prepare the data to be inserted
-                $userId = $this->auth->id();
-                $kodebpr = $this->userKodebpr;
-                $periodeId = session('active_periode');
-
-                // PERBAIKAN: Gunakan method getter untuk model
-                $existingData = $this->getFraudinternalModel()->where(['kodebpr' => $kodebpr, 'periode_id' => $periodeId])->first();
-
-                $data = [
-                    'fraudtahunlaporandir' => $this->request->getPost('fraudtahunlaporandir'),
-                    'fraudtahunsebelumdir' => $this->request->getPost('fraudtahunsebelumdir'),
-                    'selesaitahunlaporandir' => $this->request->getPost('selesaitahunlaporandir'),
-                    'prosestahunlaporandir' => $this->request->getPost('prosestahunlaporandir'),
-                    'prosestahunsebelumdir' => $this->request->getPost('prosestahunsebelumdir'),
-                    'belumtahunlaporandir' => $this->request->getPost('belumtahunlaporandir'),
-                    'belumtahunsebelumdir' => $this->request->getPost('belumtahunsebelumdir'),
-                    'hukumtahunlaporandir' => $this->request->getPost('hukumtahunlaporandir'),
-                    'fraudtahunlaporandekom' => $this->request->getPost('fraudtahunlaporandekom'),
-                    'fraudtahunsebelumdekom' => $this->request->getPost('fraudtahunsebelumdekom'),
-                    'selesaitahunlaporandekom' => $this->request->getPost('selesaitahunlaporandekom'),
-
-                    'prosestahunlaporandekom' => $this->request->getPost('prosestahunlaporandekom'),
-                    'prosestahunsebelumdekom' => $this->request->getPost('prosestahunsebelumdekom'),
-                    'belumtahunlaporandekom' => $this->request->getPost('belumtahunlaporandekom'),
-                    'belumtahunsebelumdekom' => $this->request->getPost('belumtahunsebelumdekom'),
-                    'hukumtahunlaporandekom' => $this->request->getPost('hukumtahunlaporandekom'),
-                    'fraudtahunlaporankartap' => $this->request->getPost('fraudtahunlaporankartap'),
-                    'fraudtahunsebelumkartap' => $this->request->getPost('fraudtahunsebelumkartap'),
-                    'selesaitahunlaporankartap' => $this->request->getPost('selesaitahunlaporankartap'),
-                    'prosestahunlaporankartap' => $this->request->getPost('prosestahunlaporankartap'),
-                    'prosestahunsebelumkartap' => $this->request->getPost('prosestahunsebelumkartap'),
-                    'belumtahunlaporankartap' => $this->request->getPost('belumtahunlaporankartap'),
-
-                    'belumtahunsebelumkartap' => $this->request->getPost('belumtahunsebelumkartap'),
-                    'hukumtahunlaporankartap' => $this->request->getPost('hukumtahunlaporankartap'),
-                    'fraudtahunlaporankontrak' => $this->request->getPost('fraudtahunlaporankontrak'),
-                    'fraudtahunsebelumkontrak' => $this->request->getPost('fraudtahunsebelumkontrak'),
-                    'selesaitahunlaporankontrak' => $this->request->getPost('selesaitahunlaporankontrak'),
-                    'prosestahunlaporankontrak' => $this->request->getPost('prosestahunlaporankontrak'),
-                    'prosestahunsebelumkontrak' => $this->request->getPost('prosestahunsebelumkontrak'),
-                    'belumtahunlaporankontrak' => $this->request->getPost('belumtahunlaporankontrak'),
-                    'belumtahunsebelumkontrak' => $this->request->getPost('belumtahunsebelumkontrak'),
-                    'hukumtahunlaporankontrak' => $this->request->getPost('hukumtahunlaporankontrak'),
-
-                    'periode_id' => $periodeId,
-                    'user_id' => $userId,
-                    'kodebpr' => $kodebpr,
-                    'fullname' => $this->getUserModel()->find($userId)['fullname'],
-                    'accdekom' => 0,
-                    'is_approved' => 0,
-                ];
-
-                if ($existingData) {
-                    // Data sudah ada, lakukan UPDATE
-                    $data['id'] = $existingData['id']; // Pastikan ID disertakan
-
-                    $result = $this->getFraudinternalModel()->save($data);
-
-                    if ($result) {
-                        return $this->response->setJSON([
-                            'status' => 'success',
-                            'message' => 'Data berhasil diperbarui'
-                        ]);
-                    } else {
-                        return $this->response->setJSON([
-                            'status' => 'error',
-                            'message' => 'Gagal memperbarui data'
-                        ]);
-                    }
-                } else {
-                    unset($data['id']);
-
-                    $result = $this->getFraudinternalModel()->insert($data);
-
-                    if ($result) {
-                        return $this->response->setJSON([
-                            'status' => 'success',
-                            'message' => 'Data berhasil ditambahkan'
-                        ]);
-                    } else {
-                        return $this->response->setJSON([
-                            'status' => 'error',
-                            'message' => 'Gagal menambahkan data'
-                        ]);
-                    }
-                }
+            $data = [];
+            foreach (self::FIELDS as $f) {
+                $data[$f] = (int) ($this->request->getPost($f) ?? 0);
             }
+            $data['periode_id'] = $periodeId;
+            $data['user_id'] = $this->userId;
+            $data['kodebpr'] = $kodebpr;
+            $data['fullname'] = $this->userData['fullname'] ?? null;
+            $data['accdekom'] = 0;
+            $data['is_approved'] = 0;
+            $data['is_null_record'] = 0;
+
+            $existing = $this->getFraudinternalModel()
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+
+            if ($existing) {
+                $data['id'] = $existing['id'];
+                $ok = $this->getFraudinternalModel()->save($data);
+                $msg = 'Data berhasil diperbarui';
+            } else {
+                unset($data['id']);
+                $ok = $this->getFraudinternalModel()->insert($data);
+                $msg = 'Data berhasil ditambahkan';
+            }
+
+            if (!$ok)
+                return $this->jsonErr('Gagal menyimpan data');
+
+            return $this->jsonOk($msg);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Fraudinternal::tambahfraudajax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
         }
-
-        return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Invalid request']);
-    }
-
-    public function getUnreadCommentCountForFactor()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
-        }
-
-        $Id = $this->request->getGet('id');
-        $kodebpr = $this->userKodebpr;
-        $userId = $this->userId;
-        $periodeId = session('active_periode');
-
-        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
-            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
-        }
-
-        $count = $this->getCommentReadsModel()->countUnreadCommentsForUserByFactor($Id, $kodebpr, $userId, $periodeId);
-
-        return $this->response->setJSON(['unread_count' => $count]);
-    }
-
-    public function cekKomentarBaru()
-    {
-        $subkategori = 'Fraudinternal';
-        $kodebpr = $this->request->getGet('kodebpr');
-        $lastVisit = $this->request->getGet('last_visit');
-        $periodeId = session('active_periode');
-
-        $results = $this->komentarModel
-            ->select('id, COUNT(*) as jumlah')
-            ->where('subkategori', $subkategori)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->where('created_at >', $lastVisit)
-            ->groupBy('id')
-            ->findAll();
-
-        return $this->response->setJSON($results);
     }
 
     public function getKomentarByFaktorId()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return $this->response->setStatusCode(404)->setBody('Not Found');
-        }
-        $subkategori = 'Fraudinternal';
+
+        $list = $this->getKomentarModel()
+            ->getKomentarByFaktorId(self::SUBKAT, $this->userKodebpr, session('active_periode'));
+        $unread = count(array_filter($list, fn($k) => (int) $k['user_id'] !== $this->userId));
+
+        return $this->response->setJSON(['comments' => $list, 'unread_count' => $unread]);
+    }
+
+    public function getUnreadCommentCountForFactor()
+    {
+        if (!$this->request->isAJAX())
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+
         $kodebpr = $this->userKodebpr;
+        $userId = $this->userId;
         $periodeId = session('active_periode');
 
-        $komentarList = $this->getKomentarModel()->getKomentarByFaktorId($subkategori, $kodebpr, $periodeId);
+        if (!$kodebpr || !$userId || !$periodeId)
+            return $this->response->setStatusCode(400)->setJSON(['unread_count' => 0]);
 
-        return $this->response->setJSON($komentarList);
+        $cache = service('cache');
+        $cacheKey = 'unread_' . self::SUBKAT . "_{$kodebpr}_{$periodeId}_{$userId}";
+
+        $count = $cache->remember($cacheKey, self::CACHE_TTL, function () use ($userId, $kodebpr, $periodeId) {
+            return $this->getCommentReadsModel()
+                ->countUnreadCommentsForUserByFactor(self::SUBKAT, $kodebpr, $userId, $periodeId);
+        });
+
+        return $this->response->setJSON(['unread_count' => (int) $count, 'next_poll_ms' => self::POLL_MIN_MS]);
     }
 
     public function Tambahkomentar()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
+        if ($r = $this->checkAuthentication())
+            return $r;
 
-        if (!isset($_POST['TambahKomentar'])) {
-            return redirect()->to(base_url('Fraudinternal'));
+        if ($this->request->isAJAX()) {
+            $komentar = trim($this->request->getPost('komentar') ?? '');
+            if (strlen($komentar) < 3)
+                return $this->jsonErr('Komentar minimal 3 karakter');
+            if (strlen($komentar) > 1000)
+                return $this->jsonErr('Komentar maksimal 1000 karakter');
+
+            $cache = service('cache');
+            $rlKey = 'cmtrl_' . $this->userId;
+            $rlCnt = (int) ($cache->get($rlKey) ?? 0);
+            if ($rlCnt >= 10)
+                return $this->jsonErr('Terlalu banyak komentar — tunggu sebentar');
+            $cache->save($rlKey, $rlCnt + 1, 60);
+
+            $this->getKomentarModel()->insertKomentar([
+                'id' => self::SUBKAT,
+                'subkategori' => self::SUBKAT,
+                'komentar' => $komentar,
+                'fullname' => $this->userData['fullname'] ?? '',
+                'user_id' => $this->userId,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => session('active_periode'),
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            service('cache')->deleteMatching('unread_' . self::SUBKAT . "_{$this->userKodebpr}_*");
+
+            return $this->jsonOk('Komentar berhasil dikirim');
         }
 
-        if (!$this->userKodebpr) {
-            session()->setFlashdata('error', 'User tidak memiliki kode BPR yang valid');
-            return redirect()->back();
-        }
+        if (!isset($_POST['TambahKomentar']))
+            return redirect()->to(base_url(self::SUBKAT));
 
-        $val = $this->validate([
-            'komentar' => [
-                'label' => 'Komentar',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-        ]);
-
+        $val = $this->validate(['komentar' => ['label' => 'Komentar', 'rules' => 'required|min_length[3]|max_length[1000]']]);
         if (!$val) {
-            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            session()->setFlashdata('err', service('validation')->listErrors());
             return redirect()->back();
         }
 
-        $data = [
-            'id' => $this->request->getPost('id'),
-            'subkategori' => 'Fraudinternal',
+        $this->getKomentarModel()->insertKomentar([
+            'id' => self::SUBKAT,
+            'subkategori' => self::SUBKAT,
             'komentar' => $this->request->getPost('komentar'),
             'fullname' => $this->request->getPost('fullname'),
             'user_id' => $this->userId,
             'kodebpr' => $this->userKodebpr,
             'periode_id' => session('active_periode'),
-            'created_at' => date('Y-m-d H:i:s')
-        ];
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
 
-        $this->getKomentarModel()->insertKomentar($data);
         session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
-        return redirect()->to(base_url('Fraudinternal') . '?modal_komentar=' . $this->request->getPost('id'));
+        return redirect()->to(base_url(self::SUBKAT));
     }
 
     public function markUserCommentsAsRead()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
-        }
 
-        $Id = $this->request->getPost('id');
-        $kodebpr = $this->userKodebpr; // Get from property
-        $userId = user_id();
+        $kodebpr = $this->userKodebpr;
+        $userId = $this->userId;
         $periodeId = session('active_periode');
 
-        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+        if (!$kodebpr || !$userId || !$periodeId)
             return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
-        }
 
-        // Get all comment IDs for this factor, kodebpr, periode, and not by the current user
-        $commentsToMark = $this->getKomentarModel()->select('id')
-            ->where('subkategori', $Id)
+        $ids = $this->getKomentarModel()
+            ->select('id')
+            ->where('subkategori', self::SUBKAT)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
-            ->where('user_id !=', $userId) // Mark comments from others as read
-            ->findAll();
+            ->where('user_id !=', $userId)
+            ->findColumn('id');
 
-        if (!empty($commentsToMark)) {
-            foreach ($commentsToMark as $comment) {
-                $this->getCommentReadsModel()->markAsRead($comment['id'], $userId);
-            }
+        if (!empty($ids)) {
+            foreach ($ids as $cid)
+                $this->getCommentReadsModel()->markAsRead($cid, $userId);
         }
 
-        return $this->response->setJSON(['status' => 'success', 'message' => 'Comments marked as read for this user.']);
-    }
+        service('cache')->delete("unread_" . self::SUBKAT . "_{$kodebpr}_{$periodeId}_{$userId}");
 
-    public function saveKomentar()
-    {
-        $data = [
-            'id' => $this->request->getPost('id'),
-            'kodebpr' => $this->request->getPost('kodebpr'),
-            'komentar' => $this->request->getPost('komentar'),
-            'is_read' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-            'user_id' => session()->get('user_id')
-        ];
-
-        $this->komentarModel->insert($data);
-        return $this->response->setJSON(['status' => 'comment_saved']);
+        return $this->response->setJSON(['status' => 'success', 'csrf_hash' => csrf_hash()]);
     }
 
     public function tambahketerangan()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
 
-        if (!isset($_POST['tambahketerangan'])) {
-            return redirect()->to(base_url('Fraudinternal'));
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = session('active_periode');
+            $tindaklanjut = trim($this->request->getPost('tindaklanjut') ?? '');
+
+            if (empty($tindaklanjut))
+                return $this->jsonErr('Penjelasan tidak boleh kosong');
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Kode BPR atau periode tidak valid');
+
+            $existing = $this->getPenjelastindakModel()
+                ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId);
+            if (!empty($existing))
+                return $this->jsonErr('Data sudah ada. Gunakan Edit untuk mengubah.');
+
+            $this->getPenjelastindakModel()->tambahpenjelastindak([
+                'subkategori' => self::SUBKAT,
+                'tindaklanjut' => $tindaklanjut,
+                'kodebpr' => $kodebpr,
+                'periode_id' => $periodeId,
+                'fullname' => $this->userData['fullname'] ?? null,
+                'user_id' => $this->userId,
+            ]);
+
+            $fresh = $this->getPenjelastindakModel()
+                ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId);
+            return $this->jsonOk('Penjelasan berhasil disimpan', ['penjelastindak' => $fresh]);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Fraudinternal::tambahketerangan] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
         }
-
-        $val = $this->validate([
-            'tindaklanjut' => [
-                'label' => 'Penjelasan lebih lanjut',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ]
-        ]);
-
-        if (!$val) {
-            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-            return redirect()->back()->withInput();
-        }
-
-        $periodeId = session('active_periode');
-        $kodebpr = $this->userKodebpr;
-
-        if (!$kodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
-
-        $penjelastindak = [
-            'subkategori' => 'Fraudinternal',
-            'tindaklanjut' => $this->request->getPost('tindaklanjut'),
-            'kodebpr' => $kodebpr,
-            'periode_id' => $periodeId,
-            'fullname' => $this->userData['fullname'] ?? null,
-            'user_id' => $this->userId,
-        ];
-
-        $this->getPenjelastindakModel()->tambahpenjelastindak($penjelastindak);
-        session()->setFlashdata('message', 'Data berhasil diubah');
-
-        return redirect()->to(base_url('Fraudinternal'));
     }
 
     public function editketerangan()
     {
-        $id = $this->request->getPost('id');
-        $subkategori = 'Fraudinternal';
-        $kodebpr = $this->userKodebpr;
-
-        if (!$kodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
-
-        $periodeId = session('active_periode');
-        if (!$periodeId) {
-            return redirect()->back()->with('error', 'Periode tidak valid');
-        }
-
-        $tindaklanjut = $this->request->getPost('tindaklanjut');
-        if (empty($tindaklanjut)) {
-            return redirect()->back()->with('error', 'Tindak Lanjut atau Penjelasan tidak boleh kosong');
-        }
-
-        $data = [
-            'tindaklanjut' => $tindaklanjut,
-            'user_id' => $this->userId,
-            'kodebpr' => $kodebpr,
-        ];
-
-        if ($this->getPenjelastindakModel()->editberdasarkankodedanperiode($data, $subkategori, $kodebpr, $periodeId)) {
-            session()->setFlashdata('message', 'Data berhasil diubah');
-        } else {
-            session()->setFlashdata('err', 'Gagal mengubah data');
-        }
-
-        return redirect()->to(base_url('Fraudinternal'));
-    }
-
-    public function ubahketerangan()
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-
-            return redirect()
-                ->to($redirectURL);
-        }
-
-        if (isset($_POST['ubahketerangan'])) {
-            $val = $this->validate([
-                'keterangan' => [
-                    'label' => 'Keterangan',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong.'
-                    ]
-                ]
-            ]);
-
-            if (!$val) {
-                session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-                $data = [
-                    'judul' => 'Keterangan',
-                    'fraudinternal' => $this->fraudinternalModel->getAllData()
-                ];
-
-                echo view('templates/v_header', $data);
-                echo view('templates/v_sidebar');
-                echo view('templates/v_topbar');
-                echo view('fraudinternal/index', $data);
-                echo view('templates/v_footer');
-
-            } else {
-                $id = $this->request->getPost('id');
-
-                $data = [
-                    'keterangan' => $this->request->getPost('keterangan')
-                ];
-
-                // Update data
-                $success = $this->fraudinternalModel->ubah($data, $id);
-                if ($success) {
-                    session()->setFlashdata('message', 'Tindak Lanjut Direksi berhasil diubah ');
-                    return redirect()->to(base_url('fraudinternal'));
-                }
-            }
-        } else {
-            return redirect()->to(base_url('Fraudinternal'));
-        }
-    }
-
-    public function hapus($id)
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        $this->fraudinternalModel = new M_fraudinternal();
-
-        $this->fraudinternalModel->builder()
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->delete();
-
-        session()->setFlashdata('message', 'Data berhasil dihapus');
-        return redirect()->to(base_url('Fraudinternal'));
-    }
-
-    private function updateApprovalStatus($id, $isApproved, $successMessage, $errorMessage)
-    {
-        if (!is_numeric($id) || $id <= 0) {
-            session()->setFlashdata('err', 'ID tidak valid.');
-            return redirect()->back();
-        }
-
-        $data = $this->getFraudinternalModel()->find($id);
-        if (!$data) {
-            session()->setFlashdata('err', 'Data tidak ditemukan.');
-            return redirect()->back();
-        }
-
-        $dataUpdate = [
-            'id' => $id,
-            'is_approved' => $isApproved,
-            'approved_by' => $this->userId,
-            'approved_at' => $isApproved ? date('Y-m-d H:i:s') : null,
-        ];
-
-        if ($this->getFraudinternalModel()->save($dataUpdate)) {
-            session()->setFlashdata('message', $successMessage);
-        } else {
-            session()->setFlashdata('err', $errorMessage);
-        }
-
-        return redirect()->back();
-    }
-
-    public function approve($idfraudinternal)
-    {
-        return $this->updateApprovalStatus(
-            $idfraudinternal,
-            1,
-            'Data berhasil disetujui.',
-            'Terjadi kesalahan saat melakukan approval.'
-        );
-    }
-
-    public function unapprove($idfraudinternal)
-    {
-        return $this->updateApprovalStatus(
-            $idfraudinternal,
-            0,
-            'Approval dibatalkan.',
-            'Terjadi kesalahan saat membatalkan approval.'
-        );
-    }
-
-    private function bulkUpdateApproval($isApproved, $field, $successMessage, $isError = false)
-    {
-        date_default_timezone_set('Asia/Jakarta');
-        $userId = $this->userId;
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        if (!$kodebpr || !$periodeId) {
-            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
-            return redirect()->back();
-        }
-
-        $count = $this->getFraudinternalModel()
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->countAllResults();
-
-        if ($count === 0) {
-            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
-            return redirect()->back();
-        }
-
-        $currentTimestamp = date('Y-m-d H:i:s');
-
-        $dataUpdate = [
-            $field => $isApproved,
-            'approved_by' => $isApproved ? $this->userId : null,
-            $field . '_at' => $isApproved ? $currentTimestamp : null,
-        ];
-
-        if ($isApproved) {
-            if ($field === 'is_approved') {
-                $dataUpdate['approved_at'] = $currentTimestamp;
-            } elseif ($field === 'accdekom') {
-                $dataUpdate['accdekom_at'] = $currentTimestamp;
-            }
-        } else {
-            if ($field === 'is_approved') {
-                $dataUpdate['approved_at'] = null;
-            } elseif ($field === 'accdekom') {
-                $dataUpdate['accdekom_at'] = null;
-            }
-        }
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
 
         try {
-            $updated = $this->getFraudinternalModel()
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->set($dataUpdate)
-                ->update();
+            $kodebpr = $this->userKodebpr;
+            $periodeId = session('active_periode');
+            $tindaklanjut = trim($this->request->getPost('tindaklanjut') ?? '');
 
-            if (!$updated) {
-                session()->setFlashdata('err', 'Gagal mengupdate data approval');
-                return redirect()->back();
-            }
+            if (!$kodebpr)
+                return $this->jsonErr('User tidak memiliki kode BPR yang valid');
+            if (!$periodeId)
+                return $this->jsonErr('Periode tidak valid');
+            if (empty($tindaklanjut))
+                return $this->jsonErr('Penjelasan tidak boleh kosong');
 
-            if ($isError) {
-                session()->setFlashdata('err', $successMessage);
-            } else {
-                session()->setFlashdata('message', $successMessage);
-            }
+            $ok = $this->getPenjelastindakModel()->editberdasarkankodedanperiode(
+                ['tindaklanjut' => $tindaklanjut, 'user_id' => $this->userId, 'kodebpr' => $kodebpr],
+                self::SUBKAT,
+                $kodebpr,
+                $periodeId
+            );
 
-            return redirect()->back();
+            if (!$ok)
+                return $this->jsonErr('Gagal mengubah data');
+
+            $fresh = $this->getPenjelastindakModel()
+                ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId);
+            return $this->jsonOk('Penjelasan berhasil diubah', ['penjelastindak' => $fresh]);
 
         } catch (\Exception $e) {
-            log_message('error', 'Error in bulk approval: ' . $e->getMessage());
-            session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
-            return redirect()->back();
+            log_message('error', '[Fraudinternal::editketerangan] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
         }
     }
 
-    public function approveSemua()
+    public function setNullKolomTindakAjax()
     {
-        return $this->bulkUpdateApproval(1, 'is_approved', 'Semua data berhasil disetujui.');
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+
+        try {
+            $id = (int) $this->request->getPost('id');
+            $kodebpr = $this->userKodebpr;
+            if (!$id)
+                return $this->jsonErr('ID tidak valid');
+
+            $existing = $this->getPenjelastindakModel()->where('id', $id)->where('kodebpr', $kodebpr)->first();
+            if (!$existing)
+                return $this->jsonErr('Data tidak ditemukan atau tidak memiliki akses');
+
+            $ok = $this->getPenjelastindakModel()->where('id', $id)->where('kodebpr', $kodebpr)->delete();
+            if (!$ok)
+                return $this->jsonErr('Gagal menghapus data');
+
+            return $this->jsonOk('Penjelasan berhasil dihapus');
+
+        } catch (\Exception $e) {
+            log_message('error', '[Fraudinternal::setNullKolomTindakAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
+        }
     }
 
-    public function unapproveSemua()
+    // ── approval ───────────────────────────────────────────────────────────────
+
+    private function doApprovalUpdate(int $val, string $field): void
     {
-        return $this->bulkUpdateApproval(0, 'is_approved', 'Semua approval dibatalkan.', true);
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        if (!$kodebpr || !$periodeId)
+            return;
+
+        $ts = $val ? date('Y-m-d H:i:s') : null;
+        $update = [
+            $field => $val,
+            $field . '_by' => $val ? $this->userId : null,
+            $field . '_at' => $ts,
+        ];
+        if ($field === 'is_approved')
+            $update['approved_at'] = $ts;
+        if ($field === 'accdekom')
+            $update['accdekom_at'] = $ts;
+
+        try {
+            $this->getFraudinternalModel()
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->update(null, $update);
+        } catch (\Exception $e) {
+            log_message('error', '[Fraudinternal::doApprovalUpdate] ' . $e->getMessage());
+        }
     }
 
-    // Method untuk update approval komisaris saja (tanpa dependency)
-    private function updateKomisarisApproval($isApproved)
+    /** AJAX endpoint used by autosave to silently reset both approvals before save */
+    public function unapproveSemuaKomAjax()
     {
-        $field = 'accdekom';
-        $successMessage = $isApproved ? 'Persetujuan komisaris utama berhasil diberikan.' : 'Persetujuan komisaris utama dibatalkan.';
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
 
-        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
+        $this->doApprovalUpdate(0, 'accdekom');
+        $this->doApprovalUpdate(0, 'is_approved');
+
+        return $this->jsonOk('Approval direset');
     }
 
-    // Method untuk update approval direktur saja (tanpa dependency)
-    private function updateDirekturApproval($isApproved)
-    {
-        $field = 'is_approved';
-        $successMessage = $isApproved ? 'Persetujuan direktur utama berhasil diberikan.' : 'Persetujuan direktur utama dibatalkan.';
-
-        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
-    }
-
-    // Public methods dengan dependency yang benar
     public function approveSemuaKom()
     {
-        return $this->updateKomisarisApproval(1);
+        $this->doApprovalUpdate(1, 'accdekom');
+        session()->setFlashdata('message', 'Persetujuan Komisaris Utama berhasil diberikan.');
+        return redirect()->back();
     }
 
     public function unapproveSemuaKom()
     {
-        // Ketika komisaris dibatalkan, direktur juga harus dibatalkan
-        $this->updateDirekturApproval(0);  // Batalkan direktur dulu
-        return $this->updateKomisarisApproval(0);  // Lalu batalkan komisaris
+        $this->doApprovalUpdate(0, 'accdekom');
+        $this->doApprovalUpdate(0, 'is_approved');
+        session()->setFlashdata('err', 'Persetujuan Komisaris Utama dibatalkan.');
+        return redirect()->back();
     }
 
     public function approveSemuaDirut()
     {
-        return $this->updateDirekturApproval(1);
+        $this->doApprovalUpdate(1, 'is_approved');
+        session()->setFlashdata('message', 'Persetujuan Direktur Utama berhasil diberikan.');
+        return redirect()->back();
     }
 
     public function unapproveSemuaDirut()
     {
-        // Ketika direktur dibatalkan, hanya direktur saja yang dibatalkan
-        // TIDAK perlu membatalkan komisaris
-        return $this->updateDirekturApproval(0);
-    }
-
-    // ATAU jika Anda ingin hierarchy yang ketat:
-// Dimana pembatalan komisaris akan membatalkan direktur juga
-
-    public function unapproveSemuaKomWithHierarchy()
-    {
-        try {
-            // 1. Batalkan direktur terlebih dahulu
-            $this->updateDirekturApproval(0);
-
-            // 2. Baru batalkan komisaris
-            $result = $this->updateKomisarisApproval(0);
-
-            // 3. Set pesan gabungan
-            session()->setFlashdata('message', 'Persetujuan komisaris dan direktur utama telah dibatalkan.');
-
-            return redirect()->back();
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error in unapprove hierarchy: ' . $e->getMessage());
-            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan persetujuan.');
-            return redirect()->back();
-        }
-    }
-
-    private function updateApprovalStatusKom($id, $isApproved, $successMessage, $errorMessage)
-    {
-        date_default_timezone_set('Asia/Jakarta');
-        if (!is_numeric($id) || $id <= 0) {
-            session()->setFlashdata('err', 'ID tidak valid.');
-            return redirect()->back();
-        }
-
-        $data = $this->getFraudinternalModel()->find($id);
-        if (!$data) {
-            session()->setFlashdata('err', 'Data tidak ditemukan.');
-            return redirect()->back();
-        }
-
-        $dataUpdate = [
-            'id' => $id,
-            'accdekom' => $isApproved,
-            'accdekom_by' => $isApproved ? $this->userId : null,
-            'accdekom_at' => $isApproved ? date('Y-m-d H:i:s') : null,
-        ];
-
-        if ($this->getFraudinternalModel()->save($dataUpdate)) {
-            session()->setFlashdata('message', $successMessage);
-        } else {
-            session()->setFlashdata('err', $errorMessage);
-        }
-
+        $this->doApprovalUpdate(0, 'is_approved');
+        $this->doApprovalUpdate(0, 'accdekom');
+        session()->setFlashdata('err', 'Persetujuan Direktur Utama dibatalkan.');
         return redirect()->back();
     }
 
-    public function setNullKolomTindak($id)
+    public function setNodataAjax()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+        if ($e = $this->requireEditor())
+            return $e;
 
-        $result = $this->getFraudinternalModel()->setNullKolomTindak($id);
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
 
-        if ($result) {
-            session()->setFlashdata('message', 'Data berhasil dihapus');
-        } else {
-            session()->setFlashdata('err', 'Data gagal dihapus');
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Kode BPR atau periode tidak valid');
+
+            $existing = $this->getFraudinternalModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->first();
+
+            if ($existing) {
+                // Update existing row dengan is_null_record = 1
+                $ok = $this->getFraudinternalModel()
+                    ->where('kodebpr', $kodebpr)
+                    ->where('periode_id', $periodeId)
+                    ->update(null, ['is_null_record' => 1, 'accdekom' => 0, 'is_approved' => 0]);
+            } else {
+                // Insert baru dengan semua field = 0 dan is_null_record = 1
+                $data = array_fill_keys(self::FIELDS, 0);
+                $data['is_null_record'] = 1;
+                $data['periode_id'] = $periodeId;
+                $data['user_id'] = $this->userId;
+                $data['kodebpr'] = $kodebpr;
+                $data['fullname'] = $this->userData['fullname'] ?? null;
+                $data['accdekom'] = 0;
+                $data['is_approved'] = 0;
+                $ok = $this->getFraudinternalModel()->insert($data);
+            }
+
+            if (!$ok)
+                return $this->jsonErr('Gagal menyimpan data');
+
+            return $this->jsonOk('Data berhasil ditandai sebagai tidak ada');
+
+        } catch (\Throwable $e) {
+            log_message('error', '[Fraudinternal::setNodataAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
         }
+    }
 
-        return redirect()->to(base_url('Fraudinternal'));
+    public function batalNodataAjax()
+    {
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+        if ($e = $this->requireEditor())
+            return $e;
+
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
+
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Data tidak valid');
+
+            $ok = $this->getFraudinternalModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update(null, ['is_null_record' => 0]);
+
+            if (!$ok)
+                return $this->jsonErr('Gagal membatalkan status');
+
+            return $this->jsonOk('Status berhasil dibatalkan');
+
+        } catch (\Throwable $e) {
+            log_message('error', '[Fraudinternal::batalNodataAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
+        }
     }
 
     public function exporttxtfraudinternal()
     {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-
-        $this->fraudinternalModel = model('M_fraudinternal');
-        $this->infobprModel = model('M_infobpr');
-        $this->penjelastindakModel = model('M_penjelastindak');
+        if ($r = $this->checkAuthentication())
+            return $r;
 
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
-        $subkategori = "Fraudinternal";
 
         $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
         $exportDate = $periodeDetail['tahun'] ?? date('Y');
+        $jenispelaporan = $periodeDetail['jenispelaporan'];
 
-        $data_fraudinternal = $this->fraudinternalModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
-
-        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
-
-        $data_penjelastindak = $this->penjelastindakModel->where('subkategori', $subkategori)
+        $data = $this->getFraudinternalModel()->getDataByKodebprAndPeriode($kodebpr, $periodeId);
+        $data_infobpr = $this->getInfobprModel()->getDataByKodebpr($kodebpr);
+        $data_penjelas = $this->getPenjelastindakModel()
+            ->where('subkategori', self::SUBKAT)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->findAll();
 
-        $sandibpr = '';
-        $kodejenis = '';
-        if (!empty($data_infobpr)) {
-            $infobpr = $data_infobpr[0];
-            $sandibpr = $infobpr['sandibpr'];
-            $kodejenis = $infobpr['kodejenis'];
-        }
+        $sandibpr = $data_infobpr[0]['sandibpr'] ?? '';
+        $kodejenis = $data_infobpr[0]['kodejenis'] ?? '';
 
-        $isEmpty = function ($value) {
-            return empty($value) || is_null($value) || $value === '' || $value === '0';
+        $sanitize = function ($text): string {
+            if ($text === null)
+                return '';
+            $text = (string) $text;
+
+            $text = str_replace(["\r", "\n", "\t"], ' ', $text);
+            $text = str_replace('|', ' ', $text);
+            $text = str_replace(["\xE2\x80\x9C", "\xE2\x80\x9D"], '"', $text);
+            $text = str_replace(["\xE2\x80\x98", "\xE2\x80\x99"], "'", $text);
+            $text = str_replace('%', ' persen ', $text);
+            $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
+
+            return trim(preg_replace('/\s+/', ' ', $text));
         };
 
-        $output = "";
-        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|" . $exportDate . "-12-31|LTBPRK|E0800|0|" . "\r\n";
+        $output = "H01|{$kodejenis}|{$sandibpr}|{$exportDate}-12-31|LTBPRK|E0800|0|\r\n";
 
-        foreach ($data_fraudinternal as $row) {
-            $hasValidData = false;
-            $fraudtahunsebelumdir = isset($row['fraudtahunsebelumdir']) && !$isEmpty($row['fraudtahunsebelumdir']) ? $row['fraudtahunsebelumdir'] : '';
-            $fraudtahunlaporandir = isset($row['fraudtahunlaporandir']) && !$isEmpty($row['fraudtahunlaporandir']) ? $row['fraudtahunlaporandir'] : '';
-            $fraudtahunsebelumdekom = isset($row['fraudtahunsebelumdekom']) && !$isEmpty($row['fraudtahunsebelumdekom']) ? $row['fraudtahunsebelumdekom'] : '';
-            $fraudtahunlaporandekom = isset($row['fraudtahunlaporandekom']) && !$isEmpty($row['fraudtahunlaporandekom']) ? $row['fraudtahunlaporandekom'] : '';
-            $fraudtahunsebelumkartap = isset($row['fraudtahunsebelumkartap']) && !$isEmpty($row['fraudtahunsebelumkartap']) ? $row['fraudtahunsebelumkartap'] : '';
-            $fraudtahunlaporankartap = isset($row['fraudtahunlaporankartap']) && !$isEmpty($row['fraudtahunlaporankartap']) ? $row['fraudtahunlaporankartap'] : '';
-            $fraudtahunsebelumkontrak = isset($row['fraudtahunsebelumkontrak']) && !$isEmpty($row['fraudtahunsebelumkontrak']) ? $row['fraudtahunsebelumkontrak'] : '';
-            $fraudtahunlaporankontrak = isset($row['fraudtahunlaporankontrak']) && !$isEmpty($row['fraudtahunlaporankontrak']) ? $row['fraudtahunlaporankontrak'] : '';
+        $codes = ['910', '911', '912', '913', '920'];
+        $hasData = false;
 
-            if ($fraudtahunsebelumdir !== '' || $fraudtahunlaporandir !== '' || $fraudtahunsebelumdekom !== '' || $fraudtahunlaporandekom !== '' || $fraudtahunsebelumkartap !== '' || $fraudtahunlaporankartap !== '' || $fraudtahunsebelumkontrak !== '' || $fraudtahunlaporankontrak !== '') {
-                $hasValidData = true;
-            }
+        foreach ($data as $row) {
+            $hasData = true;
 
-            // Hanya generate jika ada data valid
-            if ($hasValidData) {
-                $output .= "D01|" . "910" . "|" . $fraudtahunsebelumdir . "|" . $fraudtahunlaporandir . "|" . $fraudtahunsebelumdekom . "|" . $fraudtahunlaporandekom . "|" . $fraudtahunsebelumkartap . "|" . $fraudtahunlaporankartap . "|" . $fraudtahunsebelumkontrak . "|" . $fraudtahunlaporankontrak . "\r\n";
-            }
-        }
+            $v = fn($k) => $sanitize($row[$k] ?? '');
 
-        foreach ($data_fraudinternal as $row) {
-            $hasValidData = false;
-            $selesaitahunlaporandir = isset($row['selesaitahunlaporandir']) && !$isEmpty($row['selesaitahunlaporandir']) ? $row['selesaitahunlaporandir'] : '';
-            $selesaitahunlaporandekom = isset($row['selesaitahunlaporandekom']) && !$isEmpty($row['selesaitahunlaporandekom']) ? $row['selesaitahunlaporandekom'] : '';
-            $selesaitahunlaporankartap = isset($row['selesaitahunlaporankartap']) && !$isEmpty($row['selesaitahunlaporankartap']) ? $row['selesaitahunlaporankartap'] : '';
-            $selesaitahunlaporankontrak = isset($row['selesaitahunlaporankontrak']) && !$isEmpty($row['selesaitahunlaporankontrak']) ? $row['selesaitahunlaporankontrak'] : '';
+            $lines = [
+                '910' => [$v('fraudtahunsebelumdir'), $v('fraudtahunlaporandir'), $v('fraudtahunsebelumdekom'), $v('fraudtahunlaporandekom'), $v('fraudtahunsebelumkartap'), $v('fraudtahunlaporankartap'), $v('fraudtahunsebelumkontrak'), $v('fraudtahunlaporankontrak')],
+                '911' => ['', $v('selesaitahunlaporandir'), '', $v('selesaitahunlaporandekom'), '', $v('selesaitahunlaporankartap'), '', $v('selesaitahunlaporankontrak')],
+                '912' => [$v('prosestahunsebelumdir'), $v('prosestahunlaporandir'), $v('prosestahunsebelumdekom'), $v('prosestahunlaporandekom'), $v('prosestahunsebelumkartap'), $v('prosestahunlaporankartap'), $v('prosestahunsebelumkontrak'), $v('prosestahunlaporankontrak')],
+                '913' => [$v('belumtahunsebelumdir'), $v('belumtahunlaporandir'), $v('belumtahunsebelumdekom'), $v('belumtahunlaporandekom'), $v('belumtahunsebelumkartap'), $v('belumtahunlaporankartap'), $v('belumtahunsebelumkontrak'), $v('belumtahunlaporankontrak')],
+                '920' => ['', $v('hukumtahunlaporandir'), '', $v('hukumtahunlaporandekom'), '', $v('hukumtahunlaporankartap'), '', $v('hukumtahunlaporankontrak')],
+            ];
 
-            if ($selesaitahunlaporandir !== '' || $selesaitahunlaporandekom !== '' || $selesaitahunlaporankartap !== '' || $selesaitahunlaporankontrak) {
-                $hasValidData = true;
-            }
-
-            // Hanya generate jika ada data valid
-            if ($hasValidData) {
-                $output .= "D01|" . "911" . "|" . "|" . $selesaitahunlaporandekom . "|" . "|" . $selesaitahunlaporandekom . "|" . "|" . $selesaitahunlaporankartap . "|" . "|" . $selesaitahunlaporankontrak . "\r\n";
+            foreach ($lines as $code => $vals) {
+                $output .= "D01|{$code}|" . implode('|', $vals) . "\r\n";
             }
         }
 
-        foreach ($data_fraudinternal as $row) {
-            $hasValidData = false;
-            $prosestahunsebelumdir = isset($row['prosestahunsebelumdir']) && !$isEmpty($row['prosestahunsebelumdir']) ? $row['prosestahunsebelumdir'] : '';
-            $prosestahunlaporandir = isset($row['prosestahunlaporandir']) && !$isEmpty($row['prosestahunlaporandir']) ? $row['prosestahunlaporandir'] : '';
-            $prosestahunsebelumdekom = isset($row['prosestahunsebelumdekom']) && !$isEmpty($row['prosestahunsebelumdekom']) ? $row['prosestahunsebelumdekom'] : '';
-            $prosestahunlaporandekom = isset($row['prosestahunlaporandekom']) && !$isEmpty($row['prosestahunlaporandekom']) ? $row['prosestahunlaporandekom'] : '';
-            $prosestahunsebelumkartap = isset($row['prosestahunsebelumkartap']) && !$isEmpty($row['prosestahunsebelumkartap']) ? $row['prosestahunsebelumkartap'] : '';
-            $prosestahunlaporankartap = isset($row['prosestahunlaporankartap']) && !$isEmpty($row['prosestahunlaporankartap']) ? $row['prosestahunlaporankartap'] : '';
-            $prosestahunsebelumkontrak = isset($row['prosestahunsebelumkontrak']) && !$isEmpty($row['prosestahunsebelumkontrak']) ? $row['prosestahunsebelumkontrak'] : '';
-            $prosestahunlaporankontrak = isset($row['prosestahunlaporankontrak']) && !$isEmpty($row['prosestahunlaporankontrak']) ? $row['prosestahunlaporankontrak'] : '';
-
-            if ($prosestahunsebelumdir !== '' || $prosestahunlaporandir !== '' || $prosestahunsebelumdekom !== '' || $prosestahunlaporandekom !== '' || $prosestahunsebelumkartap !== '' || $prosestahunlaporankartap !== '' || $prosestahunsebelumkontrak !== '' || $prosestahunlaporankontrak !== '') {
-                $hasValidData = true;
-            }
-
-            // Hanya generate jika ada data valid
-            if ($hasValidData) {
-                $output .= "D01|" . "912" . "|" . $prosestahunsebelumdir . "|" . $prosestahunlaporandir . "|" . $prosestahunsebelumdekom . "|" . $prosestahunlaporandekom . "|" . $prosestahunsebelumkartap . "|" . $prosestahunlaporankartap . "|" . $prosestahunsebelumkontrak . "|" . $prosestahunlaporankontrak . "\r\n";
+        if (!$hasData) {
+            foreach ($codes as $code) {
+                $output .= "D01|{$code}||||||||\r\n";
             }
         }
 
-        // Generate D01 - Unique non-empty belum values (913)
-        foreach ($data_fraudinternal as $row) {
-            $hasValidData = false;
-            $belumtahunsebelumdir = isset($row['belumtahunsebelumdir']) && !$isEmpty($row['belumtahunsebelumdir']) ? $row['belumtahunsebelumdir'] : '';
-            $belumtahunlaporandir = isset($row['belumtahunlaporandir']) && !$isEmpty($row['belumtahunlaporandir']) ? $row['belumtahunlaporandir'] : '';
-            $belumtahunsebelumdekom = isset($row['belumtahunsebelumdekom']) && !$isEmpty($row['belumtahunsebelumdekom']) ? $row['belumtahunsebelumdekom'] : '';
-            $belumtahunlaporandekom = isset($row['belumtahunlaporandekom']) && !$isEmpty($row['belumtahunlaporandekom']) ? $row['belumtahunlaporandekom'] : '';
-            $belumtahunsebelumkartap = isset($row['belumtahunsebelumkartap']) && !$isEmpty($row['belumtahunsebelumkartap']) ? $row['belumtahunsebelumkartap'] : '';
-            $belumtahunlaporankartap = isset($row['belumtahunlaporankartap']) && !$isEmpty($row['belumtahunlaporankartap']) ? $row['belumtahunlaporankartap'] : '';
-            $belumtahunsebelumkontrak = isset($row['belumtahunsebelumkontrak']) && !$isEmpty($row['belumtahunsebelumkontrak']) ? $row['belumtahunsebelumkontrak'] : '';
-            $belumtahunlaporankontrak = isset($row['belumtahunlaporankontrak']) && !$isEmpty($row['belumtahunlaporankontrak']) ? $row['belumtahunlaporankontrak'] : '';
-
-            if ($belumtahunsebelumdir !== '' || $belumtahunlaporandir !== '' || $belumtahunsebelumdekom !== '' || $belumtahunlaporandekom !== '' || $belumtahunsebelumkartap !== '' || $belumtahunlaporankartap !== '' || $belumtahunsebelumkontrak !== '' || $belumtahunlaporankontrak !== '') {
-                $hasValidData = true;
-            }
-
-            // Hanya generate jika ada data valid
-            if ($hasValidData) {
-                $output .= "D01|" . "913" . "|" . $belumtahunsebelumdir . "|" . $belumtahunlaporandir . "|" . $belumtahunsebelumdekom . "|" . $belumtahunlaporandekom . "|" . $belumtahunsebelumkartap . "|" . $belumtahunlaporankartap . "|" . $belumtahunsebelumkontrak . "|" . $belumtahunlaporankontrak . "\r\n";
+        foreach ($data_penjelas as $p) {
+            if (!empty($p['tindaklanjut'])) {
+                $output .= "F01|" . $sanitize($p['tindaklanjut']) . "\r\n";
             }
         }
 
-        foreach ($data_fraudinternal as $row) {
-            $hasValidData = false;
-            $hukumtahunlaporandir = isset($row['hukumtahunlaporandir']) && !$isEmpty($row['hukumtahunlaporandir']) ? $row['hukumtahunlaporandir'] : '';
-            $hukumtahunlaporandekom = isset($row['hukumtahunlaporandekom']) && !$isEmpty($row['hukumtahunlaporandekom']) ? $row['hukumtahunlaporandekom'] : '';
-            $hukumtahunlaporankartap = isset($row['hukumtahunlaporankartap']) && !$isEmpty($row['hukumtahunlaporankartap']) ? $row['hukumtahunlaporankartap'] : '';
-            $hukumtahunlaporankontrak = isset($row['hukumtahunlaporankontrak']) && !$isEmpty($row['hukumtahunlaporankontrak']) ? $row['hukumtahunlaporankontrak'] : '';
+        $filename = "LTBPRK-E0800-{$jenispelaporan}-A-{$exportDate}1231-{$sandibpr}-01.txt";
 
-            if ($hukumtahunlaporandir !== '' || $hukumtahunlaporandekom !== '' || $hukumtahunlaporankartap !== '' || $hukumtahunlaporankontrak) {
-                $hasValidData = true;
-            }
-
-            // Hanya generate jika ada data valid
-            if ($hasValidData) {
-                $output .= "D01|" . "920" . "|" . "|" . $hukumtahunlaporandir . "|" . "|" . $hukumtahunlaporandekom . "|" . "|" . $hukumtahunlaporankartap . "|" . "|" . $hukumtahunlaporankontrak . "\r\n";
-            }
-        }
-
-
-        foreach ($data_penjelastindak as $penjelas) {
-            if (!empty($penjelas['tindaklanjut']) && $penjelas['tindaklanjut'] !== null) {
-                $tindaklanjut = str_replace(array("\r", "\n"), ' ', $penjelas['tindaklanjut']);
-                $output .= "F01|" . $tindaklanjut . "\r\n";
-            }
-        }
-
-
-        $filename = "LTBPRK-E0800-R-A-" . $exportDate . "1231-" . $sandibpr . "-01.txt";
-
-        $response = service('response');
-        $response->setHeader('Content-Type', 'text/plain');
-        $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
-        return $response->setBody($output);
+        return service('response')
+            ->setHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
     }
-
-    public function exportAllToZip()
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-
-        $zip = new \ZipArchive();
-        $zipFileName = 'APOLO-NBP-LAPORANGCG-' . date('Y-m-d') . '.zip';
-        $zipFilePath = WRITEPATH . 'uploads/' . $zipFileName;
-
-        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
-            $this->addTxtToZip('penjelasanumum', 'exporttxtpenjelasanumum', $zip);
-            $this->addTxtToZip('tgjwbdir', 'exporttxttgjwbdir', $zip);
-            $this->addTxtToZip('tgjwbdekom', 'exporttxttgjwbdekom', $zip);
-            $this->addTxtToZip('tgjwbkomite', 'exporttxttgjwbkomite', $zip);
-            $this->addTxtToZip('strukturkomite', 'exporttxtstrukturkomite', $zip);
-            $this->addTxtToZip('sahamdirdekom', 'exporttxtsahamdirdekom', $zip);
-            $this->addTxtToZip('shmusahadirdekom', 'exporttxtshmusahadirdekom', $zip);
-            $this->addTxtToZip('shmdirdekomlain', 'exporttxtshmdirdekomlain', $zip);
-            $this->addTxtToZip('keuangandirdekompshm', 'exporttxtkeuangandirdekompshm', $zip);
-            $this->addTxtToZip('keluargadirdekompshm', 'exporttxtkeluargadirdekompshm', $zip);
-            $this->addTxtToZip('remunlaindirdekom', 'exporttxtremunlaindirdekom', $zip);
-            $this->addTxtToZip('rasiogaji', 'exporttxtrasiogaji', $zip);
-            $this->addTxtToZip('rapat', 'exporttxtrapat', $zip);
-            $this->addTxtToZip('kehadirandekom', 'exporttxtkehadirandekom', $zip);
-            $this->addTxtToZip('fraudinternal', 'exporttxtfraudinternal', $zip);
-            $this->addTxtToZip('masalahhukum', 'exporttxtmasalahhukum', $zip);
-            $this->addTxtToZip('transaksikepentingan', 'exporttxttransaksikepentingan', $zip);
-            $this->addTxtToZip('danasosial', 'exporttxtdanasosial', $zip);
-
-            $zip->close();
-
-            $this->response->setHeader('Content-Type', 'application/zip');
-            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $zipFileName . '"');
-            $this->response->setHeader('Content-Length', filesize($zipFilePath));
-
-            readfile($zipFilePath);
-
-            unlink($zipFilePath);
-        } else {
-            echo 'Gagal membuat file ZIP';
-        }
-    }
-
-    private function addTxtToZip(string $controllerName, string $methodName, \ZipArchive &$zip)
-    {
-        $controllerClassName = 'App\Controllers\\' . ucfirst($controllerName);
-        if (class_exists($controllerClassName)) {
-            $controllerInstance = new $controllerClassName();
-            if (method_exists($controllerInstance, $methodName)) {
-                $response = $controllerInstance->$methodName();
-                if ($response instanceof \CodeIgniter\HTTP\Response) {
-                    $txtContent = $response->getBody();
-
-                    $contentDisposition = $response->getHeaderLine('Content-Disposition');
-                    $fileNameInZip = $controllerName . '.txt';
-
-                    if (preg_match('/filename="([^"]+)"/', $contentDisposition, $matches)) {
-                        $fileNameInZip = $matches[1];
-                    }
-
-                    $zip->addFromString($fileNameInZip, $txtContent);
-                } else {
-                    log_message('warning', "Method '$methodName' di controller '$controllerName' tidak mengembalikan objek Response yang valid.");
-                }
-            } else {
-                log_message('warning', "Method '$methodName' tidak ditemukan di controller '$controllerName'");
-            }
-        } else {
-            log_message('warning', "Controller '$controllerName' tidak ditemukan");
-        }
-    }
-
 }
-
-

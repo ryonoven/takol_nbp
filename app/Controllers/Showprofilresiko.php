@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
-use App\Models\M_periodeprofilresiko;
+use App\Models\M_periodesemesteran;
 use App\Models\M_showprofilresiko;
 use App\Models\M_infobpr;
 use App\Models\M_user;
@@ -57,9 +57,8 @@ class Showprofilresiko extends Controller
 
     public function __construct()
     {
-        // Initialize core models
         $this->infobprModel = new M_infobpr();
-        $this->periodeModel = new M_periodeprofilresiko();
+        $this->periodeModel = new M_periodesemesteran();
         $this->showprofilresikoModel = new M_showprofilresiko();
         $this->kreditinherenModel = new M_nilairisikokredit();
         $this->kreditkpmrModel = new M_risikokreditkpmr();
@@ -192,7 +191,7 @@ class Showprofilresiko extends Controller
     private function checkPeriode()
     {
         if (!$this->periodeId) {
-            return redirect()->to('/Periodeprofilresiko')
+            return redirect()->to('/Periodesemesteran')
                 ->with('error', 'Silakan pilih periode aktif terlebih dahulu.');
         }
         return null;
@@ -227,8 +226,6 @@ class Showprofilresiko extends Controller
             $this->extractCalculationbelumResults($riskbelumCalculations)
         );
 
-
-
         $this->showprofilresikoModel->simpanProfilRisiko($dataToSave);
 
         $riskFactors = $this->getRiskFactorsForDisplay($this->userKodebpr, $this->periodeId, $riskCalculations);
@@ -246,7 +243,9 @@ class Showprofilresiko extends Controller
             'bprData' => $bprData,
             'periodeDetail' => $periodeDetail,
             'showprofilresiko' => $showprofilresiko,
-            'namabpr' => $namaBpr,
+            'periode_semester' => $periodeDetail['semester'] ?? 'N/A',
+            'periode_tahun' => $periodeDetail['tahun'] ?? 'N/A',
+            'namabpr' => $bprData['namabpr'] ?? 'Nama BPR Tidak Ditemukan',
             'factors' => $riskFactors,
             'belumfactors' => $risbelumkFactors,
             'riskCalculations' => $riskCalculations,
@@ -260,45 +259,45 @@ class Showprofilresiko extends Controller
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('showprofilresiko/index', $data)
+            . view('Laporansemester/Profilrisiko/showprofilresiko', $data)
             . view('templates/v_footer');
     }
 
     private function extractCalculationResults($calculations)
     {
         return [
-            'nkredit' => $calculations['nkredit'],
-            'kesimpulan1' => $calculations['kesimpulan1'],
-            'noperasional' => $calculations['noperasional'],
-            'kesimpulan2' => $calculations['kesimpulan2'],
-            'nkepatuhan' => $calculations['nkepatuhan'],
-            'kesimpulan3' => $calculations['kesimpulan3'],
-            'nlikuiditas' => $calculations['nlikuiditas'],
-            'kesimpulan4' => $calculations['kesimpulan4'],
-            'nreputasi' => $calculations['nreputasi'],
-            'kesimpulan5' => $calculations['kesimpulan5'],
-            'nstratejik' => $calculations['nstratejik'],
-            'kesimpulan6' => $calculations['kesimpulan6'],
-            'ntotalrisk' => $calculations['ntotalrisk'],
+            'nkredit' => $calculations['nkredit'] ?? '',
+            'kesimpulan1' => $calculations['kesimpulan1'] ?? '',
+            'noperasional' => $calculations['noperasional'] ?? '',
+            'kesimpulan2' => $calculations['kesimpulan2'] ?? '',
+            'nkepatuhan' => $calculations['nkepatuhan'] ?? '',
+            'kesimpulan3' => $calculations['kesimpulan3'] ?? '',
+            'nlikuiditas' => $calculations['nlikuiditas'] ?? '',
+            'kesimpulan4' => $calculations['kesimpulan4'] ?? '',
+            'nreputasi' => $calculations['nreputasi'] ?? '',
+            'kesimpulan5' => $calculations['kesimpulan5'] ?? '',
+            'nstratejik' => $calculations['nstratejik'] ?? '',
+            'kesimpulan6' => $calculations['kesimpulan6'] ?? '',
+            'ntotalrisk' => $calculations['ntotalrisk'] ?? '',
         ];
     }
 
     private function extractCalculationbelumResults($belumcalculations)
     {
         return [
-            'nbelumkredit' => $belumcalculations['nbelumkredit'],
-            'kesimpulan1' => $belumcalculations['kesimpulan1'],
-            'nbelumoperasional' => $belumcalculations['nbelumoperasional'],
-            'kesimpulan2' => $belumcalculations['kesimpulan2'],
-            'nbelumkepatuhan' => $belumcalculations['nbelumkepatuhan'],
-            'kesimpulan3' => $belumcalculations['kesimpulan3'],
-            'nbelumlikuiditas' => $belumcalculations['nbelumlikuiditas'],
-            'kesimpulan4' => $belumcalculations['kesimpulan4'],
-            'nbelumreputasi' => $belumcalculations['nbelumreputasi'],
-            'kesimpulan5' => $belumcalculations['kesimpulan5'],
-            'nbelumstratejik' => $belumcalculations['nbelumstratejik'],
-            'kesimpulan6' => $belumcalculations['kesimpulan6'],
-            'nbelumtotalrisk' => $belumcalculations['nbelumtotalrisk'],
+            'nbelumkredit' => $belumcalculations['nbelumkredit'] ?? '',
+            'kesimpulan1' => $belumcalculations['kesimpulan1'] ?? '',
+            'nbelumoperasional' => $belumcalculations['nbelumoperasional'] ?? '',
+            'kesimpulan2' => $belumcalculations['kesimpulan2'] ?? '',
+            'nbelumkepatuhan' => $belumcalculations['nbelumkepatuhan'] ?? '',
+            'kesimpulan3' => $belumcalculations['kesimpulan3'] ?? '',
+            'nbelumlikuiditas' => $belumcalculations['nbelumlikuiditas'] ?? '',
+            'kesimpulan4' => $belumcalculations['kesimpulan4'] ?? '',
+            'nbelumreputasi' => $belumcalculations['nbelumreputasi'] ?? '',
+            'kesimpulan5' => $belumcalculations['kesimpulan5'] ?? '',
+            'nbelumstratejik' => $belumcalculations['nbelumstratejik'] ?? '',
+            'kesimpulan6' => $belumcalculations['kesimpulan6'] ?? '',
+            'nbelumtotalrisk' => $belumcalculations['nbelumtotalrisk'] ?? '',
         ];
     }
 
@@ -568,7 +567,7 @@ class Showprofilresiko extends Controller
                 'link' => base_url($config['link']),
                 'nfaktor' => $inherenData['penilaiankredit'] ?? 'N/A',
                 'nfaktor_kpmr' => $kpmrData['penilaiankredit'] ?? 'N/A',
-                'nkredit' => $riskCalculations[$config['result_key']] ?? 'N/A', // Gunakan dynamic key
+                'nkredit' => $riskCalculations[$config['result_key']] ?? 'N/A',
                 'kesimpulan' => $riskCalculations[$config['kesimpulan_key']] ?? '',
                 'accdekom' => $inherenData['accdekom'] ?? null,
                 'is_approved' => $inherenData['is_approved'] ?? null,
@@ -602,16 +601,31 @@ class Showprofilresiko extends Controller
         }
 
         try {
+            $existingData = $this->showprofilresikoModel->find($id);
+
+            if (!$existingData) {
+                return redirect()->back()->with('err', 'Data tidak ditemukan');
+            }
+
             $data = [
                 'ntotalrisk' => (int) $ntotalrisk,
                 'updated_at' => date('Y-m-d H:i:s')
             ];
 
-            $this->showprofilresikoModel->update($id, $data);
+            $result = $this->showprofilresikoModel->builder()
+                ->where('id', $id)
+                ->update($data);
 
-            return redirect()->to(base_url('Showprofilresiko'))
-                ->with('message', 'Nilai Total Risiko berhasil diupdate menjadi ' . $ntotalrisk);
+            if ($result) {
+                return redirect()->to(base_url('Showprofilresiko'))
+                    ->with('message', 'Nilai Total Risiko berhasil diupdate menjadi ' . $ntotalrisk);
+            } else {
+                return redirect()->back()
+                    ->with('err', 'Gagal update data ke database');
+            }
+
         } catch (\Exception $e) {
+            log_message('error', 'Error updateNtotalrisk: ' . $e->getMessage());
             return redirect()->back()
                 ->with('err', 'Gagal update data: ' . $e->getMessage());
         }
@@ -744,11 +758,9 @@ class Showprofilresiko extends Controller
             return redirect()->to($redirectURL);
         }
 
-        // Get parameters
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
 
-        // Get periode detail
         $profilResiko = $this->showprofilresikoModel
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
@@ -757,15 +769,21 @@ class Showprofilresiko extends Controller
         $output = "";
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
-        $tanggal = new \DateTime($profilResiko['tanggal']);
 
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
         // Fetch data
         $data_showprofresiko = $this->showprofilresikoModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
         $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
@@ -787,7 +805,7 @@ class Showprofilresiko extends Controller
         $output = "";
 
         // Header
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0000|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0000|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         usort($data_showprofresiko, function ($a, $b) {
             return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
@@ -893,7 +911,6 @@ class Showprofilresiko extends Controller
         $nbelumKepatuhan = isset($profilResiko['nbelumkepatuhan']) ? str_replace(["\r", "\n"], ' ', $profilResiko['nbelumkepatuhan']) : '0';
 
         $output .= "D01|0003|{$inherenKepatuhan}|{$kpmrKepatuhan}|{$nKepatuhan}|{$inherenbelumKepatuhan}|{$kpmrbelumKepatuhan}|{$nbelumKepatuhan}\r\n";
-
 
         // Risiko Likuiditas
         $likuiditasInheren = $this->likuiditasinherenModel
@@ -1009,20 +1026,15 @@ class Showprofilresiko extends Controller
 
         function sanitizeText($text)
         {
-            // ganti enter
             $text = str_replace(["\r", "\n"], ' ', $text);
-
-            // ganti karakter tipografi ke ASCII
             $text = str_replace(
                 ['“', '”', '‘', '’', '%', '|'],
                 ['"', '"', "'", "'", ' persen ', ' '],
                 $text
             );
 
-            // hilangkan karakter non-ASCII
             $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
 
-            // rapikan spasi
             return trim(preg_replace('/\s+/', ' ', $text));
         }
 
@@ -1036,9 +1048,8 @@ class Showprofilresiko extends Controller
         $output .= "F01|{$kesimpulan}\r\n";
 
         // Filename
-        $filename = "PRBPRKS-0000-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0000-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
-        // Response
         $response = service('response');
         $response->setHeader('Content-Type', 'text/plain');
         $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
@@ -1068,15 +1079,21 @@ class Showprofilresiko extends Controller
         $output = "";
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
-        $tanggal = new \DateTime($profilResiko['tanggal']);
 
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         // Fetch data
         $data_showprofresiko = $this->showprofilresikoModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
@@ -1099,7 +1116,7 @@ class Showprofilresiko extends Controller
         $output = "";
 
         // Header
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0100|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0100|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         usort($data_showprofresiko, function ($a, $b) {
             return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
@@ -1129,7 +1146,7 @@ class Showprofilresiko extends Controller
         $output .= "D01|1300|{$kpmrkredit}|{$keterangankpmr}\r\n";
 
         // Filename
-        $filename = "PRBPRKS-0100-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0100-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         // Response
         $response = service('response');
@@ -1161,17 +1178,21 @@ class Showprofilresiko extends Controller
         $output = "";
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
-        $tanggal = new \DateTime($profilResiko['tanggal']);
 
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
-        // $exportDate = date('Y-m-d');
-        // $titleDate = date('Ymd');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         // Fetch data
         $data_showprofresiko = $this->showprofilresikoModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
@@ -1194,7 +1215,7 @@ class Showprofilresiko extends Controller
         $output = "";
 
         // Header
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0200|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0200|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         usort($data_showprofresiko, function ($a, $b) {
             return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
@@ -1224,7 +1245,7 @@ class Showprofilresiko extends Controller
         $output .= "D01|2300|{$kpmroperasional}|{$keterangankpmr}\r\n";
 
         // Filename
-        $filename = "PRBPRKS-0200-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0200-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         // Response
         $response = service('response');
@@ -1256,15 +1277,21 @@ class Showprofilresiko extends Controller
         $output = "";
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
-        $tanggal = new \DateTime($profilResiko['tanggal']);
 
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         // Fetch data
         $data_showprofresiko = $this->showprofilresikoModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
@@ -1287,7 +1314,7 @@ class Showprofilresiko extends Controller
         $output = "";
 
         // Header
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0300|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0300|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         usort($data_showprofresiko, function ($a, $b) {
             return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
@@ -1317,7 +1344,7 @@ class Showprofilresiko extends Controller
         $output .= "D01|3300|{$kpmrkepatuhan}|{$keterangankpmr}\r\n";
 
         // Filename
-        $filename = "PRBPRKS-0300-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0300-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         // Response
         $response = service('response');
@@ -1349,15 +1376,21 @@ class Showprofilresiko extends Controller
         $output = "";
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
-        $tanggal = new \DateTime($profilResiko['tanggal']);
 
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         // Fetch data
         $data_showprofresiko = $this->showprofilresikoModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
@@ -1380,7 +1413,7 @@ class Showprofilresiko extends Controller
         $output = "";
 
         // Header
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0400|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0400|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         usort($data_showprofresiko, function ($a, $b) {
             return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
@@ -1410,7 +1443,7 @@ class Showprofilresiko extends Controller
         $output .= "D01|4300|{$kpmrlikuiditas}|{$keterangankpmr}\r\n";
 
         // Filename
-        $filename = "PRBPRKS-0400-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0400-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         // Response
         $response = service('response');
@@ -1419,99 +1452,6 @@ class Showprofilresiko extends Controller
 
         return $response->setBody($output);
     }
-
-    // public function exporttxtreputasi()
-    // {
-    //     // Authentication check
-    //     if (!$this->auth->check()) {
-    //         $redirectURL = session('redirect_url') ?? '/login';
-    //         unset($_SESSION['redirect_url']);
-    //         return redirect()->to($redirectURL);
-    //     }
-
-    //     // Get parameters
-    //     $kodebpr = $this->userKodebpr;
-    //     $periodeId = session('active_periode');
-
-    //     // Get periode detail
-    //     $profilResiko = $this->showprofilresikoModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->first();
-
-    //     $output = "";
-    //     $periodeDetail = $this->periodeModel->find($this->periodeId);
-    //     $modalinti = $periodeDetail['modalinti'];
-    //     $totalaset = $periodeDetail['totalaset'];
-    //     $kantorcabang = $periodeDetail['kantorcabang'];
-    //     $atmdebit = $periodeDetail['atmdebit'];
-    //     $jenispelaporan = $periodeDetail['jenispelaporan'];
-    //     $kategori = $periodeDetail['kategori'];
-    //     $tanggal = new \DateTime($profilResiko['tanggal']);
-
-    //     $titleDate = $tanggal->format('Ymd');
-    //     $exportDate = $tanggal->format('Y-m-d');
-
-    //     // Fetch data
-    //     $data_showprofresiko = $this->showprofilresikoModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
-    //     $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
-
-    //     // BPR Info
-    //     $sandibpr = '';
-    //     $kodejenis = '';
-    //     if (!empty($data_infobpr)) {
-    //         $infobpr = $data_infobpr[0];
-    //         $sandibpr = $infobpr['sandibpr'] ?? '';
-    //         $kodejenis = $infobpr['kodejenis'] ?? '';
-    //     }
-
-    //     $profilResiko = $this->showprofilresikoModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->first();
-
-    //     $output = "";
-
-    //     // Header
-    //     $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0500|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
-
-    //     usort($data_showprofresiko, function ($a, $b) {
-    //         return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
-    //     });
-
-    //     $reputasiInheren = $this->reputasiinherenModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->where('faktor1id', 148)
-    //         ->first();
-
-    //     $reputasiKpmr = $this->reputasikpmrModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->where('faktor1id', 168)
-    //         ->first();
-
-    //     $inherenreputasi = isset($reputasiInheren['penilaiankredit']) ? str_replace(["\r", "\n"], ' ', $reputasiInheren['penilaiankredit']) : '0';
-    //     $keterangankpmr = isset($operasionalInheren['keterangan']) ? str_replace(["\r", "\n"], ' ', $reputasiInheren['keterangan']) : '0';
-    //     $kpmrreputasi = isset($reputasiKpmr['penilaiankredit']) ? str_replace(["\r", "\n"], ' ', $reputasiKpmr['penilaiankredit']) : '0';
-    //     $keterangankpmr = isset($reputasiKpmr['keterangan']) ? str_replace(["\r", "\n"], ' ', $reputasiKpmr['keterangan']) : '0';
-    //     $nreputasi = isset($profilResiko['nreputasi']) ? str_replace(["\r", "\n"], ' ', $profilResiko['nreputasi']) : '0';
-    //     $kesimpulan5 = isset($profilResiko['kesimpulan5']) ? str_replace(["\r", "\n"], ' ', $profilResiko['kesimpulan5']) : '';
-
-    //     $output .= "D01|5100|{$nreputasi}|{$kesimpulan5}\r\n";
-    //     $output .= "D01|5200|{$inherenreputasi}|{$keterangankpmr}\r\n";
-    //     $output .= "D01|5300|{$kpmrreputasi}|{$keterangankpmr}\r\n";
-
-    //     // Filename
-    //     $filename = "PRBPRKS-0500-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
-
-    //     // Response
-    //     $response = service('response');
-    //     $response->setHeader('Content-Type', 'text/plain');
-    //     $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
-
-    //     return $response->setBody($output);
-    // }
 
     public function exporttxtreputasi()
     {
@@ -1533,15 +1473,21 @@ class Showprofilresiko extends Controller
         $periodeDetail = $this->periodeModel->find($this->periodeId);
 
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
 
-        $tanggal = new \DateTime($profilResiko['tanggal']);
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
 
@@ -1553,9 +1499,6 @@ class Showprofilresiko extends Controller
             $kodejenis = $infobpr['kodejenis'] ?? '';
         }
 
-        // ===============================
-        // Sanitasi teks (samakan pola)
-        // ===============================
         function sanitizeTxtReputasi($text)
         {
             $text = str_replace(["\r", "\n"], ' ', $text);
@@ -1570,14 +1513,8 @@ class Showprofilresiko extends Controller
 
         $output = "";
 
-        // ===============================
-        // Header
-        // ===============================
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0500|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0500|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
-        // ===============================
-        // Ambil data reputasi
-        // ===============================
         $reputasiInheren = $this->reputasiinherenModel
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
@@ -1590,9 +1527,6 @@ class Showprofilresiko extends Controller
             ->where('faktor1id', 168)
             ->first();
 
-        // ===============================
-        // Sanitasi data
-        // ===============================
         $nreputasi = sanitizeTxtReputasi($profilResiko['nreputasi'] ?? '');
         $kesimpulan5 = sanitizeTxtReputasi($profilResiko['kesimpulan5'] ?? '');
 
@@ -1602,25 +1536,19 @@ class Showprofilresiko extends Controller
         $kpmrreputasi = sanitizeTxtReputasi($reputasiKpmr['penilaiankredit'] ?? '');
         $ketKpmr = sanitizeTxtReputasi($reputasiKpmr['keterangan'] ?? '');
 
-        // ===============================
-        // D01 hanya jika ADA DATA
-        // ===============================
-        if ($nreputasi !== '' || $kesimpulan5 !== '') {
+        if ($nreputasi !== '' && $kesimpulan5 !== '') {
             $output .= "D01|5100|{$nreputasi}|{$kesimpulan5}\r\n";
         }
 
-        if ($inherenreputasi !== '' || $ketInheren !== '') {
+        if ($inherenreputasi !== '' && $ketInheren !== '') {
             $output .= "D01|5200|{$inherenreputasi}|{$ketInheren}\r\n";
         }
 
-        if ($kpmrreputasi !== '' || $ketKpmr !== '') {
+        if ($kpmrreputasi !== '' && $ketKpmr !== '') {
             $output .= "D01|5300|{$kpmrreputasi}|{$ketKpmr}\r\n";
         }
 
-        // ===============================
-        // Output response
-        // ===============================
-        $filename = "PRBPRKS-0500-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0500-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         $response = service('response');
         $response->setHeader('Content-Type', 'text/plain');
@@ -1628,99 +1556,6 @@ class Showprofilresiko extends Controller
 
         return $response->setBody($output);
     }
-
-    // public function exporttxtstratejik()
-    // {
-    //     // Authentication check
-    //     if (!$this->auth->check()) {
-    //         $redirectURL = session('redirect_url') ?? '/login';
-    //         unset($_SESSION['redirect_url']);
-    //         return redirect()->to($redirectURL);
-    //     }
-
-    //     // Get parameters
-    //     $kodebpr = $this->userKodebpr;
-    //     $periodeId = session('active_periode');
-
-    //     // Get periode detail
-    //     $profilResiko = $this->showprofilresikoModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->first();
-
-    //     $output = "";
-    //     $periodeDetail = $this->periodeModel->find($this->periodeId);
-    //     $modalinti = $periodeDetail['modalinti'];
-    //     $totalaset = $periodeDetail['totalaset'];
-    //     $kantorcabang = $periodeDetail['kantorcabang'];
-    //     $atmdebit = $periodeDetail['atmdebit'];
-    //     $jenispelaporan = $periodeDetail['jenispelaporan'];
-    //     $kategori = $periodeDetail['kategori'];
-    //     $tanggal = new \DateTime($profilResiko['tanggal']);
-
-    //     $titleDate = $tanggal->format('Ymd');
-    //     $exportDate = $tanggal->format('Y-m-d');
-
-    //     // Fetch data
-    //     $data_showprofresiko = $this->showprofilresikoModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
-    //     $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
-
-    //     // BPR Info
-    //     $sandibpr = '';
-    //     $kodejenis = '';
-    //     if (!empty($data_infobpr)) {
-    //         $infobpr = $data_infobpr[0];
-    //         $sandibpr = $infobpr['sandibpr'] ?? '';
-    //         $kodejenis = $infobpr['kodejenis'] ?? '';
-    //     }
-
-    //     $profilResiko = $this->showprofilresikoModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->first();
-
-    //     $output = "";
-
-    //     // Header
-    //     $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0600|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
-
-    //     usort($data_showprofresiko, function ($a, $b) {
-    //         return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
-    //     });
-
-    //     $stratejikInheren = $this->stratejikinherenModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->where('faktor1id', 179)
-    //         ->first();
-
-    //     $stratejikKpmr = $this->stratejikkpmrModel
-    //         ->where('kodebpr', $kodebpr)
-    //         ->where('periode_id', $periodeId)
-    //         ->where('faktor1id', 199)
-    //         ->first();
-
-    //     $inherenstratejik = isset($stratejikInheren['penilaiankredit']) ? str_replace(["\r", "\n"], ' ', $stratejikInheren['penilaiankredit']) : '0';
-    //     $keterangankpmr = isset($operasionalInheren['keterangan']) ? str_replace(["\r", "\n"], ' ', $stratejikInheren['keterangan']) : '0';
-    //     $kpmrstratejik = isset($stratejikKpmr['penilaiankredit']) ? str_replace(["\r", "\n"], ' ', $stratejikKpmr['penilaiankredit']) : '0';
-    //     $keterangankpmr = isset($stratejikKpmr['keterangan']) ? str_replace(["\r", "\n"], ' ', $stratejikKpmr['keterangan']) : '0';
-    //     $nstratejik = isset($profilResiko['nstratejik']) ? str_replace(["\r", "\n"], ' ', $profilResiko['nstratejik']) : '0';
-    //     $kesimpulan6 = isset($profilResiko['kesimpulan6']) ? str_replace(["\r", "\n"], ' ', $profilResiko['kesimpulan6']) : '';
-
-    //     $output .= "D01|6100|{$nstratejik}|{$kesimpulan6}\r\n";
-    //     $output .= "D01|6200|{$inherenstratejik}|{$keterangankpmr}\r\n";
-    //     $output .= "D01|6300|{$kpmrstratejik}|{$keterangankpmr}\r\n";
-
-    //     // Filename
-    //     $filename = "PRBPRKS-0600-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
-
-    //     // Response
-    //     $response = service('response');
-    //     $response->setHeader('Content-Type', 'text/plain');
-    //     $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
-
-    //     return $response->setBody($output);
-    // }
 
     public function exporttxtstratejik()
     {
@@ -1742,15 +1577,21 @@ class Showprofilresiko extends Controller
         $periodeDetail = $this->periodeModel->find($this->periodeId);
 
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
         $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
 
-        $tanggal = new \DateTime($profilResiko['tanggal']);
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
+
+        if (strtolower($semester) === 'ganjil' || $semester === '1') {
+            $exportDate = "{$tahun}-06-30";
+        } else {
+            $exportDate = "{$tahun}-12-31";
+        }
+
+        $titleDate = str_replace('-', '', $exportDate);
 
         $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
 
@@ -1762,9 +1603,6 @@ class Showprofilresiko extends Controller
             $kodejenis = $infobpr['kodejenis'] ?? '';
         }
 
-        // ===============================
-        // Sanitasi teks (konsisten)
-        // ===============================
         function sanitizeTxtStratejik($text)
         {
             $text = str_replace(["\r", "\n"], ' ', $text);
@@ -1779,14 +1617,8 @@ class Showprofilresiko extends Controller
 
         $output = "";
 
-        // ===============================
-        // Header
-        // ===============================
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0600|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0600|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
-        // ===============================
-        // Ambil data stratejik
-        // ===============================
         $stratejikInheren = $this->stratejikinherenModel
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
@@ -1799,9 +1631,6 @@ class Showprofilresiko extends Controller
             ->where('faktor1id', 199)
             ->first();
 
-        // ===============================
-        // Sanitasi data
-        // ===============================
         $nstratejik = sanitizeTxtStratejik($profilResiko['nstratejik'] ?? '');
         $kesimpulan6 = sanitizeTxtStratejik($profilResiko['kesimpulan6'] ?? '');
 
@@ -1811,25 +1640,19 @@ class Showprofilresiko extends Controller
         $kpmrstratejik = sanitizeTxtStratejik($stratejikKpmr['penilaiankredit'] ?? '');
         $ketKpmr = sanitizeTxtStratejik($stratejikKpmr['keterangan'] ?? '');
 
-        // ===============================
-        // D01 hanya jika ADA DATA
-        // ===============================
-        if ($nstratejik !== '' || $kesimpulan6 !== '') {
+        if ($nstratejik !== '' && $kesimpulan6 !== '') {
             $output .= "D01|6100|{$nstratejik}|{$kesimpulan6}\r\n";
         }
 
-        if ($inherenstratejik !== '' || $ketInheren !== '') {
+        if ($inherenstratejik !== '' && $ketInheren !== '') {
             $output .= "D01|6200|{$inherenstratejik}|{$ketInheren}\r\n";
         }
 
-        if ($kpmrstratejik !== '' || $ketKpmr !== '') {
+        if ($kpmrstratejik !== '' && $ketKpmr !== '') {
             $output .= "D01|6300|{$kpmrstratejik}|{$ketKpmr}\r\n";
         }
 
-        // ===============================
-        // Output response
-        // ===============================
-        $filename = "PRBPRKS-0600-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0600-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
         $response = service('response');
         $response->setHeader('Content-Type', 'text/plain');
@@ -1849,7 +1672,7 @@ class Showprofilresiko extends Controller
             'baseUrl' => base_url()
         ];
 
-        return view('showprofilresiko/export_all_pdf_zip', $data);
+        return view('Laporansemester/Pdfsemesteran/export_all_pdf_zip', $data);
     }
 
     public function exportAllToZip()
@@ -1943,7 +1766,6 @@ class Showprofilresiko extends Controller
         $txtContent = $response->getBody();
         $fileNameInZip = $controllerName . '.txt';
 
-        // Get filename from content disposition if exists
         $contentDisposition = $response->getHeaderLine('Content-Disposition');
         if (preg_match('/filename="([^"]+)"/', $contentDisposition, $matches)) {
             $fileNameInZip = $matches[1];
@@ -1963,8 +1785,7 @@ class Showprofilresiko extends Controller
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid.');
         }
 
-        // Set unlimited execution time
-        set_time_limit(600); // 10 menit
+        set_time_limit(600);
         ini_set('memory_limit', '1024M'); // 1GB
 
         try {
@@ -2070,7 +1891,7 @@ class Showprofilresiko extends Controller
 
     public function ajaxUpdateTtd()
     {
-        if (!$this->request->isAJAX()) {
+        if (strtolower($this->request->getMethod()) !== 'post') {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Invalid request method'
@@ -2101,7 +1922,6 @@ class Showprofilresiko extends Controller
                 ]);
             }
 
-            // Convert tanggal format
             $tanggal = $this->request->getPost('tanggal');
             $tanggalConverted = $this->convertDateFormat($tanggal);
 
@@ -2109,12 +1929,11 @@ class Showprofilresiko extends Controller
                 'dirut' => $this->request->getPost('dirut'),
                 'dirkep' => $this->request->getPost('dirkep'),
                 'pe' => $this->request->getPost('pe'),
-                'tanggal' => $tanggalConverted,  // Use converted date
+                'tanggal' => $tanggalConverted,
                 'lokasi' => $this->request->getPost('lokasi'),
                 'updated_at' => date('Y-m-d H:i:s')
             ];
 
-            // Validasi data required
             $requiredFields = ['dirut', 'dirkep', 'pe', 'tanggal', 'lokasi'];
             foreach ($requiredFields as $field) {
                 if (empty($data[$field])) {
@@ -2125,7 +1944,6 @@ class Showprofilresiko extends Controller
                 }
             }
 
-            // Validasi format tanggal
             if ($tanggalConverted === null) {
                 return $this->response->setJSON([
                     'success' => false,
@@ -2142,8 +1960,8 @@ class Showprofilresiko extends Controller
                     'dirut' => $data['dirut'],
                     'dirkep' => $data['dirkep'],
                     'pe' => $data['pe'],
-                    'tanggal' => $tanggal, // Return original format for display
-                    'tanggal_db' => $tanggalConverted, // For debugging
+                    'tanggal' => $tanggal,
+                    'tanggal_db' => $tanggalConverted,
                     'lokasi' => $data['lokasi']
                 ]
             ]);
@@ -2158,7 +1976,7 @@ class Showprofilresiko extends Controller
 
     public function ajaxAutoSaveField()
     {
-        if (!$this->request->isAJAX()) {
+        if (strtolower($this->request->getMethod()) !== 'post') {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Invalid request method'
@@ -2184,7 +2002,6 @@ class Showprofilresiko extends Controller
                 ]);
             }
 
-            // Validasi field yang diizinkan
             $allowedFields = ['dirut', 'dirkep', 'pe', 'tanggal', 'lokasi'];
             if (!in_array($field, $allowedFields)) {
                 return $this->response->setJSON([
@@ -2193,7 +2010,6 @@ class Showprofilresiko extends Controller
                 ]);
             }
 
-            // Convert date format if field is tanggal
             if ($field === 'tanggal') {
                 $value = $this->convertDateFormat($value);
 
@@ -2229,7 +2045,7 @@ class Showprofilresiko extends Controller
 
     public function ajaxSaveKesimpulan()
     {
-        if (!$this->request->isAJAX()) {
+        if (strtolower($this->request->getMethod()) !== 'post') {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Invalid request method'
@@ -2385,7 +2201,8 @@ class Showprofilresiko extends Controller
                 ],
                 'periode' => [
                     'semester' => $periodeDetail['semester'] ?? '',
-                    'tahun' => $periodeDetail['tahun'] ?? ''
+                    'tahun' => $periodeDetail['tahun'] ?? '',
+                    'kategori' => $periodeDetail['kategori'] ?? 'B',
                 ],
                 'profil' => [
                     'lokasi' => $showprofilresiko['lokasi'] ?? '',
@@ -2798,7 +2615,6 @@ class Showprofilresiko extends Controller
             $model = null;
             $isKpmr = false;
 
-            // Mapping faktorId ke model yang sesuai
             switch ($riskType) {
                 case 'kredit':
                     if ($faktorId == 13 || $faktorId == 14) {
@@ -3575,7 +3391,7 @@ class Showprofilresiko extends Controller
         ];
 
         // Get all data
-        $allData = $this->operasionalkpmrModel
+        $allData = $this->kepatuhankpmrModel
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->whereIn('faktor1id', range(83, 103))
@@ -3783,7 +3599,6 @@ class Showprofilresiko extends Controller
             'nilai136' => null
         ];
 
-        // Get all data (faktor 118-136)
         $allData = $this->likuiditaskpmrModel
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
@@ -3838,5 +3653,737 @@ class Showprofilresiko extends Controller
 
         return $result;
     }
+
+    public function generateLaporanProfilRisikoPdfBytes(): string
+    {
+        $periodeDetail = $this->periodeModel->find($this->periodeId);
+        $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
+        $showprofilresiko = $this->showprofilresikoModel
+            ->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+
+        if (!$showprofilresiko)
+            return '';
+
+        $logoBase64 = '';
+        $logoMime = 'image/png';
+        if (!empty($bprData['logo'])) {
+            $logoPath = FCPATH . 'asset/img/' . $bprData['logo'];
+            if (file_exists($logoPath)) {
+                $logoBase64 = base64_encode(file_get_contents($logoPath));
+                $logoMime = mime_content_type($logoPath);
+            }
+        }
+        $logoTag = $logoBase64
+            ? '<img src="data:' . $logoMime . ';base64,' . $logoBase64 . '" style="height:40px;width:auto">'
+            : '';
+
+        $periodeSebelum = $this->getPeriodeSebelumnya(
+            $periodeDetail['semester'],
+            $periodeDetail['tahun']
+        );
+
+        $getRiskColor = function ($v): string {
+            switch ((int) $v) {
+                case 1:
+                    return '#00FF00';
+                case 2:
+                    return '#90EE90';
+                case 3:
+                    return '#FFFF00';
+                case 4:
+                    return '#FFA500';
+                case 5:
+                    return '#FF0000';
+                default:
+                    return '#CCCCCC';
+            }
+        };
+        $getRiskText = function ($v): string {
+            switch ((int) $v) {
+                case 1:
+                    return 'Sangat Rendah';
+                case 2:
+                    return 'Rendah';
+                case 3:
+                    return 'Sedang';
+                case 4:
+                    return 'Tinggi';
+                case 5:
+                    return 'Sangat Tinggi';
+                default:
+                    return '-';
+            }
+        };
+
+        $fetch = function ($model, $faktorId) {
+            return $model->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->where('faktor1id', $faktorId)
+                ->first();
+        };
+
+        $kreditI = $fetch($this->kreditinherenModel, 13);
+        $kreditK = $fetch($this->kreditkpmrModel, 33);
+        $kreditIB = $fetch($this->kreditinherenModel, 14);
+        $kreditKB = $fetch($this->kreditkpmrModel, 34);
+
+        $opI = $fetch($this->operasionalinherenModel, 48);
+        $opK = $fetch($this->operasionalkpmrModel, 70);
+        $opIB = $fetch($this->operasionalinherenModel, 49);
+        $opKB = $fetch($this->operasionalkpmrModel, 71);
+
+        $kepI = $fetch($this->kepatuhaninherenModel, 81);
+        $kepK = $fetch($this->kepatuhankpmrModel, 102);
+        $kepIB = $fetch($this->kepatuhaninherenModel, 82);
+        $kepKB = $fetch($this->kepatuhankpmrModel, 103);
+
+        $likI = $fetch($this->likuiditasinherenModel, 115);
+        $likK = $fetch($this->likuiditaskpmrModel, 135);
+        $likIB = $fetch($this->likuiditasinherenModel, 116);
+        $likKB = $fetch($this->likuiditaskpmrModel, 136);
+
+        $repI = $fetch($this->reputasiinherenModel, 148);
+        $repK = $fetch($this->reputasikpmrModel, 168);
+        $repIB = $fetch($this->reputasiinherenModel, 149);
+        $repKB = $fetch($this->reputasikpmrModel, 169);
+
+        $strI = $fetch($this->stratejikinherenModel, 179);
+        $strK = $fetch($this->stratejikkpmrModel, 199);
+        $strIB = $fetch($this->stratejikinherenModel, 180);
+        $strKB = $fetch($this->stratejikkpmrModel, 200);
+
+        $tanggal = '';
+        if (!empty($showprofilresiko['tanggal'])) {
+            $d = \DateTime::createFromFormat('Y-m-d', $showprofilresiko['tanggal']);
+            if ($d) {
+                $bl = [
+                    '01' => 'Januari',
+                    '02' => 'Februari',
+                    '03' => 'Maret',
+                    '04' => 'April',
+                    '05' => 'Mei',
+                    '06' => 'Juni',
+                    '07' => 'Juli',
+                    '08' => 'Agustus',
+                    '09' => 'September',
+                    '10' => 'Oktober',
+                    '11' => 'November',
+                    '12' => 'Desember'
+                ];
+                $tanggal = $d->format('d') . ' ' . $bl[$d->format('m')] . ' ' . $d->format('Y');
+            }
+        }
+
+        $s = fn($v) => htmlspecialchars((string) ($v ?? ''));
+        $spr = $showprofilresiko;
+        $sm = $s($periodeDetail['semester']);
+        $th = $s($periodeDetail['tahun']);
+        $smB = $s($periodeSebelum['semester']);
+        $thB = $s($periodeSebelum['tahun']);
+
+        $risikoRow = function (string $label, $iC, $kC, $nC, $iP, $kP, $nP) use ($getRiskColor): string {
+            $cell = fn($v) => '<td style="text-align:center;font-weight:bold;font-size:8.5pt;'
+                . 'background:' . $getRiskColor($v) . ';border:1px solid #000;padding:6px 3px;vertical-align:middle">'
+                . ($v ?? '') . '</td>';
+            return '<tr>'
+                . '<td style="border:none solid #000;padding:6px 8px;font-size:8.5pt;vertical-align:middle">' . htmlspecialchars($label) . '</td>'
+                . $cell($iC) . $cell($kC) . $cell($nC)
+                . $cell($iP) . $cell($kP) . $cell($nP)
+                . '</tr>';
+        };
+
+        $tableRows = $risikoRow(
+            'Risiko Kredit',
+            $kreditI['penilaiankredit'] ?? null,
+            $kreditK['penilaiankredit'] ?? null,
+            $spr['nkredit'] ?? null,
+            $kreditIB['penilaiankredit'] ?? null,
+            $kreditKB['penilaiankredit'] ?? null,
+            $spr['nbelumkredit'] ?? null
+        );
+        $tableRows .= $risikoRow(
+            'Risiko Operasional',
+            $opI['penilaiankredit'] ?? null,
+            $opK['penilaiankredit'] ?? null,
+            $spr['noperasional'] ?? null,
+            $opIB['penilaiankredit'] ?? null,
+            $opKB['penilaiankredit'] ?? null,
+            $spr['nbelumoperasional'] ?? null
+        );
+        $tableRows .= $risikoRow(
+            'Risiko Kepatuhan',
+            $kepI['penilaiankredit'] ?? null,
+            $kepK['penilaiankredit'] ?? null,
+            $spr['nkepatuhan'] ?? null,
+            $kepIB['penilaiankredit'] ?? null,
+            $kepKB['penilaiankredit'] ?? null,
+            $spr['nbelumkepatuhan'] ?? null
+        );
+        $tableRows .= $risikoRow(
+            'Risiko Likuiditas',
+            $likI['penilaiankredit'] ?? null,
+            $likK['penilaiankredit'] ?? null,
+            $spr['nlikuiditas'] ?? null,
+            $likIB['penilaiankredit'] ?? null,
+            $likKB['penilaiankredit'] ?? null,
+            $spr['nbelumlikuiditas'] ?? null
+        );
+
+        if (!empty($repI)) {
+            $tableRows .= $risikoRow(
+                'Risiko Reputasi',
+                $repI['penilaiankredit'] ?? null,
+                $repK['penilaiankredit'] ?? null,
+                $spr['nreputasi'] ?? null,
+                $repIB['penilaiankredit'] ?? null,
+                $repKB['penilaiankredit'] ?? null,
+                $spr['nbelumreputasi'] ?? null
+            );
+        }
+        if (!empty($strI)) {
+            $tableRows .= $risikoRow(
+                'Risiko Stratejik',
+                $strI['penilaiankredit'] ?? null,
+                $strK['penilaiankredit'] ?? null,
+                $spr['nstratejik'] ?? null,
+                $strIB['penilaiankredit'] ?? null,
+                $strKB['penilaiankredit'] ?? null,
+                $spr['nbelumstratejik'] ?? null
+            );
+        }
+
+        $pcC = $getRiskColor($spr['ntotalrisk'] ?? null);
+        $pcP = $getRiskColor($spr['nbelumtotalrisk'] ?? null);
+        $tableRows .= '<tr style="background:#aaaaaa">
+        <td colspan="3" style="border:1px solid #000;padding:6px 8px;font-weight:bold;font-size:8.5pt;vertical-align:middle">Peringkat Risiko</td>
+        <td style="text-align:center;font-weight:bold;font-size:10pt;background:' . $pcC . ';border:1px solid #000;padding:6px;vertical-align:middle">' . ($spr['ntotalrisk'] ?? '') . '</td>
+        <td colspan="2" style="border:1px solid #000"></td>
+        <td style="text-align:center;font-weight:bold;font-size:10pt;background:' . $pcP . ';border:1px solid #000;padding:6px;vertical-align:middle">' . ($spr['nbelumtotalrisk'] ?? '') . '</td>
+    </tr>';
+
+        $analisisList = [
+            'Kredit' => [$kreditI, $kreditK],
+            'Operasional' => [$opI, $opK],
+            'Kepatuhan' => [$kepI, $kepK],
+            'Likuiditas' => [$likI, $likK],
+        ];
+        if (!empty($repI))
+            $analisisList['Reputasi'] = [$repI, $repK];
+        if (!empty($strI))
+            $analisisList['Stratejik'] = [$strI, $strK];
+
+        $analisisHtml = '';
+        foreach ($analisisList as $jenis => [$inh, $kpmr]) {
+            $ni = $inh['penilaiankredit'] ?? 0;
+            $nk = $kpmr['penilaiankredit'] ?? 0;
+            $analisisHtml .= '<li style="margin-bottom:4px;font-size:9pt">Risiko ' . $jenis
+                . ': Risiko Inheren peringkat ' . $ni . ' (' . $getRiskText($ni)
+                . '), Risiko KPMR peringkat ' . $nk . ' (' . $getRiskText($nk) . ')</li>';
+        }
+
+        $profilRows = [
+            ['Periode', "Semester {$sm} Tahun {$th}"],
+            ['Nama BPR', $bprData['namabpr'] ?? ''],
+            ['Alamat', $bprData['alamat'] ?? ''],
+            ['Nomor Telepon', $bprData['nomor'] ?? ''],
+            ['Modal Inti', $periodeDetail['modalinti'] ?? ''],
+            ['Total Aset', $periodeDetail['totalaset'] ?? ''],
+            ['Jumlah Kantor Cabang', $periodeDetail['kantorcabang'] ?? ''],
+            ['Kegiatan sebagai penerbit kartu ATM atau kartu debit', $periodeDetail['atmdebit'] ?? ''],
+        ];
+        $profilHtml = '';
+        foreach ($profilRows as [$label, $value]) {
+            $profilHtml .= '<tr>
+            <td style="width:230px;padding:3px 6px;font-size:8.5pt;vertical-align:top">'
+                . htmlspecialchars($label) . '</td>
+            <td style="width:12px;padding:3px 2px;vertical-align:top;font-size:8.5pt">:</td>
+            <td style="padding:3px 6px;font-size:8.5pt;vertical-align:top">'
+                . htmlspecialchars($value) . '</td>
+        </tr>';
+        }
+
+        $kesimpulanHtml = '';
+        if (!empty($spr['kesimpulan'])) {
+            $kesimpulanHtml = '
+        <div style="border:1px solid #000;padding:10px 12px;margin-top:12px;font-size:9pt">
+            <div style="font-weight:bold;margin-bottom:8px;font-size:9.5pt">Kesimpulan</div>
+            <div style="font-size:9pt;line-height:1.5">' . nl2br(htmlspecialchars($spr['kesimpulan'])) . '</div>
+        </div>';
+        }
+
+        $headerHtml = '
+    <table style="width:100%;border-collapse:collapse;margin-bottom:0;padding-bottom:6px">
+        <tr>
+            <td style="width:90px;vertical-align:middle;padding-right:8px">' . $logoTag . '</td>
+            <td style="text-align:center;vertical-align:middle">
+                <div style="font-size:12pt;font-weight:bold;line-height:1.4">' . $s($bprData['namabpr']) . '</div>
+                <div style="font-size:8pt;margin-top:2px">' . $s($bprData['alamat']) . '</div>
+                <div style="font-size:8pt;margin-top:1px">Telepon: ' . $s($bprData['nomor']) . '</div>
+                <div style="font-size:8pt;margin-top:1px">Website: ' . $s($bprData['webbpr'] ?? '-')
+            . '&nbsp;&nbsp;&nbsp;Email: ' . $s($bprData['email'] ?? '-') . '</div>
+            </td>
+        </tr>
+    </table>
+    <div style="border-top:2.5px solid #000;margin-top:6px;margin-bottom:14px"></div>';
+        $getKeteranganRows = function (string $riskType, int $faktorId): array {
+            $ranges = $this->getFaktorRanges($riskType, $faktorId > 100);
+
+            $modelMap = [
+                'kredit' => [$this->kreditinherenModel, $this->kreditkpmrModel],
+                'operasional' => [$this->operasionalinherenModel, $this->operasionalkpmrModel],
+                'kepatuhan' => [$this->kepatuhaninherenModel, $this->kepatuhankpmrModel],
+                'likuiditas' => [$this->likuiditasinherenModel, $this->likuiditaskpmrModel],
+                'reputasi' => [$this->reputasiinherenModel, $this->reputasikpmrModel],
+                'stratejik' => [$this->stratejikinherenModel, $this->stratejikkpmrModel],
+            ];
+
+            $kpmrFaktorIds = [33, 34, 70, 71, 102, 103, 135, 136, 168, 169, 199, 200];
+            $isKpmr = in_array($faktorId, $kpmrFaktorIds);
+            $model = $modelMap[$riskType][$isKpmr ? 1 : 0];
+
+            return $model->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->whereIn('faktor1id', $ranges)
+                ->orderBy('faktor1id', 'ASC')
+                ->findAll();
+        };
+
+        $risikoArray = [
+            ['key' => 'kredit', 'title' => 'ANALISIS RISIKO KREDIT', 'iF' => 13, 'kF' => 33],
+            ['key' => 'operasional', 'title' => 'ANALISIS RISIKO OPERASIONAL', 'iF' => 48, 'kF' => 70],
+            ['key' => 'kepatuhan', 'title' => 'ANALISIS RISIKO KEPATUHAN', 'iF' => 81, 'kF' => 102],
+            ['key' => 'likuiditas', 'title' => 'ANALISIS RISIKO LIKUIDITAS', 'iF' => 115, 'kF' => 135],
+        ];
+        if (!empty($repI))
+            $risikoArray[] = ['key' => 'reputasi', 'title' => 'ANALISIS RISIKO REPUTASI', 'iF' => 148, 'kF' => 168];
+        if (!empty($strI))
+            $risikoArray[] = ['key' => 'stratejik', 'title' => 'ANALISIS RISIKO STRATEJIK', 'iF' => 179, 'kF' => 199];
+
+        // Map key → nilai current
+        $risikoNilai = [
+            'kredit' => ['iC' => $kreditI['penilaiankredit'] ?? null, 'kC' => $kreditK['penilaiankredit'] ?? null, 'n' => $spr['nkredit'] ?? null],
+            'operasional' => ['iC' => $opI['penilaiankredit'] ?? null, 'kC' => $opK['penilaiankredit'] ?? null, 'n' => $spr['noperasional'] ?? null],
+            'kepatuhan' => ['iC' => $kepI['penilaiankredit'] ?? null, 'kC' => $kepK['penilaiankredit'] ?? null, 'n' => $spr['nkepatuhan'] ?? null],
+            'likuiditas' => ['iC' => $likI['penilaiankredit'] ?? null, 'kC' => $likK['penilaiankredit'] ?? null, 'n' => $spr['nlikuiditas'] ?? null],
+            'reputasi' => ['iC' => $repI['penilaiankredit'] ?? null, 'kC' => $repK['penilaiankredit'] ?? null, 'n' => $spr['nreputasi'] ?? null],
+            'stratejik' => ['iC' => $strI['penilaiankredit'] ?? null, 'kC' => $strK['penilaiankredit'] ?? null, 'n' => $spr['nstratejik'] ?? null],
+        ];
+
+        $halamanBHtml = '';
+        foreach ($risikoArray as $idx => $risiko) {
+            $nilaiRisiko = $risikoNilai[$risiko['key']];
+            $tingkat = $nilaiRisiko['n'];
+
+            $inherenRows = $getKeteranganRows($risiko['key'], $risiko['iF']);
+            $kpmrRows = $getKeteranganRows($risiko['key'], $risiko['kF']);
+
+            // Build list keterangan inheren
+            $inherenList = '';
+            if (!empty($inherenRows)) {
+                foreach ($inherenRows as $i => $row) {
+                    $inherenList .= '<li style="margin-bottom:4px;font-size:9pt;line-height:1.5">'
+                        . htmlspecialchars($row['keterangan'] ?? '') . '</li>';
+                }
+                $inherenList = '<ol style="margin:4px 0 0 22px;padding:0;font-size:9pt">' . $inherenList . '</ol>';
+            } else {
+                $inherenList = '<p style="font-size:9pt;margin:4px 0 0 0">Tingkat Risiko Inheren: '
+                    . ($nilaiRisiko['iC'] ?? '-') . ' (' . $getRiskText($nilaiRisiko['iC']) . ')</p>';
+            }
+
+            // Build list keterangan KPMR
+            $kpmrList = '';
+            if (!empty($kpmrRows)) {
+                foreach ($kpmrRows as $i => $row) {
+                    $kpmrList .= '<li style="margin-bottom:4px;font-size:9pt;line-height:1.5">'
+                        . htmlspecialchars($row['keterangan'] ?? '') . '</li>';
+                }
+                $kpmrList = '<ol style="margin:4px 0 0 22px;padding:0;font-size:9pt">' . $kpmrList . '</ol>';
+            } else {
+                $kpmrList = '<p style="font-size:9pt;margin:4px 0 0 0">Tingkat KPMR: '
+                    . ($nilaiRisiko['kC'] ?? '-') . ' (' . $getRiskText($nilaiRisiko['kC']) . ')</p>';
+            }
+
+            $judulB = ($idx === 0)
+                ? '<div style="font-size:11pt;font-weight:bold;margin-bottom:14px">B. ANALISIS PER JENIS RISIKO</div>'
+                : '';
+
+            $halamanBHtml .= '
+        <div style="page-break-before:always">
+            ' . $headerHtml . '
+            ' . $judulB . '
+            <div style="font-size:10.5pt;font-weight:bold;margin-bottom:10px;margin-left:10px">' . $risiko['title'] . '</div>
+
+            <table class="no-border" style="margin-bottom:12px;font-size:8.5pt;margin-left:10px">
+                <tr>
+                    <td style="width:80px;padding:2px 0;vertical-align:top">Nama BPR</td>
+                    <td style="width:12px;padding:2px 0;vertical-align:top">:</td>
+                    <td style="padding:2px 0;vertical-align:top">' . $s($bprData['namabpr']) . '</td>
+                </tr>
+                <tr>
+                    <td style="padding:2px 0;vertical-align:top">Periode</td>
+                    <td style="padding:2px 0;vertical-align:top">:</td>
+                    <td style="padding:2px 0;vertical-align:top">Semester ' . $sm . ' Tahun ' . $th . '</td>
+                </tr>
+            </table>
+
+            <!-- Box Analisis (bagian 1 & 2) -->
+            <div style="border:1px solid #000;padding:12px 14px;font-size:9pt;margin-bottom:10px">
+                <div style="font-weight:bold;font-size:10pt;margin-bottom:10px">Analisis</div>
+
+                <div style="font-weight:bold;font-size:9.5pt;margin-bottom:6px">1. Tingkat Risiko:</div>
+                <p style="margin:0 0 12px 16px;font-size:9pt">Peringkat ' . ($tingkat ?? '-')
+                . ', ' . $getRiskText($tingkat) . '</p>
+
+                <div style="font-weight:bold;font-size:9.5pt;margin-bottom:6px">2. Risiko Inheren:</div>
+                <div style="margin-left:10px">' . $inherenList . '</div>
+            </div>
+
+            <!-- Box KPMR (bagian 3) -->
+            <div style="border:1px solid #000;padding:12px 14px;font-size:9pt">
+                <div style="font-weight:bold;font-size:9.5pt;margin-bottom:6px">3. Kualitas Penerapan Manajemen Risiko:</div>
+                <div style="margin-left:10px">' . $kpmrList . '</div>
+            </div>
+        </div>';
+        }
+        $ttdHtml = '
+    <div style="page-break-before:always">
+        ' . $headerHtml . '
+        <div style="margin-top:90px;text-align:center;font-size:10pt">
+            <p style="margin-bottom:6px">' . $s($spr['lokasi'] ?? '') . ', ' . $s($tanggal) . '</p>
+            <p style="font-weight:bold;font-size:11pt">' . $s($bprData['namabpr']) . '</p>
+            <div style="margin-top:75px">
+                <div style="display:inline-block;text-align:center">
+                    <div style="font-weight:bold;border-bottom:1px solid #000;
+                                padding:0 20px 4px 20px;display:inline-block;font-size:10.5pt">
+                        ' . $s($spr['dirkep'] ?? '') . '
+                    </div>
+                    <div style="margin-top:5px;font-size:10pt">Direktur</div>
+                </div>
+            </div>
+        </div>
+    </div>';
+        $html = '<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+
+  @page {
+    margin: 30px 30px 30px 30px;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    color: #000;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #000;
+  }
+
+  .no-border td {
+    border: none;
+  }
+
+  .header-line {
+    border-top: 2px solid #000;
+    margin: 10px 0 15px 0;
+  }
+
+  .title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 13pt;
+    margin-bottom: 15px;
+  }
+
+  .section-title {
+    font-weight: bold;
+    font-size: 10.5pt;
+    margin-bottom: 8px;
+  }
+
+  .box {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+' . $headerHtml . '
+
+<div class="title">LAPORAN PROFIL RISIKO</div>
+
+<div class="section-title">A. PROFIL RISIKO</div>
+
+<table class="no-border" style="margin-bottom:15px;font-size:9pt">
+' . $profilHtml . '
+</table>
+
+<!-- TABLE RISIKO -->
+<table style="font-size:8pt;margin-bottom:10px">
+
+<thead>
+<tr>
+<th rowspan="2" style="width:120px;background:#d9d9d9">Jenis Risiko</th>
+<th colspan="3" style="background:#d9d9d9">Penilaian Per Posisi</th>
+<th colspan="3" style="background:#d9d9d9">
+Penilaian Posisi Sebelumnya<br>
+<span style="font-size:7pt">(Semester ' . $smB . ' Tahun ' . $thB . ')</span>
+</th>
+</tr>
+
+<tr>
+<th>Inheren</th>
+<th>KPMR</th>
+<th>Risiko</th>
+<th>Inheren</th>
+<th>KPMR</th>
+<th>Risiko</th>
+</tr>
+</thead>
+
+<tbody>
+' . $tableRows . '
+</tbody>
+
+</table>
+
+<p style="text-align:center;font-size:8pt;color:#555;margin-bottom:12px">
+Keterangan Peringkat: 1 (Sangat Rendah), 2 (Rendah), 3 (Sedang), 4 (Tinggi), 5 (Sangat Tinggi)
+</p>
+
+<!-- ANALISIS -->
+<div class="box">
+<b>Analisis</b>
+<p style="margin-top:5px">
+Hasil dari analisis profil risiko Semester ' . $sm . ' Tahun ' . $th . ' sebagai berikut:
+</p>
+<ul style="margin-left:15px;margin-top:5px">
+' . $analisisHtml . '
+</ul>
+</div>
+
+' . $kesimpulanHtml . '
+
+' . $halamanBHtml . '
+
+' . $ttdHtml . '
+
+</div>
+</body>
+</html>';
+        $options = new \Dompdf\Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', false);
+        $options->set('defaultFont', 'Arial');
+        $options->set('isFontSubsettingEnabled', true);
+        $options->set('defaultMediaType', 'print');
+
+        $dompdf = new \Dompdf\Dompdf($options);
+        $dompdf->loadHtml($html, 'UTF-8');
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->output();
+    }
+
+    public function generateLembarPernyataanPdfBytes(): string
+    {
+        $periodeDetail = $this->periodeModel->find($this->periodeId);
+        $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
+        $showprofilresiko = $this->showprofilresikoModel
+            ->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+
+        if (!$showprofilresiko)
+            return '';
+
+        $logoBase64 = '';
+        $logoMime = 'image/png';
+        if (!empty($bprData['logo'])) {
+            $logoPath = FCPATH . 'asset/img/' . $bprData['logo'];
+            if (file_exists($logoPath)) {
+                $logoBase64 = base64_encode(file_get_contents($logoPath));
+                $logoMime = mime_content_type($logoPath);
+            }
+        }
+        $logoTag = $logoBase64
+            ? '<img src="data:' . $logoMime . ';base64,' . $logoBase64 . '" style="height:40px;width:auto">'
+            : '';
+
+        $s = fn($v) => htmlspecialchars((string) ($v ?? ''));
+        $spr = $showprofilresiko;
+        $sm = $s($periodeDetail['semester']);
+        $th = $s($periodeDetail['tahun']);
+
+        $tanggalTampil = '';
+        if (!empty($spr['tanggal'])) {
+            $d = \DateTime::createFromFormat('Y-m-d', $spr['tanggal']);
+            if (!$d)
+                $d = \DateTime::createFromFormat('d/m/Y', $spr['tanggal']);
+            if ($d) {
+                $bl = [
+                    '01' => 'Januari',
+                    '02' => 'Februari',
+                    '03' => 'Maret',
+                    '04' => 'April',
+                    '05' => 'Mei',
+                    '06' => 'Juni',
+                    '07' => 'Juli',
+                    '08' => 'Agustus',
+                    '09' => 'September',
+                    '10' => 'Oktober',
+                    '11' => 'November',
+                    '12' => 'Desember',
+                ];
+                $tanggalTampil = $d->format('d') . ' ' . ($bl[$d->format('m')] ?? '') . ' ' . $d->format('Y');
+            }
+        }
+
+        $headerHtml = '
+    <table style="width:100%;border-collapse:collapse;margin-bottom:0;padding-bottom:6px">
+        <tr>
+            <td style="width:90px;vertical-align:middle;padding-right:8px">' . $logoTag . '</td>
+            <td style="text-align:center;vertical-align:middle">
+                <div style="font-size:12pt;font-weight:bold;line-height:1.4">' . $s($bprData['namabpr']) . '</div>
+                <div style="font-size:8pt;margin-top:2px">' . $s($bprData['alamat']) . '</div>
+                <div style="font-size:8pt;margin-top:1px">Telepon: ' . $s($bprData['nomor']) . '</div>
+                <div style="font-size:8pt;margin-top:1px">Website: ' . $s($bprData['webbpr'] ?? '-')
+            . '&nbsp;&nbsp;&nbsp;Email: ' . $s($bprData['email'] ?? '-') . '</div>
+            </td>
+            <td style="width:90px"></td>
+        </tr>
+    </table>
+    <div style="border-top:2.5px solid #000;margin-top:6px;margin-bottom:20px"></div>';
+
+        $html = '<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { margin: 30px 30px 30px 30px; }
+  body  { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; color: #000; }
+  table { border-collapse: collapse; width: 100%; }
+  .no-border td { border: none; }
+</style>
+</head>
+<body>
+ 
+<div style="width:100%">
+ 
+' . $headerHtml . '
+ 
+<!-- ======== JUDUL ======== -->
+<div style="text-align:center;font-size:14pt;font-weight:bold;
+            letter-spacing:1px;margin-bottom:30px">
+    LEMBAR PERNYATAAN
+</div>
+ 
+<!-- ======== ISI ======== -->
+<div style="text-align:center;margin-bottom:8px;line-height:1.7">
+    Dengan ini kami menyatakan bahwa
+</div>
+<div style="text-align:center;font-weight:bold;margin-bottom:8px;line-height:1.7">
+    Laporan Profil Risiko ' . $s($bprData['namabpr']) . '
+</div>
+<div style="text-align:center;font-weight:bold;margin-bottom:20px;line-height:1.7">
+    Semester ' . $sm . ' Tahun ' . $th . '
+</div>
+ 
+<div style="margin:14px auto;width:85%;text-align:left;line-height:1.8;font-size:9.5pt">
+    <p style="margin-bottom:10px">
+        Telah disusun sesuai dengan hasil penilaian atas Penerapan Manajemen Risiko BPR
+        yang mengacu pada ketentuan OJK sebagai berikut:
+    </p>
+    <p style="margin-bottom:6px">
+        1. POJK No. 13/POJK.03/2015 tentang Penerapan Manajemen Risiko bagi BPR
+        tanggal 12 November 2015.
+    </p>
+    <p>
+        2. Surat Edaran OJK (SEOJK) No. 1/SEOJK.03/2019 tentang Penerapan Manajemen
+        Risiko bagi BPR tanggal 21 Januari 2019.
+    </p>
+</div>
+ 
+<!-- ======== TANDA TANGAN ======== -->
+<div style="margin-top:40px;text-align:center;font-size:10pt">
+ 
+    <p style="margin-bottom:4px">' . $s($spr['lokasi'] ?? '') . ', ' . $tanggalTampil . '</p>
+    <p style="font-weight:bold;font-size:11pt;margin-bottom:4px">' . $s($bprData['namabpr']) . '</p>
+ 
+    <!-- Penyusun -->
+    <p style="font-weight:bold;margin-bottom:0">Penyusun</p>
+    <div style="height:80px"></div>
+    <p style="font-weight:bold;margin-bottom:2px">' . $s($spr['pe'] ?? '') . '</p>
+    <p style="font-size:9pt">Pejabat Eksekutif Manajemen Risiko</p>
+ 
+    <!-- Menyetujui -->
+    <p style="font-weight:bold;margin-top:30px;margin-bottom:0">Menyetujui</p>
+ 
+    <table class="no-border" style="margin-top:0;width:100%">
+        <tr>
+            <!-- Direktur Utama -->
+            <td style="width:50%;text-align:center;vertical-align:top;padding-top:0">
+                <div style="height:80px"></div>
+                <div style="font-weight:bold;font-size:10pt">' . $s($spr['dirut'] ?? '') . '</div>
+                <div style="font-size:9pt">Direktur Utama</div>
+            </td>
+            <!-- Direktur Kepatuhan -->
+            <td style="width:50%;text-align:center;vertical-align:top;padding-top:0">
+                <div style="height:80px"></div>
+                <div style="font-weight:bold;font-size:10pt">' . $s($spr['dirkep'] ?? '') . '</div>
+                <div style="font-size:9pt">Direktur</div>
+                <div style="font-size:9pt">fungsi kepatuhan</div>
+            </td>
+        </tr>
+    </table>
+ 
+</div>
+ 
+</div>
+</body>
+</html>';
+
+        $options = new \Dompdf\Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', false);
+        $options->set('defaultFont', 'Arial');
+
+        $dompdf = new \Dompdf\Dompdf($options);
+        $dompdf->loadHtml($html, 'UTF-8');
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        if (empty($output)) {
+            throw new \RuntimeException('Dompdf->output() menghasilkan string kosong.');
+        }
+
+        return $output;
+    }
+
 
 }

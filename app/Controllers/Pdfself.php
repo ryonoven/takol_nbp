@@ -32,6 +32,7 @@ use App\Models\M_periode;
 use App\Models\M_showfaktor;
 
 use App\Libraries\PdfSelfassessment;
+use App\Libraries\PdfNormalizer;
 
 class Pdfself extends Controller
 {
@@ -138,17 +139,15 @@ class Pdfself extends Controller
             ->first();
 
         if (empty($showfaktorRecord)) {
-            // If no record exists, you might need to create one first.
-            // For simplicity, we'll redirect with an error.
             return redirect()->back()->with('error', 'Data Ringkasan Penilaian belum ada. Harap buat terlebih dahulu.');
         }
 
         $pdfUploadPath = WRITEPATH . 'uploads/pdf_attachments/';
-        // Ensure the directory exists
         if (!is_dir($pdfUploadPath)) {
             mkdir($pdfUploadPath, 0777, true);
         }
 
+        $normalizer = new PdfNormalizer();
         $updateData = [];
 
         // Handle PDF 1 upload
@@ -156,10 +155,22 @@ class Pdfself extends Controller
         if ($pdf1 && $pdf1->isValid() && !$pdf1->hasMoved()) {
             $oldPdf1 = $showfaktorRecord['pdf1_filename'];
             if ($oldPdf1 && file_exists($pdfUploadPath . $oldPdf1)) {
-                unlink($pdfUploadPath . $oldPdf1); // Delete old file
+                unlink($pdfUploadPath . $oldPdf1);
             }
+
             $newName1 = $pdf1->getRandomName();
             $pdf1->move($pdfUploadPath, $newName1);
+            $finalPath1 = $pdfUploadPath . $newName1;
+
+            // === Normalisasi ke PDF 1.4 ===
+            $normalized1 = $normalizer->normalizeToV14($finalPath1);
+            if ($normalized1) {
+                rename($normalized1, $finalPath1); // replace file asli dengan versi ter-normalisasi
+                log_message('info', "PDF1 berhasil dinormalisasi ke versi 1.4: {$newName1}");
+            } else {
+                log_message('warning', "PDF1 tidak dinormalisasi (gs tidak tersedia/gagal), file asli dipakai: {$newName1}");
+            }
+
             $updateData['pdf1_filename'] = $newName1;
             session()->setFlashdata('message', 'File PDF 1 berhasil diunggah.');
         }
@@ -169,15 +180,36 @@ class Pdfself extends Controller
         if ($pdf2 && $pdf2->isValid() && !$pdf2->hasMoved()) {
             $oldPdf2 = $showfaktorRecord['pdf2_filename'];
             if ($oldPdf2 && file_exists($pdfUploadPath . $oldPdf2)) {
-                unlink($pdfUploadPath . $oldPdf2); // Delete old file
+                unlink($pdfUploadPath . $oldPdf2);
             }
+
             $newName2 = $pdf2->getRandomName();
             $pdf2->move($pdfUploadPath, $newName2);
+            $finalPath2 = $pdfUploadPath . $newName2;
+
+            // === Normalisasi ke PDF 1.4 ===
+            $normalized2 = $normalizer->normalizeToV14($finalPath2);
+            if ($normalized2) {
+                rename($normalized2, $finalPath2);
+                log_message('info', "PDF2 berhasil dinormalisasi ke versi 1.4: {$newName2}");
+            } else {
+                log_message('warning', "PDF2 tidak dinormalisasi (gs tidak tersedia/gagal), file asli dipakai: {$newName2}");
+            }
+
             $updateData['pdf2_filename'] = $newName2;
             session()->setFlashdata('message', 'File PDF 2 berhasil diunggah.');
         }
 
-        // Only update if there's actual data to update
+        $pdf3 = $this->request->getFile('pdf3');
+        if ($pdf3 && $pdf3->isValid() && !$pdf3->hasMoved()) {
+            if ($pdf3->getSize() > 2 * 1024 * 1024) {
+                return redirect()->back()->with('err', 'Ukuran file Lembar Persetujuan melebihi 2 MB.');
+            }
+            $newName = $pdf3->getRandomName();
+            $pdf3->move(WRITEPATH . 'uploads', $newName); // sesuaikan path upload existing
+            $updateData['pdf3_filename'] = $newName;
+        }
+
         if (!empty($updateData)) {
             $this->showfaktorModel->update($showfaktorRecord['id'], $updateData);
             return redirect()->back()->with('message', 'File PDF berhasil diunggah dan disimpan.');
@@ -376,7 +408,8 @@ class Pdfself extends Controller
             $nilaifaktorSummaryAndAnalysisData = $this->nilaifaktorModel
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
-                ->first(); // Mengambil baris pertama yang cocok            
+                ->where('faktor1id', 12)
+                ->first();
 
             if ($nilaifaktorSummaryAndAnalysisData) {
                 $infobprData['nfaktor'] = $nilaifaktorSummaryAndAnalysisData['nfaktor'] ?? 'Belum Dinilai';
@@ -415,6 +448,7 @@ class Pdfself extends Controller
             $nilaifaktor2SummaryAndAnalysisData = $this->nilaifaktor2Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor2id', 29)
                 ->first();
 
             if ($nilaifaktor2SummaryAndAnalysisData) {
@@ -448,6 +482,7 @@ class Pdfself extends Controller
             $nilaifaktor3SummaryAndAnalysisData = $this->nilaifaktor3Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor3id', 27)
                 ->first();
 
             if ($nilaifaktor3SummaryAndAnalysisData) {
@@ -481,6 +516,7 @@ class Pdfself extends Controller
             $nilaifaktor4SummaryAndAnalysisData = $this->nilaifaktor4Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor4id', 12)
                 ->first();
 
             if ($nilaifaktor4SummaryAndAnalysisData) {
@@ -514,6 +550,7 @@ class Pdfself extends Controller
             $nilaifaktor5SummaryAndAnalysisData = $this->nilaifaktor5Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor5id', 6)
                 ->first();
 
             if ($nilaifaktor5SummaryAndAnalysisData) {
@@ -547,6 +584,7 @@ class Pdfself extends Controller
             $nilaifaktor6SummaryAndAnalysisData = $this->nilaifaktor6Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor6id', 10)
                 ->first();
 
             if ($nilaifaktor6SummaryAndAnalysisData) {
@@ -579,6 +617,7 @@ class Pdfself extends Controller
             $nilaifaktor7SummaryAndAnalysisData = $this->nilaifaktor7Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor7id', 12)
                 ->first();
             // Ambil data summary dan analisa positif/negatif untuk FAKTOR 7
             if ($nilaifaktor7SummaryAndAnalysisData) {
@@ -612,6 +651,7 @@ class Pdfself extends Controller
             $nilaifaktor8SummaryAndAnalysisData = $this->nilaifaktor8Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor8id', 6)
                 ->first();
             if ($nilaifaktor8SummaryAndAnalysisData) {
                 $infoDataForPdf8['nfaktor8'] = $nilaifaktor8SummaryAndAnalysisData['nfaktor8'] ?? 'Belum Dinilai'; // Asumsi kolom sama di M_nilaifaktor8
@@ -644,6 +684,7 @@ class Pdfself extends Controller
             $nilaifaktor9SummaryAndAnalysisData = $this->nilaifaktor9Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor9id', 18)
                 ->first();
 
             if ($nilaifaktor9SummaryAndAnalysisData) {
@@ -677,6 +718,7 @@ class Pdfself extends Controller
             $nilaifaktor10SummaryAndAnalysisData = $this->nilaifaktor10Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor10id', 6)
                 ->first();
 
             if ($nilaifaktor10SummaryAndAnalysisData) {
@@ -710,6 +752,7 @@ class Pdfself extends Controller
             $nilaifaktor11SummaryAndAnalysisData = $this->nilaifaktor11Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor11id', 13)
                 ->first();
             if ($nilaifaktor11SummaryAndAnalysisData) {
                 $infoDataForPdf11['nfaktor11'] = $nilaifaktor11SummaryAndAnalysisData['nfaktor11'] ?? 'Belum Dinilai'; // Asumsi kolom sama di M_nilaifaktor11
@@ -742,6 +785,7 @@ class Pdfself extends Controller
             $nilaifaktor12SummaryAndAnalysisData = $this->nilaifaktor12Model
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
+                ->where('faktor12id', 8)
                 ->first();
 
             if ($nilaifaktor12SummaryAndAnalysisData) {
@@ -845,6 +889,8 @@ class Pdfself extends Controller
                 'email' => $infobprData['email'] ?? '',
                 'title' => $filename,
                 'cover' => $showfaktortandatanganData['cover'] ?? '',
+                'tahun' => $periodeData['tahun'] ?? date('Y'),
+                'semester' => $periodeData['semester'] ?? 1,
             ]);
 
             $pdf->generateCoverPage($infobprData);
@@ -1038,15 +1084,387 @@ class Pdfself extends Controller
         }
     }
 
+    public function generatePdfToBuffer(): string
+    {
+        $userId = service('authentication')->id();
+        $userModel = new M_user();
+        $user = $userModel->find($userId);
+        $kodebpr = $user['kodebpr'] ?? null;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            throw new \RuntimeException('Data BPR atau Periode tidak ditemukan.');
+        }
+
+        $infobprData = $this->infobprModel->getBprByKode($kodebpr);
+        if (empty($infobprData)) {
+            throw new \RuntimeException('Data BPR tidak ditemukan.');
+        }
+
+        $periodeData = $this->periodeModel->find($periodeId);
+        if (empty($periodeData)) {
+            throw new \RuntimeException('Data Periode tidak ditemukan.');
+        }
+
+        // === Ambil semua data nilaifaktor (sama persis dengan generateFullReport) ===
+
+        $nilaifaktor = $this->nilaifaktorModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktorData = $this->faktorModel->getAllData();
+        $nilaifaktor1Summary = $this->nilaifaktorModel
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('faktor1id', 12)
+            ->first();
+        if ($nilaifaktor1Summary) {
+            $infobprData['nfaktor'] = $nilaifaktor1Summary['nfaktor'] ?? 'Belum Dinilai';
+            $infobprData['penjelasfaktor'] = $nilaifaktor1Summary['penjelasfaktor'] ?? '';
+            $infobprData['positifstruktur'] = $nilaifaktor1Summary['positifstruktur'] ?? '';
+            $infobprData['negatifstruktur'] = $nilaifaktor1Summary['negatifstruktur'] ?? '';
+            $infobprData['positifproses'] = $nilaifaktor1Summary['positifproses'] ?? '';
+            $infobprData['negatifproses'] = $nilaifaktor1Summary['negatifproses'] ?? '';
+            $infobprData['positifhasil'] = $nilaifaktor1Summary['positifhasil'] ?? '';
+            $infobprData['negatifhasil'] = $nilaifaktor1Summary['negatifhasil'] ?? '';
+            $infobprData['kesimpulan'] = $nilaifaktor1Summary['kesimpulan'] ?? '';
+        }
+
+        $nilaifaktor2 = $this->nilaifaktor2Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor2Data = $this->faktor2Model->getAllData();
+        $summary2 = $this->nilaifaktor2Model
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->where('faktor2id', 29)
+            ->first();
+        $infoDataForPdf = $summary2 ? [
+            'nfaktor2' => $summary2['nfaktor2'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary2['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary2['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary2['negatifstruktur'] ?? '',
+            'positifproses' => $summary2['positifproses'] ?? '',
+            'negatifproses' => $summary2['negatifproses'] ?? '',
+            'positifhasil' => $summary2['positifhasil'] ?? '',
+            'negatifhasil' => $summary2['negatifhasil'] ?? '',
+        ] : ['nfaktor2' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor3 = $this->nilaifaktor3Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor3Data = $this->faktor3Model->getAllData();
+        $summary3 = $this->nilaifaktor3Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf3 = $summary3 ? [
+            'nfaktor3' => $summary3['nfaktor3'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary3['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary3['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary3['negatifstruktur'] ?? '',
+            'positifproses' => $summary3['positifproses'] ?? '',
+            'negatifproses' => $summary3['negatifproses'] ?? '',
+            'positifhasil' => $summary3['positifhasil'] ?? '',
+            'negatifhasil' => $summary3['negatifhasil'] ?? '',
+        ] : ['nfaktor3' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor4 = $this->nilaifaktor4Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor4Data = $this->faktor4Model->getAllData();
+        $summary4 = $this->nilaifaktor4Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf4 = $summary4 ? [
+            'nfaktor4' => $summary4['nfaktor4'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary4['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary4['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary4['negatifstruktur'] ?? '',
+            'positifproses' => $summary4['positifproses'] ?? '',
+            'negatifproses' => $summary4['negatifproses'] ?? '',
+            'positifhasil' => $summary4['positifhasil'] ?? '',
+            'negatifhasil' => $summary4['negatifhasil'] ?? '',
+        ] : ['nfaktor4' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor5 = $this->nilaifaktor5Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor5Data = $this->faktor5Model->getAllData();
+        $summary5 = $this->nilaifaktor5Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf5 = $summary5 ? [
+            'nfaktor5' => $summary5['nfaktor5'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary5['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary5['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary5['negatifstruktur'] ?? '',
+            'positifproses' => $summary5['positifproses'] ?? '',
+            'negatifproses' => $summary5['negatifproses'] ?? '',
+            'positifhasil' => $summary5['positifhasil'] ?? '',
+            'negatifhasil' => $summary5['negatifhasil'] ?? '',
+        ] : ['nfaktor5' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor6 = $this->nilaifaktor6Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor6Data = $this->faktor6Model->getAllData();
+        $summary6 = $this->nilaifaktor6Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf6 = $summary6 ? [
+            'nfaktor6' => $summary6['nfaktor6'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary6['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary6['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary6['negatifstruktur'] ?? '',
+            'positifproses' => $summary6['positifproses'] ?? '',
+            'negatifproses' => $summary6['negatifproses'] ?? '',
+            'positifhasil' => $summary6['positifhasil'] ?? '',
+            'negatifhasil' => $summary6['negatifhasil'] ?? '',
+        ] : ['nfaktor6' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor7 = $this->nilaifaktor7Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor7Data = $this->faktor7Model->getAllData();
+        $summary7 = $this->nilaifaktor7Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf7 = $summary7 ? [
+            'nfaktor7' => $summary7['nfaktor7'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary7['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary7['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary7['negatifstruktur'] ?? '',
+            'positifproses' => $summary7['positifproses'] ?? '',
+            'negatifproses' => $summary7['negatifproses'] ?? '',
+            'positifhasil' => $summary7['positifhasil'] ?? '',
+            'negatifhasil' => $summary7['negatifhasil'] ?? '',
+        ] : ['nfaktor7' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor8 = $this->nilaifaktor8Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor8Data = $this->faktor8Model->getAllData();
+        $summary8 = $this->nilaifaktor8Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf8 = $summary8 ? [
+            'nfaktor8' => $summary8['nfaktor8'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary8['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary8['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary8['negatifstruktur'] ?? '',
+            'positifproses' => $summary8['positifproses'] ?? '',
+            'negatifproses' => $summary8['negatifproses'] ?? '',
+            'positifhasil' => $summary8['positifhasil'] ?? '',
+            'negatifhasil' => $summary8['negatifhasil'] ?? '',
+        ] : ['nfaktor8' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor9 = $this->nilaifaktor9Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor9Data = $this->faktor9Model->getAllData();
+        $summary9 = $this->nilaifaktor9Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf9 = $summary9 ? [
+            'nfaktor9' => $summary9['nfaktor9'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary9['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary9['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary9['negatifstruktur'] ?? '',
+            'positifproses' => $summary9['positifproses'] ?? '',
+            'negatifproses' => $summary9['negatifproses'] ?? '',
+            'positifhasil' => $summary9['positifhasil'] ?? '',
+            'negatifhasil' => $summary9['negatifhasil'] ?? '',
+        ] : ['nfaktor9' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor10 = $this->nilaifaktor10Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor10Data = $this->faktor10Model->getAllData();
+        $summary10 = $this->nilaifaktor10Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf10 = $summary10 ? [
+            'nfaktor10' => $summary10['nfaktor10'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary10['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary10['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary10['negatifstruktur'] ?? '',
+            'positifproses' => $summary10['positifproses'] ?? '',
+            'negatifproses' => $summary10['negatifproses'] ?? '',
+            'positifhasil' => $summary10['positifhasil'] ?? '',
+            'negatifhasil' => $summary10['negatifhasil'] ?? '',
+        ] : ['nfaktor10' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor11 = $this->nilaifaktor11Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor11Data = $this->faktor11Model->getAllData();
+        $summary11 = $this->nilaifaktor11Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf11 = $summary11 ? [
+            'nfaktor11' => $summary11['nfaktor11'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary11['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary11['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary11['negatifstruktur'] ?? '',
+            'positifproses' => $summary11['positifproses'] ?? '',
+            'negatifproses' => $summary11['negatifproses'] ?? '',
+            'positifhasil' => $summary11['positifhasil'] ?? '',
+            'negatifhasil' => $summary11['negatifhasil'] ?? '',
+        ] : ['nfaktor11' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $nilaifaktor12 = $this->nilaifaktor12Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+        $faktor12Data = $this->faktor12Model->getAllData();
+        $summary12 = $this->nilaifaktor12Model->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdf12 = $summary12 ? [
+            'nfaktor12' => $summary12['nfaktor12'] ?? 'Belum Dinilai',
+            'penjelasfaktor' => $summary12['penjelasfaktor'] ?? '',
+            'positifstruktur' => $summary12['positifstruktur'] ?? '',
+            'negatifstruktur' => $summary12['negatifstruktur'] ?? '',
+            'positifproses' => $summary12['positifproses'] ?? '',
+            'negatifproses' => $summary12['negatifproses'] ?? '',
+            'positifhasil' => $summary12['positifhasil'] ?? '',
+            'negatifhasil' => $summary12['negatifhasil'] ?? '',
+        ] : ['nfaktor12' => 'Belum Dinilai', 'penjelasfaktor' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $showfaktorData = $this->showfaktorModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+        $infoDataForPdfshow = $showfaktorData ? [
+            'nilaikomposit' => $showfaktorData['nilaikomposit'] ?? 'Belum Dinilai',
+            'kesimpulan' => $showfaktorData['kesimpulan'] ?? '',
+            'positifstruktur' => $showfaktorData['positifstruktur'] ?? '',
+            'negatifstruktur' => $showfaktorData['negatifstruktur'] ?? '',
+            'positifproses' => $showfaktorData['positifproses'] ?? '',
+            'negatifproses' => $showfaktorData['negatifproses'] ?? '',
+            'positifhasil' => $showfaktorData['positifhasil'] ?? '',
+            'negatifhasil' => $showfaktorData['negatifhasil'] ?? '',
+        ] : ['nilaikomposit' => 'Belum Dinilai', 'kesimpulan' => '', 'positifstruktur' => '', 'negatifstruktur' => '', 'positifproses' => '', 'negatifproses' => '', 'positifhasil' => '', 'negatifhasil' => ''];
+
+        $infottdForPdfshow = $showfaktorData ? [
+            'dirut' => $showfaktorData['dirut'] ?? '',
+            'komut' => $showfaktorData['komut'] ?? '',
+            'tanggal' => $showfaktorData['tanggal'] ?? '',
+            'lokasi' => $showfaktorData['lokasi'] ?? '',
+            'pdf1_filename' => $showfaktorData['pdf1_filename'] ?? null,
+            'pdf2_filename' => $showfaktorData['pdf2_filename'] ?? null,
+            'cover' => $showfaktorData['cover'] ?? null,
+        ] : ['dirut' => '', 'komut' => '', 'tanggal' => '', 'lokasi' => '', 'pdf1_filename' => null, 'pdf2_filename' => null, 'cover' => null];
+
+        // === Build PDF (sama persis dengan generateFullReport, tapi Output ke 'S') ===
+
+        $pdf = new PdfSelfassessment('P', 'mm', 'A4');
+        $pdf->setFilterParams($kodebpr, $periodeId);
+
+        $logoPath = FCPATH . 'asset/img/' . ($infobprData['logo'] ?? '');
+        $namaBPR = $infobprData['namabpr'] ?? 'BPR Default';
+        $tahun = $periodeData['tahun'] ?? date('Y');
+        $semester = $periodeData['semester'] ?? null;
+        $semesterDisplay = $semester === 'Ganjil' ? 'Semester 1' : ($semester === 'Genap' ? 'Semester 2' : 'Periode Tidak Diketahui');
+        $filename = 'Laporan Self Assessment Tata Kelola ' . $namaBPR . ' - ' . $semesterDisplay . ' - ' . $tahun . '.pdf';
+
+        $pdf->setHeaderData([
+            'logo' => file_exists($logoPath) ? $logoPath : '',
+            'namabpr' => $infobprData['namabpr'] ?? 'N/A',
+            'alamat' => $infobprData['alamat'] ?? 'N/A',
+            'nomor' => $infobprData['nomor'] ?? 'N/A',
+            'webbpr' => $infobprData['webbpr'] ?? 'N/A',
+            'email' => $infobprData['email'] ?? '',
+            'title' => $filename,
+            'cover' => $showfaktorData['cover'] ?? '',
+            'tahun' => $periodeData['tahun'] ?? date('Y'),
+            'semester' => $periodeData['semester'] ?? 1,
+        ]);
+
+        $pdf->generateCoverPage($infobprData);
+
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor1($nilaifaktor, $infobprData, $faktorData);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor1($infobprData);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor1($infobprData);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor2($nilaifaktor2, $infoDataForPdf, $faktor2Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor2($infoDataForPdf);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor2($infoDataForPdf);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor3($nilaifaktor3, $infoDataForPdf3, $faktor3Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor3($infoDataForPdf3);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor3($infoDataForPdf3);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor4($nilaifaktor4, $infoDataForPdf4, $faktor4Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor4($infoDataForPdf4);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor4($infoDataForPdf4);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor5($nilaifaktor5, $infoDataForPdf5, $faktor5Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor5($infoDataForPdf5);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor5($infoDataForPdf5);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor6($nilaifaktor6, $infoDataForPdf6, $faktor6Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor6($infoDataForPdf6);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor6($infoDataForPdf6);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor7($nilaifaktor7, $infoDataForPdf7, $faktor7Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor7($infoDataForPdf7);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor7($infoDataForPdf7);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor8($nilaifaktor8, $infoDataForPdf8, $faktor8Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor8($infoDataForPdf8);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor8($infoDataForPdf8);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor9($nilaifaktor9, $infoDataForPdf9, $faktor9Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor9($infoDataForPdf9);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor9($infoDataForPdf9);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor10($nilaifaktor10, $infoDataForPdf10, $faktor10Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor10($infoDataForPdf10);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor10($infoDataForPdf10);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor11($nilaifaktor11, $infoDataForPdf11, $faktor11Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor11($infoDataForPdf11);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor11($infoDataForPdf11);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->generateNilaiFaktor12($nilaifaktor12, $infoDataForPdf12, $faktor12Data);
+        $pdf->Ln(10);
+        $pdf->generateKesimpulanFaktor12($infoDataForPdf12);
+        $pdf->Ln(10);
+        $pdf->generateAnalisaFaktor12($infoDataForPdf12);
+        $pdf->AliasNbPages();
+
+        $pdf->AddPage();
+        $combinedData = array_merge(
+            $infobprData,
+            $infoDataForPdf,
+            $infoDataForPdf3,
+            $infoDataForPdf4,
+            $infoDataForPdf5,
+            $infoDataForPdf6,
+            $infoDataForPdf7,
+            $infoDataForPdf8,
+            $infoDataForPdf9,
+            $infoDataForPdf10,
+            $infoDataForPdf11,
+            $infoDataForPdf12,
+            $infoDataForPdfshow,
+            $infottdForPdfshow
+        );
+        $pdf->generateKesimpulanSeluruhFaktor($combinedData);
+        $pdf->generateAnalisaSeluruhFaktor($combinedData);
+        $pdf->AliasNbPages();
+        $pdf->generatePersetujuanLembar($combinedData);
+        $pdf->AliasNbPages();
+
+        // Merge PDF lampiran jika ada
+        $pdfUploadPath = WRITEPATH . 'uploads/pdf_attachments/';
+        $pdf1Filename = trim($infottdForPdfshow['pdf1_filename'] ?? '');
+        $pdf2Filename = trim($infottdForPdfshow['pdf2_filename'] ?? '');
+        if ($pdf1Filename && file_exists($pdfUploadPath . $pdf1Filename)) {
+            $pdf->mergeExistingPdf($pdfUploadPath . $pdf1Filename);
+        }
+        if ($pdf2Filename && file_exists($pdfUploadPath . $pdf2Filename)) {
+            $pdf->mergeExistingPdf($pdfUploadPath . $pdf2Filename);
+        }
+
+        // Output ke string buffer — bukan ke browser
+        return $pdf->Output($filename, 'S');
+    }
+
 
     public function pdfFaktor()
     {
-        // Ambil data dari model dengan join untuk sub_category dan sph
         $faktorData = $this->faktorModel
-            ->select('faktor.id as faktor_id, faktor.sub_category, faktor.sph, nilaifaktor.nilai, nilaifaktor.keterangan')  // Ambil data dari kedua tabel
-            ->join('nilaifaktor', 'nilaifaktor.faktor1id = faktor.id', 'left')  // Join dengan nilaifaktor berdasarkan faktor1id
-            ->orderBy('faktor.id', 'ASC')  // Urutkan berdasarkan id faktor
-            ->findAll();  // Ambil semua data
+            ->select('faktor.id as faktor_id, faktor.sub_category, faktor.sph, nilaifaktor.nilai, nilaifaktor.keterangan')
+            ->join('nilaifaktor', 'nilaifaktor.faktor1id = faktor.id', 'left')
+            ->orderBy('faktor.id', 'ASC')
+            ->findAll();
 
         $infobprData = $this->infobprModel->getAllData();
         if (empty($infobprData)) {
@@ -1057,18 +1475,16 @@ class Pdfself extends Controller
         $factorsWithDetails = [];
         foreach ($faktorData as $row) {
             $factorsWithDetails[] = [
-                'sub_category' => $row['sub_category'], // sub_category dari faktor
-                'sph' => $row['sph'],  // sph dari faktor
-                'nilai' => $row['nilai'],  // nilai dari nilaifaktor
+                'sub_category' => $row['sub_category'],
+                'sph' => $row['sph'],
+                'nilai' => $row['nilai'],
                 'keterangan' => $row['keterangan'],
-                'nfaktor' => $row['nfaktor']  // keterangan dari nilaifaktor
+                'nfaktor' => $row['nfaktor']
             ];
         }
 
-        // Membuat PDF
         $pdf = new PdfSelfassessment('P', 'mm', 'A4');
 
-        // Set header data
         $logoPath = FCPATH . 'asset/img/' . ($infobpr['logo'] ?? '');
         $pdf->setHeaderData([
             'logo' => (!empty($infobpr['logo']) && file_exists($logoPath)) ? $logoPath : '',
@@ -1079,13 +1495,8 @@ class Pdfself extends Controller
             'email' => $infobpr['email'] ?? ''
         ]);
 
-        // Menambahkan halaman cover jika perlu
-        // $pdf->generateCoverPage($infobpr);
-
-        // Panggil generateNilaiFaktor dengan data yang sudah digabungkan
         $pdf->generateNilaiFaktor($factorsWithDetails, $infobpr);
 
-        // Output PDF
         $this->response->setContentType('application/pdf');
         $pdf->Output('Laporan Self Assessment Penilaian Faktor.pdf', 'I');
 

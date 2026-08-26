@@ -7,9 +7,11 @@ use App\Models\M_user;
 use App\Models\M_profilrisikocomments;
 use App\Models\M_likuiditaskpmr;
 use App\Models\M_infobpr;
-use App\Models\M_periodeprofilresiko;
+use App\Models\M_periodesemesteran;
 use App\Models\M_profilrisikocommentsread;
 use App\Models\M_showprofilresiko;
+use App\Models\M_showtks;
+use App\Models\M_periodetks;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Likuiditaskpmr extends Controller
@@ -28,8 +30,39 @@ class Likuiditaskpmr extends Controller
     protected $userId;
     protected $periodeId;
     protected $showprofilresikoModel;
-
+    protected $showtksModel;
+    protected $periodetksModel;
     protected $userGroups = [];
+
+    private static ?array $_penilaianConfigCache = null;
+    private const SUMMARY_FAKTOR  = 135;
+    private const PREV_FAKTOR     = 136;
+    private const CHILD_RANGE     = [118, 134];
+    private const ALL_RANGE       = [118, 135];
+
+    private const CATEGORY_MAP = [
+        118 => [119, 120, 121, 122, 123, 124],
+        125 => [126, 127, 128],
+        129 => [130, 131],
+        132 => [133, 134],
+    ];
+
+    private const PERINGKAT_LABEL_MAP = [
+        '1' => 'Tingkat Risiko Likuiditas KPMR: Sangat Rendah',
+        '2' => 'Tingkat Risiko Likuiditas KPMR: Rendah',
+        '3' => 'Tingkat Risiko Likuiditas KPMR: Sedang',
+        '4' => 'Tingkat Risiko Likuiditas KPMR: Tinggi',
+        '5' => 'Tingkat Risiko Likuiditas KPMR: Sangat Tinggi',
+    ];
+
+    private const KODE_MAP = [
+        118 => '4310', 119 => '4311', 120 => '4312', 121 => '4313',
+        122 => '4314', 123 => '4315', 124 => '4316',
+        125 => '4320', 126 => '4321', 127 => '4322', 128 => '4323',
+        129 => '4330', 130 => '4331', 131 => '4332',
+        132 => '4340', 133 => '4341', 134 => '4342',
+        135 => '4350',
+    ];
 
     public function __construct()
     {
@@ -38,17 +71,19 @@ class Likuiditaskpmr extends Controller
         $this->db = \Config\Database::connect();
 
         $this->paramprofilrisikoModel = new M_paramprofilrisiko();
-        $this->periodeModel = new M_periodeprofilresiko();
-        $this->userModel = new M_user();
-        $this->komentarModel = new M_profilrisikocomments();
-        $this->nilaiModel = new M_likuiditaskpmr();
-        $this->infobprModel = new M_infobpr();
-        $this->commentReadsModel = new M_profilrisikocommentsread();
-        $this->showprofilresikoModel = new M_showprofilresiko();
+        $this->periodeModel           = new M_periodesemesteran();
+        $this->userModel              = new M_user();
+        $this->komentarModel          = new M_profilrisikocomments();
+        $this->nilaiModel             = new M_likuiditaskpmr();
+        $this->infobprModel           = new M_infobpr();
+        $this->commentReadsModel      = new M_profilrisikocommentsread();
+        $this->showprofilresikoModel  = new M_showprofilresiko();
+        $this->showtksModel           = new M_showtks();
+        $this->periodetksModel        = new M_periodetks();
 
         helper('url');
         $this->session = service('session');
-        $this->auth = service('authentication');
+        $this->auth    = service('authentication');
 
         $this->userId = $this->auth->id();
         if ($this->userId) {
@@ -61,13 +96,12 @@ class Likuiditaskpmr extends Controller
         $this->initializeUserGroups();
     }
 
-    private function initializeUserGroups()
+    private function initializeUserGroups(): void
     {
-        if (!$this->userId)
-            return;
+        if (!$this->userId) return;
 
         $authorize = AuthServices::authorization();
-        $groups = ['pe', 'admin', 'dekom', 'dekom2', 'dekom3', 'dekom4', 'dekom5', 'direksi', 'direksi2'];
+        $groups    = ['pe', 'admin', 'dekom', 'dekom2', 'dekom3', 'dekom4', 'dekom5', 'direksi', 'direksi2'];
 
         foreach ($groups as $group) {
             $this->userGroups[$group] = $authorize->inGroup($group, $this->userId);
@@ -92,45 +126,89 @@ class Likuiditaskpmr extends Controller
         return null;
     }
 
+    private function getNilaiLookup(array $faktorIds): array
+    {
+        $rows = $this->db->table('likuiditaskpmr')
+            ->whereIn('faktor1id', $faktorIds)
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $this->periodeId)
+            ->get()
+            ->getResultArray();
+
+        $lookup = [];
+        foreach ($rows as $row) {
+            $lookup[$row['faktor1id']] = $row;
+        }
+        return $lookup;
+    }
+
+    private function sanitizeTxt(string $text): string
+    {
+        $text = str_replace(["\r", "\n"], ' ', $text);
+        $text = str_replace(
+            ['"', '"', '\u2018', '\u2019', '%', '|'],
+            ['"', '"', "'",      "'",      ' persen ', ' '],
+            $text
+        );
+        $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
+        return trim(preg_replace('/\s+/', ' ', $text));
+    }
+
+    private function formatDateForDisplay(string $date): string
+    {
+        if (empty($date) || $date === '0000-00-00') return '';
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) return $date;
+        $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
+        return $dateObj ? $dateObj->format('d/m/Y') : '';
+    }
+
+    private function _jsonOrRedirect(bool $success, string $message)
+    {
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'status'  => $success ? 'success' : 'error',
+                'message' => $message,
+            ]);
+        }
+        return $success
+            ? redirect()->back()->with('message', $message)
+            : redirect()->back()->with('err', $message);
+    }
+
     public function index()
     {
-        if ($redirect = $this->checkAuth())
-            return $redirect;
-        if ($redirect = $this->validatePeriode())
-            return $redirect;
+        if ($redirect = $this->checkAuth())      return $redirect;
+        if ($redirect = $this->validatePeriode()) return $redirect;
 
         if (!$this->userKodebpr) {
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
         }
 
         $periodeDetail = $this->periodeModel->getPeriodeDetail($this->periodeId);
-        $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
+        $bprData       = $this->infobprModel->getBprByKode($this->userKodebpr);
+        $nilaiRows = $this->getNilaiLookup([self::SUMMARY_FAKTOR, self::PREV_FAKTOR]);
+        $nilai13   = $nilaiRows[self::SUMMARY_FAKTOR] ?? null;
+        $nilai14   = $nilaiRows[self::PREV_FAKTOR]    ?? null;
 
-        $nilai13 = $this->nilaiModel->where([
-            'faktor1id' => 135,
-            'kodebpr' => $this->userKodebpr,
-            'periode_id' => $this->periodeId
-        ])->first();
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
 
-        $nilai14 = $this->nilaiModel->where([
-            'faktor1id' => 136,
-            'kodebpr' => $this->userKodebpr,
-            'periode_id' => $this->periodeId
-        ])->first();
+        $requiredFaktors = range(self::CHILD_RANGE[0], self::CHILD_RANGE[1]);
+        $totalRequired   = count($requiredFaktors);
 
         $approvalData = $this->nilaiModel
             ->select('
-        COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) as filled_count,
-        SUM(CASE WHEN is_approved = 1 THEN 1 ELSE 0 END) as approved_count
-    ')
+                COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count,
+                SUM(CASE WHEN is_approved = 1 THEN 1 ELSE 0 END) AS approved_count
+            ')
             ->where('kodebpr', $this->userKodebpr)
             ->where('periode_id', $this->periodeId)
-            ->whereIn('faktor1id', range(118, 135))
+            ->whereIn('faktor1id', range(self::ALL_RANGE[0], self::ALL_RANGE[1]))
             ->first();
 
-        $allFilled = ($approvalData['filled_count'] == 18); // 118-135 = 18
-        $allApproved = ($allFilled && $approvalData['approved_count'] == 18);
-        $canApprove = $allFilled;
+        $totalForApproval = count(range(self::ALL_RANGE[0], self::ALL_RANGE[1]));
+        $allFilled   = ((int)$approvalData['filled_count'] >= $totalRequired);
+        $allApproved = ($allFilled && (int)$approvalData['approved_count'] === $totalForApproval);
+        $canApprove  = $allFilled;
 
         $user = $this->userModel->find($this->userId);
 
@@ -157,86 +235,14 @@ class Likuiditaskpmr extends Controller
             'nilai14' => $nilai14,
             'penilaianConfig' => $this->getPenilaianConfig(),
             'loadDataViaAjax' => true,
-
+            'showtks' => $showtks,
         ];
 
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('risikolikuiditas/likuiditaskpmr', $data)
+            . view('Laporansemester/Profilrisiko/likuiditaskpmr', $data)
             . view('templates/v_footer');
-    }
-
-    private function checkCanApprove($nilaiLookup)
-    {
-        $requiredFaktorIds = range(118, 134);
-
-        foreach ($requiredFaktorIds as $faktorId) {
-            if (empty($nilaiLookup[$faktorId])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private function checkAccdekomApproved($nilaiLookup)
-    {
-        for ($faktorId = 118; $faktorId <= 134; $faktorId++) {
-            if (!isset($nilaiLookup[$faktorId]) || $nilaiLookup[$faktorId]['is_approved'] != 1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function checkAllApproved($nilaiLookup)
-    {
-        $requiredFaktorIds = range(118, 135);
-        foreach ($requiredFaktorIds as $faktorId) {
-            if (!isset($nilaiLookup[$faktorId]) || $nilaiLookup[$faktorId]['is_approved'] != 1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function buildFactorsWithDetails($faktorData, $nilaiLookup)
-    {
-        $factorsWithDetails = [];
-
-        foreach ($faktorData as $faktorItem) {
-            $faktorId = $faktorItem['id'];
-            $associatedNilai = $nilaiLookup[$faktorId] ?? null;
-
-            $rataRata = $this->nilaiModel->hitungRataRata($faktorId, $this->userKodebpr, $this->periodeId);
-
-            $this->nilaiModel->insertOrUpdateRataRata($rataRata, $faktorId, $this->userKodebpr, $this->periodeId);
-
-            $factorsWithDetails[] = [
-                'id' => $faktorItem['id'],
-                'risiko' => $faktorItem['risiko'],
-                'parameterpenilaian' => $faktorItem['parameterpenilaian'],
-                'penilaiankredit' => $associatedNilai['penilaiankredit'] ?? null,
-                'nfaktor' => $rataRata,
-                'rasiokredit' => $associatedNilai['rasiokredit'] ?? null,
-                'keterangan' => $associatedNilai['keterangan'] ?? null,
-                'kodebpr' => $this->userKodebpr,
-                'is_approved' => $associatedNilai['is_approved'] ?? 0,
-                'approved_at' => $associatedNilai['approved_at'] ?? 0,
-                'positifstruktur' => $associatedNilai['positifstruktur'] ?? null,
-                'negatifstruktur' => $associatedNilai['negatifstruktur'] ?? null,
-                'positifproses' => $associatedNilai['positifproses'] ?? null,
-                'negatifproses' => $associatedNilai['negatifproses'] ?? null,
-                'positifhasil' => $associatedNilai['positifhasil'] ?? null,
-                'negatifhasil' => $associatedNilai['negatifhasil'] ?? null,
-                'periode_id' => $associatedNilai['periode_id'] ?? null,
-                'accdir2' => $associatedNilai['accdir2'] ?? null,
-                'accdir2_by' => $associatedNilai['accdir2_by'] ?? null,
-            ];
-        }
-
-        return $factorsWithDetails;
     }
 
     public function getFactorsData()
@@ -245,94 +251,50 @@ class Likuiditaskpmr extends Controller
             return $this->response->setStatusCode(403);
         }
 
-        $nilaiData = $this->db->table('likuiditaskpmr as r')
-            ->select('r.*, u.fullname')
-            ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(118, 134))
-            ->get()
-            ->getResultArray();
-
-        $nilaiLookup = [];
-        foreach ($nilaiData as $nilai) {
-            $nilaiLookup[$nilai['faktor1id']] = $nilai;
-        }
+        $nilaiLookup = $this->getNilaiLookup(range(self::CHILD_RANGE[0], self::CHILD_RANGE[1]));
 
         $structure = [
             [
-                'id' => 118,
-                'title' => 'Pilar Pengawasan Direksi dan Dewan Komisaris',
-                'type' => 'category',
-                'faktor_id' => 118,
+                'id' => 118, 'title' => 'Pilar Pengawasan Direksi dan Dewan Komisaris',
+                'type' => 'category', 'faktor_id' => 118,
                 'children' => [
                     ['id' => 119, 'title' => 'Apakah Dewan Komisaris telah melakukan persetujuan terhadap kebijakan manajemen risiko likuiditas yang <br> disusun oleh Direksi dan melakukan evaluasi secara berkala?', 'faktor_id' => 119],
                     ['id' => 120, 'title' => 'Apakah Dewan Komisaris telah melakukan evaluasi terhadap pertanggungjawaban Direksi atas pelaksanaan <br> kebijakan manajemen risiko likuiditas secara berkala dan memastikan tindak lanjut hasil evaluasi dimaksud?', 'faktor_id' => 120],
                     ['id' => 121, 'title' => 'Apakah Direksi telah menyusun kebijakan manajemen risiko likuiditas, melaksanakan secara konsisten, <br> dan melakukan pengkinian secara berkala?', 'faktor_id' => 121],
                     ['id' => 122, 'title' => 'Apakah Direksi telah memiliki kemampuan untuk mengambil tindakan yang diperlukan dalam rangka mitigasi <br> risiko likuiditas, dan melakukan komunikasi kebijakan manajemen risiko likuiditas terhadap seluruh jenjang <br> organisasi BPR?', 'faktor_id' => 122],
                     ['id' => 123, 'title' => 'Apakah BPR telah memiliki kecukupan organisasi yang menangani fungsi likuiditas dan fungsi manajemen <br> risiko likuiditas?', 'faktor_id' => 123],
-                    ['id' => 124, 'title' => 'Apakah Direksi telah menerapkan kebijakan pengelolaan SDM dalam rangka penerapan Manajemen Risiko <br> likuiditas?', 'faktor_id' => 124]
-                ]
+                    ['id' => 124, 'title' => 'Apakah Direksi telah menerapkan kebijakan pengelolaan SDM dalam rangka penerapan Manajemen Risiko <br> likuiditas?', 'faktor_id' => 124],
+                ],
             ],
             [
-                'id' => 125,
-                'title' => 'Pilar Kecukupan Kebijakan, Prosedur, dan Limit',
-                'type' => 'category',
-                'faktor_id' => 125,
+                'id' => 125, 'title' => 'Pilar Kecukupan Kebijakan, Prosedur, dan Limit',
+                'type' => 'category', 'faktor_id' => 125,
                 'children' => [
-                    [
-                        'id' => 126,
-                        'title' => 'Apakah BPR telah memiliki kebijakan manajemen risiko likuiditas yang memadai dan disusun dengan <br> mempertimbangkan visi, misi, skala usaha dan kompleksitas bisnis, serta kecukupan SDM?',
-                        'faktor_id' => 126
-                    ],
-                    [
-                        'id' => 127,
-                        'title' => 'Apakah BPR: 
-                    ● Memiliki prosedur manajemen risiko likuiditas dan penetapan limit risiko likuiditas yang ditetapkan <br> oleh Direksi; 
-                    ● Melaksanakan prosedur manajemen risiko likuiditas dan penetapan limit risiko likuiditas secara <br> konsisten untuk seluruh aktivitas; dan 
-                    ● Melakukan evaluasi dan pengkinian terhadap prosedur manajemen risiko likuiditas dan penetapan <br> limit risiko likuiditas secara berkala?',
-                        'faktor_id' => 127
-                    ],
-                    [
-                        'id' => 128,
-                        'title' => 'Apakah BPR telah memiliki kebijakan dan prosedur penerbitan produk dan/atau pelaksanaan aktivitas <br> baru yang mencakup identifikasi dan mitigasi risiko likuiditas sesuai dengan ketentuan?',
-                        'faktor_id' => 128
-                    ]
-                ]
+                    ['id' => 126, 'title' => 'Apakah BPR telah memiliki kebijakan manajemen risiko likuiditas yang memadai dan disusun dengan <br> mempertimbangkan visi, misi, skala usaha dan kompleksitas bisnis, serta kecukupan SDM?', 'faktor_id' => 126],
+                    ['id' => 127, 'title' => 'Apakah BPR memiliki prosedur manajemen risiko likuiditas dan penetapan limit risiko likuiditas, melaksanakannya secara konsisten, serta melakukan evaluasi dan pengkinian secara berkala?', 'faktor_id' => 127],
+                    ['id' => 128, 'title' => 'Apakah BPR telah memiliki kebijakan dan prosedur penerbitan produk dan/atau pelaksanaan aktivitas <br> baru yang mencakup identifikasi dan mitigasi risiko likuiditas sesuai dengan ketentuan?', 'faktor_id' => 128],
+                ],
             ],
             [
-                'id' => 129,
-                'title' => 'Kecukupan Proses dan Sistem Manajemen Informasi',
-                'type' => 'category',
-                'faktor_id' => 129,
+                'id' => 129, 'title' => 'Kecukupan Proses dan Sistem Manajemen Informasi',
+                'type' => 'category', 'faktor_id' => 129,
                 'children' => [
-                    [
-                        'id' => 130,
-                        'title' => 'Apakah BPR telah melaksanakan proses manajemen risiko likuiditas yang melekat pada kegiatan <br> usaha BPR?',
-                        'faktor_id' => 130
-                    ],
-                    [
-                        'id' => 131,
-                        'title' => 'Apakah BPR telah memiliki sistem informasi manajemen risiko yang mendukung Direksi dalam <br> pengambilan <br> keputusan terkait risiko  likuiditas serta telah dilaporkan kepada Direksi secara berkala?',
-                        'faktor_id' => 131
-                    ]
-                ]
+                    ['id' => 130, 'title' => 'Apakah BPR telah melaksanakan proses manajemen risiko likuiditas yang melekat pada kegiatan <br> usaha BPR?', 'faktor_id' => 130],
+                    ['id' => 131, 'title' => 'Apakah BPR telah memiliki sistem informasi manajemen risiko yang mendukung Direksi dalam <br> pengambilan keputusan terkait risiko likuiditas serta telah dilaporkan kepada Direksi secara berkala?', 'faktor_id' => 131],
+                ],
             ],
             [
-                'id' => 132,
-                'title' => 'Sistem Pengendalian Internal yang Menyeluruh',
-                'type' => 'category',
-                'faktor_id' => 132,
+                'id' => 132, 'title' => 'Sistem Pengendalian Internal yang Menyeluruh',
+                'type' => 'category', 'faktor_id' => 132,
                 'children' => [
                     ['id' => 133, 'title' => 'Apakah SKAI atau PEAI telah melaksanakan audit secara berkala terhadap penerapan <br> manajemen risiko likuiditas, menyampaikan laporan hasil audit intern, dan memastikan <br> tindaklanjut atas temuan pemeriksaan?', 'faktor_id' => 133],
-                    ['id' => 134, 'title' => 'Apakah sistem pengendalian intern terhadap risiko likuiditas telah dilaksanakan oleh <br> seluruh jenjang organisasi BPR?', 'faktor_id' => 134]
-                ]
-            ]
+                    ['id' => 134, 'title' => 'Apakah sistem pengendalian intern terhadap risiko likuiditas telah dilaksanakan oleh <br> seluruh jenjang organisasi BPR?', 'faktor_id' => 134],
+                ],
+            ],
         ];
 
         foreach ($structure as &$item) {
             $item['nilai'] = $nilaiLookup[$item['faktor_id']] ?? null;
-
             if (isset($item['children'])) {
                 foreach ($item['children'] as &$child) {
                     $child['nilai'] = $nilaiLookup[$child['faktor_id']] ?? null;
@@ -340,369 +302,67 @@ class Likuiditaskpmr extends Controller
             }
         }
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'data' => $structure
-        ]);
+        return $this->response->setJSON(['status' => 'success', 'data' => $structure]);
     }
 
-    private function getPenilaianConfig()
+    public function getAllUnreadCounts()
     {
-        return [
-            118 => [
-                'descriptions' => [
-                    1 => 'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Sangat Rendah',
-                    2 => 'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Rendah',
-                    3 => 'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Sedang',
-                    4 => 'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Tinggi',
-                    5 => 'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Sangat Tinggi'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
 
-            119 => [
-                'descriptions' => [
-                    1 => '• Dewan Komisaris telah memberikan persetujuan terhadap kebijakan Manajemen Risiko likuiditas <br>
-                    • Dewan Komisaris telah melakukan evaluasi terhadap kebijakan Manajemen Risiko likuiditas <br>
-                    • Evaluasi dilakukan oleh Dewan Komisaris secara berkala paling sedikit satu kali dalamsatu tahun atausewaktu-waktu dalam hal terdapat perubahan yangmemengaruhi kegiatan usaha BPR secara signifikan; dan <br>
-                    • Evaluasi yang dilakukan relevan dengan kebutuhan penyesuaian kebijakan Manajemen Risiko likuiditas. ',
-                    2 => '• Dewan Komisaris telah memberikan persetujuan terhadap kebijakan Manajemen Risiko likuiditas; <br>
-                    • Dewan Komisaris telah melakukan evaluasi terhadap kebijakan Manajemen Risiko likuiditas; dan <br> 
-                    • Evaluasi dilakukan oleh Dewan Komisaris secara berkala paling sedikit satu kali dalam satu tahun atau sewaktu-waktu dalam hal terdapat perubahan yang memengaruhi kegiatan usaha BPR secara signifikan',
-                    3 => '• Dewan Komisaris telah memberikan persetujuan terhadap kebijakan Manajemen Risiko likuiditas; <br>
-                    • Dewan Komisaris telah melakukan evaluasi terhadap kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Evaluasi tidak dilakukan oleh Dewan Komisaris secara berkala paling sedikit satu kali dalam satu tahun atau sewaktu-waktu dalam hal terdapat perubahan yang memengaruhi kegiatan usaha BPR secara signifikan',
-                    4 => '• Dewan Komisaris telah memberikan persetujuan terhadap kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Dewan Komisaris tidak melakukan evaluasi terhadap kebijakan Manajemen Risiko likuiditas.',
-                    5 => '• Dewan Komisaris tidak memberikan persetujuan terhadap kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Dewan Komisaris tidak melakukan evaluasi terhadap kebijakan Manajemen Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
+        if (!$this->userKodebpr || !$this->userId || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Missing data']);
+        }
 
-            120 => [
-                'descriptions' => [
-                    1 => '• Dewan Komisaris telah melakukan evaluasi terhadap pelaksanaan kebijakan Manajemen Risiko likuiditas oleh Direksi; <br>
-                    • Evaluasi oleh Dewan Komisaris dilakukan secara berkala setiap semester atau lebih berdasarkan laporan yang disampaikan Direksi dalam hal terdapat perubahan yang memengaruhi kegiatan usaha BPR secara signifikan; <br>
-                    • Dewan Komisaris telah memastikan tindak lanjut hasil evaluasi dalam setiap periode laporan; dan <br>
-                    • Evaluasi yang diberikan relevan dengan pelaksanaan kebijakan Manajemen Risiko likuiditas dalam rangka mendukung perbaikan kinerja BPR.',
-                    2 => '• Dewan Komisaris telah melakukan evaluasi terhadap pelaksanaan kebijakan Manajemen Risiko likuiditas oleh Direksi; <br>
-                    • Evaluasi oleh Dewan Komisaris dilakukan secara berkala setiap semester atau lebih berdasarkan laporan yang disampaikan Direksi dalam hal terdapat perubahan yang memengaruhi kegiatan usaha BPR secara signifikan; <br>
-                    • Dewan Komisaris telah memastikan tindak lanjut hasil evaluasi dalam setiap periode laporan.',
-                    3 => '• Dewan Komisaris telah melakukan evaluasi terhadap pelaksanaan kebijakan Manajemen Risiko likuiditas oleh Direksi; <br>
-                     • Evaluasi oleh Dewan Komisaris dilakukan secara berkala setiap semester atau lebih berdasarkan laporan yang disampaikan Direksi dalam hal terdapat perubahan yangmemengaruhi kegiatan usaha BPR secara signifikan; dan <br> 
-                     • Dewan Komisaris tidak memastikan tindak lanjut hasil evaluasi dalam setiap periode laporan.',
-                    4 => '• Dewan Komisaris telah melakukan evaluasi terhadap pelaksanaan kebijakan Manajemen Risiko likuiditas oleh Direksi; <br> 
-                    • Evaluasi oleh Dewan Komisaris tidak dilakukan secara berkala; dan <br>
-                    • Dewan Komisaris tidak memastikan tindak lanjut hasil evaluasi dalam setiap periode pelaporan',
-                    5 => 'Dewan Komisaris tidak melakukan evaluasi terhadap pelaksanaan kebijakan Manajemen Risiko likuiditas oleh Direksi.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
+        $counts = $this->db->query("
+            SELECT c.faktor1id,
+                   COUNT(*) AS unread_count
+            FROM   profilrisikocomments c
+            LEFT JOIN profilrisikocommentsread r
+                   ON r.comment_id  = c.id
+                  AND r.user_id     = ?
+                  AND r.kodebpr     = ?
+                  AND r.periode_id  = ?
+            WHERE  c.subkategori = 'LIKUIDITASKPMR'
+              AND  c.kodebpr     = ?
+              AND  c.periode_id  = ?
+              AND  r.id IS NULL
+            GROUP  BY c.faktor1id
+        ", [
+            $this->userId,
+            $this->userKodebpr,
+            $this->periodeId,
+            $this->userKodebpr,
+            $this->periodeId,
+        ])->getResultArray();
 
-            121 => [
-                'descriptions' => [
-                    1 => '• Direksi telah menyusun kebijakan Manajemen Risiko likuiditas; <br>
-                    • Menjalankan kegiatan usaha berdasarkan kebijakan Manajemen Risiko likuiditas yang telah ditetapkan; <br>
-                    • Direksi melakukan pengkinian terhadap kebijakan Manajemen Risiko likuiditas dalam hal terdapat perubahan ketentuan peraturan perundangundangan, perubahan bisnis, dan hasilevaluasi kebijakan Manajemen Risiko oleh Dewan Komisaris; dan <br>
-                    • Kebijakan Manajemen Risiko likuiditas yang dijalankan terbukti memitigasi terjadinya Risiko likuiditas.',
-                    2 => '• Direksi telah menyusun kebijakan Manajemen Risiko likuiditas; <br>
-                    • Menjalankan kegiatan usaha berdasarkan kebijakan Manajemen Risiko likuiditas yang telah ditetapkan; dan <br>
-                    • Direksi melakukan pengkinian terhadap kebijakan Manajemen Risiko likuiditas dalam hal terdapat perubahan ketentuan peraturan perundangundangan, perubahan bisnis, dan hasil evaluasi kebijakan Manajemen Risiko oleh Dewan Komisaris.',
-                    3 => '• Direksi telah menyusun kebijakan Manajemen Risiko likuiditas; <br>
-                    • Menjalankan kegiatan usaha berdasarkan kebijakan Manajemen Risiko likuiditas yang telah ditetapkan; dan <br>
-                    • Direksi tidak melakukan pengkinian terhadap kebijakan Manajemen Risiko likuiditas dalam hal terdapat perubahan ketentuan peraturan perundangundangan, perubahan bisnis, dan hasil evaluasi kebijakan Manajemen Risiko oleh Dewan Komisaris.',
-                    4 => '• Direksi telah menyusun kebijakan Manajemen Risiko likuiditas; <br>
-                    • Tidak menjalankan kegiatan usaha berdasarkan kebijakan Manajemen Risiko likuiditas yang telah ditetapkan; dan <br>
-                    • Direksi tidak melakukan pengkinian terhadap kebijakan Manajemen Risiko likuiditas dalam hal terdapat perubahan ketentuan peraturan perundangundangan, perubahan bisnis, dan hasil evaluasi kebijakan Manajemen Risiko oleh Dewan Komisaris.',
-                    5 => 'Direksi tidak menyusun kebijakan Manajemen Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
+        $countsMap = [];
+        foreach ($counts as $row) {
+            $countsMap[$row['faktor1id']] = (int)$row['unread_count'];
+        }
 
-            122 => [
-                'descriptions' => [
-                    1 => '• Direksi mengambil tindakan yang diperlukan untuk memitigasi Risiko saat menjalankan kebijakan Manajemen Risiko likuiditas; <br>
-                    • Direksi mengomunikasi kan kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Seluruh jenjang organisasi BPR mampu memahami kebijakan Manajemen Risiko likuiditas yang diterapkan.',
-                    2 => '• Direksi mengambil tindakan yang diperlukan untuk memitigasi Risiko saat menjalankan kebijakan Manajemen Risiko likuiditas; <br>
-                    • Direksi mengomunikasi kan kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Tidak seluruh jenjang organisasi BPR mampu memahami kebijakan Manajemen Risiko likuiditas yang diterapkan namun tidak menimbulkan dampak yang signifikan',
-                    3 => '• Direksi mengambil tindakan yang diperlukan untuk memitigasi Risiko saat menjalankan kebijakan Manajemen Risiko likuiditas; <br>
-                    • Direksi mengomunikasi kan kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Tidak seluruh jenjang organisasi BPR mampu memahami kebijakan Manajemen Risiko likuiditas yang diterapkan dan menimbulkan dampak yang signifikan',
-                    4 => '• Direksi mengambil tindakan yang diperlukan untuk memitigasi Risiko saat menjalankan kebijakan Manajemen Risiko likuiditas; <br>
-                    • Direksi tidak mengomunikasi kan kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Seluruh jenjang organisasi BPR tidak mampu memahami kebijakan Manajemen Risiko likuiditas yang diterapkan.',
-                    5 => '• Direksi tidak mengambil tindakan yangdiperlukan untukmemitigasi Risikosaat menjalankan kebijakan Manajemen Risiko likuiditas; <br>
-                    • Direksi tidak mengomunikasi kan kebijakan Manajemen Risiko likuiditas; dan <br>
-                    • Seluruh jenjang organisasi BPR tidak mampu memahami kebijakan Manajemen Risiko likuiditas yang diterapkan.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            123 => [
-                'descriptions' => [
-                    1 => '• Memiliki unit kerja yang menangani fungsi likuiditas secara lengkap dan tidak terdapat rangkap jabatan yang dapat menyebabkan tidak terlaksananya tata kelola yangbaik. 
-                    • Unit kerja yangmenangani fungsi likuiditas telah melaksanakan tugas dan wewenangnya sesuai dengan pedoman yang ditetapkan; dan 
-                    • Memiliki SKMR atau PEMR danmampu melaksanakan fungsinya untuk memitigasi Risiko likuiditas.',
-                    2 => '• Memiliki unit kerja yang menangani fungsi likuiditas namun tidak lengkap dan tidak terdapat rangkap jabatan yang dapat menyebabkan tidak terlaksananya tata kelola yang baik. <br>
-                    • Unit kerja yang menangani fungsi likuiditas telah melaksanakan tugas dan wewenangnya sesuai dengan pedoman yang ditetapkan; dan <br>
-                    • Memiliki SKMR atau PEMR dan mampu melaksanakan fungsinya untuk memitigasi Risiko likuiditas',
-                    3 => '• Memiliki unit kerja yang menangani fungsi likuiditas namun tidak lengkap dan terdapat rangkap jabatan namun tidak menyebabkan tidak terlaksananya tata kelola yangbaik. <br>
-                    • Unit kerja yangmenangani fungsi likuiditas telah melaksanakan tugas dan wewenangnya sesuai dengan pedoman yang ditetapkan; dan <br>
-                    • Memiliki SKMR atau PEMR namun tidak mampu melaksanakan fungsinya untuk memitigasi Risiko likuiditas.',
-                    4 => '• Memiliki unit kerja yang menangani fungsi likuiditas namun tidak lengkap dan terdapat rangkap jabatan yang dapat menyebabkan tidak terlaksananya tata kelola yang baik. <br>
-                    • Unit kerja yang menangani fungsi likuiditas telah melaksanakan tugas dan wewenangnya sesuai dengan pedoman yang ditetapkan; dan <br>
-                    • Memiliki SKMR atau PEMR namun tidak mampu melaksanakan fungsinya untuk memitigasi Risiko likuiditas.',
-                    5 => '• Memiliki unit kerja yang menangani fungsi likuiditas namun tidak lengkap dan terdapat rangkap jabatan yang dapat menyebabkan tidak terlaksananya tata kelola yang baik. <br>
-                    • Unit kerja yang menangani fungsi likuiditas tidak melaksanakan tugas dan wewenangnya sesuai dengan pedoman yang ditetapkan; dan <br>
-                    • Memiliki SKMRatau PEMR namun tidak mampu melaksanakan fungsinya untukmemitigasi Risikokredit. '
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            124 => [
-                'descriptions' => [
-                    1 => '• Terdapat kesesuaian kualifikasi SDM dengan jabatan dan bidang pekerjaan; <br>
-                    • Terdapat upaya peningkatan kompetensi SDM secara konsisten; dan <br>
-                    • Tingkat pemenuhan standar kinerja SDM pada unit kerja yang menjalankan fungsi likuiditas sesuai dengan tugas dan tanggung jawab.',
-                    2 => "• Terdapat ketidaksesuaian kualifikasi SDM dengan jabatan dan bidang pekerjaan namun tidak memberikan dampak yang signifikan; <br>
-                    • Terdapat upaya peningkatan kompetensi SDM secara konsisten; dan <br>
-                    • Tingkat pemenuhan standar kinerja SDM pada unit kerja yang menjalankan fungsi likuiditas sesuai dengan tugas dan tanggung jawab.",
-                    3 => '• Terdapat ketidaksesuaian kualifikasi SDM dengan jabatan dan bidang pekerjaan namun tidak memberikan dampak yang signifikan; <br>
-                    • Terdapat upaya peningkatan kompetensi SDM namun tidak secara konsisten; dan <br>
-                    • Tingkat pemenuhan standar kinerja SDM pada unit kerja yang menjalankan fungsi likuiditas sesuai dengan tugas dan tanggung jawab.',
-                    4 => '• Terdapat ketidaksesuaian kualifikasi SDM dengan jabatan dan bidang pekerjaan dan memberikan dampak yang signifikan; <br>
-                    • Terdapat upaya peningkatan kompetensi SDM namun tidak secara konsisten; dan <br>
-                    • Tingkat pemenuhan standar kinerja SDM pada unit kerja yang menjalankan fungsi likuiditas tidak sesuai dengan tugas dan tanggung jawab namun tidak memberikan dampak yang signifikan.',
-                    5 => '• Terdapat ketidaksesuaian kualifikasi SDM dengan jabatan dan bidang pekerjaan dan memberikan dampak yang signifikan; <br>
-                    • Tidak terdapat upaya peningkatan kompetensi SDM; dan <br>
-                    • Tingkat pemenuhan standar kinerja SDM pada unit kerja yang menjalankan fungsi likuiditas tidak sesuai dengan tugas dan tanggung jawab dan memberikan dampak yang signifikan.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            125 => [
-                'descriptions' => [
-                    1 => 'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Sangat Rendah',
-                    2 => 'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Rendah',
-                    3 => 'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Sedang',
-                    4 => 'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Tinggi',
-                    5 => 'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Sangat Tinggi'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            126 => [
-                'descriptions' => [
-                    1 => '• Telah memiliki kebijakan Manajemen Risiko likuiditas; <br>
-                    • Terdapat kesesuaian antara substansi kebijakan Manajemen Risiko likuiditas dengan ketentuan Manajemen Risiko BPR antara lain memiliki strategi Manajemen Risiko, kriteria pemberian likuiditas yang sehat, serta penetapan sistem informasi Manajemen Risiko untuk Risiko likuiditas; dan <br>
-                    • Terdapat keselarasan antara kebijakan Manajemen Risiko likuiditas dengan visi, misi, skala usaha, dan kompleksitas bisnis, serta kecukupan SDM dalam menetapkan kebijakan Manajemen Risiko likuiditas.',
-                    2 => "• Telah memiliki kebijakan Manajemen Risiko likuiditas; <br>
-                    • Terdapat ketidaksesuaian yang tidak signifikan antara substansi kebijakan Manajemen Risiko likuiditas dengan ketentuan Manajemen Risiko BPR antara lain memiliki strategi Manajemen Risiko, kriteria pemberian likuiditas yang sehat, serta penetapan sistem informasi Manajemen Risiko untuk Risiko likuiditas; dan <br>
-                    • Terdapat keselarasan antara kebijakan Manajemen Risiko likuiditas dengan visi, misi, skala usaha, dan kompleksitas bisnis, serta kecukupan SDM dalam menetapkan kebijakan Manajemen Risiko likuiditas.",
-                    3 => '• Telah memiliki kebijakan Manajemen Risiko likuiditas; <br>
-                    • Terdapat ketidaksesuaian yang tidak signifikan antara substansi kebijakan Manajemen Risiko likuiditas dengan ketentuan Manajemen Risiko BPR antara lain memiliki strategi Manajemen Risiko, kriteria pemberian likuiditas yang sehat, serta penetapan sistem informasi Manajemen Risiko untuk Risiko likuiditas; dan <br> 
-                    • Terdapat ketidakselarasan antara kebijakan Manajemen Risiko likuiditas dengan visi, misi, skala usaha, dan kompleksitas bisnis, serta kecukupan SDM dalam menetapkan kebijakan Manajemen Risiko likuiditas, namun tidak menimbulkan dampak yang signifikan.',
-                    4 => '• Telah memiliki kebijakan Manajemen Risiko likuiditas; <br>
-                    • Terdapat ketidaksesuaian yang signifikan antara substansi kebijakan Manajemen Risiko likuiditas dengan ketentuan Manajemen Risiko BPR antara lain memiliki strategi Manajemen Risiko, kriteria pemberian likuiditas yang sehat, serta penetapan sistem informasi Manajemen Risiko untuk Risiko likuiditas; dan <br>
-                    • Terdapat ketidakselarasan antara kebijakan Manajemen Risiko likuiditas dengan visi, misi, skala usaha, dan kompleksitas  bisnis, serta kecukupan SDM dalam menetapkan kebijakan Manajemen Risiko likuiditas dan menimbulkan dampak yang signifikan.',
-                    5 => 'Tidak memiliki kebijakan Manajemen Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            127 => [
-                'descriptions' => [
-                    1 => '• Memiliki prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas yang ditetapkan oleh Direksi paling sedikit meliputi jenjang delegasi wewenang dan pertanggung jawaban yang jelas serta terdokumentasi  dengan baik sehingga memudahkan keperluan jejak audit untuk keperluan pengendalian intern; <br>
-                    • Melaksanakan prosedur Manajemen Risiko likuiditas danpenetapan limit Risiko likuiditas dalam setiap aktivitas fungsional secara konsisten; dan <br>
-                    • Melakukan evaluasi dan pengkinian prosedur Manajemen Risiko likuiditas danpenetapan limit Risiko likuiditas dalam hal terdapat  perubahan bisnis yang signifikan dan/atau ketentuan peraturan perundangundangan.',
-                    2 => '• Memiliki prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas yang ditetapkan oleh Direksi paling sedikit meliputi jenjang delegasi wewenang dan pertanggung jawaban yang jelas serta terdokumentasi dengan baik sehingga memudahkan keperluan jejak audit untuk keperluan pengendalian intern; <br>
-                    • Melaksanakan prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas dalam setiap aktivitas fungsional secara konsisten; dan <br>
-                    • Tidak melakukan evaluasi dan pengkinian prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas dalam hal terdapat  perubahan bisnis yang signifikan dan/atau ketentuan peraturan perundangundangan, namun tidak menimbulkan dampak yang signifikan.',
-                    3 => '• Memiliki prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas yang ditetapkan oleh Direksi paling sedikit meliputi jenjang delegasi wewenang dan pertanggung jawaban yang jelas serta terdokumentasi dengan baik sehingga memudahkan keperluan jejak audit untuk keperluan pengendalian intern; <br>
-                    • Melaksanakan prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas dalam setiap aktivitas fungsional secara konsisten; dan <br>
-                    • Tidak melakukan evaluasi dan pengkinian prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas dalam hal terdapat  perubahan bisnis yang signifikan dan/atau ketentuan peraturan perundangundangan, dan menimbulkan dampak yang signifikan.',
-                    4 => '• Memiliki prosedur Manajemen Risiko likuiditas dan penetapan limit Risiko likuiditas yang ditetapkan oleh Direksi paling sedikit meliputi jenjang delegasi wewenang dan pertanggung jawaban yang jelas serta terdokumentasi  dengan baik sehingga memudahkan keperluan jejak audit untuk keperluan pengendalian intern; <br>
-                    • Tidak melaksanakan prosedur Manajemen Risiko likuiditas danpenetapan limit Risiko likuiditas dalam setiap aktivitas fungsional secara konsisten; dan <br> 
-                    • Tidak melakukan evaluasi dan pengkinian prosedur Manajemen Risiko likuiditas danpenetapan limit Risiko likuiditas dalam hal  terdapat perubahan bisnis yang signifikan dan/atau ketentuan peraturan perundangundangan.',
-                    5 => '• Tidak memiliki prosedur Manajemen Risikokredit dan penetapan limit Risiko likuiditas yangditetapkan oleh Direksi.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            128 => [
-                'descriptions' => [
-                    1 => '• Memiliki kebijakan dan prosedur mengenai penerbitan produk dan/atau aktivitas baru yang memiliki eksposur Risiko likuiditas; <br>
-                    • Menerapkan kebijakan dan prosedur dalam hal terdapat penerbitan produk atau pelaksanaan aktivitas baru; dan <br>
-                    • Terdapat kesesuaian antara kebijakan dan prosedur produk dan/atau aktivitas baru dengan ketentuan.',
-                    2 => '• Memiliki kebijakan dan prosedur mengenai penerbitan produk dan/atau aktivitas baru yang memiliki eksposur Risiko likuiditas; <br>
-                    • Menerapkan kebijakan dan prosedur dalam hal terdapat penerbitan produk atau pelaksanaan aktivitas baru; dan <br>
-                    • Terdapat ketidaksesuaian yang tidak signifikan antara kebijakan dan prosedur produk dan/atau aktivitas baru dengan ketentuan.',
-                    3 => '• Memiliki kebijakan dan prosedur mengenai penerbitan produk dan/atau aktivitas baru yang memiliki eksposur Risiko likuiditas; <br>
-                    • Menerapkan kebijakan dan prosedur dalam hal terdapat penerbitan produk atau pelaksanaan aktivitas baru; dan <br>
-                    • Terdapat ketidaksesuaian yang signifikan antara kebijakan dan prosedur produk dan/atau aktivitas baru dengan ketentuan.',
-                    4 => '• Memiliki kebijakan dan prosedur mengenai penerbitan produk dan/atauaktivitas baru yang memiliki eksposur Risiko likuiditas; <br>
-                    • Tidak menerapkan kebijakan dan prosedur dalam hal terdapat penerbitan produk atau pelaksanaan aktivitas baru; dan <br>
-                    • Terdapat ketidaksesuaian yang signifikan antara kebijakan dan prosedur produk dan/atau aktivitas baru dengan ketentuan.',
-                    5 => 'Tidak memiliki kebijakan dan prosedur mengenai penerbitan produk dan/atau aktivitas baru yang memiliki eksposur Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            129 => [
-                'descriptions' => [
-                    1 => 'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Sangat Rendah',
-                    2 => 'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Rendah',
-                    3 => 'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Sedang',
-                    4 => 'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Tinggi',
-                    5 => 'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Sangat Tinggi'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            130 => [
-                'descriptions' => [
-                    1 => '• Telah melaksanakan proses Manajemen Risiko likuiditas meliputi identifikasi, pengukuran, pemantauan, dan pengendalian Risiko likuiditas terhadap kegiatan usaha BPR yang terkait dengan Risiko likuiditas paling  sedikit mencakup kondisi keuangan atau laporan keuangan terakhir, hasil proyeksi arus kas, dan dokumen lain yang dapat digunakan untuk menganalisis kondisi dan kredibilitas debitur; <br>
-                    • Penerapan Manajemen Risiko likuiditas dilakukan dengan sangat memadai; dan <br>
-                    • Penerapan Manajemen Risiko likuiditas dilakukan secara konsisten. ',
-                    2 => '• Telah melaksanakan proses Manajemen Risiko likuiditas meliputi identifikasi, pengukuran, pemantauan, dan pengendalian Risiko likuiditas terhadap kegiatan usaha BPR yang terkait dengan Risiko likuiditas paling sedikit mencakup kondisi keuanganatau laporan keuangan terakhir, hasil proyeksi arus kas, dan dokumen lain yang dapat digunakan untukmenganalisis kondisi dan kredibilitas debitur; <br>
-                    • Penerapan Manajemen Risiko likuiditas dilakukan dengan memadai; dan <br>
-                    • Penerapan Manajemen Risiko likuiditas dilakukan cukup konsisten. ',
-                    3 => '• Telah melaksanakan proses Manajemen Risiko likuiditas meliputi identifikasi, pengukuran, pemantauan, danpengendalian Risiko likuiditas terhadap kegiatan usaha BPR yang terkaitdengan Risiko likuiditas paling  sedikit mencakup kondisi keuanganatau laporan keuangan terakhir, hasil proyeksi arus kas, dan dokumen lain yang dapat digunakan untukmenganalisis kondisi dan kredibilitas debitur; <br>
-                    • Penerapan Manajemen Risiko likuiditas dilakukan dengan memadai; dan <br>
-                    • Penerapan Manajemen Risiko likuiditas tidak dilakukan secara konsisten namun tidak menimbulkan dampak yang signifikan.',
-                    4 => '• Telah melaksanakan proses Manajemen Risiko likuiditas namun tidak secara keseluruhan meliputi identifikasi, pengukuran, pemantauan, dan pengendalian Risiko likuiditas terhadap kegiatan usaha BPR yang terkait dengan Risiko likuiditas paling sedikit mencakup kondisi keuangan atau laporan keuangan terakhir, hasil proyeksi arus kas, dan dokumen lain yang dapat digunakan untuk menganalisis kondisi dan kredibilitas debitur; <br>
-                    • Penerapan Manajemen Risiko likuiditas tidak memadai; dan <br>
-                    • Penerapan Manajemen Risiko likuiditas tidak dilakukan secara konsisten sehingga menimbulkan dampak yang signifikan.',
-                    5 => '• Tidak melaksanakan proses Manajemen Risiko likuiditas meliputi identifikasi, pengukuran, pemantauan, dan pengendalian Risiko likuiditas terhadap kegiatan usaha BPR yang terkait dengan Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            131 => [
-                'descriptions' => [
-                    1 => '• Telah memiliki sistem informasi Manajemen Risiko yang mencerminkan Risiko likuiditas; <br>
-                    • Data pada sisteminformasi Manajemen Risiko telah lengkap, akurat, kini, dan utuh; <br>
-                    • Sistem informasi Manajemen Risiko mendukung Direksi dalam pengambilan keputusan; dan <br>
-                    • Sistem informasi Manajemen Risiko sangat mendukung SKMR atau PEMR dalam pembuatan laporan kepada Direksi setiap semester.',
-                    2 => '• Telah memiliki sistem informasi Manajemen Risiko yang mencerminkan Risiko likuiditas; <br>
-                    • Data pada sisteminformasi Manajemen Risiko cukup lengkap, akurat, kini, dan utuh; <br>
-                    • Sistem informasi Manajemen Risiko mendukung Direksi dalam pengambilan keputusan; dan <br>
-                    • Sistem informasi Manajemen Risiko cukup mendukung SKMR atau PEMR dalam pembuatan laporan kepada Direksi setiap semester.',
-                    3 => '• Telah memiliki sistem informasi Manajemen Risiko yang mencerminkan Risiko likuiditas; <br>
-                    • Data pada sistem informasi Manajemen Risiko kurang lengkap, akurat, kini, dan utuh; <br>
-                    • Sistem informasi Manajemen Risiko tidak sepenuhnya mendukung Direksi dalam pengambilan keputusan; dan  sistem informasi Manajemen Risiko kurang mendukung SKMR atau  PEMR dalam pembuatan laporan kepada Direksi setiap semester.',
-                    4 => '• Telah memiliki sistem informasi Manajemen Risiko yang mencerminkan Risiko likuiditas; <br>
-                    • Data pada sistem informasi Manajemen Risiko tidak lengkap, akurat, kini, dan utuh; <br>
-                    • Sistem informasi Manajemen Risiko tidak sepenuhnya mendukung Direksi dalam pengambilan keputusan; dan <br>
-                    • Sistem informasi Manajemen Risiko tidak mendukung SKMR atau PEMR dalam pembuatan laporan kepada Direksi setiap semester.',
-                    5 => 'Tidak memiliki sistem informasi Manajemen Risikoyang mencerminkan Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            132 => [
-                'descriptions' => [
-                    1 => 'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Sangat Rendah',
-                    2 => 'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Rendah',
-                    3 => 'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Sedang',
-                    4 => 'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Tinggi',
-                    5 => 'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Sangat Tinggi'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            133 => [
-                'descriptions' => [
-                    1 => '• SKAI atau PEAI telah melaksanakan audit intern terhadap penerapan Manajemen Risiko likuiditas, memberikan rekomendasi, dan melaporkan hasil audit intern kepada Direktur Utama; <br>
-                    • Audit intern telah dilaksanakan oleh SKAI atau PEAI meliputi pelaksanaan kebijakan dan prosedur Manajemen Risiko likuiditas dengan mempertimbang kan ketentuan serta kondisi BPR; dan <br> 
-                    • Hasil temuan audit intern yang dijadikan rekomendasi telah ditindaklanjuti.',
-                    2 => '• SKAI atau PEAI telah melaksanakan audit intern terhadap penerapan Manajemen Risiko likuiditas, memberikan rekomendasi, dan melaporkan hasil audit internkepada Direktur Utama; <br>
-                    • Audit intern telahdilaksanakan oleh SKAI atau PEAI meliputi pelaksanaan kebijakan dan prosedur Manajemen Risiko likuiditas dengan mempertimbang kan ketentuan serta kondisi BPR; dan <br>
-                    • Hasil temuan audit intern yang dijadikan rekomendasi tidak sepenuhnya ditindaklanjuti namun tidak menimbulkan dampak yang signifikan.',
-                    3 => '• SKAI atau PEAI telah melaksanakan audit intern terhadap penerapan Manajemen Risiko likuiditas, memberikan rekomendasi, dan melaporkan hasil audit intern kepada Direktur Utama; <br>
-                    • Audit intern telah dilaksanakan oleh SKAI atau PEAI meliputi pelaksanaan kebijakan dan prosedur Manajemen Risiko likuiditas dengan mempertimbang kan ketentuan serta kondisi BPR; dan <br>
-                    • Hasil temuan audit intern yang dijadikan rekomendasi tidak sepenuhnya ditindaklanjuti dan menimbulkan dampak yang signifikan.',
-                    4 => '• SKAI atau PEAI telah melaksanakan audit intern terhadap penerapan Manajemen Risiko likuiditas, memberikan rekomendasi, dan melaporkan hasil audit intern kepada Direktur Utama; <br>
-                    • Audit intern telah dilaksanakan oleh SKAI atau PEAI namun tidak sesuai dengan cakupan pelaksanaan kebijakan dan prosedur Manajemen Risiko likuiditas; dan <br>
-                    • Hasil temuan audit intern yangdijadikan rekomendasi tidak ditindaklanjuti.',
-                    5 => 'SKAI atau PEAI tidak melaksanakan audit intern terhadap penerapan Manajemen Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            134 => [
-                'descriptions' => [
-                    1 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern dengan memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas; <br>
-                    • Terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unityang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    2 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern namun tidak sepenuhnya memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas dan tidak berdampak signifikan; <br>
-                    • Terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unityang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    3 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern namun tidak sepenuhnya memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas dan berdampak signifikan; <br>
-                    • Terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang  memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    4 => '• Tidak seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern dengan memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas dan berdampak sangat signifikan; <br>
-                    • Tidak terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    5 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas tidak melaksanakan fungsi pengendalian intern; <br>
-                    • Tidak terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR tidak terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI tidak terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-
-            135 => [
-                'descriptions' => [
-                    1 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern dengan memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas; <br>
-                    • Terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unityang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    2 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern namun tidak sepenuhnya memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas dan tidak berdampak signifikan; <br>
-                    • Terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unityang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    3 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern namun tidak sepenuhnya memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas dan berdampak signifikan; <br>
-                    • Terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang  memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    4 => '• Tidak seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas telah melaksanakan fungsi pengendalian intern dengan memerhatikan kebijakan Manajemen Risiko, prosedur Manajemen Risiko, serta penetapan limit Risiko likuiditas dan berdampak sangat signifikan; <br>
-                    • Tidak terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.',
-                    5 => '• Seluruh jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas tidak melaksanakan fungsi pengendalian intern; <br>
-                    • Tidak terdapat kejelasan wewenang dan tanggung jawab dari masing- masing jenjang organisasi BPR yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; <br>
-                    • SKMR atau PEMR tidak terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas; dan <br>
-                    • SKAI atau PEAI tidak terpisah dari unit yang berkaitan dengan aktivitas yang memiliki eksposur Risiko likuiditas.'
-                ],
-                'catatan' => 'Peniliaian Risiko Likuiditas Kualitas Penerapan Manajemen Risiko (KPMR)'
-            ],
-        ];
+        return $this->response->setJSON(['status' => 'success', 'counts' => $countsMap]);
     }
 
-    public function cekKomentarBaru()
+    public function markUserCommentsAsRead()
     {
-        $subkategori = 'LIKUIDITASKPMR';
-        $kodebpr = $this->request->getGet('kodebpr');
-        $lastVisit = $this->request->getGet('last_visit');
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
 
-        $results = $this->komentarModel
-            ->select('faktor1id, COUNT(*) as jumlah')
-            ->where('subkategori', $subkategori)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->where('created_at >', $lastVisit)
-            ->groupBy('faktor1id')
-            ->findAll();
+        $faktorId = $this->request->getPost('faktor_id');
 
-        return $this->response->setJSON($results);
+        if (!$faktorId || !$this->userKodebpr || !$this->userId || !$this->periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
+
+        $marked = $this->commentReadsModel->markAllAsReadForFactor(
+            $faktorId, 'LIKUIDITASKPMR',
+            $this->userKodebpr, $this->userId, $this->periodeId
+        );
+
+        return $this->response->setJSON(['status' => 'success', 'marked_count' => $marked]);
     }
 
     public function getKomentarByFaktorId($faktorId)
@@ -711,318 +371,11 @@ class Likuiditaskpmr extends Controller
             return $this->response->setStatusCode(404)->setBody('Not Found');
         }
 
-        $komentarList = $this->komentarModel->getKomentarByFaktorId(
-            'LIKUIDITASKPMR',
-            $faktorId,
-            $this->userKodebpr,
-            $this->periodeId
+        return $this->response->setJSON(
+            $this->komentarModel->getKomentarByFaktorId(
+                'LIKUIDITASKPMR', $faktorId, $this->userKodebpr, $this->periodeId
+            )
         );
-
-        return $this->response->setJSON($komentarList);
-    }
-
-    public function getNilaiByFaktorId($faktorId)
-    {
-        if (!$this->request->isAJAX() || !is_numeric($faktorId)) {
-            return $this->response->setStatusCode(404)->setBody('Not Found');
-        }
-
-        $nilaiList = $this->nilaiModel->getNilaiByFaktorId($faktorId);
-        return $this->response->setJSON($nilaiList);
-    }
-
-    public function ubah()
-    {
-        if (!$this->request->isAJAX()) {
-            return redirect()->back()->with('error', 'Invalid request');
-        }
-
-        $faktor1id = $this->request->getPost('faktor1id');
-
-        if (!$faktor1id || !$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak valid'
-            ]);
-        }
-
-        $data = [
-            'penilaiankredit' => $this->request->getPost('penilaiankredit'),
-            'penjelasanpenilaian' => $this->request->getPost('penjelasanpenilaian'),
-            'keterangan' => $this->request->getPost('keterangan'),
-            'is_approved' => 0,
-            'accdir2' => 0,
-            'user_id' => $this->userId,
-            'updated_at' => date('Y-m-d H:i:s')
-        ];
-
-        try {
-            $this->db->table('likuiditaskpmr')
-                ->where('faktor1id', $faktor1id)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->update($data);
-
-            $categoryMapping = [
-                118 => [119, 120, 121, 122, 123, 124],
-                125 => [126, 127, 128],
-                129 => [130, 131],
-                132 => [133, 134]
-            ];
-
-            foreach ($categoryMapping as $categoryId => $childrenIds) {
-                if (in_array($faktor1id, $childrenIds)) {
-                    $this->calculateAndSaveCategoryAverage(
-                        $categoryId,
-                        $childrenIds,
-                        $this->userKodebpr,
-                        $this->periodeId
-                    );
-                    break;
-                }
-            }
-
-            if (in_array($faktor1id, [118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135])) {
-                $rataRata = $this->nilaiModel->hitungRataRata(135, $this->userKodebpr, $this->periodeId);
-                $this->nilaiModel->insertOrUpdateRataRata($rataRata, 135, $this->userKodebpr, $this->periodeId);
-            }
-
-            $this->db->table('likuiditaskpmr')
-                ->where('faktor1id', 135)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->update(['accdir2' => 0, 'is_approved' => 0]);
-
-            $nilai13 = $this->nilaiModel->where([
-                'faktor1id' => 135,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first();
-
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Data berhasil diubah',
-                'peringkat13' => $nilai13['penilaiankredit'] ?? null
-            ]);
-        } catch (\Exception $e) {
-            log_message('error', 'Error ubah: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    public function ubahketerangan()
-    {
-        if (!$this->request->isAJAX()) {
-            return redirect()->back()->with('error', 'Invalid request');
-        }
-
-        $faktor1id = $this->request->getPost('faktor1id');
-        $keterangan = $this->request->getPost('keterangan');
-
-        if (!$faktor1id) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'ID tidak ditemukan.'
-            ]);
-        }
-
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data user atau periode tidak valid'
-            ]);
-        }
-
-        $data = [
-            'keterangan' => $keterangan,
-            'user_id' => $this->userId,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'is_approved' => 0,
-            'accdir2' => 0
-        ];
-
-        try {
-            $this->db->table('likuiditaskpmr')
-                ->where('faktor1id', $faktor1id)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->update($data);
-
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Keterangan berhasil diubah'
-            ]);
-        } catch (\Exception $e) {
-            log_message('error', 'Error ubah keterangan: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal mengubah keterangan: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    public function ubahkesimpulan()
-    {
-        if (!$this->request->isAJAX()) {
-            return redirect()->back()->with('error', 'Invalid request');
-        }
-
-        $faktor1id = $this->request->getPost('faktor1id');
-        $keterangan = $this->request->getPost('keterangan');
-
-        if (!$faktor1id) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'ID tidak ditemukan.'
-            ]);
-        }
-
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data user atau periode tidak valid'
-            ]);
-        }
-
-        $existingData = $this->nilaiModel
-            ->where('faktor1id', $faktor1id)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->first();
-
-        if (!$existingData) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak ditemukan'
-            ]);
-        }
-
-        $data = [
-            'keterangan' => $keterangan,
-            'penilaiankredit' => $existingData['penilaiankredit'],
-            'user_id' => $this->userId,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'is_approved' => 0
-        ];
-
-        try {
-            $result = $this->db->table('likuiditaskpmr')
-                ->where('faktor1id', $faktor1id)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->update($data);
-
-            if ($result) {
-                $this->db->table('likuiditaskpmr')
-                    ->where('faktor1id', 135)
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->update(['accdir2' => 0, 'is_approved' => 0]);
-
-                return $this->response->setJSON([
-                    'status' => 'success',
-                    'message' => 'Keterangan kesimpulan berhasil diubah'
-                ]);
-            }
-
-            throw new \Exception('Gagal mengubah keterangan');
-        } catch (\Exception $e) {
-            log_message('error', 'Error ubah kesimpulan: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal mengubah keterangan: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    public function tambahNilai()
-    {
-        if (!$this->request->isAJAX()) {
-            return redirect()->back()->with('error', 'Invalid request');
-        }
-
-        $validation = $this->validate([
-            'penilaiankredit' => 'required',
-            'keterangan' => 'required',
-        ]);
-
-        if (!$validation) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => $this->validator->listErrors()
-            ]);
-        }
-
-        $faktorId = $this->request->getPost('faktor_id');
-
-        if (!$faktorId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'ID tidak ditemukan'
-            ]);
-        }
-
-        $data = [
-            'faktor1id' => $faktorId,
-            'penilaiankredit' => $this->request->getPost('penilaiankredit'),
-            'penjelasanpenilaian' => $this->request->getPost('penjelasanpenilaian'),
-            'keterangan' => $this->request->getPost('keterangan'),
-            'user_id' => $this->userId,
-            'kodebpr' => $this->userKodebpr,
-            'periode_id' => $this->periodeId,
-            'is_approved' => 0,
-            'accdir2' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-        ];
-
-        try {
-            $this->db->table('likuiditaskpmr')->insert($data);
-
-            $categoryMapping = [
-                118 => [119, 120, 121, 122, 123, 124],
-                125 => [126, 127, 128],
-                129 => [130, 131],
-                132 => [133, 134]
-            ];
-
-            foreach ($categoryMapping as $categoryId => $childrenIds) {
-                if (in_array($faktorId, $childrenIds)) {
-                    $this->calculateAndSaveCategoryAverage(
-                        $categoryId,
-                        $childrenIds,
-                        $this->userKodebpr,
-                        $this->periodeId
-                    );
-                    break;
-                }
-            }
-
-            if (in_array($faktorId, [118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135])) {
-                $rataRata = $this->nilaiModel->hitungRataRata(135, $this->userKodebpr, $this->periodeId);
-                $this->nilaiModel->insertOrUpdateRataRata($rataRata, 135, $this->userKodebpr, $this->periodeId);
-            }
-
-            $nilai13 = $this->nilaiModel->where([
-                'faktor1id' => 135,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first();
-
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Nilai berhasil ditambahkan',
-                'peringkat13' => $nilai13['penilaiankredit'] ?? null
-            ]);
-        } catch (\Exception $e) {
-            log_message('error', 'Error tambahNilai: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal menambahkan nilai: ' . $e->getMessage()
-            ]);
-        }
     }
 
     public function tambahKomentar()
@@ -1033,15 +386,8 @@ class Likuiditaskpmr extends Controller
             return redirect()->to(base_url('Likuiditaskpmr'));
         }
 
-        $validation = $this->validate(['komentar' => 'required']);
-
-        if (!$validation) {
-            if ($isAjax) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Komentar tidak boleh kosong'
-                ]);
-            }
+        if (!$this->validate(['komentar' => 'required'])) {
+            if ($isAjax) return $this->response->setJSON(['status' => 'error', 'message' => 'Komentar tidak boleh kosong']);
             return redirect()->back()->with('err', $this->validator->listErrors());
         }
 
@@ -1049,200 +395,302 @@ class Likuiditaskpmr extends Controller
         $komentar = $this->request->getPost('komentar');
 
         if (!$faktorId) {
-            if ($isAjax) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'ID tidak ditemukan'
-                ]);
-            }
+            if ($isAjax) return $this->response->setJSON(['status' => 'error', 'message' => 'ID tidak ditemukan']);
             return redirect()->back()->with('err', 'ID tidak ditemukan');
         }
 
         try {
-            $data = [
-                'subkategori' => "LIKUIDITASKPMR",
-                'faktor1id' => $faktorId,
-                'komentar' => $komentar,
-                'user_id' => $this->userId,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId,
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-
-            $result = $this->komentarModel->insert($data);
-
-            if ($result) {
-                if ($isAjax) {
-                    $komentarList = $this->komentarModel->getKomentarByFaktorId(
-                        'LIKUIDITASKPMR',
-                        $faktorId,
-                        $this->userKodebpr,
-                        $this->periodeId
-                    );
-
-                    return $this->response->setJSON([
-                        'status' => 'success',
-                        'message' => 'Komentar berhasil ditambahkan',
-                        'comments' => $komentarList
-                    ]);
-                }
-
-                return redirect()->to(base_url('Likuiditaskpmr') . '?modal_komentar=' . $faktorId)
-                    ->with('message', 'Komentar berhasil ditambahkan');
-            } else {
-                throw new \Exception('Gagal menyimpan komentar');
-            }
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error tambahKomentar: ' . $e->getMessage());
+            $this->komentarModel->insert([
+                'subkategori' => 'LIKUIDITASKPMR',
+                'faktor1id'   => $faktorId,
+                'komentar'    => $komentar,
+                'user_id'     => $this->userId,
+                'kodebpr'     => $this->userKodebpr,
+                'periode_id'  => $this->periodeId,
+                'created_at'  => date('Y-m-d H:i:s'),
+            ]);
 
             if ($isAjax) {
                 return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Gagal menambahkan komentar: ' . $e->getMessage()
+                    'status'   => 'success',
+                    'message'  => 'Komentar berhasil ditambahkan',
+                    'comments' => $this->komentarModel->getKomentarByFaktorId(
+                        'LIKUIDITASKPMR', $faktorId, $this->userKodebpr, $this->periodeId
+                    ),
                 ]);
             }
 
+            return redirect()->to(base_url('Likuiditaskpmr') . '?modal_komentar=' . $faktorId)
+                ->with('message', 'Komentar berhasil ditambahkan');
+        } catch (\Exception $e) {
+            log_message('error', 'Error tambahKomentar: ' . $e->getMessage());
+            if ($isAjax) return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menambahkan komentar']);
             return redirect()->back()->with('err', 'Gagal menambahkan komentar');
         }
     }
 
-    private function checkAuthentication()
+    public function tambahNilai()
     {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-        return null;
-    }
-
-    public function setNullKolom($id)
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
+        if (!$this->request->isAJAX()) {
+            return redirect()->back()->with('error', 'Invalid request');
         }
 
-        $success = $this->nilaiModel->setNullKolom($id);
-
-        if ($success) {
-            session()->setFlashdata('message', 'Data berhasil dihapus');
-        } else {
-            session()->setFlashdata('err', 'Data gagal dihapus');
+        if (!$this->validate(['penilaiankredit' => 'required', 'keterangan' => 'required'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $this->validator->listErrors()]);
         }
 
-        return redirect()->to(base_url('Likuiditaskpmr'));
-    }
-
-    public function approve($idNilai = null)
-    {
-        if ($idNilai === null) {
-            return redirect()->back()->with('err', 'ID tidak valid');
+        $faktorId = $this->request->getPost('faktor_id');
+        if (!$faktorId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'ID tidak ditemukan']);
         }
 
-        $this->db->table('likuiditaskpmr')
-            ->where('id', $idNilai)
-            ->update([
-                'is_approved' => 1,
-                'approved_by' => $this->userId,
-                'approved_at' => date('Y-m-d H:i:s')
+        try {
+            $this->db->table('likuiditaskpmr')->insert([
+                'faktor1id' => $faktorId,
+                'penilaiankredit' => $this->request->getPost('penilaiankredit'),
+                'penjelasanpenilaian' => $this->request->getPost('penjelasanpenilaian'),
+                'keterangan' => $this->request->getPost('keterangan'),
+                'user_id' => $this->userId,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => $this->periodeId,
+                'is_approved' => 0,
+                'accdir2' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->back()->with('message', 'Data berhasil disetujui');
+            $this->recalculateAfterChange((int)$faktorId);
+
+            $nilai13 = $this->nilaiModel->where([
+                'faktor1id' => self::SUMMARY_FAKTOR,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => $this->periodeId,
+            ])->first();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Nilai berhasil ditambahkan',
+                'peringkat13' => $nilai13['penilaiankredit'] ?? null,
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error tambahNilai: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menambahkan nilai']);
+        }
     }
 
-    public function unapprove($idNilai)
+    public function ubah()
     {
-        if (!is_numeric($idNilai) || $idNilai <= 0) {
-            return redirect()->back()->with('err', 'ID tidak valid.');
+        if (!$this->request->isAJAX()) {
+            return redirect()->back()->with('error', 'Invalid request');
         }
 
-        $nilaiFaktor = $this->nilaiModel->find($idNilai);
-        if (!$nilaiFaktor) {
-            return redirect()->back()->with('err', 'Data tidak ditemukan.');
+        $faktorId = $this->request->getPost('faktor1id');
+        if (!$faktorId || !$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
         }
 
-        $dataUpdate = [
-            'is_approved' => 0,
-            'approved_by' => $this->userId,
-            'approved_at' => date('Y-m-d H:i:s')
-        ];
+        try {
+            $this->db->table('likuiditaskpmr')
+                ->where('faktor1id', $faktorId)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->update([
+                    'penilaiankredit' => $this->request->getPost('penilaiankredit'),
+                    'penjelasanpenilaian' => $this->request->getPost('penjelasanpenilaian'),
+                    'keterangan' => $this->request->getPost('keterangan'),
+                    'is_approved' => 0,
+                    'accdir2' => 0,
+                    'user_id' => $this->userId,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
 
-        if ($this->nilaiModel->update($idNilai, $dataUpdate)) {
-            return redirect()->back()->with('message', 'Data approval dibatalkan.');
+            $this->recalculateAfterChange((int)$faktorId);
+
+            $nilai13 = $this->nilaiModel->where([
+                'faktor1id' => self::SUMMARY_FAKTOR,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => $this->periodeId,
+            ])->first();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data berhasil diubah',
+                'peringkat13' => $nilai13['penilaiankredit'] ?? null,
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error ubah: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menyimpan data']);
+        }
+    }
+
+    public function ubahkesimpulan()
+    {
+        if (!$this->request->isAJAX()) {
+            return redirect()->back()->with('error', 'Invalid request');
         }
 
-        return redirect()->back()->with('err', 'Terjadi kesalahan saat membatalkan approval.');
+        $faktorId = $this->request->getPost('faktor1id');
+        $keterangan = $this->request->getPost('keterangan');
+
+        if (!$faktorId || !$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
+        }
+
+        $existing = $this->nilaiModel
+            ->where('faktor1id', $faktorId)
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $this->periodeId)
+            ->first();
+
+        if (!$existing) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak ditemukan']);
+        }
+
+        try {
+            $this->db->table('likuiditaskpmr')
+                ->where('faktor1id', $faktorId)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->update([
+                    'keterangan' => $keterangan,
+                    'penilaiankredit' => $existing['penilaiankredit'],
+                    'user_id' => $this->userId,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'is_approved' => 0,
+                ]);
+
+            $this->db->table('likuiditaskpmr')
+                ->where('faktor1id', self::SUMMARY_FAKTOR)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->update(['accdir2' => 0, 'is_approved' => 0]);
+
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Keterangan kesimpulan berhasil diubah']);
+        } catch (\Exception $e) {
+            log_message('error', 'Error ubah kesimpulan: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal mengubah keterangan']);
+        }
+    }
+
+    public function ubahPeringkat13Manual()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        $penilaiankredit = $this->request->getPost('penilaiankredit');
+        if (!$penilaiankredit || !isset(self::PERINGKAT_LABEL_MAP[$penilaiankredit])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Pilih peringkat yang valid']);
+        }
+
+        try {
+            $this->nilaiModel
+                ->where('faktor1id', self::SUMMARY_FAKTOR)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit'    => $penilaiankredit,
+                    'penjelasanpenilaian'=> self::PERINGKAT_LABEL_MAP[$penilaiankredit],
+                    'is_manual'          => 1,
+                    'updated_at'         => date('Y-m-d H:i:s'),
+                ])->update();
+
+            return $this->response->setJSON(['status' => 'success', 'peringkat' => $penilaiankredit, 'is_manual' => 1]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function resetPeringkat13Auto()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        try {
+            $rataRata = $this->nilaiModel->hitungRataRata(self::SUMMARY_FAKTOR, $this->userKodebpr, $this->periodeId);
+            $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? (int)ceil($rataRata) : (int)floor($rataRata);
+
+            $this->nilaiModel
+                ->where('faktor1id', self::SUMMARY_FAKTOR)
+                ->where('kodebpr', $this->userKodebpr)
+                ->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $rataRata,
+                    'penjelasanpenilaian' => self::PERINGKAT_LABEL_MAP[(string)$rataRata] ?? 'N/A',
+                    'is_manual' => 0,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ])->update();
+
+            return $this->response->setJSON(['status' => 'success', 'peringkat' => $rataRata, 'is_manual' => false]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 
     public function approveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
-            return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
+            return $this->_jsonOrRedirect(false, 'Kode BPR atau Periode ID tidak valid');
         }
 
+        $allRange = range(self::ALL_RANGE[0], self::ALL_RANGE[1]);
         $checkData = $this->nilaiModel
-            ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) as filled_count')
+            ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count')
             ->where('kodebpr', $this->userKodebpr)
             ->where('periode_id', $this->periodeId)
-            ->whereIn('faktor1id', range(118, 135))
+            ->whereIn('faktor1id', $allRange)
             ->first();
 
-        if ($checkData['filled_count'] < 18) {
-            return redirect()->back()->with('err', 'Semua faktor harus diisi terlebih dahulu');
+        if ((int)$checkData['filled_count'] < count($allRange)) {
+            return $this->_jsonOrRedirect(false, 'Semua faktor harus diisi terlebih dahulu');
         }
 
         try {
             $this->db->table('likuiditaskpmr')
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
-                ->whereIn('faktor1id', range(118, 135))
+                ->whereIn('faktor1id', $allRange)
                 ->update([
                     'is_approved' => 1,
                     'approved_by' => $this->userId,
-                    'approved_at' => date('Y-m-d H:i:s')
+                    'approved_at' => date('Y-m-d H:i:s'),
                 ]);
 
-            return redirect()->back()->with('message', 'Semua data berhasil disetujui.');
+            return $this->_jsonOrRedirect(true, 'Semua data berhasil disetujui.');
         } catch (\Exception $e) {
-            log_message('error', 'Error in approveSemua: ' . $e->getMessage());
-            return redirect()->back()->with('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
+            log_message('error', 'Error approveSemua: ' . $e->getMessage());
+            return $this->_jsonOrRedirect(false, 'Terjadi kesalahan sistem');
         }
     }
 
     public function unapproveSemua()
     {
         if (!$this->userKodebpr || !$this->periodeId) {
-            return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
+            return $this->_jsonOrRedirect(false, 'Kode BPR atau Periode ID tidak valid');
         }
 
         try {
             $this->db->table('likuiditaskpmr')
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
-                ->whereIn('faktor1id', range(118, 135))
+                ->whereIn('faktor1id', range(self::ALL_RANGE[0], self::ALL_RANGE[1]))
                 ->update([
                     'is_approved' => 0,
                     'approved_by' => $this->userId,
-                    'approved_at' => date('Y-m-d H:i:s')
+                    'approved_at' => date('Y-m-d H:i:s'),
                 ]);
 
-            return redirect()->back()->with('message', 'Semua data berhasil dibatalkan persetujuannya.');
+            return $this->_jsonOrRedirect(true, 'Semua data berhasil dibatalkan persetujuannya.');
         } catch (\Exception $e) {
-            log_message('error', 'Error in unapproveSemua: ' . $e->getMessage());
-            return redirect()->back()->with('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
+            log_message('error', 'Error unapproveSemua: ' . $e->getMessage());
+            return $this->_jsonOrRedirect(false, 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
 
     public function accdir2()
     {
         $faktor1id = $this->request->getPost('faktor1id');
-
-        if (!$faktor1id) {
-            return redirect()->back()->with('error', 'Data tidak lengkap');
-        }
+        if (!$faktor1id) return redirect()->back()->with('error', 'Data tidak lengkap');
 
         $this->db->table('likuiditaskpmr')
             ->where('faktor1id', $faktor1id)
@@ -1251,7 +699,7 @@ class Likuiditaskpmr extends Controller
             ->update([
                 'accdir2' => 1,
                 'accdir2_by' => $this->userId,
-                'approved_at' => date('Y-m-d H:i:s')
+                'approved_at' => date('Y-m-d H:i:s'),
             ]);
 
         return redirect()->back()->with('message', 'Data berhasil disetujui');
@@ -1263,16 +711,16 @@ class Likuiditaskpmr extends Controller
             return $this->response->setStatusCode(405, 'Method Not Allowed');
         }
 
-        $faktor1id = $this->request->getPost('faktor1id');
+        $faktorId = $this->request->getPost('faktor1id');
         $kodebpr = $this->request->getPost('kodebpr');
         $periodeId = $this->request->getPost('periode_id');
 
-        if (!$faktor1id || !$kodebpr || !$periodeId) {
+        if (!$faktorId || !$kodebpr || !$periodeId) {
             return redirect()->to('/Likuiditaskpmr')->with('error', 'Data tidak lengkap');
         }
 
         $nilaiFaktor = $this->nilaiModel
-            ->where('faktor1id', $faktor1id)
+            ->where('faktor1id', $faktorId)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->first();
@@ -1281,133 +729,22 @@ class Likuiditaskpmr extends Controller
             return redirect()->to('/Likuiditaskpmr')->with('error', 'Data tidak ditemukan');
         }
 
-        $dataUpdate = [
-            'accdir2' => 0,
+        if ($this->nilaiModel->update($nilaiFaktor['id'], [
+            'accdir2'    => 0,
             'accdir2_by' => $this->userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
-
-        if ($this->nilaiModel->update($nilaiFaktor['id'], $dataUpdate)) {
+            'approved_at'=> date('Y-m-d H:i:s'),
+        ])) {
             return redirect()->to('/Likuiditaskpmr')->with('message', 'Persetujuan dibatalkan');
         }
 
         return redirect()->to('/Likuiditaskpmr')->with('error', 'Gagal memperbarui data');
     }
 
-    public function getUnreadCommentCountForFactor()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ]);
-        }
-
-        $faktorId = $this->request->getGet('faktor_id');
-
-        if (!$faktorId || !$this->userKodebpr || !$this->userId || !$this->periodeId) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'status' => 'error',
-                'message' => 'Missing data.'
-            ]);
-        }
-
-        $count = $this->commentReadsModel->countUnreadCommentsForUserByFactor(
-            $faktorId,
-            "LIKUIDITASKPMR",
-            $this->userKodebpr,
-            $this->userId,
-            $this->periodeId
-        );
-
-        return $this->response->setJSON(['unread_count' => $count]);
-    }
-
-    public function markUserCommentsAsRead()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ]);
-        }
-
-        $faktorId = $this->request->getPost('faktor_id');
-
-        if (!$faktorId || !$this->userKodebpr || !$this->userId || !$this->periodeId) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'status' => 'error',
-                'message' => 'Missing data.'
-            ]);
-        }
-
-        $marked = $this->commentReadsModel->markAllAsReadForFactor(
-            $faktorId,
-            "LIKUIDITASKPMR",
-            $this->userKodebpr,
-            $this->userId,
-            $this->periodeId
-        );
-
-        log_message('info', "User {$this->userId} marked {$marked} comments as read for factor {$faktorId}");
-
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Comments marked as read',
-            'marked_count' => $marked
-        ]);
-    }
-
-    public function getAllUnreadCounts()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ]);
-        }
-
-        if (!$this->userKodebpr || !$this->userId || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Missing data'
-            ]);
-        }
-
-        $faktorIds = range(118, 135);
-        $counts = [];
-
-        foreach ($faktorIds as $faktorId) {
-            $count = $this->commentReadsModel->countUnreadCommentsForUserByFactor(
-                $faktorId,
-                "LIKUIDITASKPMR",
-                $this->userKodebpr,
-                $this->userId,
-                $this->periodeId
-            );
-
-            if ($count > 0) {
-                $counts[$faktorId] = $count;
-            }
-        }
-
-        return $this->response->setJSON([
-            'status' => 'success',
-            'counts' => $counts
-        ]);
-    }
-
     public function simpanNilai14()
     {
-        if ($redirect = $this->checkAuth()) {
-            return $redirect;
-        }
+        if ($redirect = $this->checkAuth()) return $redirect;
 
-        $validation = $this->validate([
-            'penilaiankredit' => 'required|in_list[1,2,3,4,5]'
-        ]);
-
-        if (!$validation) {
+        if (!$this->validate(['penilaiankredit' => 'required|in_list[1,2,3,4,5]'])) {
             return redirect()->back()->with('err', 'Pilih tingkat risiko terlebih dahulu');
         }
 
@@ -1415,269 +752,165 @@ class Likuiditaskpmr extends Controller
             return redirect()->back()->with('error', 'Data user atau periode tidak valid');
         }
 
-        $faktorId = 136;
         $penilaiankredit = $this->request->getPost('penilaiankredit');
-
+        $penjelasanpenilaian = self::PERINGKAT_LABEL_MAP[$penilaiankredit] ?? 'N/A';
         $user = $this->userModel->find($this->userId);
-
-        $penjelasanMapping = [
-            '1' => 'Tingkat Risiko Likuiditas KPMR: Sangat Rendah',
-            '2' => 'Tingkat Risiko Likuiditas KPMR: Rendah',
-            '3' => 'Tingkat Risiko Likuiditas KPMR: Sedang',
-            '4' => 'Tingkat Risiko Likuiditas KPMR: Tinggi',
-            '5' => 'Tingkat Risiko Likuiditas KPMR: Sangat Tinggi'
-        ];
-
-        $penjelasanpenilaian = $penjelasanMapping[$penilaiankredit] ?? 'N/A';
+        $faktorId = self::PREV_FAKTOR;
 
         try {
-            $existingData = $this->nilaiModel
+            $existing = $this->nilaiModel
                 ->where('faktor1id', $faktorId)
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
                 ->first();
 
-            if ($existingData) {
-                $updateData = [
-                    'penilaiankredit' => $penilaiankredit,
-                    'penjelasanpenilaian' => $penjelasanpenilaian,
-                    'keterangan' => 'Tingkat Risiko Likuiditas KPMR Posisi Sebelumnya',
-                    'user_id' => $this->userId,
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
+            $commonData = [
+                'penilaiankredit' => $penilaiankredit,
+                'penjelasanpenilaian' => $penjelasanpenilaian,
+                'keterangan' => 'Tingkat Risiko Likuiditas KPMR Posisi Sebelumnya',
+                'user_id' => $this->userId,
+                'fullname' => $user['fullname'] ?? 'Unknown',
+            ];
 
-                $result = $this->nilaiModel
+            if ($existing) {
+                $this->nilaiModel
                     ->where('faktor1id', $faktorId)
                     ->where('kodebpr', $this->userKodebpr)
                     ->where('periode_id', $this->periodeId)
-                    ->set($updateData)
+                    ->set(array_merge($commonData, ['updated_at' => date('Y-m-d H:i:s')]))
                     ->update();
-
-                if ($result) {
-                    return redirect()->to(base_url('Likuiditaskpmr'))
-                        ->with('message', 'Data Tingkat Risiko Likuiditas KPMR berhasil diupdate');
-                } else {
-                    throw new \Exception('Gagal mengupdate data');
-                }
-
+                $msg = 'Data Tingkat Risiko Likuiditas KPMR berhasil diupdate';
             } else {
-                $insertData = [
+                $this->nilaiModel->insert(array_merge($commonData, [
                     'faktor1id' => $faktorId,
-                    'penilaiankredit' => $penilaiankredit,
-                    'penjelasanpenilaian' => $penjelasanpenilaian,
-                    'keterangan' => 'Tingkat Risiko Kredit Inheren Posisi Sebelumnya',
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'user_id' => $this->userId,
                     'kodebpr' => $this->userKodebpr,
                     'periode_id' => $this->periodeId,
                     'is_approved' => 0,
                     'accdir2' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                ];
-
-                $result = $this->nilaiModel->insert($insertData);
-
-                if ($result) {
-                    return redirect()->to(base_url('Likuiditaskpmr'))
-                        ->with('message', 'Data Tingkat Risiko Kredit Inheren berhasil disimpan');
-                } else {
-                    throw new \Exception('Gagal menyimpan data');
-                }
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]));
+                $msg = 'Data Tingkat Risiko Likuiditas KPMR berhasil disimpan';
             }
 
+            return redirect()->to(base_url('Likuiditaskpmr'))->with('message', $msg);
         } catch (\Exception $e) {
             log_message('error', 'Error simpanNilai14: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-    }
-
-    public function simpanNilai13()
-    {
-        if ($redirect = $this->checkAuth()) {
-            return $redirect;
-        }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-        $faktorId = 135;
-        $rataRata = 0;
-        $keterangan = $this->request->getPost('keterangan');
-
-        $this->nilaiModel->insertOrUpdateRataRata($rataRata, $faktorId, $kodebpr, $periodeId, $keterangan);
-
-        return redirect()->back()->with('message', 'Kesimpulan berhasil disimpan atau diperbarui.');
-    }
-
-    private function getNilai13()
-    {
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return null;
-        }
-
-        return $this->nilaiModel
-            ->where('faktor1id', 135)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->first();
     }
 
     public function simpanKesimpulan13()
     {
-        if ($redirect = $this->checkAuth()) {
-            return $redirect;
-        }
+        if ($redirect = $this->checkAuth()) return $redirect;
 
-        $validation = $this->validate([
-            'keterangan' => 'required'
-        ]);
-
-        if (!$validation) {
-            return redirect()->back()
-                ->with('err', 'Keterangan kesimpulan harus diisi');
+        if (!$this->validate(['keterangan' => 'required'])) {
+            return redirect()->back()->with('err', 'Keterangan kesimpulan harus diisi');
         }
 
         if (!$this->userKodebpr || !$this->periodeId) {
             return redirect()->back()->with('error', 'Data user atau periode tidak valid');
         }
 
-        $faktorId = 102;
+        $faktorId = self::SUMMARY_FAKTOR;
         $keterangan = $this->request->getPost('keterangan');
         $user = $this->userModel->find($this->userId);
 
         try {
-            $existingData = $this->nilaiModel
+            $existing = $this->nilaiModel
                 ->where('faktor1id', $faktorId)
                 ->where('kodebpr', $this->userKodebpr)
                 ->where('periode_id', $this->periodeId)
                 ->first();
 
-            if ($existingData) {
-                $updateData = [
-                    'keterangan' => $keterangan,
-                    'user_id' => $this->userId,
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
-
-                $result = $this->nilaiModel
+            if ($existing) {
+                $this->nilaiModel
                     ->where('faktor1id', $faktorId)
                     ->where('kodebpr', $this->userKodebpr)
                     ->where('periode_id', $this->periodeId)
-                    ->set($updateData)
-                    ->update();
+                    ->set([
+                        'keterangan' => $keterangan,
+                        'user_id'    => $this->userId,
+                        'fullname'   => $user['fullname'] ?? 'Unknown',
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ])->update();
 
-                if ($result) {
-                    return redirect()->to(base_url('Likuiditaskpmr'))
-                        ->with('message', 'Kesimpulan berhasil diupdate');
-                } else {
-                    throw new \Exception('Gagal mengupdate kesimpulan');
-                }
-
-            } else {
-                $rataRata = $this->nilaiModel->hitungRataRata($faktorId, $this->userKodebpr, $this->periodeId);
-                $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
-
-                $penjelasanMapping = [
-                    '1' => 'Tingkat Risiko Likuiditas KPMR: Sangat Rendah',
-                    '2' => 'Tingkat Risiko Likuiditas KPMR: Rendah',
-                    '3' => 'Tingkat Risiko Likuiditas KPMR: Sedang',
-                    '4' => 'Tingkat Risiko Likuiditas KPMR: Tinggi',
-                    '5' => 'Tingkat Risiko Likuiditas KPMR: Sangat Tinggi'
-                ];
-
-                $insertData = [
-                    'faktor1id' => $faktorId,
-                    'penilaiankredit' => $rataRata,
-                    'penjelasanpenilaian' => $penjelasanMapping[$rataRata] ?? 'N/A',
-                    'keterangan' => $keterangan,
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'user_id' => $this->userId,
-                    'kodebpr' => $this->userKodebpr,
-                    'periode_id' => $this->periodeId,
-                    'is_approved' => 0,
-                    'accdir2' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                ];
-
-                $result = $this->nilaiModel->insert($insertData);
-
-                if ($result) {
-                    return redirect()->to(base_url('Likuiditaskpmr'))
-                        ->with('message', 'Kesimpulan berhasil disimpan');
-                } else {
-                    throw new \Exception('Gagal menyimpan kesimpulan');
-                }
+                return redirect()->to(base_url('Likuiditaskpmr'))->with('message', 'Kesimpulan berhasil diupdate');
             }
 
+            $rataRata = $this->nilaiModel->hitungRataRata($faktorId, $this->userKodebpr, $this->periodeId);
+            $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? (int)ceil($rataRata) : (int)floor($rataRata);
+
+            $this->nilaiModel->insert([
+                'faktor1id' => $faktorId,
+                'penilaiankredit' => $rataRata,
+                'penjelasanpenilaian' => self::PERINGKAT_LABEL_MAP[(string)$rataRata] ?? 'N/A',
+                'keterangan' => $keterangan,
+                'fullname' => $user['fullname'] ?? 'Unknown',
+                'user_id' => $this->userId,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => $this->periodeId,
+                'is_approved' => 0,
+                'accdir2' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            return redirect()->to(base_url('Likuiditaskpmr'))->with('message', 'Kesimpulan berhasil disimpan');
         } catch (\Exception $e) {
             log_message('error', 'Error simpan kesimpulan13: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
-    public function getNilai14()
+    private function recalculateAfterChange(int $faktorId): void
     {
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return null;
-        }
-
-        return $this->nilaiModel
-            ->where('faktor1id', 136)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->first();
-    }
-
-    public function saveKomentar()
-    {
-        $data = [
-            'faktor1id' => $this->request->getPost('faktor_id'),
-            'kodebpr' => $this->request->getPost('kodebpr'),
-            'komentar' => $this->request->getPost('komentar'),
-            'is_read' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-            'user_id' => $this->userId
-        ];
-
-        $this->komentarModel->insert($data);
-        return $this->response->setJSON(['status' => 'comment_saved']);
-    }
-
-    private function calculateAndSaveCategoryAverage($categoryFaktorId, $childrenFaktorIds, $kodebpr, $periodeId)
-    {
-        $childValues = [];
-        foreach ($childrenFaktorIds as $childId) {
-            $childData = $this->nilaiModel
-                ->where('faktor1id', $childId)
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->first();
-
-            if ($childData && !empty($childData['penilaiankredit'])) {
-                $childValues[] = (int) $childData['penilaiankredit'];
+        foreach (self::CATEGORY_MAP as $categoryId => $childrenIds) {
+            if (in_array($faktorId, $childrenIds, true)) {
+                $this->calculateAndSaveCategoryAverage(
+                    $categoryId, $childrenIds, $this->userKodebpr, $this->periodeId
+                );
+                break;
             }
         }
 
-        if (empty($childValues)) {
-            return null;
+        $allChildIds = array_merge(...array_values(self::CATEGORY_MAP));
+        $categoryIds = array_keys(self::CATEGORY_MAP);
+
+        if (in_array($faktorId, array_merge($allChildIds, $categoryIds), true)) {
+            $rataRata = $this->nilaiModel->hitungRataRata(self::SUMMARY_FAKTOR, $this->userKodebpr, $this->periodeId);
+            $this->nilaiModel->insertOrUpdateRataRata($rataRata, self::SUMMARY_FAKTOR, $this->userKodebpr, $this->periodeId);
         }
 
-        $average = array_sum($childValues) / count($childValues);
-        $roundedAverage = round($average);
+        $this->db->table('likuiditaskpmr')
+            ->where('faktor1id', self::SUMMARY_FAKTOR)
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $this->periodeId)
+            ->update(['accdir2' => 0, 'is_approved' => 0]);
+    }
 
-        $user = $this->userModel->find($this->userId);
+    private function calculateAndSaveCategoryAverage(
+        int $categoryFaktorId,
+        array $childrenFaktorIds,
+        string $kodebpr,
+        $periodeId
+    ): ?int {
+        $childRows = $this->nilaiModel
+            ->select('penilaiankredit')
+            ->where('kodebpr', $kodebpr)
+            ->where('periode_id', $periodeId)
+            ->whereIn('faktor1id', $childrenFaktorIds)
+            ->where('penilaiankredit IS NOT NULL')
+            ->findAll();
 
-        $penilaianConfig = $this->getPenilaianConfig();
-        $autoKeterangan = '';
+        if (empty($childRows)) return null;
 
-        if (isset($penilaianConfig[$categoryFaktorId]['descriptions'][$roundedAverage])) {
-            $autoKeterangan = $penilaianConfig[$categoryFaktorId]['descriptions'][$roundedAverage];
-        }
+        $values         = array_column($childRows, 'penilaiankredit');
+        $roundedAverage = (int)round(array_sum($values) / count($values));
 
-        $existingCategory = $this->nilaiModel
+        $config         = $this->getPenilaianConfig();
+        $autoKeterangan = $config[$categoryFaktorId]['descriptions'][$roundedAverage] ?? '';
+        $user           = $this->userModel->find($this->userId);
+
+        $existing = $this->nilaiModel
             ->where('faktor1id', $categoryFaktorId)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
@@ -1692,341 +925,156 @@ class Likuiditaskpmr extends Controller
             'fullname' => $user['fullname'] ?? 'Unknown',
             'kodebpr' => $kodebpr,
             'periode_id' => $periodeId,
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        if ($existingCategory) {
-            $this->nilaiModel->update($existingCategory['id'], $dataCategory);
+        if ($existing) {
+            $this->nilaiModel->update($existing['id'], $dataCategory);
         } else {
             $dataCategory['created_at'] = date('Y-m-d H:i:s');
-            $dataCategory['is_approved'] = 0;
-            $dataCategory['accdir2'] = 0;
+            $dataCategory['is_approved']= 0;
+            $dataCategory['accdir2']    = 0;
             $this->nilaiModel->insert($dataCategory);
         }
 
         return $roundedAverage;
     }
 
-    private function getHierarchicalFactors($kodebpr, $periodeId)
+    public function setNullKolom($id)
     {
-        $structure = [
-            [
-                'id' => 118,
-                'title' => 'Pilar Pengawasan Direksi dan Dewan Komisaris',
-                'type' => 'category',
-                'faktor_id' => 118,
-                'faktor_ids' => [119, 120, 121, 122, 123, 124],
-                'description' => 'Pilar Pengawasan Direksi dan Dewan Komisaris',
-                'children' => [
-                    [
-                        'id' => 119,
-                        'title' => 'Apakah Dewan Komisaris telah melakukan persetujuan terhadap kebijakan manajemen risiko likuiditas yang disusun oleh Direksi dan melakukan evaluasi secara berkala?',
-                        'type' => 'parameter',
-                        'faktor_id' => 119,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 120,
-                        'title' => 'Apakah Dewan Komisaris telah melakukan evaluasi terhadap pertanggungjawaban Direksi atas pelaksanaan kebijakan manajemen risiko likuiditas secara berkala dan memastikan tindak lanjut hasil evaluasi dimaksud?',
-                        'type' => 'parameter',
-                        'faktor_id' => 120,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 121,
-                        'title' => 'Apakah Direksi telah menyusun kebijakan manajemen risiko likuiditas, melaksanakan secara konsisten, dan melakukan pengkinian secara berkala?',
-                        'type' => 'parameter',
-                        'faktor_id' => 121,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 122,
-                        'title' => 'Apakah Direksi telah memiliki kemampuan untuk mengambil tindakan yang diperlukan dalam rangka mitigasi risiko likuiditas, dan melakukan komunikasi kebijakan manajemen risiko likuiditas terhadap seluruh jenjang organisasi BPR?',
-                        'type' => 'parameter',
-                        'faktor_id' => 122,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 123,
-                        'title' => 'Apakah BPR telah memiliki kecukupan organisasi yang menangani fungsi likuiditas dan fungsi manajemen risiko likuiditas?',
-                        'type' => 'parameter',
-                        'faktor_id' => 123,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 124,
-                        'title' => 'Apakah Direksi telah menerapkan kebijakan pengelolaan SDM dalam rangka penerapan Manajemen Risiko likuiditas?',
-                        'type' => 'parameter',
-                        'faktor_id' => 124,
-                        'previous_periode_faktor_id' => null
-                    ]
-                ]
-            ],
-            [
-                'id' => 125,
-                'title' => 'Pilar Kecukupan Kebijakan, Prosedur, dan Limit',
-                'type' => 'category',
-                'faktor_id' => 125,
-                'faktor_ids' => [126, 127, 128],
-                'description' => 'Pilar Kecukupan Kebijakan, Prosedur, dan Limit',
-                'children' => [
-                    [
-                        'id' => 126,
-                        'title' => 'Apakah BPR telah memiliki kebijakan manajemen risiko likuiditas yang memadai dan disusun dengan mempertimbangkan visi, misi, skala usaha dan kompleksitas bisnis, serta kecukupan SDM?',
-                        'type' => 'parameter',
-                        'faktor_id' => 126,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 127,
-                        'title' => 'Apakah BPR: 
-                        ● Memiliki prosedur manajemen risiko likuiditas dan penetapan limit risiko likuiditas yang ditetapkan oleh Direksi; 
-                        ● Melaksanakan prosedur manajemen risiko likuiditas dan penetapan limit risiko likuiditas secara konsisten untuk seluruh aktivitas; dan 
-                        ● Melakukan evaluasi dan pengkinian terhadap prosedur manajemen risiko likuiditas dan penetapan limit risiko likuiditas secara berkala?',
-                        'type' => 'parameter',
-                        'faktor_id' => 127,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 128,
-                        'title' => 'Apakah BPR telah memiliki kebijakan dan prosedur penerbitan produk dan/atau pelaksanaan aktivitas baru yang mencakup identifikasi dan mitigasi risiko likuiditas sesuai dengan ketentuan?',
-                        'type' => 'parameter',
-                        'faktor_id' => 128,
-                        'previous_periode_faktor_id' => null
-                    ]
-                ]
-            ],
-            [
-                'id' => 129,
-                'title' => 'Kecukupan Proses dan Sistem Manajemen Informasi',
-                'type' => 'category',
-                'faktor_id' => 129,
-                'faktor_ids' => [130, 131],
-                'description' => 'Kecukupan Proses dan Sistem Manajemen Informasi',
-                'children' => [
-                    [
-                        'id' => 130,
-                        'title' => 'Apakah BPR telah melaksanakan proses manajemen risiko likuiditas yang melekat pada kegiatan usaha BPR?',
-                        'type' => 'parameter',
-                        'faktor_id' => 130,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 131,
-                        'title' => 'Apakah BPR telah memiliki sistem informasi manajemen risiko yang mendukung Direksi dalam pengambilan keputusan terkait risiko  likuiditas serta telah dilaporkan kepada Direksi secara berkala?',
-                        'type' => 'parameter',
-                        'faktor_id' => 131,
-                        'previous_periode_faktor_id' => null
-                    ]
-                ]
-            ],
-            [
-                'id' => 132,
-                'title' => 'Sistem Pengendalian Internal yang Menyeluruh',
-                'type' => 'category',
-                'faktor_id' => 132,
-                'faktor_ids' => [133, 134],
-                'description' => 'Sistem Pengendalian Internal yang Menyeluruh',
-                'children' => [
-                    [
-                        'id' => 133,
-                        'title' => 'Apakah SKAI atau PEAI telah melaksanakan audit secara berkala terhadap penerapan manajemen risiko likuiditas, menyampaikan laporan hasil audit intern, dan memastikan tindaklanjut atas temuan pemeriksaan?',
-                        'type' => 'parameter',
-                        'faktor_id' => 133,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 134,
-                        'title' => 'Apakah sistem pengendalian intern terhadap risiko likuiditas telah dilaksanakan oleh seluruh jenjang organisasi BPR?',
-                        'type' => 'parameter',
-                        'faktor_id' => 134,
-                        'previous_periode_faktor_id' => null
-                    ]
-                ]
-            ],
-        ];
-
-        foreach ($structure as &$item) {
-            if ($item['type'] === 'category') {
-                $categoryData = $this->nilaiModel->getByFaktor($item['faktor_id'], $periodeId, $kodebpr);
-
-                foreach ($item['children'] as &$child) {
-                    $nilai = $this->nilaiModel->getByFaktor($child['faktor_id'], $periodeId, $kodebpr);
-                    $child['nilai'] = $nilai['penilaiankredit'] ?? null;
-                    $child['keterangan'] = $nilai['keterangan'] ?? null;
-                    $child['is_approved'] = $nilai['is_approved'] ?? 0;
-                    $child['rasiokredit'] = $nilai['rasiokredit'] ?? '';
-                }
-
-                $item['nilai'] = $categoryData['penilaiankredit'] ?? null;
-                $item['keterangan'] = $categoryData['keterangan'] ?? null;
-                $item['is_approved'] = $categoryData['is_approved'] ?? 0;
-
-            } else if ($item['type'] === 'single') {
-                $nilai = $this->nilaiModel->getByFaktor($item['faktor_id'], $periodeId, $kodebpr);
-                $item['nilai'] = $nilai['penilaiankredit'] ?? null;
-                $item['keterangan'] = $nilai['keterangan'] ?? null;
-                $item['is_approved'] = $nilai['is_approved'] ?? 0;
-            }
+        if (!$this->auth->check()) {
+            return redirect()->to(session('redirect_url') ?? '/login');
         }
 
-        return $structure;
+        $success = $this->nilaiModel->setNullKolom($id);
+        session()->setFlashdata($success ? 'message' : 'err', $success ? 'Data berhasil dihapus' : 'Data gagal dihapus');
+
+        return redirect()->to(base_url('Likuiditaskpmr'));
     }
 
-    public function recalculateCategoryAverage()
+    private function getMatchingProfilRisikoPeriodeId($periodeTKSId)
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403);
-        }
+        $periodeTKS = $this->periodetksModel->find($periodeTKSId);
+        if (!$periodeTKS) return null;
 
-        $faktorId = $this->request->getPost('faktor_id');
+        $list = $this->periodeModel->where([
+            'semester' => $periodeTKS['semester'],
+            'tahun'    => $periodeTKS['tahun'],
+            'kodebpr'  => $this->userKodebpr,
+        ])->findAll();
 
-        $categoryMapping = [
-            118 => [119, 120, 121, 122, 123, 124],
-            125 => [126, 127, 128],
-            129 => [130, 131],
-            132 => [133, 134]
-        ];
-
-        $categoryToRecalculate = null;
-
-        foreach ($categoryMapping as $categoryId => $childrenIds) {
-            if (in_array($faktorId, $childrenIds)) {
-                $categoryToRecalculate = $categoryId;
-                break;
-            }
-        }
-
-        if ($categoryToRecalculate) {
-            $this->calculateAndSaveCategoryAverage(
-                $categoryToRecalculate,
-                $categoryMapping[$categoryToRecalculate],
-                $this->userKodebpr,
-                $this->periodeId
-            );
-
-            $rataRata = $this->nilaiModel->hitungRataRata(135, $this->userKodebpr, $this->periodeId);
-            $this->nilaiModel->insertOrUpdateRataRata($rataRata, 135, $this->userKodebpr, $this->periodeId);
-
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Kategori berhasil di-recalculate'
-            ]);
-        }
-
-        return $this->response->setJSON([
-            'status' => 'error',
-            'message' => 'Kategori tidak ditemukan'
-        ]);
+        return $list[0]['id'] ?? null;
     }
 
     public function exporttxtrisikolikuiditaskpmr()
     {
         if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
+            return redirect()->to(session('redirect_url') ?? '/login');
         }
 
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        $profilResiko = $this->showprofilresikoModel
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
-
-        $output = "";
         $periodeDetail = $this->periodeModel->find($this->periodeId);
-        $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
-        $jenispelaporan = $periodeDetail['jenispelaporan'];
-        $kategori = $periodeDetail['kategori'];
-        $tanggal = new \DateTime($profilResiko['tanggal']);
+        if (!$periodeDetail) return redirect()->back()->with('error', 'Periode tidak ditemukan');
 
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        ['modalinti' => $modalinti, 'nomorsurat' => $nomorsurat, 'jeniskoreksi' => $jeniskoreksi,
+         'jenispelaporan' => $jenispelaporan, 'kategori' => $kategori,
+         'tahun' => $tahun, 'semester' => $semester] = $periodeDetail;
 
-        $data_risikokredit = $this->nilaiModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
-        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+        $exportDate = (strtolower($semester) === 'ganjil' || $semester === '1')
+            ? "{$tahun}-06-30" : "{$tahun}-12-31";
+        $titleDate  = str_replace('-', '', $exportDate);
 
-        $sandibpr = '';
-        $kodejenis = '';
-        if (!empty($data_infobpr)) {
-            $infobpr = $data_infobpr[0];
-            $sandibpr = $infobpr['sandibpr'] ?? '';
-            $kodejenis = $infobpr['kodejenis'] ?? '';
+        $rows        = $this->nilaiModel->getDataByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+        $indexedData = array_column($rows, null, 'faktor1id');
+
+        $infobpr   = $this->infobprModel->getDataByKodebpr($this->userKodebpr);
+        $sandibpr  = $infobpr[0]['sandibpr'] ?? '';
+        $kodejenis = $infobpr[0]['kodejenis'] ?? '';
+
+        $output = "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0402|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
+
+        foreach (self::KODE_MAP as $faktorId => $kode) {
+            $row    = $indexedData[$faktorId] ?? [];
+            $output .= "D01|{$kode}|{$this->sanitizeTxt($row['penilaiankredit'] ?? '')}|{$this->sanitizeTxt($row['keterangan'] ?? '')}\r\n";
         }
 
-        function sanitizeTxtLikKpmr($text)
-        {
-            // ganti enter
-            $text = str_replace(["\r", "\n"], ' ', $text);
+        $filename = "TKSBPRKS-0402-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
-            // ganti karakter tipografi ke ASCII
-            $text = str_replace(
-                ['“', '”', '‘', '’', '%', '|'],
-                ['"', '"', "'", "'", ' persen ', ' '],
-                $text
-            );
+        return service('response')
+            ->setHeader('Content-Type', 'text/plain')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
+    }
 
-            // hilangkan karakter non-ASCII
-            $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
-
-            // rapikan spasi
-            return trim(preg_replace('/\s+/', ' ', $text));
+    public function exporttxtrisikolikuiditaskpmrtks()
+    {
+        if (!$this->auth->check()) {
+            return redirect()->to(session('redirect_url') ?? '/login');
         }
 
-        $kodeMap = [
-            118 => '4310',
-            119 => '4311',
-            120 => '4312',
-            121 => '4313',
-            122 => '4314',
-            123 => '4315',
-            124 => '4316',
-            125 => '4320',
-            126 => '4321',
-            127 => '4322',
-            128 => '4323',
-            129 => '4330',
-            130 => '4331',
-            131 => '4332',
-            132 => '4340',
-            133 => '4341',
-            134 => '4342',
-            135 => '4350'
+        $periodeTKS = $this->periodetksModel->find($this->periodeId);
+        if (!$periodeTKS) return redirect()->back()->with('error', 'Periode TKS tidak ditemukan');
+
+        $periodeProfilRisikoId = $this->getMatchingProfilRisikoPeriodeId($this->periodeId);
+        if (!$periodeProfilRisikoId) {
+            return redirect()->back()->with('error', 'Tidak ada periode Profil Risiko yang cocok');
+        }
+
+        ['modalinti' => $modalinti, 'jenispelaporan' => $jenispelaporan,
+         'kategori' => $kategori, 'tahun' => $tahun, 'semester' => $semester] = $periodeTKS;
+
+        $exportDate = (strtolower($semester) === 'ganjil' || $semester === '1')
+            ? "{$tahun}-01-31" : "{$tahun}-06-30";
+        $titleDate  = str_replace('-', '', $exportDate);
+
+        $rows        = $this->nilaiModel->getDataByKodebprAndPeriode($this->userKodebpr, $periodeProfilRisikoId);
+        $indexedData = array_column($rows, null, 'faktor1id');
+
+        $infobpr   = $this->infobprModel->getDataByKodebpr($this->userKodebpr);
+        $sandibpr  = $infobpr[0]['sandibpr'] ?? '';
+        $kodejenis = $infobpr[0]['kodejenis'] ?? '';
+
+        $output = "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0402|{$modalinti}|{$kategori}||\r\n";
+
+        foreach (self::KODE_MAP as $faktorId => $kode) {
+            $row    = $indexedData[$faktorId] ?? [];
+            $output .= "D01|{$kode}|{$this->sanitizeTxt($row['penilaiankredit'] ?? '')}|{$this->sanitizeTxt($row['keterangan'] ?? '')}\r\n";
+        }
+
+        $filename = "TKSBPRKS-0402-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+
+        return service('response')
+            ->setHeader('Content-Type', 'text/plain')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
+    }
+
+    private function getPenilaianConfig(): array
+    {
+        if (self::$_penilaianConfigCache !== null) {
+            return self::$_penilaianConfigCache;
+        }
+
+        self::$_penilaianConfigCache = [
+            118 => ['descriptions' => [1=>'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Sangat Rendah',2=>'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Rendah',3=>'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Sedang',4=>'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Tinggi',5=>'Parameter Pengawasan Direksi dan Dewan Komisaris berada pada tingkat risiko yang Sangat Tinggi'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            119 => ['descriptions' => [1=>'• Dewan Komisaris telah memberikan persetujuan dan melakukan evaluasi berkala; relevan dengan kebutuhan penyesuaian kebijakan.',2=>'• Dewan Komisaris telah memberikan persetujuan dan melakukan evaluasi paling sedikit satu kali dalam satu tahun.',3=>'• Dewan Komisaris telah memberikan persetujuan dan melakukan evaluasi; namun tidak secara berkala.',4=>'• Dewan Komisaris telah memberikan persetujuan; namun tidak melakukan evaluasi.',5=>'• Dewan Komisaris tidak memberikan persetujuan maupun melakukan evaluasi.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            120 => ['descriptions' => [1=>'• Evaluasi dilakukan setiap semester; memastikan tindak lanjut; relevan mendukung perbaikan kinerja.',2=>'• Evaluasi dilakukan setiap semester; memastikan tindak lanjut.',3=>'• Evaluasi dilakukan setiap semester; tidak memastikan tindak lanjut.',4=>'• Evaluasi tidak dilakukan secara berkala; tidak memastikan tindak lanjut.',5=>'Dewan Komisaris tidak melakukan evaluasi sama sekali.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            121 => ['descriptions' => [1=>'• Direksi menyusun, menjalankan, melakukan pengkinian, dan terbukti memitigasi risiko.',2=>'• Direksi menyusun, menjalankan, dan melakukan pengkinian kebijakan.',3=>'• Direksi menyusun dan menjalankan; namun tidak melakukan pengkinian.',4=>'• Direksi menyusun kebijakan; namun tidak menjalankan dan tidak melakukan pengkinian.',5=>'Direksi tidak menyusun kebijakan Manajemen Risiko likuiditas.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            122 => ['descriptions' => [1=>'• Direksi mengambil tindakan mitigasi dan mengomunikasikan kebijakan; seluruh jenjang memahami.',2=>'• Direksi mengambil tindakan dan mengomunikasikan; tidak seluruh jenjang memahami namun tidak signifikan.',3=>'• Direksi mengambil tindakan dan mengomunikasikan; tidak seluruh jenjang memahami dan berdampak signifikan.',4=>'• Direksi mengambil tindakan; tidak mengomunikasikan; seluruh jenjang tidak memahami.',5=>'• Direksi tidak mengambil tindakan, tidak mengomunikasikan, seluruh jenjang tidak memahami.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            123 => ['descriptions' => [1=>'• Organisasi lengkap; tidak ada rangkap jabatan bermasalah; SKMR/PEMR mampu berfungsi.',2=>'• Organisasi tidak lengkap; tidak ada rangkap jabatan bermasalah; SKMR/PEMR mampu berfungsi.',3=>'• Organisasi tidak lengkap; ada rangkap jabatan tidak bermasalah; SKMR/PEMR tidak mampu berfungsi.',4=>'• Organisasi tidak lengkap; ada rangkap jabatan bermasalah; SKMR/PEMR tidak mampu berfungsi.',5=>'• Organisasi tidak lengkap; rangkap jabatan bermasalah; unit tidak melaksanakan tugas; SKMR/PEMR tidak berfungsi.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            124 => ['descriptions' => [1=>'• Kualifikasi SDM sesuai; upaya peningkatan konsisten; standar kinerja terpenuhi.',2=>'• Ketidaksesuaian kualifikasi tidak signifikan; upaya peningkatan konsisten; standar terpenuhi.',3=>'• Ketidaksesuaian kualifikasi tidak signifikan; upaya peningkatan tidak konsisten; standar terpenuhi.',4=>'• Ketidaksesuaian kualifikasi signifikan; upaya tidak konsisten; standar tidak terpenuhi tapi tidak signifikan.',5=>'• Ketidaksesuaian kualifikasi signifikan; tidak ada upaya peningkatan; standar tidak terpenuhi dan signifikan.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            125 => ['descriptions' => [1=>'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Sangat Rendah',2=>'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Rendah',3=>'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Sedang',4=>'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Tinggi',5=>'Parameter Kecukupan Kebijakan, Prosedur, dan Limit berada pada tingkat risiko yang Sangat Tinggi'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            126 => ['descriptions' => [1=>'• Memiliki kebijakan; substansi sesuai ketentuan; selaras dengan visi, misi, skala usaha.',2=>'• Memiliki kebijakan; ketidaksesuaian substansi tidak signifikan; selaras dengan visi/misi.',3=>'• Memiliki kebijakan; ketidaksesuaian substansi tidak signifikan; ketidakselarasan tidak berdampak signifikan.',4=>'• Memiliki kebijakan; ketidaksesuaian substansi signifikan; ketidakselarasan berdampak signifikan.',5=>'Tidak memiliki kebijakan Manajemen Risiko likuiditas.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            127 => ['descriptions' => [1=>'• Memiliki prosedur dan limit; dilaksanakan konsisten; dilakukan evaluasi dan pengkinian.',2=>'• Memiliki prosedur dan limit; dilaksanakan konsisten; tidak melakukan evaluasi namun tidak signifikan.',3=>'• Memiliki prosedur dan limit; dilaksanakan konsisten; tidak melakukan evaluasi dan berdampak signifikan.',4=>'• Memiliki prosedur dan limit; tidak dilaksanakan konsisten; tidak melakukan evaluasi.',5=>'Tidak memiliki prosedur dan limit Manajemen Risiko likuiditas.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            128 => ['descriptions' => [1=>'• Memiliki kebijakan dan prosedur produk baru; diterapkan; sesuai ketentuan.',2=>'• Memiliki kebijakan dan prosedur; diterapkan; ketidaksesuaian tidak signifikan.',3=>'• Memiliki kebijakan dan prosedur; diterapkan; ketidaksesuaian signifikan.',4=>'• Memiliki kebijakan dan prosedur; tidak diterapkan; ketidaksesuaian signifikan.',5=>'Tidak memiliki kebijakan dan prosedur produk/aktivitas baru.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            129 => ['descriptions' => [1=>'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Sangat Rendah',2=>'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Rendah',3=>'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Sedang',4=>'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Tinggi',5=>'Parameter Kecukupan Proses dan Sistem Informasi Manajemen Risiko berada pada tingkat risiko yang Sangat Tinggi'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            130 => ['descriptions' => [1=>'• Proses MR sangat memadai dan konsisten.',2=>'• Proses MR memadai dan cukup konsisten.',3=>'• Proses MR memadai; tidak konsisten namun tidak signifikan.',4=>'• Proses MR tidak secara keseluruhan; tidak memadai; tidak konsisten dan signifikan.',5=>'Tidak melaksanakan proses Manajemen Risiko likuiditas.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            131 => ['descriptions' => [1=>'• Sistem informasi MR ada; data lengkap/akurat; mendukung Direksi; sangat mendukung laporan SKMR/PEMR.',2=>'• Sistem informasi MR ada; data cukup lengkap; mendukung Direksi; cukup mendukung laporan SKMR/PEMR.',3=>'• Sistem informasi MR ada; data kurang lengkap; tidak sepenuhnya mendukung Direksi; kurang mendukung laporan.',4=>'• Sistem informasi MR ada; data tidak lengkap; tidak mendukung Direksi; tidak mendukung laporan SKMR/PEMR.',5=>'Tidak memiliki sistem informasi Manajemen Risiko likuiditas.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            132 => ['descriptions' => [1=>'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Sangat Rendah',2=>'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Rendah',3=>'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Sedang',4=>'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Tinggi',5=>'Parameter Sistem Pengendalian Internal yang Menyeluruh berada pada tingkat risiko yang Sangat Tinggi'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            133 => ['descriptions' => [1=>'• SKAI/PEAI melaksanakan audit; memberikan rekomendasi; seluruh temuan ditindaklanjuti.',2=>'• SKAI/PEAI melaksanakan audit; memberikan rekomendasi; temuan tidak sepenuhnya ditindaklanjuti tapi tidak signifikan.',3=>'• SKAI/PEAI melaksanakan audit; memberikan rekomendasi; temuan tidak sepenuhnya ditindaklanjuti dan signifikan.',4=>'• SKAI/PEAI melaksanakan audit; cakupan tidak sesuai; temuan tidak ditindaklanjuti.',5=>'SKAI atau PEAI tidak melaksanakan audit intern.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            134 => ['descriptions' => [1=>'• Seluruh jenjang melaksanakan pengendalian intern; kejelasan wewenang; SKMR/PEMR dan SKAI/PEAI terpisah.',2=>'• Seluruh jenjang melaksanakan pengendalian tidak sepenuhnya; tidak berdampak signifikan; pemisahan ada.',3=>'• Seluruh jenjang melaksanakan pengendalian tidak sepenuhnya; berdampak signifikan; pemisahan ada.',4=>'• Tidak seluruh jenjang melaksanakan; tidak ada kejelasan wewenang; pemisahan ada.',5=>'• Seluruh jenjang tidak melaksanakan; tidak ada kejelasan wewenang; SKMR/PEMR dan SKAI/PEAI tidak terpisah.'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
+            135 => ['descriptions' => [1=>'Tingkat Risiko Likuiditas KPMR: Sangat Rendah',2=>'Tingkat Risiko Likuiditas KPMR: Rendah',3=>'Tingkat Risiko Likuiditas KPMR: Sedang',4=>'Tingkat Risiko Likuiditas KPMR: Tinggi',5=>'Tingkat Risiko Likuiditas KPMR: Sangat Tinggi'],'catatan'=>'Penilaian Risiko Likuiditas KPMR'],
         ];
 
-        $output = "";
-
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0402|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
-
-        usort($data_risikokredit, function ($a, $b) {
-            return ($a['faktor1id'] ?? 0) <=> ($b['faktor1id'] ?? 0);
-        });
-
-        foreach ($data_risikokredit as $row) {
-            $faktorId = $row['faktor1id'] ?? null;
-            if (!isset($kodeMap[$faktorId])) {
-                continue;
-            }
-            $kode = $kodeMap[$faktorId] ?? '';
-
-            $penilaiankredit = sanitizeTxtLikKpmr($row['penilaiankredit']);
-            $keterangan = sanitizeTxtLikKpmr($row['keterangan']);
-
-            $output .= "D01|{$kode}|{$penilaiankredit}|{$keterangan}\r\n";
-        }
-
-        $filename = "PRBPRKS-0402-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
-
-        $response = service('response');
-        $response->setHeader('Content-Type', 'text/plain');
-        $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
-
-        return $response->setBody($output);
+        return self::$_penilaianConfigCache;
     }
 }

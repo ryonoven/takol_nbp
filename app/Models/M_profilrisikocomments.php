@@ -7,70 +7,71 @@ class M_profilrisikocomments extends Model
 {
     protected $table = 'profilrisiko_comments';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['subkategori', 'faktor1id', 'user_id', 'fullname', 'komentar', 'created_at', 'kodebpr', 'periode_id'];
+
+    protected $allowedFields = [
+        'subkategori',
+        'faktor1id',
+        'user_id',
+        'fullname',
+        'komentar',
+        'created_at',
+        'kodebpr',
+        'periode_id',
+    ];
     protected $useTimestamps = false;
+    protected $returnType = 'array';
 
-    public function __construct()
+    public function insertKomentar(array $data): bool
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        return (bool) $this->insert($data);
     }
 
-    public function insertKomentar($data, $faktorId)
-    {
-        return $this->insert($data);
-    }
-
-    public function getAllData()
+    public function getAllData(): array
     {
         return $this->findAll();
     }
 
-    public function resetAutoIncrement()
-    {
-        $this->db->query('ALTER TABLE profilrisiko_comments AUTO_INCREMENT = 1');
-    }
-
-    public function getKomentarByFaktorId($subkategori, $faktorId ,$kodebpr, $periodeId = null)
-    {
-        $builder = $this->builder
+    public function getKomentarByFaktorId(
+        string $subkategori,
+        $faktorId,
+        string $kodebpr,
+        $periodeId = null
+    ): array {
+        $builder = $this->db->table('profilrisiko_comments')
             ->select('profilrisiko_comments.*, users.fullname')
             ->join('users', 'users.id = profilrisiko_comments.user_id', 'left')
-            // ->where('profilrisiko_comments.id', $Id)
-            ->where('profilrisiko_comments.faktor1id', $faktorId)
             ->where('profilrisiko_comments.subkategori', $subkategori)
+            ->where('profilrisiko_comments.faktor1id', $faktorId)
             ->where('profilrisiko_comments.kodebpr', $kodebpr);
 
         if ($periodeId !== null) {
             $builder->where('profilrisiko_comments.periode_id', $periodeId);
         }
 
-        return $builder->orderBy('profilrisiko_comments.created_at', 'ASC')
+        return $builder
+            ->orderBy('profilrisiko_comments.created_at', 'ASC')
             ->get()
             ->getResultArray();
     }
 
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
+    public function getDataByKodebprAndPeriode(string $kodebpr, $periodeId): array
     {
-        return $this->builder
+        return $this->db->table('profilrisiko_comments')
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->get()
             ->getResultArray();
     }
 
-    public function getKomentarBySubkategori($subkategori, $kodebpr, $faktor1id, $periodeId)
+    public function getKomentarBySubkategori(string $subkategori, string $kodebpr, $periodeId): array
     {
-        $comments = $this->db->table('profilrisiko_comments')
-            ->select('id, komentar, faktor1id, fullname, created_at')
+        return $this->db->table('profilrisiko_comments')
+            ->select('id, komentar, fullname, created_at')
             ->where('subkategori', $subkategori)
-            ->where('faktor1id', $faktor1id)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
+            ->orderBy('created_at', 'ASC')
             ->get()
             ->getResultArray();
-
-        return $this->response->setJSON($comments); 
     }
-
 }

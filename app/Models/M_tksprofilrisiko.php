@@ -13,11 +13,15 @@ class M_tksprofilrisiko extends Model
         'periode_id',
         'ratarata',
         'nilaiperingkat',
+        'nilaifaktor',
+        'nilaiperingkatbefore',
+        'nilaifaktorbefore',
         'peringkat',
         'deskripsi',
         'analisis',
         'fullname',
         'created_at',
+        'updated_at',
         'is_approved',
         'approved_by',
         'approved_at',
@@ -27,7 +31,9 @@ class M_tksprofilrisiko extends Model
         'accdekom_by',
         'accdekom_at',
         'read_at',
-        'comment_id'
+        'comment_id',
+        'synced_from_pr',
+        'sync_date'
     ];
     protected $useTimestamps = false;
     protected $returnType = 'array';
@@ -37,6 +43,30 @@ class M_tksprofilrisiko extends Model
     {
         parent::__construct();
         $this->builder = $this->db->table($this->table);
+    }
+
+    /**
+     * Calculate nilai faktor (25% of nilai peringkat)
+     */
+    public function calculateNilaiFaktor($nilaiperingkat)
+    {
+        return round($nilaiperingkat * 0.25, 2);
+    }
+
+    /**
+     * Get peringkat label from nilai
+     */
+    public function getPeringkatLabel($nilai)
+    {
+        $labels = [
+            '1' => 'Sangat Rendah',
+            '2' => 'Rendah',
+            '3' => 'Sedang',
+            '4' => 'Tinggi',
+            '5' => 'Sangat Tinggi'
+        ];
+
+        return $labels[$nilai] ?? '';
     }
 
     public function getAllData()
@@ -65,20 +95,6 @@ class M_tksprofilrisiko extends Model
     public function tambahNilai($data, $faktorId, $kodebpr)
     {
         return $this->insert($data);
-    }
-
-    public function getKomentarByFaktorId($subkategori, $faktorId, $kodebpr, $periodeId)
-    {
-        return $this->db->table('tksprofilrisikocomments')
-            ->select('tksprofilrisikocomments.*, users.fullname')
-            ->join('users', 'users.id = tksprofilrisikocomments.user_id', 'left')
-            ->where('tksprofilrisikocomments.subkategori', $subkategori)
-            ->where('tksprofilrisikocomments.faktor1id', $faktorId)
-            ->where('tksprofilrisikocomments.kodebpr', $kodebpr)
-            ->where('tksprofilrisikocomments.periode_id', $periodeId)
-            ->orderBy('tksprofilrisikocomments.created_at', 'DESC')
-            ->get()
-            ->getResultArray();
     }
 
     public function getKomentarByFaktorIdAndKodebpr($faktorId, $kodebpr)
@@ -126,7 +142,9 @@ class M_tksprofilrisiko extends Model
     {
         $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
         $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
+        if (!empty($lastData)) {
+            $this->setIncrement($lastData[0]['id']);
+        }
     }
 
     public function hitungRataRatas($faktorId, $kodebpr, $periodeId)
@@ -309,5 +327,19 @@ class M_tksprofilrisiko extends Model
     public function clearCache()
     {
         $this->userCache = [];
+    }
+
+    public function getByKodebprAndPeriode($kodebpr, $periodeId)
+    {
+        return $this->where([
+            'kodebpr' => $kodebpr,
+            'periode_id' => $periodeId
+        ])->first();
+    }
+
+    public function isSynced($kodebpr, $periodeId)
+    {
+        $data = $this->getByKodebprAndPeriode($kodebpr, $periodeId);
+        return $data && isset($data['synced_from_pr']) && $data['synced_from_pr'] == 1;
     }
 }

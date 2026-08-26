@@ -5,13 +5,13 @@ use CodeIgniter\Controller;
 use App\Models\M_shmusahadirdekom;
 use App\Models\M_infobpr;
 use App\Models\M_user;
-use App\Models\M_periodetransparansi;
+use App\Models\M_periodetahunan;
 use App\Models\M_transparansicomments;
 use App\Models\M_transparansicommentsread;
 use App\Models\M_penjelastindak;
 use Myth\Auth\Config\Services as AuthServices;
 
-class shmusahadirdekom extends Controller
+class Shmusahadirdekom extends Controller
 {
     protected $auth;
     protected $session;
@@ -29,6 +29,10 @@ class shmusahadirdekom extends Controller
     private $userPermissions = null;
     private $userData = null;
 
+    private const CACHE_TTL = 30;
+    private const POLL_MIN_MS = 8000;
+    private const SUBKAT = 'Shmusahadirdekom';
+
     public function __construct()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -41,64 +45,36 @@ class shmusahadirdekom extends Controller
         }
     }
 
-    private function getSahamdirdekomModel()
+    private function getSahamdirdekomModel(): M_shmusahadirdekom
     {
-        if (!$this->shmusahadirdekomModel) {
-            $this->shmusahadirdekomModel = new M_shmusahadirdekom();
-        }
-        return $this->shmusahadirdekomModel;
+        return $this->shmusahadirdekomModel ??= new M_shmusahadirdekom();
+    }
+    private function getUserModel(): M_user
+    {
+        return $this->userModel ??= new M_user();
+    }
+    private function getPeriodeModel(): M_periodetahunan
+    {
+        return $this->periodeModel ??= new M_periodetahunan();
+    }
+    private function getKomentarModel(): M_transparansicomments
+    {
+        return $this->komentarModel ??= new M_transparansicomments();
+    }
+    private function getCommentReadsModel(): M_transparansicommentsread
+    {
+        return $this->commentReadsModel ??= new M_transparansicommentsread();
+    }
+    private function getPenjelastindakModel(): M_penjelastindak
+    {
+        return $this->penjelastindakModel ??= new M_penjelastindak();
+    }
+    private function getInfobprModel(): M_infobpr
+    {
+        return $this->infobprModel ??= new M_infobpr();
     }
 
-    private function getUserModel()
-    {
-        if (!$this->userModel) {
-            $this->userModel = new M_user();
-        }
-        return $this->userModel;
-    }
-
-    private function getPeriodeModel()
-    {
-        if (!$this->periodeModel) {
-            $this->periodeModel = new M_periodetransparansi();
-        }
-        return $this->periodeModel;
-    }
-
-    private function getKomentarModel()
-    {
-        if (!$this->komentarModel) {
-            $this->komentarModel = new M_transparansicomments();
-        }
-        return $this->komentarModel;
-    }
-
-    private function getCommentReadsModel()
-    {
-        if (!$this->commentReadsModel) {
-            $this->commentReadsModel = new M_transparansicommentsread();
-        }
-        return $this->commentReadsModel;
-    }
-
-    private function getPenjelastindakModel()
-    {
-        if (!$this->penjelastindakModel) {
-            $this->penjelastindakModel = new M_penjelastindak();
-        }
-        return $this->penjelastindakModel;
-    }
-
-    private function getInfobprModel()
-    {
-        if (!$this->infobprModel) {
-            $this->infobprModel = new M_infobpr();
-        }
-        return $this->infobprModel;
-    }
-
-    // Load and cache user data
-    private function loadUserData()
+    private function loadUserData(): void
     {
         if ($this->userData === null && $this->userId) {
             $this->userData = $this->getUserModel()->find($this->userId);
@@ -106,775 +82,515 @@ class shmusahadirdekom extends Controller
         }
     }
 
-    // Load and cache user permissions
-    private function getUserPermissions()
+    private function getUserPermissions(): array
     {
         if ($this->userPermissions === null && $this->userId) {
             $authorize = AuthServices::authorization();
-
-            $this->userPermissions = [
-                'pe' => $authorize->inGroup('pe', $this->userId),
-                'admin' => $authorize->inGroup('admin', $this->userId),
-                'dekom' => $authorize->inGroup('dekom', $this->userId),
-                'dekom2' => $authorize->inGroup('dekom2', $this->userId),
-                'dekom3' => $authorize->inGroup('dekom3', $this->userId),
-                'dekom4' => $authorize->inGroup('dekom4', $this->userId),
-                'dekom5' => $authorize->inGroup('dekom5', $this->userId),
-                'direksi' => $authorize->inGroup('direksi', $this->userId),
-                'direksi2' => $authorize->inGroup('direksi2', $this->userId),
-            ];
+            $uid = $this->userId;
+            $groups = ['pe', 'admin', 'dekom', 'dekom2', 'dekom3', 'dekom4', 'dekom5', 'direksi', 'direksi2'];
+            foreach ($groups as $g) {
+                $this->userPermissions[$g] = $authorize->inGroup($g, $uid);
+            }
         }
-        return $this->userPermissions;
+        return $this->userPermissions ?? [];
     }
 
-    // Centralized authentication check
     private function checkAuthentication()
     {
         if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
+            $url = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
+            return redirect()->to($url);
         }
         return null;
     }
 
-    private function getIndexData($periodeId, $kodebpr)
+    private function getFreshRows(string $kodebpr, int $periodeId): array
     {
-        $subkategori = 'Shmusahadirdekom';
-
-        // Single optimized query to get all sahamdirdekom data with approval info
-        $shmusahadirdekomData = $this->getSahamdirdekomModel()
-            ->select('*, accdekom, accdekom_by, accdekom_at, is_approved, approved_by, approved_at')
-            ->where('periode_id', $periodeId)
-            ->where('kodebpr', $kodebpr)
-            ->limit(10)
-            ->findAll();
-
-        // Get comments with a single query
-        $komentarList = $this->getKomentarModel()
-            ->where('subkategori', $subkategori)
+        return $this->getSahamdirdekomModel()
+            ->select('id, nama, nik, jenisid, jabatan, usaha, persensaham, persensahamlalu,
+                  is_null_record, accdekom, is_approved, approved_at, accdekom_at')
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
+            ->orderBy('id', 'ASC')
             ->findAll();
+    }
 
-        // Get penjelastindak data
-        $penjelastindak = $this->getPenjelastindakModel()
-            ->getDataPenjelasByKodebprAndPeriode($subkategori, $kodebpr, $periodeId);
+    private function deriveApprovalBundle(array $rows): array
+    {
+        $allDekom = !empty($rows) && array_reduce($rows, fn($c, $r) => $c && (int) $r['accdekom'] === 1, true);
+        $allDirut = !empty($rows) && array_reduce($rows, fn($c, $r) => $c && (int) $r['is_approved'] === 1, true);
+        return compact('allDekom', 'allDirut');
+    }
 
-        return [
-            'shmusahadirdekom' => $shmusahadirdekomData,
-            'komentarList' => $komentarList,
-            'penjelastindak' => $penjelastindak
-        ];
+    private function jsonOk(string $msg, array $extra = [])
+    {
+        return $this->response->setJSON(array_merge(['status' => 'success', 'message' => $msg, 'ts' => time()], $extra));
+    }
+
+    private function jsonErr(string $msg, int $code = 200)
+    {
+        return $this->response->setStatusCode($code)->setJSON(['status' => 'error', 'message' => $msg]);
+    }
+
+    private function requireAjax()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
+        return null;
+    }
+
+    private function requireAuth()
+    {
+        if (!$this->auth->check()) {
+            return $this->response->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
+        }
+        return null;
     }
 
     public function index()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
-
-        if (!session('active_periode')) {
+        if ($r = $this->checkAuthentication())
+            return $r;
+        if (!session('active_periode'))
             return redirect()->to('/Periodetransparansi');
-        }
 
-        $periodeId = session('active_periode');
+        $periodeId = (int) session('active_periode');
         $kodebpr = $this->userKodebpr;
 
-        if (!$kodebpr) {
+        if (!$kodebpr)
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
 
-        $indexData = $this->getIndexData($periodeId, $kodebpr);
-
+        $rows = $this->getFreshRows($kodebpr, $periodeId);
+        $approval = $this->deriveApprovalBundle($rows);
+        $permissions = $this->getUserPermissions();
         $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
         $bprData = $this->getInfobprModel()->getBprByKode($kodebpr);
+        $penjelastindak = $this->getPenjelastindakModel()
+            ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId);
 
-        $permissions = $this->getUserPermissions();
-
-        $accdekomData = $this->shmusahadirdekomModel
-            ->select('accdekom, accdekom_by, accdekom_at')
-            ->where('periode_id', $periodeId)
-            ->where('kodebpr', $kodebpr)
-            ->findAll();
-
-        $accdirutData = $this->shmusahadirdekomModel
-            ->select('is_approved, approved_by, approved_at')
-            ->where('periode_id', $periodeId)
-            ->where('kodebpr', $kodebpr)
-            ->findAll();
-
-        // Prepare data for view session management
-        $lastVisit = session('last_visit_komentar') ?? date('Y-m-d H:i:s', strtotime('-1 day'));
-        session()->set('last_visit_komentar', date('Y-m-d H:i:s'));
-
-        $canApprove = true;
-
-        // Ambil semua data dengan kondisi yang sesuai
-        $accdekomValues = $this->shmusahadirdekomModel
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();  // Mengambil semua data yang sesuai
-
-        // Loop melalui setiap data
-        foreach ($accdekomValues as $accdekomValue) {
-            if ($accdekomValue['accdekom'] != 1) {
-                // Jika ada data yang accdekom tidak 1, set canApprove ke false
-                $canApprove = false;
-                break;  // Tidak perlu melanjutkan jika sudah ditemukan yang tidak valid
-            }
-        }
+        $accdekomData = array_map(fn($r) => ['accdekom' => $r['accdekom'], 'accdekom_at' => $r['accdekom_at'] ?? null], $rows);
+        $accdirutData = array_map(fn($r) => ['is_approved' => $r['is_approved'], 'approved_at' => $r['approved_at'] ?? null], $rows);
 
         $data = [
             'judul' => '7. Kepemilikan Saham Anggota Direksi, Dewan Komisaris, dan Pemegang Saham pada Kelompok Usaha BPR',
-            'shmusahadirdekom' => $indexData['shmusahadirdekom'],
-            'userInGroupPE' => $permissions['pe'],
-            'userInGroupAdmin' => $permissions['admin'],
-            'userInGroupDekom' => $permissions['dekom'],
-            'userInGroupDekom2' => $permissions['dekom2'],
-            'userInGroupDekom3' => $permissions['dekom3'],
-            'userInGroupDekom4' => $permissions['dekom4'],
-            'userInGroupDekom5' => $permissions['dekom5'],
-            'userInGroupDireksi' => $permissions['direksi'],
-            'userInGroupDireksi2' => $permissions['direksi2'],
+            'shmusahadirdekom' => $rows,
+            'userInGroupPE' => $permissions['pe'] ?? false,
+            'userInGroupAdmin' => $permissions['admin'] ?? false,
+            'userInGroupDekom' => $permissions['dekom'] ?? false,
+            'userInGroupDekom2' => $permissions['dekom2'] ?? false,
+            'userInGroupDireksi' => $permissions['direksi'] ?? false,
+            'userInGroupDireksi2' => $permissions['direksi2'] ?? false,
             'fullname' => $this->userData['fullname'] ?? 'Unknown',
             'kodebpr' => $kodebpr,
-            'komentarModel' => $this->getKomentarModel(),
-            'commentReadsModel' => $this->getCommentReadsModel(),
-            'lastVisit' => $lastVisit,
             'periodeId' => $periodeId,
             'periodeDetail' => $periodeDetail,
             'bprData' => $bprData,
             'accdekomData' => $accdekomData,
             'accdirutData' => $accdirutData,
-            'periodetransparansi' => $this->getPeriodeModel()->find($periodeId),
-            'penjelastindak' => $indexData['penjelastindak'],
-            'canApprove' => $canApprove
+            'penjelastindak' => $penjelastindak,
+            'canApprove' => $approval['allDekom'],
+            'pollIntervalMs' => self::POLL_MIN_MS,
         ];
 
         echo view('templates/v_header', $data);
         echo view('templates/v_sidebar');
         echo view('templates/v_topbar');
-        echo view('shmusahadirdekom/index', $data);
+        echo view('Laporantahunan/Transparansi/shmusahadirdekom', $data);
         echo view('templates/v_footer');
     }
 
-    private function validateSahamDir($data)
+    public function tambahAjax()
     {
-        return $this->validate([
-            'nama' => [
-                'label' => 'Nama Direksi',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-            'nik' => [
-                'label' => 'NIK',
-                'rules' => 'required|numeric|max_length[16]',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong.',
-                    'numeric' => '{field} harus berupa angka.',
-                    'min_length' => '{field} harus memiliki panjang minimal 16 karakter.',
-                    'max_length' => '{field} harus memiliki panjang maksimal 16 karakter.'
-                ]
-            ],
-            'usaha' => [
-                'label' => 'Nama Kelompok Usaha BPR',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-            'persensaham' => [
-                'label' => 'Persentase Kepemilikan (%)',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-            'persensahamlalu' => [
-                'label' => 'Persentase Kepemilikan (%) Tahun Sebelumnya',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ]
-        ]);
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
+
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Kode BPR atau periode tidak valid');
+
+            $nama = trim($this->request->getPost('nama') ?? '');
+            $jenisid = $this->request->getPost('jenisid');
+            $nik = trim($this->request->getPost('nik') ?? '');
+            $jabatan = trim($this->request->getPost('jabatan') ?? '');
+            $usaha = trim($this->request->getPost('usaha') ?? '');
+            $persensaham = trim($this->request->getPost('persensaham') ?? '');
+            $persensahamlalu = trim($this->request->getPost('persensahamlalu') ?? '');
+
+            if (!$nama || !$nik || !$jabatan || !$usaha || $persensaham === '' || $persensahamlalu === '')
+                return $this->jsonErr('Semua field wajib diisi');
+
+            if (!in_array($jabatan, ['Direksi', 'Dekom', 'Psaham'], true))
+                return $this->jsonErr('Jabatan tidak valid');
+
+            if (!is_numeric($persensaham) || !is_numeric($persensahamlalu))
+                return $this->jsonErr('Persentase saham harus berupa angka');
+
+            $ok = $this->getSahamdirdekomModel()->insert([
+                'nama' => $nama,
+                'jenisid' => $jenisid,
+                'nik' => $nik,
+                'jabatan' => $jabatan,
+                'usaha' => $usaha,
+                'persensaham' => (float) $persensaham,
+                'persensahamlalu' => (float) $persensahamlalu,
+                'periode_id' => $periodeId,
+                'user_id' => $this->userId,
+                'kodebpr' => $kodebpr,
+                'fullname' => $this->userData['fullname'] ?? null,
+                'accdekom' => 0,
+                'is_approved' => 0,
+            ]);
+
+            if (!$ok)
+                return $this->jsonErr('Gagal menyimpan data');
+
+            return $this->jsonOk('Data berhasil ditambahkan', ['data' => $this->getFreshRows($kodebpr, $periodeId)]);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Shmusahadirdekom::tambahAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
+        }
     }
 
-    private function validateSahamDekom($data)
+    public function ubahAjax()
     {
-        return $this->validate([
-            'nama' => [
-                'label' => 'Nama Dewan Komisaris',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-            'nik' => [
-                'label' => 'NIK',
-                'rules' => 'required|numeric|max_length[16]',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong.',
-                    'numeric' => '{field} harus berupa angka.',
-                    'min_length' => '{field} harus memiliki panjang minimal 16 karakter.',
-                    'max_length' => '{field} harus memiliki panjang maksimal 16 karakter.'
-                ]
-            ],
-            'persensaham' => [
-                'label' => 'Persentase Kepemilikan (%)',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-            'persensahamlalu' => [
-                'label' => 'Persentase Kepemilikan (%) Tahun Sebelumnya',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ]
-        ]);
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+
+        try {
+            $id = (int) $this->request->getPost('id');
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
+
+            if (!$id || !$kodebpr || !$periodeId)
+                return $this->jsonErr('Data tidak valid');
+
+            $existing = $this->getSahamdirdekomModel()
+                ->where('id', $id)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+            if (!$existing)
+                return $this->jsonErr('Data tidak ditemukan atau tidak memiliki akses');
+
+            $nama = trim($this->request->getPost('nama') ?? '');
+            $jenisid = $this->request->getPost('jenisid');
+            $nik = trim($this->request->getPost('nik') ?? '');
+            $jabatan = trim($this->request->getPost('jabatan') ?? '');
+            $usaha = trim($this->request->getPost('usaha') ?? '');
+            $persensaham = trim($this->request->getPost('persensaham') ?? '');
+            $persensahamlalu = trim($this->request->getPost('persensahamlalu') ?? '');
+
+            if (!$nama || !$nik || !$jabatan || !$usaha || $persensaham === '' || $persensahamlalu === '')
+                return $this->jsonErr('Semua field wajib diisi');
+
+            if (!is_numeric($persensaham) || !is_numeric($persensahamlalu))
+                return $this->jsonErr('Persentase saham harus berupa angka');
+
+            $ok = $this->getSahamdirdekomModel()
+                ->editbasedkodedanperiode(
+                    [
+                        'nama' => $nama,
+                        'jenisid' => $jenisid,
+                        'nik' => $nik,
+                        'jabatan' => $jabatan,
+                        'usaha' => $usaha,
+                        'persensaham' => (float) $persensaham,
+                        'persensahamlalu' => (float) $persensahamlalu,
+                        'accdekom' => 0,
+                        'is_approved' => 0,
+                    ],
+                    $kodebpr,
+                    $periodeId,
+                    $id
+                );
+
+            if (!$ok)
+                return $this->jsonErr('Gagal mengubah data');
+
+            return $this->jsonOk('Data berhasil diubah', ['data' => $this->getFreshRows($kodebpr, $periodeId)]);
+
+        } catch (\Throwable $e) {
+            log_message('error', '[Shmusahadirdekom::ubahAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
+        }
     }
 
-    private function validateSahamPshm($data)
+    public function hapusAjax()
     {
-        return $this->validate([
-            'nama' => [
-                'label' => 'Nama Pemegang Saham',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-            'nik' => [
-                'label' => 'NIK',
-                'rules' => 'required|numeric|min_length[16]|max_length[16]',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong.',
-                    'numeric' => '{field} harus berupa angka.',
-                    'min_length' => '{field} harus memiliki panjang minimal 16 karakter.',
-                    'max_length' => '{field} harus memiliki panjang maksimal 16 karakter.'
-                ]
-            ],
-            'persensaham' => [
-                'label' => 'Persentase Kepemilikan (%)',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-            'persensahamlalu' => [
-                'label' => 'Persentase Kepemilikan (%) Tahun Sebelumnya',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ]
-        ]);
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+
+        try {
+            $id = (int) $this->request->getPost('id');
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
+
+            if (!$id || !$kodebpr || !$periodeId)
+                return $this->jsonErr('Data tidak valid');
+
+            $existing = $this->getSahamdirdekomModel()
+                ->where('id', $id)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
+            if (!$existing)
+                return $this->jsonErr('Data tidak ditemukan atau tidak memiliki akses');
+
+            $ok = $this->getSahamdirdekomModel()
+                ->where('id', $id)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->delete();
+            if (!$ok)
+                return $this->jsonErr('Gagal menghapus data');
+
+            return $this->jsonOk('Data berhasil dihapus', ['data' => $this->getFreshRows($kodebpr, $periodeId)]);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Shmusahadirdekom::hapusAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
+        }
     }
 
-    // Common method for preparing insert data
-    private function prepareInsertData($specificData)
+    public function getKomentarByFaktorId()
     {
-        return array_merge($specificData, [
-            'periode_id' => session('active_periode'),
-            'user_id' => $this->userId,
-            'kodebpr' => $this->userKodebpr,
-            'fullname' => $this->userData['fullname'] ?? null,
-            'accdekom' => 0,
-            'is_approved' => 0,
-        ]);
+        if (!$this->request->isAJAX())
+            return $this->response->setStatusCode(404)->setBody('Not Found');
+
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        $userId = $this->userId;
+
+        $list = $this->getKomentarModel()->getKomentarByFaktorId(self::SUBKAT, $kodebpr, $periodeId);
+        $unread = count(array_filter($list, fn($k) => (int) ($k['user_id']) !== $userId));
+
+        return $this->response->setJSON(['comments' => $list, 'unread_count' => $unread]);
     }
 
-    public function tambahsahamdir()
+    public function getUnreadCommentCountForFactor()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
+        if (!$this->request->isAJAX())
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
 
-        if (!isset($_POST['tambahsahamdir'])) {
-            return redirect()->to(base_url('Shmusahadirdekom'));
-        }
+        $kodebpr = $this->userKodebpr;
+        $userId = $this->userId;
+        $periodeId = session('active_periode');
 
-        if (!$this->validateSahamDir($_POST)) {
-            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-            return redirect()->back();
-        }
+        if (!$kodebpr || !$userId || !$periodeId)
+            return $this->response->setStatusCode(400)->setJSON(['unread_count' => 0]);
 
-        if (!$this->userKodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
+        $cache = service('cache');
+        $cacheKey = 'unread_' . self::SUBKAT . "_{$kodebpr}_{$periodeId}_{$userId}";
 
-        $specificData = [
-            'nama' => $this->request->getPost('nama'),
-            'jabatan' => 'Direksi',
-            'nik' => $this->request->getPost('nik'),
-            'usaha' => $this->request->getPost('usaha'),
-            'persensaham' => $this->request->getPost('persensaham'),
-            'persensahamlalu' => $this->request->getPost('persensahamlalu'),
-        ];
+        $count = $cache->remember($cacheKey, self::CACHE_TTL, function () use ($userId, $kodebpr, $periodeId) {
+            return $this->getCommentReadsModel()
+                ->countUnreadCommentsForUserByFactor(self::SUBKAT, $kodebpr, $userId, $periodeId);
+        });
 
-        $data = $this->prepareInsertData($specificData);
-
-        if ($this->getSahamdirdekomModel()->tambah($data)) {
-            session()->setFlashdata('message', 'Kepemilikan Saham pada badan usaha BPR berhasil ditambahkan');
-        } else {
-            session()->setFlashdata('err', 'Gagal menambahkan data');
-        }
-
-        return redirect()->to(base_url('Shmusahadirdekom'));
-    }
-
-    public function tambahsahamdekom()
-    {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
-
-        if (!isset($_POST['tambahsahamdekom'])) {
-            return redirect()->to(base_url('Shmusahadirdekom'));
-        }
-
-        if (!$this->validateSahamDekom($_POST)) {
-            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-            return redirect()->back();
-        }
-
-        if (!$this->userKodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
-
-        $specificData = [
-            'nama' => $this->request->getPost('nama'),
-            'nik' => $this->request->getPost('nik'),
-            'usaha' => $this->request->getPost('usaha'),
-            'persensaham' => $this->request->getPost('persensaham'),
-            'persensahamlalu' => $this->request->getPost('persensahamlalu'),
-            'jabatan' => 'Dekom',
-        ];
-
-        $data = $this->prepareInsertData($specificData);
-
-        if ($this->getSahamdirdekomModel()->tambah($data)) {
-            session()->setFlashdata('message', 'Kepemilikan Saham pada badan usaha BPR berhasil ditambahkan');
-        } else {
-            session()->setFlashdata('err', 'Gagal menambahkan data');
-        }
-
-        return redirect()->to(base_url('Shmusahadirdekom'));
-    }
-
-    public function tambahsahampshm()
-    {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
-
-        if (!isset($_POST['tambahsahampshm'])) {
-            return redirect()->to(base_url('Shmusahadirdekom'));
-        }
-
-        if (!$this->validateSahamPshm($_POST)) {
-            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-            return redirect()->back();
-        }
-
-        if (!$this->userKodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
-
-        $specificData = [
-            'nama' => $this->request->getPost('nama'),
-            'nik' => $this->request->getPost('nik'),
-            'usaha' => $this->request->getPost('usaha'),
-            'persensaham' => $this->request->getPost('persensaham'),
-            'persensahamlalu' => $this->request->getPost('persensahamlalu'),
-            'jabatan' => 'Psaham',
-        ];
-
-        $data = $this->prepareInsertData($specificData);
-
-        if ($this->getSahamdirdekomModel()->tambah($data)) {
-            session()->setFlashdata('message', 'Kepemilikan Saham pada badan usaha BPR berhasil ditambahkan');
-        } else {
-            session()->setFlashdata('err', 'Gagal menambahkan data');
-        }
-
-        return redirect()->to(base_url('Shmusahadirdekom'));
+        return $this->response->setJSON(['unread_count' => (int) $count, 'next_poll_ms' => self::POLL_MIN_MS]);
     }
 
     public function Tambahkomentar()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
+        if ($r = $this->checkAuthentication())
+            return $r;
 
-        if (!isset($_POST['TambahKomentar'])) {
-            return redirect()->to(base_url('Shmusahadirdekom'));
+        if ($this->request->isAJAX()) {
+            $komentar = trim($this->request->getPost('komentar') ?? '');
+            if (strlen($komentar) < 3)
+                return $this->jsonErr('Komentar minimal 3 karakter');
+            if (strlen($komentar) > 1000)
+                return $this->jsonErr('Komentar maksimal 1000 karakter');
+
+            $cache = service('cache');
+            $rlKey = 'cmtrl_' . $this->userId;
+            $rlCnt = (int) ($cache->get($rlKey) ?? 0);
+            if ($rlCnt >= 10)
+                return $this->jsonErr('Terlalu banyak komentar — tunggu sebentar');
+            $cache->save($rlKey, $rlCnt + 1, 60);
+
+            $this->getKomentarModel()->insertKomentar([
+                'id' => self::SUBKAT,
+                'subkategori' => self::SUBKAT,
+                'komentar' => $komentar,
+                'fullname' => $this->userData['fullname'] ?? '',
+                'user_id' => $this->userId,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => session('active_periode'),
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            service('cache')->deleteMatching('unread_' . self::SUBKAT . "_{$this->userKodebpr}_*");
+            return $this->jsonOk('Komentar berhasil dikirim');
         }
 
-        if (!$this->userKodebpr) {
-            session()->setFlashdata('error', 'User tidak memiliki kode BPR yang valid');
-            return redirect()->back();
-        }
+        if (!isset($_POST['TambahKomentar']))
+            return redirect()->to(base_url(self::SUBKAT));
 
-        $val = $this->validate([
-            'komentar' => [
-                'label' => 'Komentar',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ],
-        ]);
-
+        $val = $this->validate(['komentar' => ['label' => 'Komentar', 'rules' => 'required']]);
         if (!$val) {
-            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
+            session()->setFlashdata('err', service('validation')->listErrors());
             return redirect()->back();
         }
 
-        $data = [
-            'id' => $this->request->getPost('id'),
-            'subkategori' => 'Shmusahadirdekom',
+        $this->getKomentarModel()->insertKomentar([
+            'id' => self::SUBKAT,
+            'subkategori' => self::SUBKAT,
             'komentar' => $this->request->getPost('komentar'),
             'fullname' => $this->request->getPost('fullname'),
             'user_id' => $this->userId,
             'kodebpr' => $this->userKodebpr,
             'periode_id' => session('active_periode'),
-            'created_at' => date('Y-m-d H:i:s')
-        ];
-
-        $this->getKomentarModel()->insertKomentar($data);
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
         session()->setFlashdata('message', 'Komentar berhasil ditambahkan');
-        return redirect()->to(base_url('Shmusahadirdekom') . '?modal_komentar=' . $this->request->getPost('id'));
+        return redirect()->to(base_url(self::SUBKAT));
     }
 
     public function markUserCommentsAsRead()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
-        }
 
-        $Id = $this->request->getPost('id');
         $kodebpr = $this->userKodebpr;
         $userId = $this->userId;
         $periodeId = session('active_periode');
 
-        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
+        if (!$kodebpr || !$userId || !$periodeId)
             return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
-        }
 
-        $commentsToMark = $this->getKomentarModel()->select('id')
-            ->where('subkategori', $Id)
+        $ids = $this->getKomentarModel()
+            ->select('id')
+            ->where('subkategori', self::SUBKAT)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->where('user_id !=', $userId)
-            ->findAll();
+            ->findColumn('id');
 
-        if (!empty($commentsToMark)) {
-            foreach ($commentsToMark as $comment) {
-                $this->getCommentReadsModel()->markAsRead($comment['id'], $userId);
-            }
+        if (!empty($ids)) {
+            foreach ($ids as $cid)
+                $this->getCommentReadsModel()->markAsRead($cid, $userId);
         }
 
-        return $this->response->setJSON(['status' => 'success', 'message' => 'Comments marked as read for this user.']);
+        service('cache')->delete('unread_' . self::SUBKAT . "_{$kodebpr}_{$periodeId}_{$userId}");
+        return $this->response->setJSON(['status' => 'success']);
     }
 
-    public function saveKomentar()
+    public function tambahketeranganAjax()
     {
-        $data = [
-            'id' => $this->request->getPost('id'),
-            'kodebpr' => $this->request->getPost('kodebpr'),
-            'komentar' => $this->request->getPost('komentar'),
-            'is_read' => 0, // <--- Ensure this is set to 0 for new comments
-            'created_at' => date('Y-m-d H:i:s'),
-            'user_id' => session()->get('user_id')
-        ];
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
 
-        $this->komentarModel->insert($data);
-        return $this->response->setJSON(['status' => 'comment_saved']);
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
+
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Kode BPR atau periode tidak valid');
+
+            $tindaklanjut = trim($this->request->getPost('tindaklanjut') ?? '');
+            if (empty($tindaklanjut))
+                return $this->jsonErr('Penjelasan tidak boleh kosong');
+
+            $existing = $this->getPenjelastindakModel()
+                ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId);
+            if (!empty($existing))
+                return $this->jsonErr('Data sudah ada. Gunakan Edit untuk mengubah.');
+
+            $this->getPenjelastindakModel()->tambahpenjelastindak([
+                'subkategori' => self::SUBKAT,
+                'tindaklanjut' => $tindaklanjut,
+                'kodebpr' => $kodebpr,
+                'periode_id' => $periodeId,
+                'fullname' => $this->userData['fullname'] ?? null,
+                'user_id' => $this->userId,
+            ]);
+
+            $newData = $this->getPenjelastindakModel()
+                ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId);
+            return $this->jsonOk('Penjelasan berhasil disimpan', ['penjelastindak' => $newData]);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Shmusahadirdekom::tambahketeranganAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
+        }
     }
 
-    public function tambahketerangan()
+    public function editketeranganAjax()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
 
-        if (!isset($_POST['tambahketerangan'])) {
-            return redirect()->to(base_url('Sahamdirdekom'));
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
+            $tindaklanjut = trim($this->request->getPost('tindaklanjut') ?? '');
+
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Kode BPR atau periode tidak valid');
+            if (empty($tindaklanjut))
+                return $this->jsonErr('Penjelasan tidak boleh kosong');
+
+            $ok = $this->getPenjelastindakModel()->editberdasarkankodedanperiode(
+                ['tindaklanjut' => $tindaklanjut, 'user_id' => $this->userId, 'kodebpr' => $kodebpr],
+                self::SUBKAT,
+                $kodebpr,
+                $periodeId
+            );
+
+            if (!$ok)
+                return $this->jsonErr('Gagal mengubah penjelasan');
+
+            $newData = $this->getPenjelastindakModel()
+                ->getDataPenjelasByKodebprAndPeriode(self::SUBKAT, $kodebpr, $periodeId);
+            return $this->jsonOk('Penjelasan berhasil diubah', ['penjelastindak' => $newData]);
+
+        } catch (\Exception $e) {
+            log_message('error', '[Shmusahadirdekom::editketeranganAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
         }
-
-        $val = $this->validate([
-            'tindaklanjut' => [
-                'label' => 'Tindak Lanjut Tugas dan Tanggung Jawab Anggota Dewan Komisaris',
-                'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong.']
-            ]
-        ]);
-
-        if (!$val) {
-            session()->setFlashdata('err', \Config\Services::validation()->listErrors());
-            return redirect()->back()->withInput();
-        }
-
-        $periodeId = session('active_periode');
-        $kodebpr = $this->userKodebpr;
-
-        if (!$kodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
-
-        $penjelastindak = [
-            'subkategori' => 'Shmusahadirdekom',
-            'tindaklanjut' => $this->request->getPost('tindaklanjut'),
-            'kodebpr' => $kodebpr,
-            'periode_id' => $periodeId,
-            'fullname' => $this->userData['fullname'] ?? null,
-            'user_id' => $this->userId,
-        ];
-
-        $this->getPenjelastindakModel()->tambahpenjelastindak($penjelastindak);
-        session()->setFlashdata('message', 'Data berhasil diubah');
-
-        return redirect()->to(base_url('Shmusahadirdekom'));
     }
 
-    public function editketerangan()
+    public function setNullKolomTindakAjax()
     {
-        $id = $this->request->getPost('id');
-        $subkategori = 'Shmusahadirdekom';
-        $kodebpr = $this->userKodebpr;
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
 
-        if (!$kodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
+        try {
+            $id = (int) $this->request->getPost('id');
+            $kodebpr = $this->userKodebpr;
+            if (!$id)
+                return $this->jsonErr('ID tidak valid');
+
+            $existing = $this->getPenjelastindakModel()
+                ->where('id', $id)->where('kodebpr', $kodebpr)->first();
+            if (!$existing)
+                return $this->jsonErr('Data tidak ditemukan atau tidak memiliki akses');
+
+            $ok = $this->getPenjelastindakModel()
+                ->where('id', $id)->where('kodebpr', $kodebpr)->delete();
+            if (!$ok)
+                return $this->jsonErr('Gagal menghapus data');
+
+            return $this->jsonOk('Penjelasan berhasil dihapus');
+
+        } catch (\Exception $e) {
+            log_message('error', '[Shmusahadirdekom::setNullKolomTindakAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
         }
-
-        $periodeId = session('active_periode');
-        if (!$periodeId) {
-            return redirect()->back()->with('error', 'Periode tidak valid');
-        }
-
-        $tindaklanjut = $this->request->getPost('tindaklanjut');
-        if (empty($tindaklanjut)) {
-            return redirect()->back()->with('error', 'Tindak Lanjut atau Penjelasan tidak boleh kosong');
-        }
-
-        $data = [
-            'tindaklanjut' => $tindaklanjut,
-            'user_id' => $this->userId,
-            'kodebpr' => $kodebpr,
-        ];
-
-        if ($this->getPenjelastindakModel()->editberdasarkankodedanperiode($data, $subkategori, $kodebpr, $periodeId)) {
-            session()->setFlashdata('message', 'Data berhasil diubah');
-        } else {
-            session()->setFlashdata('err', 'Gagal mengubah data');
-        }
-
-        return redirect()->to(base_url('Shmusahadirdekom'));
     }
 
-    public function hapus($id)
+    public function approveSemuaKom()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
-
-        $this->getSahamdirdekomModel()->hapus($id);
-        session()->setFlashdata('message', 'Data berhasil dihapus');
-
-        return redirect()->to(base_url('Shmusahadirdekom'));
-    }
-
-    private function updateData($id, $data, $errorMessage)
-    {
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        if (!$kodebpr || !$periodeId) {
-            return redirect()->back()->with('error', 'Kode BPR atau Periode tidak valid');
-        }
-
-        $data['user_id'] = $this->userId;
-        $data['kodebpr'] = $kodebpr;
-
-        if ($this->getSahamdirdekomModel()->editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)) {
-            session()->setFlashdata('message', 'Data berhasil diubah');
-        } else {
-            session()->setFlashdata('err', $errorMessage);
-        }
-
-        return redirect()->to(base_url('Shmusahadirdekom'));
-    }
-
-    public function ubahdir()
-    {
-        $id = $this->request->getPost('id');
-        $nama = $this->request->getPost('nama');
-        $nik = $this->request->getPost('nik');
-        $usaha = $this->request->getPost('usaha');
-        $persensaham = $this->request->getPost('persensaham');
-        $persensahamlalu = $this->request->getPost('persensahamlalu');
-
-        if (empty($nama) || empty($nik) || empty($usaha) || empty($persensaham) || empty($persensahamlalu)) {
-            return redirect()->back()->with('error', 'Semua field harus diisi');
-        }
-
-        $data = [
-            'nik' => $nik,
-            'nama' => $nama,
-            'usaha' => $usaha,
-            'persensaham' => $persensaham,
-            'persensahamlalu' => $persensahamlalu,
-            'accdekom' => 0,
-            'is_approved' => 0
-        ];
-
-        return $this->updateData($id, $data, 'Gagal mengubah data direksi');
-    }
-
-    public function ubahdekom()
-    {
-        $id = $this->request->getPost('id');
-        $dekom = $this->request->getPost('dekom');
-        $nikdekom = $this->request->getPost('nikdekom');
-        $usahadekom = $this->request->getPost('usahadekom');
-        $persenshmdekom = $this->request->getPost('persenshmdekom');
-        $persenshmdekomlalu = $this->request->getPost('persenshmdekomlalu');
-
-        if (empty($dekom) || empty($nikdekom) || empty($usahadekom) || empty($persenshmdekom) || empty($persenshmdekomlalu)) {
-            return redirect()->back()->with('error', 'Semua field harus diisi');
-        }
-
-        $data = [
-            'dekom' => $dekom,
-            'nikdekom' => $nikdekom,
-            'usahadekom' => $usahadekom,
-            'persenshmdekom' => $persenshmdekom,
-            'persenshmdekomlalu' => $persenshmdekomlalu,
-            'accdekom' => 0,
-            'is_approved' => 0
-        ];
-
-        return $this->updateData($id, $data, 'Gagal mengubah data dewan komisaris');
-    }
-
-    public function ubahpshm()
-    {
-        $id = $this->request->getPost('id');
-        $pshm = $this->request->getPost('pshm');
-        $nikpshm = $this->request->getPost('nikpshm');
-        $usahapshm = $this->request->getPost('usahapshm');
-        $persenpshm = $this->request->getPost('persenpshm');
-        $persenpshmlalu = $this->request->getPost('persenpshmlalu');
-
-        if (empty($pshm) || empty($nikpshm) || empty($usahapshm) || empty($persenpshm) || empty($persenpshmlalu)) {
-            return redirect()->back()->with('error', 'Semua field harus diisi');
-        }
-
-        $data = [
-            'pshm' => $pshm,
-            'nikpshm' => $nikpshm,
-            'usahapshm' => $usahapshm,
-            'persenpshm' => $persenpshm,
-            'persenpshmlalu' => $persenpshmlalu,
-            'accdekom' => 0,
-            'is_approved' => 0
-        ];
-
-        return $this->updateData($id, $data, 'Gagal mengubah data dewan komisaris');
-    }
-
-    public function getUnreadCommentCountForFactor()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
-        }
-
-        $Id = $this->request->getGet('id');
-        $kodebpr = $this->userKodebpr;
-        $userId = $this->userId;
-        $periodeId = session('active_periode');
-
-        if (!$Id || !$kodebpr || !$userId || !$periodeId) {
-            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
-        }
-
-        $count = $this->getCommentReadsModel()->countUnreadCommentsForUserByFactor($Id, $kodebpr, $userId, $periodeId);
-
-        return $this->response->setJSON(['unread_count' => $count]);
-    }
-
-    public function cekKomentarBaru()
-    {
-        $subkategori = 'Shmusahadirdekom';
-        $kodebpr = $this->request->getGet('kodebpr');
-        $lastVisit = $this->request->getGet('last_visit');
-        $periodeId = session('active_periode');
-
-        $results = $this->getKomentarModel()
-            ->select('id, COUNT(*) as jumlah')
-            ->where('subkategori', $subkategori)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->where('created_at >', $lastVisit)
-            ->groupBy('id')
-            ->findAll();
-
-        return $this->response->setJSON($results);
-    }
-
-    public function getKomentarByFaktorId()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(404)->setBody('Not Found');
-        }
-
-        $subkategori = 'Shmusahadirdekom';
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        $komentarList = $this->getKomentarModel()->getKomentarByFaktorId($subkategori, $kodebpr, $periodeId);
-
-        return $this->response->setJSON($komentarList);
-    }
-
-    private function updateApprovalStatus($id, $isApproved, $successMessage, $errorMessage)
-    {
-        if (!is_numeric($id) || $id <= 0) {
-            session()->setFlashdata('err', 'ID tidak valid.');
-            return redirect()->back();
-        }
-
-        $data = $this->getSahamdirdekomModel()->find($id);
-        if (!$data) {
-            session()->setFlashdata('err', 'Data tidak ditemukan.');
-            return redirect()->back();
-        }
-
-        $dataUpdate = [
-            'id' => $id,
-            'is_approved' => $isApproved,
-            'approved_by' => $this->userId,
-            'approved_at' => $isApproved ? date('Y-m-d H:i:s') : null, // Set null jika unapprove
-        ];
-
-        if ($this->getSahamdirdekomModel()->save($dataUpdate)) {
-            session()->setFlashdata('message', $successMessage);
-        } else {
-            session()->setFlashdata('err', $errorMessage);
-        }
-
-        return redirect()->back();
-    }
-
-    public function approve($idshmusahadirdekom)
-    {
-        return $this->updateApprovalStatus(
-            $idshmusahadirdekom,
-            1,
-            'Data berhasil disetujui.',
-            'Terjadi kesalahan saat melakukan approval.'
-        );
-    }
-
-    public function unapprove($idshmusahadirdekom)
-    {
-        return $this->updateApprovalStatus(
-            $idshmusahadirdekom,
-            0,
-            'Approval dibatalkan.',
-            'Terjadi kesalahan saat membatalkan approval.'
-        );
-    }
-
-    private function bulkUpdateApproval($isApproved, $field, $successMessage, $isError = false)
-    {
-        date_default_timezone_set('Asia/Jakarta');
-        $userId = $this->userId;
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
 
@@ -883,185 +599,190 @@ class shmusahadirdekom extends Controller
             return redirect()->back();
         }
 
-        $count = $this->getSahamdirdekomModel()
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->countAllResults();
-
-        if ($count === 0) {
-            session()->setFlashdata('err', 'Tidak ada data yang bisa diupdate untuk periode ini');
-            return redirect()->back();
-        }
-
-        $currentTimestamp = date('Y-m-d H:i:s');
-
-        $dataUpdate = [
-            $field => $isApproved,
-            $field . '_by' => $isApproved ? $userId : null,
-            $field . '_at' => $isApproved ? $currentTimestamp : null,
-        ];
-
-        // Tambahkan update untuk approved_at dan accdekom_at jika field utama disetujui
-        if ($isApproved) {
-            if ($field === 'is_approved') {
-                $dataUpdate['approved_at'] = $currentTimestamp;
-            } elseif ($field === 'accdekom') {
-                $dataUpdate['accdekom_at'] = $currentTimestamp;
-            }
-        } else {
-            // Jika dibatalkan, set timestamp menjadi null
-            if ($field === 'is_approved') {
-                $dataUpdate['approved_at'] = null;
-            } elseif ($field === 'accdekom') {
-                $dataUpdate['accdekom_at'] = null;
-            }
-        }
-
         try {
-            $updated = $this->getSahamdirdekomModel()
+            $this->getSahamdirdekomModel()
                 ->where('kodebpr', $kodebpr)
                 ->where('periode_id', $periodeId)
-                ->set($dataUpdate)
-                ->update();
-
-            if (!$updated) {
-                session()->setFlashdata('err', 'Gagal mengupdate data approval');
-                return redirect()->back();
-            }
-
-            if ($isError) {
-                session()->setFlashdata('err', $successMessage);
-            } else {
-                session()->setFlashdata('message', $successMessage);
-            }
-
-            return redirect()->back();
-
+                ->update(null, [
+                    'accdekom' => 1,
+                    'accdekom_by' => $this->userId,
+                    'accdekom_at' => date('Y-m-d H:i:s'),
+                ]);
+            session()->setFlashdata('message', 'Persetujuan Komisaris Utama berhasil diberikan.');
         } catch (\Exception $e) {
-            log_message('error', 'Error in bulk approval: ' . $e->getMessage());
-            session()->setFlashdata('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
-            return redirect()->back();
+            log_message('error', '[approveSemuaKom] ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan sistem');
         }
-    }
 
-    // Approval umum
-    public function approveSemua()
-    {
-        return $this->bulkUpdateApproval(1, 'is_approved', 'Semua data berhasil disetujui.');
-    }
-
-    public function unapproveSemua()
-    {
-        return $this->bulkUpdateApproval(0, 'is_approved', 'Semua approval dibatalkan.', true);
-    }
-
-    // Method untuk update approval komisaris saja (tanpa dependency)
-    private function updateKomisarisApproval($isApproved)
-    {
-        $field = 'accdekom';
-        $successMessage = $isApproved ? 'Persetujuan komisaris utama berhasil diberikan.' : 'Persetujuan komisaris utama dibatalkan.';
-
-        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
-    }
-
-    // Method untuk update approval direktur saja (tanpa dependency)
-    private function updateDirekturApproval($isApproved)
-    {
-        $field = 'is_approved';
-        $successMessage = $isApproved ? 'Persetujuan direktur utama berhasil diberikan.' : 'Persetujuan direktur utama dibatalkan.';
-
-        return $this->bulkUpdateApproval($isApproved, $field, $successMessage, !$isApproved);
-    }
-
-    // Public methods dengan dependency yang benar
-    public function approveSemuaKom()
-    {
-        return $this->updateKomisarisApproval(1);
+        return redirect()->back();
     }
 
     public function unapproveSemuaKom()
     {
-        // Ketika komisaris dibatalkan, direktur juga harus dibatalkan
-        $this->updateDirekturApproval(0);  // Batalkan direktur dulu
-        return $this->updateKomisarisApproval(0);  // Lalu batalkan komisaris
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
+            return redirect()->back();
+        }
+
+        try {
+            $this->getSahamdirdekomModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update(null, [
+                    'accdekom' => 0,
+                    'is_approved' => 0,
+                    'accdekom_by' => $this->userId,
+                    'accdekom_at' => date('Y-m-d H:i:s'),
+                ]);
+            session()->setFlashdata('err', 'Persetujuan Komisaris Utama dibatalkan.');
+        } catch (\Exception $e) {
+            log_message('error', '[unapproveSemuaKom] ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan sistem');
+        }
+
+        return redirect()->back();
     }
 
     public function approveSemuaDirut()
     {
-        return $this->updateDirekturApproval(1);
+        return $this->bulkApprove(['is_approved' => 1], 'message', 'Persetujuan Direktur Utama berhasil diberikan.');
     }
 
     public function unapproveSemuaDirut()
     {
-        // Ketika direktur dibatalkan, hanya direktur saja yang dibatalkan
-        // TIDAK perlu membatalkan komisaris
-        return $this->updateDirekturApproval(0);
+        return $this->bulkApprove(['is_approved' => 0, 'accdekom' => 0], 'err', 'Persetujuan Direktur Utama dibatalkan.');
     }
 
-    // ATAU jika Anda ingin hierarchy yang ketat:
-// Dimana pembatalan komisaris akan membatalkan direktur juga
-
-    public function unapproveSemuaKomWithHierarchy()
+    public function setNodataAjax()
     {
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
+
         try {
-            // 1. Batalkan direktur terlebih dahulu
-            $this->updateDirekturApproval(0);
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
 
-            // 2. Baru batalkan komisaris
-            $result = $this->updateKomisarisApproval(0);
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Kode BPR atau periode tidak valid');
 
-            // 3. Set pesan gabungan
-            session()->setFlashdata('message', 'Persetujuan komisaris dan direktur utama telah dibatalkan.');
+            $existing = $this->getSahamdirdekomModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->countAllResults();
 
-            return redirect()->back();
+            if ($existing > 0)
+                return $this->jsonErr('Data sudah ada, tidak bisa ditandai sebagai kosong');
 
-        } catch (\Exception $e) {
-            log_message('error', 'Error in unapprove hierarchy: ' . $e->getMessage());
-            session()->setFlashdata('err', 'Terjadi kesalahan saat membatalkan persetujuan.');
-            return redirect()->back();
+            $ok = $this->getSahamdirdekomModel()->insert([
+                'nama' => '',
+                'nik' => '',
+                'jenisid' => 'NIK',
+                'jabatan' => 'Direksi',
+                'usaha' => '',
+                'persensaham' => 0,
+                'persensahamlalu' => 0,
+                'is_null_record' => 1,
+                'periode_id' => $periodeId,
+                'user_id' => $this->userId,
+                'kodebpr' => $kodebpr,
+                'fullname' => $this->userData['fullname'] ?? null,
+                'accdekom' => 0,
+                'is_approved' => 0,
+            ]);
+
+            if (!$ok)
+                return $this->jsonErr('Gagal menyimpan data');
+
+            return $this->jsonOk('Data berhasil ditandai sebagai tidak ada', [
+                'data' => $this->getFreshRows($kodebpr, $periodeId),
+            ]);
+
+        } catch (\Throwable $e) {
+            log_message('error', '[Shmusahadirdekom::setNodataAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
         }
     }
 
-    public function setNullKolomTindak($id)
+    public function batalNodataAjax()
     {
-        $authCheck = $this->checkAuthentication();
-        if ($authCheck)
-            return $authCheck;
+        if ($e = $this->requireAjax())
+            return $e;
+        if ($e = $this->requireAuth())
+            return $e;
 
-        $result = $this->getPenjelastindakModel()->setNullKolomTindak($id);
+        try {
+            $kodebpr = $this->userKodebpr;
+            $periodeId = (int) session('active_periode');
 
-        if ($result) {
-            session()->setFlashdata('message', 'Data berhasil dihapus');
-        } else {
-            session()->setFlashdata('err', 'Data gagal dihapus');
+            if (!$kodebpr || !$periodeId)
+                return $this->jsonErr('Data tidak valid');
+
+            $ok = $this->getSahamdirdekomModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->where('is_null_record', 1)
+                ->delete();
+
+            if (!$ok)
+                return $this->jsonErr('Gagal membatalkan status');
+
+            return $this->jsonOk('Status berhasil dibatalkan', [
+                'data' => $this->getFreshRows($kodebpr, $periodeId),
+            ]);
+
+        } catch (\Throwable $e) {
+            log_message('error', '[Shmusahadirdekom::batalNodataAjax] ' . $e->getMessage());
+            return $this->jsonErr('Terjadi kesalahan sistem', 500);
+        }
+    }
+
+    private function bulkApprove(array $fields, string $flashType, string $msg)
+    {
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            session()->setFlashdata('err', 'Kode BPR atau Periode ID tidak valid');
+            return redirect()->back();
         }
 
-        return redirect()->to(base_url('Shmusahadirdekom'));
+        try {
+            $this->getSahamdirdekomModel()
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->update(null, array_merge($fields, [
+                    'approved_by' => $this->userId,
+                    'approved_at' => date('Y-m-d H:i:s'),
+                ]));
+            session()->setFlashdata($flashType, $msg);
+        } catch (\Exception $e) {
+            log_message('error', '[bulkApprove] ' . $e->getMessage());
+            session()->setFlashdata('err', 'Terjadi kesalahan sistem');
+        }
+
+        return redirect()->back();
     }
 
     public function exporttxtshmusahadirdekom()
     {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-
-        $this->shmusahadirdekomModel = model('M_shmusahadirdekom');
-        $this->infobprModel = model('M_infobpr');
-        $this->penjelastindakModel = model('M_penjelastindak');
+        if ($r = $this->checkAuthentication())
+            return $r;
 
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
-        $subkategori = "Shmusahadirdekom";
-
-        // $periodeDetail = $this->periodeModel->find($periodeId);
         $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
         $exportDate = $periodeDetail['tahun'] ?? date('Y');
+        $jenispelaporan = $periodeDetail['jenispelaporan'];
 
-        $data_shmushdirdekom = $this->shmusahadirdekomModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
-        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
-        $data_penjelastindak = $this->penjelastindakModel->where('subkategori', $subkategori)
+        $data = $this->getSahamdirdekomModel()->getDataByKodebprAndPeriode($kodebpr, $periodeId);
+        $data_infobpr = $this->getInfobprModel()->getDataByKodebpr($kodebpr);
+        $data_penjelastindak = $this->getPenjelastindakModel()
+            ->where('subkategori', self::SUBKAT)
             ->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->findAll();
@@ -1069,101 +790,54 @@ class shmusahadirdekom extends Controller
         $sandibpr = '';
         $kodejenis = '';
         if (!empty($data_infobpr)) {
-            $infobpr = $data_infobpr[0];
-            $sandibpr = $infobpr['sandibpr'];
-            $kodejenis = $infobpr['kodejenis'];
+            $sandibpr = $data_infobpr[0]['sandibpr'] ?? '';
+            $kodejenis = $data_infobpr[0]['kodejenis'] ?? '';
         }
 
-        // Helper function untuk cek apakah nilai kosong
-        $isEmpty = function ($value) {
-            return empty($value) || is_null($value) || $value === '' || $value === '0';
+        $sanitize = function ($text): string {
+            if ($text === null)
+                return '';
+            $text = str_replace(["\r", "\n", "\t", '|'], [' ', ' ', ' ', ' '], (string) $text);
+            $text = str_replace(["\xE2\x80\x9C", "\xE2\x80\x9D"], '"', $text);
+            $text = str_replace(["\xE2\x80\x98", "\xE2\x80\x99"], "'", $text);
+            $text = str_replace('%', ' persen ', $text);
+            $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
+            return trim(preg_replace('/\s+/', ' ', $text));
         };
 
-        $output = "";
-        $output .= "H01|" . $kodejenis . "|" . $sandibpr . "|" . $exportDate . "-12-31|LTBPRK|E0302|0|" . "\r\n";
+        $output = "H01|{$kodejenis}|{$sandibpr}|{$exportDate}-12-31|LTBPRK|E0302|0|\r\n";
 
-        // Generate data untuk Direksi - hanya jika ada data yang tidak kosong
-        foreach ($data_shmushdirdekom as $row) {
-            if (isset($row['jabatan']) && $row['jabatan'] === 'Direksi') {
-                $hasValidData = false;
-                $nik = isset($row['nik']) && !$isEmpty($row['nik']) ? $row['nik'] : '';
-                $usaha = isset($row['usaha']) && !$isEmpty($row['usaha']) ? $row['usaha'] : '';
-                $persensaham = isset($row['persensaham']) && !$isEmpty($row['persensaham']) ? $row['persensaham'] : '';
-                $persensahamlalu = isset($row['persensahamlalu']) && !$isEmpty($row['persensahamlalu']) ? $row['persensahamlalu'] : '';
+        foreach ($data as $row) {
+            $jabatan = $row['jabatan'] ?? '';
+            if (!in_array($jabatan, ['Direksi', 'Dekom', 'Psaham']))
+                continue;
 
-                // Cek apakah ada minimal satu field yang tidak kosong
-                if ($nik !== '' || $usaha !== '' || $persensaham !== '' || $persensahamlalu !== '') {
-                    $hasValidData = true;
-                }
+            $nikRaw = trim((string) ($row['nik'] ?? ''));
+            $usahaRaw = trim((string) ($row['usaha'] ?? ''));
 
-                // Hanya generate jika ada data valid
-                if ($hasValidData) {
-                    $output .= "D01|" . "042010000000" . "|" . $nik . "|" . $usaha . "|" . $persensaham . "|" . $persensahamlalu . "\r\n";
-                }
+            if ($nikRaw === '' && $usahaRaw === '') {
+                continue;
             }
+
+            $nik = $sanitize($nikRaw);
+            $usaha = $sanitize($usahaRaw);
+            $persen = $sanitize($row['persensaham'] ?? '');
+            $persenLalu = $sanitize($row['persensahamlalu'] ?? '');
+
+            $output .= "D01|042010000000|{$nik}|{$usaha}|{$persen}|{$persenLalu}\r\n";
         }
 
-        // Generate data untuk Dewan Komisaris - hanya jika ada data yang tidak kosong
-        foreach ($data_shmushdirdekom as $row) {
-            if (isset($row['jabatan']) && $row['jabatan'] === 'Dekom') {
-                $hasValidData = false;
-                $nik = isset($row['nik']) && !$isEmpty($row['nik']) ? $row['nik'] : '';
-                $usaha = isset($row['usaha']) && !$isEmpty($row['usaha']) ? $row['usaha'] : '';
-                $persensaham = isset($row['persensaham']) && !$isEmpty($row['persensaham']) ? $row['persensaham'] : '';
-                $persensahamlalu = isset($row['persensahamlalu']) && !$isEmpty($row['persensahamlalu']) ? $row['persensahamlalu'] : '';
-
-                // Cek apakah ada minimal satu field yang tidak kosong
-                if ($nik !== '' || $usaha !== '' || $persensaham !== '' || $persensahamlalu !== '') {
-                    $hasValidData = true;
-                }
-
-                // Hanya generate jika ada data valid
-                if ($hasValidData) {
-                    $output .= "D01|" . "042010000000" . "|" . $nik . "|" . $usaha . "|" . $persensaham . "|" . $persensahamlalu . "\r\n";
-                }
-            }
-        }
-
-        // Generate data untuk PSHM - hanya jika ada data yang tidak kosong
-        foreach ($data_shmushdirdekom as $row) {
-            if (isset($row['jabatan']) && $row['jabatan'] === 'Psaham') {
-                $hasValidData = false;
-                $nik = isset($row['nik']) && !$isEmpty($row['nik']) ? $row['nik'] : '';
-                $usaha = isset($row['usaha']) && !$isEmpty($row['usaha']) ? $row['usaha'] : '';
-                $persensaham = isset($row['persensaham']) && !$isEmpty($row['persensaham']) ? $row['persensaham'] : '';
-                $persensahamlalu = isset($row['persensahamlalu']) && !$isEmpty($row['persensahamlalu']) ? $row['persensahamlalu'] : '';
-                $persensahamlalu = isset($row['persensahamlalu']) && !$isEmpty($row['persensahamlalu']) ? $row['persensahamlalu'] : '';
-
-                // Cek apakah ada minimal satu field yang tidak kosong
-                if ($nik !== '' || $usaha !== '' || $persensaham !== '' || $persensahamlalu !== '') {
-                    $hasValidData = true;
-                }
-
-                // Hanya generate jika ada data valid
-                if ($hasValidData) {
-                    $output .= "D01|" . "042010000000" . "|" . $nik . "|" . $usaha . "|" . $persensaham . "|" . $persensahamlalu . "\r\n";
-                }
-            }
-        }
-
-        // Generate data penjelasan tindak lanjut - hanya jika tidak kosong
         foreach ($data_penjelastindak as $penjelas) {
-            $tindaklanjut = str_replace(array("\r", "\n"), ' ', $penjelas['tindaklanjut']);
-            if (
-                !empty($penjelas['tindaklanjut']) &&
-                $penjelas['tindaklanjut'] !== null &&
-                trim($penjelas['tindaklanjut']) !== ''
-            ) {
-                $output .= "F01|" . $tindaklanjut . "\r\n";
+            if (!empty(trim((string) ($penjelas['tindaklanjut'] ?? '')))) {
+                $output .= "F01|" . $sanitize($penjelas['tindaklanjut']) . "\r\n";
             }
         }
 
-        $filename = "LTBPRK-E0302-R-A-" . $exportDate . "1231-" . $sandibpr . "-01.txt";
+        $filename = "LTBPRK-E0302-{$jenispelaporan}-A-{$exportDate}1231-{$sandibpr}-01.txt";
 
-        $response = service('response');
-        $response->setHeader('Content-Type', 'text/plain');
-        $response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
-        return $response->setBody($output);
+        return service('response')
+            ->setHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
     }
-
 }

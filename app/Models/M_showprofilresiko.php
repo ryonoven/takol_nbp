@@ -194,4 +194,17 @@ class M_showprofilresiko extends Model
             ->where('periode_id', $periodeId)
             ->first();
     }
+
+    public function updateNtotalrisk($id, $ntotalrisk)
+    {
+        // Method khusus untuk update ntotalrisk
+        $data = [
+            'ntotalrisk' => (int) $ntotalrisk,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        return $this->builder()
+            ->where('id', $id)
+            ->update($data);
+    }
 }

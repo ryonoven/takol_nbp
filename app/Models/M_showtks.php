@@ -3,18 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use App\Models\M_nilairisikokredit;
-use App\Models\M_risikokreditkpmr;
-use App\Models\M_risikooperasional;
-use App\Models\M_risikooperasionalkpmr;
-use App\Models\M_risikokepatuhan;
-use App\Models\M_kepatuhankpmr;
-use App\Models\M_likuiditasinheren;
-use App\Models\M_likuiditaskpmr;
-use App\Models\M_reputasiinheren;
-use App\Models\M_reputasikpmr;
-use App\Models\M_stratejikinheren;
-use App\Models\M_stratejikkpmr;
 
 class M_showtks extends Model
 {
@@ -33,11 +21,159 @@ class M_showtks extends Model
         'pdf1_filename',
         'pdf2_filename',
         'cover',
-        'updated_at'
+        'updated_at',
+        'created_at',
+
+        // Profil Risiko
+        'nprofilrisiko',
+        'nprofilrisikobefore',
+        'nfaktorprofilrisiko',
+        'nfaktorprofilrisikobefore',
+        'kesimpulan2',
+
+        // Tata Kelola
+        'ntatakelola',
+        'ntatakelolabefore',
+        'nfaktortakol',
+        'nfaktortakolbefore',
+        'kesimpulan3',
+
+        // Rentabilitas
+        'nrentabilitas',
+        'nrentabilitasbefore',
+        'nfaktorrentabilitas',
+        'nfaktorrentabilitasbefore',
+        'kesimpulan4',
+
+        // Permodalan
+        'npermodalan',
+        'npermodalanbefore',
+        'nfaktorpermodalan',
+        'nfaktorpermodalanbefore',
+        'kesimpulan5',
+
+        //Komposit
+        'nkomposittks',
+        'nkomposittksbefore',
+        'peringkatkomposittks',
+        'peringkatkomposittksbefore'
     ];
 
-    protected $useTimestamps = false;
-    protected $returnType = 'array';
+    protected $useTimestamps = true;
+
+    protected $afterInsert = ['triggerKompositRecalculation'];
+    protected $afterUpdate = ['triggerKompositRecalculation'];
+
+    protected function triggerKompositRecalculation(array $data)
+    {
+        // Trigger recalculation if TKS factor fields are updated
+        $tksFields = [
+            'nfaktorprofilrisiko',
+            'nfaktortakol',
+            'nfaktorrentabilitas',
+            'nfaktorpermodalan',
+            'nfaktorprofilrisikobefore',
+            'nfaktortakolbefore',
+            'nfaktorrentabilitasbefore',
+            'nfaktorpermodalanbefore'
+        ];
+
+        $needsRecalculation = false;
+
+        if (isset($data['data'])) {
+            foreach ($tksFields as $field) {
+                if (array_key_exists($field, $data['data'])) {
+                    $needsRecalculation = true;
+                    break;
+                }
+            }
+        }
+
+        if ($needsRecalculation && isset($data['data']['kodebpr']) && isset($data['data']['periode_id'])) {
+            $this->recalculateKomposit($data['data']['kodebpr'], $data['data']['periode_id']);
+        }
+
+        return $data;
+    }
+
+    private function recalculateKomposit($kodebpr, $periodeId)
+    {
+        try {
+            $existing = $this->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->first();
+
+            if (!$existing) {
+                return;
+            }
+
+            // Calculate current
+            $sum = 0;
+            $count = 0;
+            $fields = ['nfaktorprofilrisiko', 'nfaktortakol', 'nfaktorrentabilitas', 'nfaktorpermodalan'];
+
+            foreach ($fields as $field) {
+                if (isset($existing[$field]) && is_numeric($existing[$field])) {
+                    $sum += $existing[$field];
+                    $count++;
+                }
+            }
+
+            $nkomposittks = $count > 0 ? $sum : null;
+
+            // Calculate before
+            $sumBefore = 0;
+            $countBefore = 0;
+            $fieldsBefore = ['nfaktorprofilrisikobefore', 'nfaktortakolbefore', 'nfaktorrentabilitasbefore', 'nfaktorpermodalanbefore'];
+
+            foreach ($fieldsBefore as $field) {
+                if (isset($existing[$field]) && is_numeric($existing[$field])) {
+                    $sumBefore += $existing[$field];
+                    $countBefore++;
+                }
+            }
+
+            $nkomposittksbefore = $countBefore > 0 ? $sumBefore : null;
+
+            // Update
+            $updateData = [
+                'nkomposittks' => $nkomposittks,
+                'nkomposittksbefore' => $nkomposittksbefore,
+                'peringkatkomposittks' => $this->getPeringkatKomposit($nkomposittks),
+                'peringkatkomposittksbefore' => $this->getPeringkatKomposit($nkomposittksbefore),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            $this->update($existing['id'], $updateData);
+
+            log_message('info', "Komposit recalculated for kodebpr: {$kodebpr}, periode: {$periodeId}");
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in recalculateKomposit: ' . $e->getMessage());
+        }
+    }
+
+    private function getPeringkatKomposit($nilaiKomposit)
+    {
+        if ($nilaiKomposit === null || !is_numeric($nilaiKomposit)) {
+            return null;
+        }
+
+        // Mapping berdasarkan ketentuan
+        if ($nilaiKomposit >= 1.00 && $nilaiKomposit <= 1.50) {
+            return 1;  // ✅ Return angka, bukan string
+        } elseif ($nilaiKomposit >= 1.51 && $nilaiKomposit <= 2.60) {
+            return 2;
+        } elseif ($nilaiKomposit >= 2.61 && $nilaiKomposit <= 3.40) {
+            return 3;
+        } elseif ($nilaiKomposit >= 3.41 && $nilaiKomposit <= 4.20) {
+            return 4;
+        } elseif ($nilaiKomposit >= 4.21 && $nilaiKomposit <= 5.00) {
+            return 5;
+        }
+
+        return null;
+    }
 
     public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
     {
@@ -173,5 +309,30 @@ class M_showtks extends Model
         return $this->where('kodebpr', $kodebpr)
             ->where('periode_id', $periodeId)
             ->first();
+    }
+
+    public function getPeriodeByUser($userId)
+    {
+        return $this->where('user_id', $userId)->findAll();
+    }
+
+    public function getPeriodeByBpr($kodebpr)
+    {
+        return $this->where('kodebpr', $kodebpr)->findAll();
+    }
+
+    public function getPeriodeDetail($periodeId)
+    {
+        return $this->where('id', $periodeId)->first();
+    }
+
+    public function getModalintiDetail($periodeId)
+    {
+        return $this->where('modalinti', $periodeId)->first();
+    }
+
+    public function getTotalasetDetail($periodeId)
+    {
+        return $this->where('totalaset', $periodeId)->first();
     }
 }

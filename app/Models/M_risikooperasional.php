@@ -28,7 +28,8 @@ class M_risikooperasional extends Model
         'accdekom_at',
         'read_at',
         'comment_id',
-        'updated_at'
+        'updated_at',
+        'is_manual'
     ];
     protected $useTimestamps = false;
     protected $returnType = 'array';

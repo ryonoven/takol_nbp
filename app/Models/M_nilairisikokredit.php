@@ -27,7 +27,8 @@ class M_nilairisikokredit extends Model
         'accdekom_by',
         'accdekom_at',
         'read_at',
-        'comment_id'
+        'comment_id',
+        'is_manual'
     ];
     protected $useTimestamps = false;
     protected $returnType = 'array';
@@ -177,26 +178,10 @@ class M_nilairisikokredit extends Model
         );
     }
 
-    private function getCachedUser($userId)
-    {
-        if (!isset($this->userCache[$userId])) {
-            $userModel = new \App\Models\M_user();
-            $this->userCache[$userId] = $userModel->find($userId);
-        }
-        return $this->userCache[$userId];
-    }
-
     public function insertOrUpdateRataRata($rataRata, $faktorId, $kodebpr, $periodeId, $keterangan = null)
     {
         $userId = service('authentication')->id();
-        $user = $this->getCachedUser($userId);
 
-        if (!$user) {
-            log_message('error', 'User not found for insertOrUpdateRataRata: ' . $userId);
-            return false;
-        }
-
-        $fullname = $user['fullname'] ?? 'Unknown';
         $kodebpr = $kodebpr ?? $user['kodebpr'] ?? 'default_kodebpr';
 
         $rataRata = $this->hitungRataRata($faktorId, $kodebpr, $periodeId);
@@ -218,7 +203,6 @@ class M_nilairisikokredit extends Model
         $data = [
             'faktor1id' => 13,
             'penilaiankredit' => $rataRata,
-            'fullname' => $fullname,
             'user_id' => $userId,
             'kodebpr' => $kodebpr,
             'periode_id' => $periodeId,

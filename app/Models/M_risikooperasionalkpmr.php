@@ -27,7 +27,8 @@ class M_risikooperasionalkpmr extends Model
         'accdekom_by',
         'accdekom_at',
         'read_at',
-        'comment_id'
+        'comment_id',
+        'is_manual'
     ];
     protected $useTimestamps = false;
     protected $returnType = 'array';
@@ -162,7 +163,7 @@ class M_risikooperasionalkpmr extends Model
     private function getCachedUser($userId)
     {
         if (!isset($this->userCache[$userId])) {
-            $userModel = new \App\Models\M_user();
+            $userModel = new M_user();
             $this->userCache[$userId] = $userModel->find($userId);
         }
         return $this->userCache[$userId];

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
@@ -7,10 +8,12 @@ use App\Models\M_user;
 use App\Models\M_profilrisikocomments;
 use App\Models\M_nilairisikokredit;
 use App\Models\M_infobpr;
-use App\Models\M_periodeprofilresiko;
+use App\Models\M_periodesemesteran;
 use App\Models\M_profilrisikocommentsread;
 use App\Models\M_kalkulatorkredit;
 use App\Models\M_showprofilresiko;
+use App\Models\M_showtks;
+use App\Models\M_periodetks;
 use Myth\Auth\Config\Services as AuthServices;
 
 class Risikokredit extends Controller
@@ -30,6 +33,9 @@ class Risikokredit extends Controller
     protected $userKodebpr;
     protected $userId;
     protected $periodeId;
+    protected $showtksModel;
+    protected $periodetksModel;
+    protected $periodesemesteranModel;
     protected $userGroups = [];
 
     public function __construct()
@@ -39,7 +45,7 @@ class Risikokredit extends Controller
         $this->db = \Config\Database::connect();
 
         $this->paramprofilrisikoModel = new M_paramprofilrisiko();
-        $this->periodeModel = new M_periodeprofilresiko();
+        $this->periodeModel = new M_periodesemesteran();
         $this->userModel = new M_user();
         $this->komentarModel = new M_profilrisikocomments();
         $this->showprofilresikoModel = new M_showprofilresiko();
@@ -47,6 +53,8 @@ class Risikokredit extends Controller
         $this->infobprModel = new M_infobpr();
         $this->commentReadsModel = new M_profilrisikocommentsread();
         $this->kalkulatorModel = new M_kalkulatorkredit();
+        $this->showtksModel = new M_showtks();
+        $this->periodetksModel = new M_periodetks();
 
         helper('url');
         $this->session = service('session');
@@ -59,20 +67,16 @@ class Risikokredit extends Controller
         }
 
         $this->periodeId = session('active_periode');
-
         $this->initializeUserGroups();
     }
 
-    private function initializeUserGroups()
+    private function initializeUserGroups(): void
     {
         if (!$this->userId)
             return;
-
         $authorize = AuthServices::authorization();
-        $groups = ['pe', 'admin', 'dekom', 'dekom2', 'dekom3', 'dekom4', 'dekom5', 'direksi', 'direksi2'];
-
-        foreach ($groups as $group) {
-            $this->userGroups[$group] = $authorize->inGroup($group, $this->userId);
+        foreach (['pe', 'admin', 'dekom', 'dekom2', 'dekom3', 'dekom4', 'dekom5', 'direksi', 'direksi2'] as $g) {
+            $this->userGroups[$g] = $authorize->inGroup($g, $this->userId);
         }
     }
 
@@ -88,8 +92,16 @@ class Risikokredit extends Controller
 
     private function validatePeriode()
     {
-        if (!$this->periodeId) {
+        if (!$this->periodeId)
             return redirect()->to('/periodeprofilresiko');
+        return null;
+    }
+
+    private function checkPeriode()
+    {
+        if (!$this->periodeId) {
+            return redirect()->to('/Periodeprofilresiko')
+                ->with('error', 'Silakan pilih periode aktif terlebih dahulu.');
         }
         return null;
     }
@@ -108,76 +120,56 @@ class Risikokredit extends Controller
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $bprData = $this->infobprModel->where('kodebpr', $this->userKodebpr)->first();
 
-        $nilai13 = $this->nilaiModel->where([
-            'faktor1id' => 13,
-            'kodebpr' => $this->userKodebpr,
-            'periode_id' => $this->periodeId
-        ])->first();
+        $nilai13 = $this->nilaiModel->where(['faktor1id' => 13, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
+        $nilai14 = $this->nilaiModel->where(['faktor1id' => 14, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
 
-        $nilai14 = $this->nilaiModel->where([
-            'faktor1id' => 14,
-            'kodebpr' => $this->userKodebpr,
-            'periode_id' => $this->periodeId
-        ])->first();
+        // ── TAMBAHKAN BLOK INI ──
+        $nilaiData = $this->db->table('risikokredit as r')
+            ->select('r.*, u.fullname')
+            ->join('users as u', 'u.id = r.user_id', 'left')
+            ->where('r.kodebpr', $this->userKodebpr)
+            ->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(1, 13))
+            ->get()->getResultArray();
 
-        $requiredFaktor = array_merge(range(1, 11), [13]);
-        $requiredFaktor = array_diff($requiredFaktor, [12]);
+        $nilaiLookup = [];
+        foreach ($nilaiData as $n) {
+            $nilaiLookup[(int) $n['faktor1id']] = $n;
+        }
+
+        $unreadCounts = $this->commentReadsModel->getAllUnreadCountsBatch(
+            'KREDITINHEREN',
+            $this->userKodebpr,
+            $this->userId,
+            $this->periodeId,
+            range(1, 13)
+        );
+
+        $showtks = $this->showtksModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
+        if ($showtks && !empty($showtks['tanggal'])) {
+            $showtks['tanggal_display'] = $this->formatDateForDisplay($showtks['tanggal']);
+        } else {
+            $showtks['tanggal_display'] = '';
+        }
+
+        $requiredFaktor = array_diff(array_merge(range(1, 11), [13]), [12]);
         $totalRequired = count($requiredFaktor);
 
         $approvalData = $this->nilaiModel
-            ->select('
-        COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count,
-        COUNT(CASE WHEN is_approved = 1 THEN 1 END) AS approved_count
-    ')
+            ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count, COUNT(CASE WHEN is_approved = 1 THEN 1 END) AS approved_count')
             ->where('kodebpr', $this->userKodebpr)
             ->where('periode_id', $this->periodeId)
             ->whereIn('faktor1id', $requiredFaktor)
             ->first();
 
         $allFilled = ((int) $approvalData['filled_count'] === $totalRequired);
-        $allApproved = (
-            $allFilled &&
-            (int) $approvalData['approved_count'] === $totalRequired
-        );
-
+        $allApproved = ($allFilled && (int) $approvalData['approved_count'] === $totalRequired);
         $canApprove = $allFilled;
 
         $kalkulatorData = $this->kalkulatorModel
             ->where('kodebpr', $this->userKodebpr)
             ->where('periode_id', $this->periodeId)
-            ->first();
-
-        if (!$kalkulatorData) {
-            $kalkulatorData = [
-                'aba' => '',
-                'kydbank' => '',
-                'kydpihak3' => '',
-                'totalaset' => '',
-                'total25debitur' => '',
-                'perdagangan' => '',
-                'jasa' => '',
-                'konsumsirumah' => '',
-                'kydgross' => 0,
-                'asetproduktif' => 0,
-                'rasioasetproduktif' => 0,
-                'rasiokreditdiberikan' => 0,
-                'rasio25debitur' => 0,
-                'sektorekonomi' => 0,
-                'rasioekonomi' => 0,
-                'abanpl' => '',
-                'kydnpl3' => '',
-                'kydnpl4' => '',
-                'kydnpl5' => '',
-                'kreditdpk2' => '',
-                'kreditbermasalah' => '',
-                'kreditrestruktur1' => '',
-                'kydkoleknpl' => 0,
-                'asetproduktifbermasalah' => 0,
-                'rasioasetproduktifbermasalah' => 0,
-                'rasiokreditbermasalah' => 0,
-                'rasiokreditkualitasrendah' => 0,
-            ];
-        }
+            ->first() ?? $this->defaultKalkulatorData();
 
         $user = $this->userModel->find($this->userId);
 
@@ -205,94 +197,23 @@ class Risikokredit extends Controller
             'nilai14' => $nilai14,
             'kalkulatorData' => $kalkulatorData,
             'loadDataViaAjax' => true,
-        ];
+            'showtks' => $showtks,
+            'nilaiLookup' => $nilaiLookup,
+            'counts' => $unreadCounts,
 
-        $data['kalkulatorData'] = $kalkulatorData;
+        ];
 
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('risikokredit/index', $data)
+            . view('Laporansemester/Profilrisiko/kreditinheren', $data)
             . view('templates/v_footer');
-    }
-
-    // private function checkCanApprove($nilaiLookup)
-    // {
-    //     $requiredFaktorIds = range(1, 12);
-
-    //     foreach ($requiredFaktorIds as $faktorId) {
-    //         if (empty($nilaiLookup[$faktorId])) {
-    //             return false;
-    //         }
-    //     }
-
-    //     return true;
-    // }
-
-    // private function checkAccdekomApproved($nilaiLookup)
-    // {
-    //     for ($faktorId = 1; $faktorId <= 13; $faktorId++) {
-    //         if (!isset($nilaiLookup[$faktorId]) || $nilaiLookup[$faktorId]['is_approved'] != 1) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
-
-    private function checkAllApproved($nilaiLookup)
-    {
-        $requiredFaktorIds = range(1, 13);
-        foreach ($requiredFaktorIds as $faktorId) {
-            if (!isset($nilaiLookup[$faktorId]) || $nilaiLookup[$faktorId]['is_approved'] != 1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function buildFactorsWithDetails($faktorData, $nilaiLookup)
-    {
-        $factorsWithDetails = [];
-
-        foreach ($faktorData as $faktorItem) {
-            $faktorId = $faktorItem['id'];
-            $associatedNilai = $nilaiLookup[$faktorId] ?? null;
-            $rataRata = $this->nilaiModel->hitungRataRata($faktorId, $this->userKodebpr, $this->periodeId);
-            $this->nilaiModel->insertOrUpdateRataRata($rataRata, $faktorId, $this->userKodebpr, $this->periodeId);
-
-            $factorsWithDetails[] = [
-                'id' => $faktorItem['id'],
-                'risiko' => $faktorItem['risiko'],
-                'inheren_kpmr' => $faktorItem['inheren_kpmr'],
-                'parameterpenilaian' => $faktorItem['parameterpenilaian'],
-                'penilaiankredit' => $associatedNilai['penilaiankredit'] ?? null,
-                'penjelasanpenilaian' => $associatedNilai['penjelasanpenilaian'] ?? null,
-                'nfaktor' => $rataRata,
-                'rasiokredit' => $associatedNilai['rasiokredit'] ?? null,
-                'keterangan' => $associatedNilai['keterangan'] ?? null,
-                'kodebpr' => $this->userKodebpr,
-                'is_approved' => $associatedNilai['is_approved'] ?? 0,
-                'approved_at' => $associatedNilai['approved_at'] ?? 0,
-                'positifstruktur' => $associatedNilai['positifstruktur'] ?? null,
-                'negatifstruktur' => $associatedNilai['negatifstruktur'] ?? null,
-                'positifproses' => $associatedNilai['positifproses'] ?? null,
-                'negatifproses' => $associatedNilai['negatifproses'] ?? null,
-                'positifhasil' => $associatedNilai['positifhasil'] ?? null,
-                'negatifhasil' => $associatedNilai['negatifhasil'] ?? null,
-                'periode_id' => $associatedNilai['periode_id'] ?? null,
-                'accdir2' => $associatedNilai['accdir2'] ?? null,
-                'accdir2_by' => $associatedNilai['accdir2_by'] ?? null,
-            ];
-        }
-
-        return $factorsWithDetails;
     }
 
     public function getFactorsData()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return $this->response->setStatusCode(403);
-        }
 
         $nilaiData = $this->db->table('risikokredit as r')
             ->select('r.*, u.fullname')
@@ -300,14 +221,33 @@ class Risikokredit extends Controller
             ->where('r.kodebpr', $this->userKodebpr)
             ->where('r.periode_id', $this->periodeId)
             ->whereIn('r.faktor1id', range(1, 13))
-            ->get()
-            ->getResultArray();
+            ->get()->getResultArray();
 
         $nilaiLookup = [];
-        foreach ($nilaiData as $nilai) {
-            $nilaiLookup[$nilai['faktor1id']] = $nilai;
+        foreach ($nilaiData as $n) {
+            $nilaiLookup[(int) $n['faktor1id']] = $n;
         }
 
+        $structure = $this->buildFactorStructure($nilaiLookup);
+
+        $etag = '"' . md5(json_encode(array_column($nilaiData, 'updated_at'))) . '"';
+        $ifNoneMatch = $this->request->getHeaderLine('If-None-Match');
+
+        if ($ifNoneMatch === $etag) {
+            return $this->response
+                ->setStatusCode(304)
+                ->setHeader('ETag', $etag)
+                ->setHeader('Cache-Control', 'no-cache');
+        }
+
+        return $this->response
+            ->setHeader('ETag', $etag)
+            ->setHeader('Cache-Control', 'no-cache')
+            ->setJSON(['status' => 'success', 'data' => $structure]);
+    }
+
+    private function buildFactorStructure(array $nilaiLookup): array
+    {
         $structure = [
             [
                 'id' => 1,
@@ -318,8 +258,8 @@ class Risikokredit extends Controller
                     ['id' => 2, 'title' => 'Parameter rasio aset produktif terhadap total aset', 'faktor_id' => 2],
                     ['id' => 3, 'title' => 'Parameter rasio kredit yang diberikan terhadap total aset produktif', 'faktor_id' => 3],
                     ['id' => 4, 'title' => 'Parameter rasio 25 debitur terbesar terhadap total kredit yang diberikan', 'faktor_id' => 4],
-                    ['id' => 5, 'title' => 'Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan', 'faktor_id' => 5]
-                ]
+                    ['id' => 5, 'title' => 'Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan', 'faktor_id' => 5],
+                ],
             ],
             [
                 'id' => 6,
@@ -329,278 +269,170 @@ class Risikokredit extends Controller
                 'children' => [
                     ['id' => 7, 'title' => 'Parameter rasio aset produktif bermasalah terhadap total aset produktif', 'faktor_id' => 7],
                     ['id' => 8, 'title' => 'Parameter kredit bermasalah neto terhadap total kredit yang diberikan', 'faktor_id' => 8],
-                    ['id' => 9, 'title' => 'Parameter kredit kualitas rendah terhadap total kredit yang diberikan', 'faktor_id' => 9]
-                ]
+                    ['id' => 9, 'title' => 'Parameter kredit kualitas rendah terhadap total kredit yang diberikan', 'faktor_id' => 9],
+                ],
             ],
-            [
-                'id' => 10,
-                'title' => 'Pilar Strategi Penyediaan Dana',
-                'type' => 'single',
-                'faktor_id' => 10
-            ],
-            [
-                'id' => 11,
-                'title' => 'Pilar Faktor Eksternal',
-                'type' => 'single',
-                'faktor_id' => 11
-            ],
-            [
-                'id' => 12,
-                'title' => 'Faktor Lainnya',
-                'type' => 'single',
-                'faktor_id' => 12
-            ]
+            ['id' => 10, 'title' => 'Pilar Strategi Penyediaan Dana', 'type' => 'single', 'faktor_id' => 10],
+            ['id' => 11, 'title' => 'Pilar Faktor Eksternal', 'type' => 'single', 'faktor_id' => 11],
+            ['id' => 12, 'title' => 'Faktor Lainnya', 'type' => 'single', 'faktor_id' => 12],
         ];
 
         foreach ($structure as &$item) {
             $item['nilai'] = $nilaiLookup[$item['faktor_id']] ?? null;
-
             if (isset($item['children'])) {
                 foreach ($item['children'] as &$child) {
                     $child['nilai'] = $nilaiLookup[$child['faktor_id']] ?? null;
                 }
+                unset($child);
             }
         }
+        unset($item);
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'data' => $structure
-        ]);
+        return $structure;
     }
 
-    private function getPenilaianConfig()
+    public function getAllUnreadCounts()
     {
-        return [
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
+        if (!$this->userKodebpr || !$this->userId || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Missing data']);
+        }
 
-            // Pilar Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit 
-            1 => [
-                'descriptions' => [
-                    1 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Sangat Rendah',
-                    2 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Rendah',
-                    3 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Sedang',
-                    4 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Tinggi',
-                    5 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Sangat Tinggi'
-                ],
-                'catatan' => '-'
-            ],
+        $unreadCounts = $this->commentReadsModel->getAllUnreadCountsBatch(
+            'KREDITINHEREN',
+            $this->userKodebpr,
+            $this->userId,
+            $this->periodeId,
+            range(1, 13)
+        );
 
-            // Parameter rasio aset produktif terhadap total aset
-            2 => [
-                'threshold' => '95%',
-                'descriptions' => [
-                    1 => '<= 95%',
-                    2 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit rendah',
-                    3 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit moderat',
-                    4 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit tinggi',
-                    5 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit sangat tinggi'
-                ],
-                'catatan' => 'BPR dengan rasio <= 95% dimungkinkan mendapat peringkat lebih buruk dari 1 antara lain dalam hal BPR memiliki aset produktif dengan eksposur Risiko kredit yang lebih tinggi, misalnya penempatan dana pada'
-            ],
+        return $this->response
+            ->setHeader('Cache-Control', 'private, max-age=30')
+            ->setHeader('Vary', 'Cookie')
+            ->setJSON(['status' => 'success', 'counts' => $unreadCounts]);
+    }
 
-            // Parameter rasio kredit yang diberikan terhadap total aset produktif
-            3 => [
-                'threshold' => '75%',
-                'descriptions' => [
-                    1 => '<= 75%',
-                    2 => '>75%, Skema kredit sebagian besar atau seluruhnya sederhana, dan jenis kredit tidak beragam',
-                    3 => '>75%, Skema kredit sebagian besar atau seluruhnya sederhana, dan jenis kredit beragam',
-                    4 => '>75%, Skema kredit sebagian besar atau seluruhnya kompleks, dan jenis kredit tidak beragam',
-                    5 => '>75%, Skema kredit sebagian besar atau seluruhnya kompleks, dan jenis kredit beragam'
-                ],
-                'catatan' => 'BPR dengan rasio <=75% dimungkinkan mendapat peringkat lebih buruk dari 1, dalam hal portofolio kredit'
-            ],
+    public function markUserCommentsAsRead()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
 
-            // Parameter rasio 25 debitur terbesar terhadap total kredit yang diberikan
-            4 => [
-                'threshold' => '20%',
-                'descriptions' => [
-                    1 => '<= 20%',
-                    2 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang sangat lama',
-                    3 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang lama',
-                    4 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang cukup lama',
-                    5 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang singkat'
-                ],
-                'catatan' => 'Konsentrasi kredit pada 25 debitur terbesar'
-            ],
+        $faktorId = $this->request->getPost('faktor_id');
+        if (!$faktorId || !$this->userKodebpr || !$this->userId || !$this->periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
 
-            // Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan
-            5 => [
-                'threshold' => '85%',
-                'descriptions' => [
-                    1 => '<= 85%',
-                    2 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang sangat lama',
-                    3 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang lama',
-                    4 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang cukup lama',
-                    5 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang singkat'
-                ],
-                'catatan' => 'Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan'
-            ],
+        $marked = $this->commentReadsModel->markAllAsReadForFactor(
+            $faktorId,
+            'KREDITINHEREN',
+            $this->userKodebpr,
+            $this->userId,
+            $this->periodeId
+        );
 
-            // Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan (Kualitas Aset)
-            6 => [
-                'descriptions' => [
-                    1 => 'Parameter Kualitas aset berada pada tingkat risiko yang Sangat Rendah',
-                    2 => 'Parameter Kualitas aset berada pada tingkat risiko yang Rendah',
-                    3 => 'Parameter Kualitas aset berada pada tingkat risiko yang Sedang',
-                    4 => 'Parameter Kualitas aset berada pada tingkat risiko yang Tinggi',
-                    5 => 'Parameter Kualitas aset berada pada tingkat risiko yang Sangat Tinggi'
-                ],
-                'catatan' => 'Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan (Kualitas Aset)'
-            ],
+        return $this->response->setJSON(['status' => 'success', 'message' => 'Comments marked as read', 'marked_count' => $marked]);
+    }
 
-            // Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan (Kualitas Aset)
-            7 => [
-                'threshold' => '7%',
-                'descriptions' => [
-                    1 => '<= 7%',
-                    2 => "Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang baik, antara lain ditunjukkan dengan: <br>
-                    • Kredit restrukturisasi tidak signifikan <br>
-                    • Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan tidak signifikan <br>
-                    • Sektor ekonomi berisiko tinggi tidak signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari tidak signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain",
-                    3 => 'Rasio di atas  ambang batas  peringkat 1, dengan  kondisi pemberian  kredit memiliki kualitas yang cukup baik, namun terdapat potensi penurunan, antara lain ditunjukkan dengan: <br>
-                    • Kredit  restrukturisasi cukup signifikan <br>
-                    • Penurunan  kualitas kredit  dari Performing Loan ke Non Performing Loan  cukup signifikan <br>
-                    • Sektor  ekonomi berisiko tinggi cukup signifikan <br>
-                    • Jumlah kredit  lancar yang menunggak >7 hari cukup <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain signifikan',
-                    4 => 'Rasio di atas  ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang kurang baik, antara lain ditunjukkan dengan: <br> 
-                    • Kredit  restrukturisasi signifikan <br>
-                    • Penurunan kualitas kreditdari Performing Loan ke Non Performing Loan signifikan <br>
-                    • Sektor ekonomi berisiko tinggi signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan kredit',
-                    5 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang buruk, antara lain ditunjukkan dengan: <br>
-                    • Kredit restrukturisasi sangat signifikan <br>
-                    • Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan sangat signifikan <br>
-                    • Sektor ekonomi berisiko tinggi sangat signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari sangat signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan kredit '
-                ],
-                'catatan' => 'Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan (Kualitas Aset)'
-            ],
+    public function getUnreadCommentCountForFactor()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Forbidden']);
+        }
 
-            // Kredit bermasalah neto / total kredit yang diberikan
-            8 => [
-                'threshold' => '5%',
-                'descriptions' => [
-                    1 => '<= 5%',
-                    2 => "Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang baik, antara lain ditunjukkan dengan: <br>
-                    • Kredit restrukturisasi tidak signifikan <br>
-                    • Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan tidak signifikan <br>
-                    • Sektor ekonomi berisiko tinggi tidak signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari tidak signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain",
-                    3 => 'Rasio di atas  ambang batas  peringkat 1, dengan  kondisi pemberian  kredit memiliki kualitas yang cukup baik, namun terdapat potensi penurunan, antara lain ditunjukkan dengan: <br>
-                    • Kredit  restrukturisasi cukup signifikan <br>
-                    • Penurunan  kualitas kredit  dari Performing Loan ke Non Performing Loan  cukup signifikan <br>
-                    • Sektor  ekonomi berisiko tinggi cukup signifikan <br>
-                    • Jumlah kredit  lancar yang menunggak >7 hari cukup <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain signifikan',
-                    4 => 'Rasio di atas  ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang kurang baik, antara lain ditunjukkan dengan: <br>
-                    • Kredit  restrukturisasi signifikan <br>
-                    • Penurunan kualitas kreditdari Performing Loan ke Non Performing Loan signifikan <br>
-                    • Sektor ekonomi berisiko tinggi signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan kredit',
-                    5 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang buruk, antara lain ditunjukkan dengan: <br>
-                    • Kredit restrukturisasi sangat signifikan <br>
-                    • Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan sangat signifikan <br>
-                    • Sektor ekonomi berisiko tinggi sangat signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari sangat signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan kredit'
-                ],
-                'catatan' => 'Kredit bermasalah neto / total kredit yang diberikan'
-            ],
+        $faktorId = $this->request->getGet('faktor_id');
+        if (!$faktorId || !$this->userKodebpr || !$this->userId || !$this->periodeId) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Missing data.']);
+        }
 
-            // Kredit kualitas rendah / total kredit yang diberikan
-            // Pilar strategi penyediaan dana
-            9 => [
-                'threshold' => '7%',
-                'descriptions' => [
-                    1 => '<= 7%',
-                    2 => "Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang baik, antara lain ditunjukkan dengan: <br>
-                    • Kredit restrukturisasi tidak signifikan <br>
-                    • Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan tidak signifikan <br>
-                    • Sektor ekonomi berisiko tinggi tidak signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari tidak signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain",
-                    3 => 'Rasio di atas  ambang batas  peringkat 1, dengan  kondisi pemberian  kredit memiliki kualitas yang cukup baik, namun terdapat potensi penurunan, antara lain ditunjukkan dengan: <br>
-                    • Kredit  restrukturisasi cukup signifikan <br>
-                    • Penurunan  kualitas kredit  dari Performing Loan ke Non Performing Loan  cukup signifikan <br>
-                    • Sektor  ekonomi berisiko tinggi cukup signifikan <br>
-                    • Jumlah kredit  lancar yang menunggak >7 hari cukup <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain signifikan',
-                    4 => 'Rasio di atas  ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang kurang baik, antara lain ditunjukkan dengan: <br>
-                    • Kredit  restrukturisasi signifikan <br>
-                    • Penurunan kualitas kreditdari Performing Loan ke Non Performing Loan signifikan <br>
-                    • Sektor ekonomi berisiko tinggi signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan kredit',
-                    5 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang buruk, antara lain ditunjukkan dengan: <br>
-                    • Kredit restrukturisasi sangat signifikan <br>
-                    • Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan sangat signifikan <br>
-                    • Sektor ekonomi berisiko tinggi sangat signifikan <br>
-                    • Jumlah kredit lancar yang menunggak >7 hari sangat signifikan <br>
-                    • Komponen aset produktif bermasalah sebagian besar merupakan kredit '
-                ],
-                'catatan' => 'Rasio aset produktif bermasalah terhadap total aset produktif'
-            ],
+        $count = $this->commentReadsModel->countUnreadCommentsForUserByFactor(
+            $faktorId,
+            'KREDITINHEREN',
+            $this->userKodebpr,
+            $this->userId,
+            $this->periodeId
+        );
 
-            // Pilar strategi penyediaan dana
-            10 => [
-                'descriptions' => [
-                    1 => '• Pertumbuhan kredit di atas rata-rata industri, dan <br>
-                        • Seluruhnya disalurkan kepada sektor ekonomi yang dikuasai.  ',
-                    2 => '• Pertumbuhan kredit di atas rata-rata industri, dan <br>
-                    • Sebagian besar disalurkan kepada sektor ekonomi yang dikuasai.  ',
-                    3 => '• Pertumbuhan kredit di atas atau sama dengan ratarata industri, dan Sebagian kecilatau tidak sama sekali disalurkan  kepada sektor ekonomi yang dikuasai atau <br>
-                    • Pertumbuhan kredit di bawah rata-rata industri, dan <br>
-                    • Seluruhnya disalurkan kepada sektor ekonomi yang dikuasai. ',
-                    4 => '• Pertumbuhan kredit di bawah rata-rata industri, dan <br>
-                    • Sebagian besar disalurkan kepada sektor ekonomi yang dikuasai.',
-                    5 => '• Pertumbuhan kredit di bawah rata-rata industri, dan <br>
-                    • Sebagian kecil atau tidak sama sekali disalurkan kepada sektor ekonomi yang dikuasai. '
-                ],
-                'catatan' => 'Penilaian berdasarkan kualitas pelaksanaan tata kelola'
-            ],
+        return $this->response->setJSON(['unread_count' => $count]);
+    }
 
-            // Pilar faktor eksternal
-            11 => [
-                'descriptions' => [
-                    1 => 'Terdapat perubahan faktor eksternal, namun tidak berdampak pada kemampuan debitur untuk membayar kembali pinjaman.',
-                    2 => 'Terdapat perubahan faktor eksternal, yang berdampak pada kemampuan debitur untuk membayar kembali pinjaman sehingga terjadi tunggakan pinjaman namun tidak menyebabkan penurunan kualitas kredit debitur.',
-                    3 => 'Terdapat perubahan faktor eksternal, yang berdampak pada kinerja bisnis debitur sehingga menyebabkan terjadi tunggakan pinjaman tetapi tidak menurunkan kualitas kredit debitur menjadi NPL.',
-                    4 => 'Terdapat perubahan faktor eksternal, yang menyebabkan penurunan kualitas kredit debitur hingga menjadi NPL.',
-                    5 => 'Terdapat perubahan faktor eksternal, yang menyebabkan kebangkrutan debitur.'
-                ],
-                'catatan' => 'Penilaian berdasarkan kualitas pelaksanaan tata kelola'
-            ],
+    public function getKomentarByFaktorId($faktorId)
+    {
+        if (!$this->request->isAJAX() || !is_numeric($faktorId)) {
+            return $this->response->setStatusCode(404)->setBody('Not Found');
+        }
 
-            // Faktor Lainnya
-            12 => [
-                'descriptions' => [
-                    1 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Sangat Rendah',
-                    2 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Rendah',
-                    3 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Sedang',
-                    4 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Tinggi',
-                    5 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Sangat Tinggi'
-                ],
-                'catatan' => 'Pertumbuhan kredit year-on-year'
-            ]
+        $list = $this->komentarModel->getKomentarByFaktorId(
+            'KREDITINHEREN',
+            $faktorId,
+            $this->userKodebpr,
+            $this->periodeId
+        );
 
-            // 13 => [
-            //     'descriptions' => [
-            //         1 => 'Tingkat Risiko: Sangat Rendah',
-            //         2 => "Tingkat Risiko: Rendah",
-            //         3 => 'Tingkat Risiko: Sedang',
-            //         4 => 'Tingkat Risiko: Tinggi',
-            //         5 => 'Tingkat Risiko: Sangat Tinggi'
-            //     ],
-            //     'catatan' => 'Pertumbuhan kredit year-on-year'
-            // ],
-        ];
+        return $this->response->setJSON($list);
+    }
+
+    public function tambahKomentar()
+    {
+        $isAjax = $this->request->isAJAX();
+
+        if (!$isAjax && !isset($_POST['tambahKomentar'])) {
+            return redirect()->to(base_url('Risikokredit'));
+        }
+
+        if (!$this->validate(['komentar' => 'required'])) {
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Komentar tidak boleh kosong']);
+            return redirect()->back()->with('err', $this->validator->listErrors());
+        }
+
+        $faktorId = $this->request->getPost('faktor_id');
+        $komentar = $this->request->getPost('komentar');
+
+        if (!$faktorId) {
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => 'ID tidak ditemukan']);
+            return redirect()->back()->with('err', 'ID tidak ditemukan');
+        }
+
+        try {
+            $result = $this->komentarModel->insert([
+                'subkategori' => 'KREDITINHEREN',
+                'faktor1id' => $faktorId,
+                'komentar' => $komentar,
+                'user_id' => $this->userId,
+                'kodebpr' => $this->userKodebpr,
+                'periode_id' => $this->periodeId,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            if (!$result)
+                throw new \Exception('Gagal menyimpan komentar');
+
+            if ($isAjax) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Komentar berhasil ditambahkan',
+                    'comments' => $this->komentarModel->getKomentarByFaktorId(
+                        'KREDITINHEREN',
+                        $faktorId,
+                        $this->userKodebpr,
+                        $this->periodeId
+                    ),
+                ]);
+            }
+
+            return redirect()->to(base_url('Risikokredit') . '?modal_komentar=' . $faktorId)
+                ->with('message', 'Komentar berhasil ditambahkan');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error tambahKomentar: ' . $e->getMessage());
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menambahkan komentar']);
+            return redirect()->back()->with('err', 'Gagal menambahkan komentar');
+        }
     }
 
     public function cekKomentarBaru()
@@ -621,52 +453,33 @@ class Risikokredit extends Controller
         return $this->response->setJSON($results);
     }
 
-    public function getKomentarByFaktorId($faktorId)
+    public function saveKomentar()
     {
-        if (!$this->request->isAJAX() || !is_numeric($faktorId)) {
-            return $this->response->setStatusCode(404)->setBody('Not Found');
-        }
+        $data = [
+            'faktor1id' => $this->request->getPost('faktor_id'),
+            'kodebpr' => $this->request->getPost('kodebpr'),
+            'komentar' => $this->request->getPost('komentar'),
+            'is_read' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'user_id' => $this->userId,
+        ];
 
-        $komentarList = $this->komentarModel->getKomentarByFaktorId(
-            'KREDITINHEREN',
-            $faktorId,
-            $this->userKodebpr,
-            $this->periodeId
-        );
-
-        return $this->response->setJSON($komentarList);
-    }
-
-    public function getNilaiByFaktorId($faktorId)
-    {
-        if (!$this->request->isAJAX() || !is_numeric($faktorId)) {
-            return $this->response->setStatusCode(404)->setBody('Not Found');
-        }
-
-        $nilaiList = $this->nilaiModel->getNilaiByFaktorId($faktorId);
-        return $this->response->setJSON($nilaiList);
+        $this->komentarModel->insert($data);
+        return $this->response->setJSON(['status' => 'comment_saved']);
     }
 
     public function ubah()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return redirect()->back()->with('error', 'Invalid request');
-        }
 
         $faktor1id = $this->request->getPost('faktor1id');
-
         if (!$faktor1id || !$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak valid'
-            ]);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
         }
 
-        // ✅ AMBIL DATA EXISTING untuk preserve rasiokredit
-        $existingData = $this->nilaiModel
-            ->where('faktor1id', $faktor1id)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
+        $existing = $this->nilaiModel
+            ->where('faktor1id', $faktor1id)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
             ->first();
 
         $data = [
@@ -676,247 +489,130 @@ class Risikokredit extends Controller
             'is_approved' => 0,
             'accdir2' => 0,
             'user_id' => $this->userId,
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
-
-        // ✅ PRESERVE rasiokredit jika ada
-        if ($existingData && !empty($existingData['rasiokredit'])) {
-            $data['rasiokredit'] = $existingData['rasiokredit'];
-        }
+        if ($existing && !empty($existing['rasiokredit']))
+            $data['rasiokredit'] = $existing['rasiokredit'];
 
         try {
             $this->db->table('risikokredit')
-                ->where('faktor1id', $faktor1id)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
+                ->where('faktor1id', $faktor1id)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
                 ->update($data);
 
-            $categoryMapping = [
-                1 => [2, 3, 4, 5],
-                6 => [7, 8, 9]
-            ];
+            $this->handleCategoryAndGlobalRecalc((int) $faktor1id);
 
-            foreach ($categoryMapping as $categoryId => $childrenIds) {
-                if (in_array($faktor1id, $childrenIds)) {
-                    $this->calculateAndSaveCategoryAverage(
-                        $categoryId,
-                        $childrenIds,
-                        $this->userKodebpr,
-                        $this->periodeId
-                    );
-                    break;
-                }
-            }
+            $nilai13 = $this->nilaiModel->where(['faktor1id' => 13, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
 
-            if (in_array($faktor1id, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) {
-                $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
-                $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
-            }
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data berhasil diubah', 'peringkat13' => $nilai13['penilaiankredit'] ?? null]);
 
-            $this->db->table('risikokredit')
-                ->where('faktor1id', 13)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->update(['accdir2' => 0, 'is_approved' => 0]);
-
-            $nilai13 = $this->nilaiModel->where([
-                'faktor1id' => 13,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first();
-
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Data berhasil diubah',
-                'peringkat13' => $nilai13['penilaiankredit'] ?? null
-            ]);
         } catch (\Exception $e) {
             log_message('error', 'Error ubah: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-            ]);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menyimpan data: ' . $e->getMessage()]);
         }
     }
 
     public function ubahkesimpulan()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return redirect()->back()->with('error', 'Invalid request');
-        }
 
         $faktor1id = $this->request->getPost('faktor1id');
         $keterangan = $this->request->getPost('keterangan');
 
-        if (!$faktor1id) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'ID tidak ditemukan.'
-            ]);
+        if (!$faktor1id || !$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
         }
 
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data user atau periode tidak valid'
-            ]);
-        }
-
-        $existingData = $this->nilaiModel
-            ->where('faktor1id', $faktor1id)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
+        $existing = $this->nilaiModel
+            ->where('faktor1id', $faktor1id)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
             ->first();
 
-        if (!$existingData) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak ditemukan'
-            ]);
-        }
-
-        $data = [
-            'keterangan' => $keterangan,
-            'penilaiankredit' => $existingData['penilaiankredit'],
-            'user_id' => $this->userId,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'is_approved' => 0
-        ];
+        if (!$existing)
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak ditemukan']);
 
         try {
-            $result = $this->db->table('risikokredit')
-                ->where('faktor1id', $faktor1id)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->update($data);
-
-            if ($result) {
-                $this->db->table('risikokredit')
-                    ->where('faktor1id', 13)
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->update(['accdir2' => 0, 'is_approved' => 0]);
-
-                return $this->response->setJSON([
-                    'status' => 'success',
-                    'message' => 'Keterangan kesimpulan berhasil diubah'
+            $this->db->table('risikokredit')
+                ->where('faktor1id', $faktor1id)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->update([
+                    'keterangan' => $keterangan,
+                    'penilaiankredit' => $existing['penilaiankredit'],
+                    'user_id' => $this->userId,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'is_approved' => 0,
                 ]);
-            }
 
-            throw new \Exception('Gagal mengubah keterangan');
+            $this->db->table('risikokredit')
+                ->where('faktor1id', 13)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->update(['accdir2' => 0, 'is_approved' => 0]);
+
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Keterangan kesimpulan berhasil diubah']);
+
         } catch (\Exception $e) {
-            log_message('error', 'Error ubah kesimpulan: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal mengubah keterangan: ' . $e->getMessage()
-            ]);
+            log_message('error', 'Error ubahkesimpulan: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
 
     public function ubahketerangan()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return redirect()->back()->with('error', 'Invalid request');
-        }
 
         $faktor1id = $this->request->getPost('faktor1id');
         $keterangan = $this->request->getPost('keterangan');
 
-        if (!$faktor1id) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'ID tidak ditemukan.'
-            ]);
+        if (!$faktor1id || !$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
         }
 
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data user atau periode tidak valid'
-            ]);
-        }
-
-        $existingData = $this->nilaiModel
-            ->where('faktor1id', $faktor1id)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
+        $existing = $this->nilaiModel
+            ->where('faktor1id', $faktor1id)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
             ->first();
 
-        if (!$existingData) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak ditemukan'
-            ]);
-        }
+        if (!$existing)
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak ditemukan']);
 
         $data = [
             'keterangan' => $keterangan,
-            'penilaiankredit' => $existingData['penilaiankredit'],
-            'penjelasanpenilaian' => $existingData['penjelasanpenilaian'],
+            'penilaiankredit' => $existing['penilaiankredit'],
+            'penjelasanpenilaian' => $existing['penjelasanpenilaian'],
             'user_id' => $this->userId,
             'updated_at' => date('Y-m-d H:i:s'),
             'is_approved' => 0,
-            'accdir2' => 0
+            'accdir2' => 0,
         ];
-
-        if (isset($existingData['rasiokredit']) && !empty($existingData['rasiokredit'])) {
-            $data['rasiokredit'] = $existingData['rasiokredit'];
-        }
+        if (!empty($existing['rasiokredit']))
+            $data['rasiokredit'] = $existing['rasiokredit'];
 
         try {
             $this->db->table('risikokredit')
-                ->where('faktor1id', $faktor1id)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
+                ->where('faktor1id', $faktor1id)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
                 ->update($data);
 
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Keterangan berhasil diubah'
-            ]);
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Keterangan berhasil diubah']);
+
         } catch (\Exception $e) {
-            log_message('error', 'Error ubah keterangan: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal mengubah keterangan: ' . $e->getMessage()
-            ]);
+            log_message('error', 'Error ubahketerangan: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
 
     public function tambahNilai()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return redirect()->back()->with('error', 'Invalid request');
-        }
 
-        $validation = $this->validate([
-            'penilaiankredit' => 'required',
-            'keterangan' => 'required',
-        ]);
-
-        if (!$validation) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => $this->validator->listErrors()
-            ]);
+        if (!$this->validate(['penilaiankredit' => 'required', 'keterangan' => 'required'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $this->validator->listErrors()]);
         }
 
         $faktorId = $this->request->getPost('faktor_id');
-
-        if (!$faktorId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'ID tidak ditemukan'
-            ]);
-        }
+        if (!$faktorId)
+            return $this->response->setJSON(['status' => 'error', 'message' => 'ID tidak ditemukan']);
 
         $user = $this->userModel->find($this->userId);
-
-        // Cek apakah data sudah ada
-        $existingData = $this->nilaiModel
-            ->where('faktor1id', $faktorId)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
+        $existing = $this->nilaiModel
+            ->where('faktor1id', $faktorId)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
             ->first();
 
         $data = [
@@ -933,68 +629,27 @@ class Risikokredit extends Controller
         ];
 
         try {
-            // Jika data sudah ada, update dan preserve rasiokredit
-            if ($existingData) {
-                // ✅ PRESERVE rasiokredit
-                if (isset($existingData['rasiokredit']) && !empty($existingData['rasiokredit'])) {
-                    $data['rasiokredit'] = $existingData['rasiokredit'];
-                }
-
+            if ($existing) {
+                if (!empty($existing['rasiokredit']))
+                    $data['rasiokredit'] = $existing['rasiokredit'];
                 $data['updated_at'] = date('Y-m-d H:i:s');
-
                 $this->db->table('risikokredit')
-                    ->where('faktor1id', $faktorId)
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
+                    ->where('faktor1id', $faktorId)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
                     ->update($data);
             } else {
-                // Insert data baru
                 $data['created_at'] = date('Y-m-d H:i:s');
                 $this->db->table('risikokredit')->insert($data);
             }
 
-            // Update category average
-            $categoryMapping = [
-                1 => [2, 3, 4, 5],
-                6 => [7, 8, 9]
-            ];
+            $this->handleCategoryAndGlobalRecalc((int) $faktorId);
 
-            foreach ($categoryMapping as $categoryId => $childrenIds) {
-                if (in_array($faktorId, $childrenIds)) {
-                    $this->calculateAndSaveCategoryAverage(
-                        $categoryId,
-                        $childrenIds,
-                        $this->userKodebpr,
-                        $this->periodeId
-                    );
-                    break;
-                }
-            }
+            $nilai13 = $this->nilaiModel->where(['faktor1id' => 13, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
 
-            // Update factor 13
-            if (in_array($faktorId, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) {
-                $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
-                $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
-            }
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Nilai berhasil ditambahkan', 'peringkat13' => $nilai13['penilaiankredit'] ?? null]);
 
-            // Get updated nilai13
-            $nilai13 = $this->nilaiModel->where([
-                'faktor1id' => 13,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first();
-
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Nilai berhasil ditambahkan',
-                'peringkat13' => $nilai13['penilaiankredit'] ?? null
-            ]);
         } catch (\Exception $e) {
             log_message('error', 'Error tambahNilai: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal menambahkan nilai: ' . $e->getMessage()
-            ]);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menambahkan nilai: ' . $e->getMessage()]);
         }
     }
 
@@ -1002,24 +657,14 @@ class Risikokredit extends Controller
     {
         if ($redirect = $this->checkAuth())
             return $redirect;
-
-        if (!isset($_POST['tambahNilairasio'])) {
+        if (!isset($_POST['tambahNilairasio']))
             return redirect()->to(base_url('Risikokredit'));
-        }
 
-        $validation = $this->validate([
-            'rasiokredit' => 'required',
-            'penilaiankredit' => 'required',
-            'keterangan' => 'required',
-        ]);
-
-        if (!$validation) {
+        if (!$this->validate(['rasiokredit' => 'required', 'penilaiankredit' => 'required', 'keterangan' => 'required'])) {
             return redirect()->back()->with('err', $this->validator->listErrors());
         }
-
-        if (!$this->userKodebpr) {
+        if (!$this->userKodebpr)
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
 
         $faktorId = $this->request->getPost('faktor_id');
         $user = $this->userModel->find($this->userId);
@@ -1040,127 +685,350 @@ class Risikokredit extends Controller
 
         $this->nilaiModel->insertNilai($data);
 
-        // Calculate and save average
         $rataRata = $this->nilaiModel->hitungRataRata($faktorId, $this->userKodebpr, $this->periodeId);
         $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
         $this->nilaiModel->insertOrUpdateRataRata($rataRata, 1, $this->userKodebpr, $this->periodeId);
 
-        return redirect()->to(base_url('Risikokredit') . '?modal_nilai=' . $faktorId)
-            ->with('message', 'Nilai berhasil ditambahkan');
+        return redirect()->to(base_url('Risikokredit') . '?modal_nilai=' . $faktorId)->with('message', 'Nilai berhasil ditambahkan');
     }
 
-    public function tambahKomentar()
+    public function ubahPeringkat13Manual()
     {
-        $isAjax = $this->request->isAJAX();
+        if (!$this->request->isAJAX())
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
 
-        if (!$isAjax && !isset($_POST['tambahKomentar'])) {
-            return redirect()->to(base_url('Risikokredit'));
+        $penilaiankredit = $this->request->getPost('penilaiankredit');
+        if (!in_array($penilaiankredit, ['1', '2', '3', '4', '5'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Pilih peringkat yang valid']);
         }
 
-        $validation = $this->validate(['komentar' => 'required']);
-
-        if (!$validation) {
-            if ($isAjax) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Komentar tidak boleh kosong'
-                ]);
-            }
-            return redirect()->back()->with('err', $this->validator->listErrors());
-        }
-
-        $faktorId = $this->request->getPost('faktor_id');
-        $komentar = $this->request->getPost('komentar');
-
-        if (!$faktorId) {
-            if ($isAjax) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'ID tidak ditemukan'
-                ]);
-            }
-            return redirect()->back()->with('err', 'ID tidak ditemukan');
-        }
+        $labels = ['1' => 'Sangat Rendah', '2' => 'Rendah', '3' => 'Sedang', '4' => 'Tinggi', '5' => 'Sangat Tinggi'];
 
         try {
-            $data = [
-                'subkategori' => "KREDITINHEREN",
+            $this->nilaiModel
+                ->where('faktor1id', 13)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $penilaiankredit,
+                    'penjelasanpenilaian' => 'Tingkat Risiko Kredit Inheren: ' . $labels[$penilaiankredit],
+                    'is_manual' => 1,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ])->update();
+
+            return $this->response->setJSON(['status' => 'success', 'peringkat' => $penilaiankredit, 'is_manual' => 1]);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function resetPeringkat13Auto()
+    {
+        if (!$this->request->isAJAX())
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+
+        try {
+            $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
+            $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
+
+            $labels = ['1' => 'Sangat Rendah', '2' => 'Rendah', '3' => 'Sedang', '4' => 'Tinggi', '5' => 'Sangat Tinggi'];
+
+            $this->nilaiModel
+                ->where('faktor1id', 13)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->set([
+                    'penilaiankredit' => $rataRata,
+                    'penjelasanpenilaian' => 'Tingkat Risiko Kredit Inheren: ' . ($labels[$rataRata] ?? ''),
+                    'is_manual' => 0,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ])->update();
+
+            return $this->response->setJSON(['status' => 'success', 'peringkat' => $rataRata, 'is_manual' => false]);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function simpanNilai13()
+    {
+        if ($redirect = $this->checkAuth())
+            return $redirect;
+
+        $faktorId = 13;
+        $rataRata = 0;
+        $keterangan = $this->request->getPost('keterangan');
+
+        $this->nilaiModel->insertOrUpdateRataRata($rataRata, $faktorId, $this->userKodebpr, $this->periodeId, $keterangan);
+
+        return redirect()->back()->with('message', 'Kesimpulan berhasil disimpan atau diperbarui.');
+    }
+
+    public function simpanKesimpulan13()
+    {
+        if ($redirect = $this->checkAuth())
+            return $redirect;
+
+        if (!$this->validate(['keterangan' => 'required'])) {
+            return redirect()->back()->with('err', 'Keterangan kesimpulan harus diisi');
+        }
+        if (!$this->userKodebpr || !$this->periodeId) {
+            return redirect()->back()->with('error', 'Data user atau periode tidak valid');
+        }
+
+        $faktorId = 13;
+        $keterangan = $this->request->getPost('keterangan');
+        $user = $this->userModel->find($this->userId);
+
+        try {
+            $existing = $this->nilaiModel
+                ->where('faktor1id', $faktorId)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->first();
+
+            if ($existing) {
+                $this->nilaiModel
+                    ->where('faktor1id', $faktorId)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                    ->set(['keterangan' => $keterangan, 'user_id' => $this->userId, 'fullname' => $user['fullname'] ?? 'Unknown', 'updated_at' => date('Y-m-d H:i:s')])
+                    ->update();
+                return redirect()->to(base_url('Risikokredit'))->with('message', 'Kesimpulan berhasil diupdate');
+            }
+
+            $rataRata = $this->nilaiModel->hitungRataRata($faktorId, $this->userKodebpr, $this->periodeId);
+            $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
+            $labels = ['1' => 'Sangat Rendah', '2' => 'Rendah', '3' => 'Sedang', '4' => 'Tinggi', '5' => 'Sangat Tinggi'];
+
+            $this->nilaiModel->insert([
                 'faktor1id' => $faktorId,
-                'komentar' => $komentar,
+                'penilaiankredit' => $rataRata,
+                'penjelasanpenilaian' => 'Tingkat Risiko Kredit Inheren: ' . ($labels[$rataRata] ?? 'N/A'),
+                'keterangan' => $keterangan,
+                'fullname' => $user['fullname'] ?? 'Unknown',
                 'user_id' => $this->userId,
                 'kodebpr' => $this->userKodebpr,
                 'periode_id' => $this->periodeId,
-                'created_at' => date('Y-m-d H:i:s')
-            ];
+                'is_approved' => 0,
+                'accdir2' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
 
-            $result = $this->komentarModel->insert($data);
-
-            if ($result) {
-                if ($isAjax) {
-                    $komentarList = $this->komentarModel->getKomentarByFaktorId(
-                        'KREDITINHEREN',
-                        $faktorId,
-                        $this->userKodebpr,
-                        $this->periodeId
-                    );
-
-                    return $this->response->setJSON([
-                        'status' => 'success',
-                        'message' => 'Komentar berhasil ditambahkan',
-                        'comments' => $komentarList
-                    ]);
-                }
-
-                return redirect()->to(base_url('Risikokredit') . '?modal_komentar=' . $faktorId)
-                    ->with('message', 'Komentar berhasil ditambahkan');
-            } else {
-                throw new \Exception('Gagal menyimpan komentar');
-            }
+            return redirect()->to(base_url('Risikokredit'))->with('message', 'Kesimpulan berhasil disimpan');
 
         } catch (\Exception $e) {
-            log_message('error', 'Error tambahKomentar: ' . $e->getMessage());
+            log_message('error', 'Error simpanKesimpulan13: ' . $e->getMessage());
+            return redirect()->back()->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 
-            if ($isAjax) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Gagal menambahkan komentar: ' . $e->getMessage()
-                ]);
+    public function simpanNilai14()
+    {
+        if ($redirect = $this->checkAuth())
+            return $redirect;
+
+        if (!$this->validate(['penilaiankredit' => 'required|in_list[1,2,3,4,5]'])) {
+            return redirect()->back()->with('err', 'Pilih tingkat risiko terlebih dahulu');
+        }
+        if (!$this->userKodebpr || !$this->periodeId) {
+            return redirect()->back()->with('error', 'Data user atau periode tidak valid');
+        }
+
+        $penilaiankredit = $this->request->getPost('penilaiankredit');
+        $user = $this->userModel->find($this->userId);
+        $labels = ['1' => 'Sangat Rendah', '2' => 'Rendah', '3' => 'Sedang', '4' => 'Tinggi', '5' => 'Sangat Tinggi'];
+        $penjelasan = 'Tingkat Risiko Kredit Inheren: ' . ($labels[$penilaiankredit] ?? '');
+
+        try {
+            $existing = $this->nilaiModel
+                ->where('faktor1id', 14)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->first();
+
+            $base = [
+                'penilaiankredit' => $penilaiankredit,
+                'penjelasanpenilaian' => $penjelasan,
+                'keterangan' => 'Tingkat Risiko Kredit Inheren Posisi Sebelumnya',
+                'user_id' => $this->userId,
+                'fullname' => $user['fullname'] ?? 'Unknown',
+            ];
+
+            if ($existing) {
+                $this->nilaiModel
+                    ->where('faktor1id', 14)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                    ->set(array_merge($base, ['updated_at' => date('Y-m-d H:i:s')]))->update();
+            } else {
+                $this->nilaiModel->insert(array_merge($base, [
+                    'faktor1id' => 14,
+                    'kodebpr' => $this->userKodebpr,
+                    'periode_id' => $this->periodeId,
+                    'is_approved' => 0,
+                    'accdir2' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]));
             }
 
-            return redirect()->back()->with('err', 'Gagal menambahkan komentar');
+            return redirect()->to(base_url('Risikokredit'))->with('message', 'Data berhasil disimpan');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error simpanNilai14: ' . $e->getMessage());
+            return redirect()->back()->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    public function approve($idNilai = null)
+    {
+        if ($idNilai === null)
+            return redirect()->back()->with('err', 'ID Faktor tidak valid.');
+
+        $this->db->table('risikokredit')
+            ->where('id', $idNilai)
+            ->update(['is_approved' => 1, 'approved_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')]);
+
+        return redirect()->back()->with('message', 'Data berhasil disetujui');
+    }
+
+    public function unapprove($idNilai)
+    {
+        if (!is_numeric($idNilai) || $idNilai <= 0)
+            return redirect()->back()->with('err', 'ID Faktor tidak valid.');
+
+        $nilaiFaktor = $this->nilaiModel->find($idNilai);
+        if (!$nilaiFaktor)
+            return redirect()->back()->with('err', 'Data tidak ditemukan.');
+
+        if ($this->nilaiModel->update($idNilai, ['is_approved' => 0, 'approved_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')])) {
+            return redirect()->back()->with('message', 'Data approval dibatalkan.');
+        }
+        return redirect()->back()->with('err', 'Terjadi kesalahan saat membatalkan approval.');
+    }
+
+    public function approveSemua()
+    {
+        $isAjax = $this->request->isAJAX();
+
+        if (!$this->userKodebpr || !$this->periodeId) {
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Kode BPR atau Periode ID tidak valid']);
+            return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
+        }
+
+        $requiredFaktor = array_diff(array_merge(range(1, 11), [13]), [12]);
+        $totalRequired = count($requiredFaktor);
+
+        $checkData = $this->nilaiModel
+            ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count')
+            ->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+            ->whereIn('faktor1id', $requiredFaktor)->first();
+
+        if ((int) $checkData['filled_count'] < $totalRequired) {
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Semua faktor wajib harus diisi terlebih dahulu']);
+            return redirect()->back()->with('err', 'Semua faktor wajib harus diisi terlebih dahulu');
+        }
+
+        try {
+            $this->db->table('risikokredit')
+                ->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->whereIn('faktor1id', $requiredFaktor)
+                ->update(['is_approved' => 1, 'approved_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')]);
+
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Semua data berhasil disetujui.']);
+            return redirect()->back()->with('message', 'Semua data berhasil disetujui.');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error approveSemua: ' . $e->getMessage());
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Terjadi kesalahan sistem']);
+            return redirect()->back()->with('err', 'Terjadi kesalahan sistem');
+        }
+    }
+
+    public function unapproveSemua()
+    {
+        $isAjax = $this->request->isAJAX();
+
+        if (!$this->userKodebpr || !$this->periodeId) {
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
+            return redirect()->back()->with('err', 'Data tidak valid');
+        }
+
+        try {
+            $this->db->table('risikokredit')
+                ->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->whereIn('faktor1id', range(1, 13))
+                ->update(['is_approved' => 0, 'approved_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')]);
+
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Semua approval berhasil dibatalkan.']);
+            return redirect()->back()->with('message', 'Semua data berhasil dibatalkan persetujuannya.');
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error unapproveSemua: ' . $e->getMessage());
+            if ($isAjax)
+                return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
+            return redirect()->back()->with('err', $e->getMessage());
+        }
+    }
+
+    public function accdir2()
+    {
+        $faktor1id = $this->request->getPost('faktor1id');
+        if (!$faktor1id)
+            return redirect()->back()->with('error', 'Data tidak lengkap');
+
+        $this->db->table('risikokredit')
+            ->where('faktor1id', $faktor1id)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+            ->update(['accdir2' => 1, 'accdir2_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')]);
+
+        return redirect()->back()->with('message', 'Data berhasil disetujui');
+    }
+
+    public function unapprovedir2()
+    {
+        if ($this->request->getMethod() !== 'post')
+            return $this->response->setStatusCode(405, 'Method Not Allowed');
+
+        $faktor1id = $this->request->getPost('faktor1id');
+        $kodebpr = $this->request->getPost('kodebpr');
+        $periodeId = $this->request->getPost('periode_id');
+
+        if (!$faktor1id || !$kodebpr || !$periodeId)
+            return redirect()->to('/Risikokredit')->with('error', 'Data tidak lengkap');
+
+        $nilaiFaktor = $this->nilaiModel
+            ->where('faktor1id', $faktor1id)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+            ->first();
+
+        if (!$nilaiFaktor)
+            return redirect()->to('/Risikokredit')->with('error', 'Data tidak ditemukan');
+
+        if ($this->nilaiModel->update($nilaiFaktor['id'], ['accdir2' => 0, 'accdir2_by' => $this->userId, 'approved_at' => date('Y-m-d H:i:s')])) {
+            return redirect()->to('/Risikokredit')->with('message', 'Persetujuan dibatalkan');
+        }
+
+        return redirect()->to('/Risikokredit')->with('error', 'Gagal memperbarui data');
     }
 
     public function simpanKalkulator()
     {
-        if ($redirect = $this->checkAuth()) {
+        if ($redirect = $this->checkAuth())
             return $redirect;
-        }
-
-        if (!isset($_POST['simpanKalkulator'])) {
+        if (!isset($_POST['simpanKalkulator']))
             return redirect()->to(base_url('Risikokredit'));
-        }
-
-        if (!$this->userKodebpr) {
+        if (!$this->userKodebpr)
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
-
-        if (!$this->periodeId) {
+        if (!$this->periodeId)
             return redirect()->back()->with('error', 'Periode tidak valid');
-        }
 
-        $validation = $this->validate([
-            'aba' => 'required|decimal',
-            'kydbank' => 'required|decimal',
-            'kydpihak3' => 'required|decimal',
-            'totalaset' => 'required|decimal',
-            'total25debitur' => 'required|decimal',
-            'perdagangan' => 'required|decimal',
-            'jasa' => 'required|decimal',
-            'konsumsirumah' => 'required|decimal',
-        ]);
-
-        if (!$validation) {
+        if (
+            !$this->validate([
+                'aba' => 'required|decimal',
+                'kydbank' => 'required|decimal',
+                'kydpihak3' => 'required|decimal',
+                'totalaset' => 'required|decimal',
+                'total25debitur' => 'required|decimal',
+                'perdagangan' => 'required|decimal',
+                'jasa' => 'required|decimal',
+                'konsumsirumah' => 'required|decimal',
+            ])
+        ) {
             return redirect()->back()->with('err', $this->validator->listErrors());
         }
 
@@ -1168,24 +1036,21 @@ class Risikokredit extends Controller
         $kydbank = $this->request->getPost('kydbank');
         $kydpihak3 = $this->request->getPost('kydpihak3');
         $totalaset = $this->request->getPost('totalaset');
-        $total25debitur = $this->request->getPost('total25debitur');
+        $total25 = $this->request->getPost('total25debitur');
         $perdagangan = $this->request->getPost('perdagangan');
         $jasa = $this->request->getPost('jasa');
         $konsumsirumah = $this->request->getPost('konsumsirumah');
 
-        // Hitung nilai-nilai turunan 
         $kydgross = $kydbank + $kydpihak3;
         $asetproduktif = $aba + $kydgross;
         $rasioasetproduktif = $totalaset > 0 ? ($asetproduktif / $totalaset) * 100 : 0;
-        $rasiokreditdiberikan = $asetproduktif > 0 ? ($kydgross / $asetproduktif) * 100 : 0;
-        $rasio25debitur = $kydgross > 0 ? ($total25debitur / $kydgross) * 100 : 0;
+        $rasiokreditdib = $asetproduktif > 0 ? ($kydgross / $asetproduktif) * 100 : 0;
+        $rasio25debitur = $kydgross > 0 ? ($total25 / $kydgross) * 100 : 0;
         $sektorekonomi = $perdagangan + $jasa + $konsumsirumah;
         $rasioekonomi = $kydgross > 0 ? ($sektorekonomi / $kydgross) * 100 : 0;
 
-        // Ambil data user
         $user = $this->userModel->find($this->userId);
 
-        // Siapkan data untuk disimpan
         $data = [
             'user_id' => $this->userId,
             'fullname' => $user['fullname'] ?? 'Unknown',
@@ -1196,130 +1061,74 @@ class Risikokredit extends Controller
             'kydpihak3' => $kydpihak3,
             'kydgross' => $kydgross,
             'totalaset' => $totalaset,
-            'total25debitur' => $total25debitur,
+            'total25debitur' => $total25,
             'perdagangan' => $perdagangan,
             'jasa' => $jasa,
             'konsumsirumah' => $konsumsirumah,
             'sektorekonomi' => $sektorekonomi,
             'asetproduktif' => $asetproduktif,
             'rasioasetproduktif' => $rasioasetproduktif,
-            'rasiokreditdiberikan' => $rasiokreditdiberikan,
+            'rasiokreditdiberikan' => $rasiokreditdib,
             'rasio25debitur' => $rasio25debitur,
             'rasioekonomi' => $rasioekonomi,
         ];
 
         try {
-            // Cek apakah data sudah ada berdasarkan kodebpr dan periode_id
-            $existingData = $this->kalkulatorModel
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->first();
+            $existing = $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->first();
 
-            if ($existingData) {
-                // Data sudah ada, lakukan UPDATE
+            if ($existing) {
                 $data['updated_at'] = date('Y-m-d H:i:s');
-
-                $result = $this->kalkulatorModel
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->set($data)
-                    ->update();
-
-                if ($result) {
-                    return redirect()->to(base_url('Risikokredit'))
-                        ->with('message', 'Data kalkulator berhasil diupdate');
-                } else {
-                    throw new \Exception('Gagal mengupdate data');
-                }
-
-            } else {
-                // Data belum ada, lakukan INSERT
-                $data['created_at'] = date('Y-m-d H:i:s');
-
-                $result = $this->kalkulatorModel->insert($data);
-
-                if ($result) {
-                    return redirect()->to(base_url('Risikokredit'))
-                        ->with('message', 'Data kalkulator berhasil disimpan');
-                } else {
-                    throw new \Exception('Gagal menyimpan data');
-                }
+                $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->set($data)->update();
+                return redirect()->to(base_url('Risikokredit'))->with('message', 'Data kalkulator berhasil diupdate');
             }
+
+            $data['created_at'] = date('Y-m-d H:i:s');
+            $this->kalkulatorModel->insert($data);
+            return redirect()->to(base_url('Risikokredit'))->with('message', 'Data kalkulator berhasil disimpan');
 
         } catch (\Exception $e) {
             log_message('error', 'Error simpanKalkulator: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
     public function insertRasioToKertasKerja()
     {
-        if ($redirect = $this->checkAuth()) {
+        if ($redirect = $this->checkAuth())
             return $redirect;
-        }
-
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return redirect()->to(base_url('Risikokredit'));
-        }
-
         if (!$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'User tidak memiliki kode BPR atau periode yang valid'
-            ]);
+            return $this->response->setJSON(['success' => false, 'message' => 'Data tidak valid']);
         }
 
-        // ✅ Ambil SEMUA data dari request (termasuk data kalkulator)
         $aba = $this->request->getPost('aba');
         $kydbank = $this->request->getPost('kydbank');
         $kydpihak3 = $this->request->getPost('kydpihak3');
         $totalaset = $this->request->getPost('totalaset');
-        $total25debitur = $this->request->getPost('total25debitur');
+        $total25 = $this->request->getPost('total25debitur');
         $perdagangan = $this->request->getPost('perdagangan');
         $jasa = $this->request->getPost('jasa');
-        $konsumsirumah = $this->request->getPost('konsumsirumah');
+        $konsumsi = $this->request->getPost('konsumsirumah');
 
-        // Ambil rasio yang sudah dihitung
-        $rasioasetproduktif = $this->request->getPost('rasioasetproduktif');
-        $rasiokreditdiberikan = $this->request->getPost('rasiokreditdiberikan');
-        $rasio25debitur = $this->request->getPost('rasio25debitur');
-        $rasioekonomi = $this->request->getPost('rasioekonomi');
+        $rasioAP = $this->request->getPost('rasioasetproduktif');
+        $rasioKD = $this->request->getPost('rasiokreditdiberikan');
+        $rasio25 = $this->request->getPost('rasio25debitur');
+        $rasioE = $this->request->getPost('rasioekonomi');
 
-        // ✅ Hitung nilai turunan
-        $kydgross = ($kydbank ?? 0) + ($kydpihak3 ?? 0);
-        $asetproduktif = ($aba ?? 0) + $kydgross;
-        $sektorekonomi = ($perdagangan ?? 0) + ($jasa ?? 0) + ($konsumsirumah ?? 0);
-
-        // ✅ Debug log
-        log_message('info', 'Insert Rasio - Data diterima: ' . json_encode([
-            'rasioasetproduktif' => $rasioasetproduktif,
-            'rasiokreditdiberikan' => $rasiokreditdiberikan,
-            'rasio25debitur' => $rasio25debitur,
-            'rasioekonomi' => $rasioekonomi
-        ]));
-
-        // Validasi - pastikan ada minimal 1 rasio
-        if (
-            empty($rasioasetproduktif) && empty($rasiokreditdiberikan) &&
-            empty($rasio25debitur) && empty($rasioekonomi)
-        ) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Tidak ada data rasio untuk dimasukkan. Silakan hitung terlebih dahulu.'
-            ]);
+        if (!$rasioAP && !$rasioKD && !$rasio25 && !$rasioE) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Tidak ada data rasio. Silakan hitung terlebih dahulu.']);
         }
 
+        $kydgross = ($kydbank ?? 0) + ($kydpihak3 ?? 0);
+        $asetproduktif = ($aba ?? 0) + $kydgross;
+        $sektorekonomi = ($perdagangan ?? 0) + ($jasa ?? 0) + ($konsumsi ?? 0);
         $user = $this->userModel->find($this->userId);
 
         try {
-            // ✅ STEP 1: Simpan/Update ke database kalkulator_kredit
-            $existingKalkulator = $this->kalkulatorModel
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->first();
+            $existingKal = $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->first();
 
-            $kalkulatorData = [
+            $kalData = [
                 'user_id' => $this->userId,
                 'fullname' => $user['fullname'] ?? 'Unknown',
                 'kodebpr' => $this->userKodebpr,
@@ -1328,216 +1137,91 @@ class Risikokredit extends Controller
                 'kydbank' => $kydbank ?? 0,
                 'kydpihak3' => $kydpihak3 ?? 0,
                 'totalaset' => $totalaset ?? 0,
-                'total25debitur' => $total25debitur ?? 0,
+                'total25debitur' => $total25 ?? 0,
                 'perdagangan' => $perdagangan ?? 0,
                 'jasa' => $jasa ?? 0,
-                'konsumsirumah' => $konsumsirumah ?? 0,
+                'konsumsirumah' => $konsumsi ?? 0,
                 'kydgross' => $kydgross,
                 'asetproduktif' => $asetproduktif,
                 'sektorekonomi' => $sektorekonomi,
-                'rasioasetproduktif' => $rasioasetproduktif ?? 0,
-                'rasiokreditdiberikan' => $rasiokreditdiberikan ?? 0,
-                'rasio25debitur' => $rasio25debitur ?? 0,
-                'rasioekonomi' => $rasioekonomi ?? 0,
+                'rasioasetproduktif' => $rasioAP ?? 0,
+                'rasiokreditdiberikan' => $rasioKD ?? 0,
+                'rasio25debitur' => $rasio25 ?? 0,
+                'rasioekonomi' => $rasioE ?? 0,
             ];
 
-            if ($existingKalkulator) {
-                $kalkulatorData['updated_at'] = date('Y-m-d H:i:s');
-                $this->kalkulatorModel->update($existingKalkulator['id'], $kalkulatorData);
-                log_message('info', 'Kalkulator data updated for ID: ' . $existingKalkulator['id']);
+            if ($existingKal) {
+                $kalData['updated_at'] = date('Y-m-d H:i:s');
+                $this->kalkulatorModel->update($existingKal['id'], $kalData);
             } else {
-                $kalkulatorData['created_at'] = date('Y-m-d H:i:s');
-                $this->kalkulatorModel->insert($kalkulatorData);
-                log_message('info', 'Kalkulator data inserted successfully');
+                $kalData['created_at'] = date('Y-m-d H:i:s');
+                $this->kalkulatorModel->insert($kalData);
             }
 
-            // ✅ STEP 2: Insert/Update rasio ke tabel risikokredit
-            $rasioMapping = [
-                2 => $rasioasetproduktif,
-                3 => $rasiokreditdiberikan,
-                4 => $rasio25debitur,
-                5 => $rasioekonomi
-            ];
+            $rasioMapping = [2 => $rasioAP, 3 => $rasioKD, 4 => $rasio25, 5 => $rasioE];
+            [$successCount, $processed] = $this->upsertRasioRows($rasioMapping, $user);
 
-            $successCount = 0;
-            $errorMessages = [];
-            $processedFaktors = [];
-
-            foreach ($rasioMapping as $faktorId => $rasioValue) {
-                // ✅ PERBAIKAN: Hanya skip jika benar-benar kosong atau null
-                // Nilai 0 tetap diproses (karena 0% adalah nilai valid)
-                if ($rasioValue === null || $rasioValue === '' || $rasioValue === false) {
-                    log_message('info', "Faktor {$faktorId}: Skipped (null or empty)");
-                    continue;
-                }
-
-                // ✅ Convert ke float untuk memastikan tipe data benar
-                $rasioValue = (float) $rasioValue;
-
-                log_message('info', "Processing Faktor {$faktorId}: {$rasioValue}");
-
-                $existingData = $this->nilaiModel
-                    ->where('faktor1id', $faktorId)
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->first();
-
-                if ($existingData) {
-                    // UPDATE
-                    $updateData = [
-                        'rasiokredit' => $rasioValue,
-                        'user_id' => $this->userId,
-                        'fullname' => $user['fullname'] ?? 'Unknown',
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ];
-
-                    $result = $this->nilaiModel
-                        ->where('faktor1id', $faktorId)
-                        ->where('kodebpr', $this->userKodebpr)
-                        ->where('periode_id', $this->periodeId)
-                        ->set($updateData)
-                        ->update();
-
-                    if ($result) {
-                        $successCount++;
-                        $processedFaktors[] = $faktorId;
-                        log_message('info', "Faktor {$faktorId}: Updated successfully with value {$rasioValue}");
-                    } else {
-                        $errorMessages[] = "Gagal update rasio untuk Faktor ID {$faktorId}";
-                        log_message('error', "Faktor {$faktorId}: Update failed");
-                    }
-                } else {
-                    // INSERT
-                    $insertData = [
-                        'faktor1id' => $faktorId,
-                        'rasiokredit' => $rasioValue,
-                        'fullname' => $user['fullname'] ?? 'Unknown',
-                        'user_id' => $this->userId,
-                        'kodebpr' => $this->userKodebpr,
-                        'periode_id' => $this->periodeId,
-                        'is_approved' => 0,
-                        'accdir2' => 0,
-                        'created_at' => date('Y-m-d H:i:s'),
-                    ];
-
-                    $result = $this->nilaiModel->insert($insertData);
-
-                    if ($result) {
-                        $successCount++;
-                        $processedFaktors[] = $faktorId;
-                        log_message('info', "Faktor {$faktorId}: Inserted successfully with value {$rasioValue}");
-                    } else {
-                        $errorMessages[] = "Gagal insert rasio untuk Faktor ID {$faktorId}";
-                        log_message('error', "Faktor {$faktorId}: Insert failed");
-                    }
-                }
-
-                // Update rata-rata kategori jika berhasil
-                if ($result && in_array($faktorId, [2, 3, 4, 5])) {
-                    $this->calculateAndSaveCategoryAverage(1, [2, 3, 4, 5], $this->userKodebpr, $this->periodeId);
-                }
-            }
-
-            // Update rata-rata total
             if ($successCount > 0) {
+                $this->calculateAndSaveCategoryAverage(1, [2, 3, 4, 5], $this->userKodebpr, $this->periodeId);
                 $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
                 $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
             }
 
-            // Response
-            if ($successCount > 0) {
-                $message = "Berhasil menyimpan data kalkulator dan memasukkan {$successCount} rasio ke kertas kerja (Faktor: " .
-                    implode(', ', $processedFaktors) . ")";
-
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => $message,
-                    'count' => $successCount,
-                    'processed_faktors' => $processedFaktors
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Tidak ada rasio yang berhasil dimasukkan',
-                    'errors' => $errorMessages
-                ]);
-            }
+            return $this->response->setJSON(['success' => true, 'message' => "Berhasil memasukkan {$successCount} rasio ke kertas kerja", 'count' => $successCount, 'processed_faktors' => $processed]);
 
         } catch (\Exception $e) {
             log_message('error', 'Error insertRasioToKertasKerja: ' . $e->getMessage());
-
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
-                'errors' => $errorMessages ?? []
-            ]);
+            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
     }
 
     public function simpanKalkulatorKualitasAset()
     {
-        if ($redirect = $this->checkAuth()) {
+        if ($redirect = $this->checkAuth())
             return $redirect;
-        }
-
-        if (!isset($_POST['simpanKalkulatorKualitasAset'])) {
+        if (!isset($_POST['simpanKalkulatorKualitasAset']))
             return redirect()->to(base_url('Risikokredit'));
-        }
-
-        if (!$this->userKodebpr) {
+        if (!$this->userKodebpr)
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid');
-        }
-
-        if (!$this->periodeId) {
+        if (!$this->periodeId)
             return redirect()->back()->with('error', 'Periode tidak valid');
-        }
 
-        $validation = $this->validate([
-            'abanpl' => 'required|decimal',
-            'kydnpl3' => 'required|decimal',
-            'kydnpl4' => 'required|decimal',
-            'kydnpl5' => 'required|decimal',
-            'kreditdpk2' => 'required|decimal',
-            'kreditbermasalah' => 'required|decimal',
-            'kreditrestruktur1' => 'required|decimal',
-        ]);
-
-        if (!$validation) {
+        if (
+            !$this->validate([
+                'abanpl' => 'required|decimal',
+                'kydnpl3' => 'required|decimal',
+                'kydnpl4' => 'required|decimal',
+                'kydnpl5' => 'required|decimal',
+                'kreditdpk2' => 'required|decimal',
+                'kreditbermasalah' => 'required|decimal',
+                'kreditrestruktur1' => 'required|decimal',
+            ])
+        ) {
             return redirect()->back()->with('err', $this->validator->listErrors());
         }
 
+        $kalData1 = $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->first();
+        if (!$kalData1 || empty($kalData1['asetproduktif']) || empty($kalData1['kydgross'])) {
+            return redirect()->back()->with('error', 'Silakan isi Kalkulator Komposisi Portofolio Aset terlebih dahulu');
+        }
+
+        $asetproduktif = $kalData1['asetproduktif'];
+        $kydgross = $kalData1['kydgross'];
         $abanpl = $this->request->getPost('abanpl');
         $kydnpl3 = $this->request->getPost('kydnpl3');
         $kydnpl4 = $this->request->getPost('kydnpl4');
         $kydnpl5 = $this->request->getPost('kydnpl5');
         $kreditdpk2 = $this->request->getPost('kreditdpk2');
         $kreditbermasalah = $this->request->getPost('kreditbermasalah');
-        $kreditrestruktur1 = $this->request->getPost('kreditrestruktur1');
-
-        $kalkulatorData1 = $this->kalkulatorModel
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->first();
-
-        if (!$kalkulatorData1 || empty($kalkulatorData1['asetproduktif']) || empty($kalkulatorData1['kydgross'])) {
-            return redirect()->back()->with('error', 'Silakan isi Kalkulator Komposisi Portofolio Aset terlebih dahulu');
-        }
-
-        $asetproduktif = $kalkulatorData1['asetproduktif'];
-        $kydgross = $kalkulatorData1['kydgross'];
+        $kreditrestruktur = $this->request->getPost('kreditrestruktur1');
 
         $kydkoleknpl = $kydnpl3 + $kydnpl4 + $kydnpl5;
         $asetproduktifbermasalah = $abanpl + $kydkoleknpl;
-        $kreditkualitasrendah = $kreditdpk2 + $kreditbermasalah + $kreditrestruktur1;
+        $kreditkualitasrendah = $kreditdpk2 + $kreditbermasalah + $kreditrestruktur;
 
-        $rasioasetproduktifbermasalah = $asetproduktif > 0 ?
-            ($asetproduktifbermasalah / $asetproduktif) * 100 : 0;
-        $rasiokreditbermasalah = $kydgross > 0 ?
-            ($kreditbermasalah / $kydgross) * 100 : 0;
-        $rasiokreditkualitasrendah = $kydgross > 0 ?
-            ($kreditkualitasrendah / $kydgross) * 100 : 0;
-
-        $user = $this->userModel->find($this->userId);
+        $rasioAPB = $asetproduktif > 0 ? ($asetproduktifbermasalah / $asetproduktif) * 100 : 0;
+        $rasioKB = $kydgross > 0 ? ($kreditbermasalah / $kydgross) * 100 : 0;
+        $rasioKKR = $kydgross > 0 ? ($kreditkualitasrendah / $kydgross) * 100 : 0;
 
         $data = [
             'abanpl' => $abanpl,
@@ -1545,1023 +1229,117 @@ class Risikokredit extends Controller
             'kydnpl4' => $kydnpl4,
             'kydnpl5' => $kydnpl5,
             'kreditdpk2' => $kreditdpk2,
-            'kreditrestruktur1' => $kreditrestruktur1,
+            'kreditrestruktur1' => $kreditrestruktur,
             'asetproduktifbermasalah' => $asetproduktifbermasalah,
             'kydkoleknpl' => $kydkoleknpl,
             'kreditbermasalah' => $kreditbermasalah,
-            'rasioasetproduktifbermasalah' => $rasioasetproduktifbermasalah,
-            'rasiokreditbermasalah' => $rasiokreditbermasalah,
-            'rasiokreditkualitasrendah' => $rasiokreditkualitasrendah,
+            'rasioasetproduktifbermasalah' => $rasioAPB,
+            'rasiokreditbermasalah' => $rasioKB,
+            'rasiokreditkualitasrendah' => $rasioKKR,
         ];
 
         try {
-            $existingData = $this->kalkulatorModel
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->first();
+            $existing = $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->first();
+            if (!$existing)
+                return redirect()->back()->with('error', 'Data kalkulator pertama belum ada.');
 
-            if ($existingData) {
-                $data['updated_at'] = date('Y-m-d H:i:s');
-
-                $result = $this->kalkulatorModel
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->set($data)
-                    ->update();
-
-                if ($result) {
-                    return redirect()->to(base_url('Risikokredit'))
-                        ->with('message', 'Data kalkulator kualitas aset berhasil diupdate');
-                } else {
-                    throw new \Exception('Gagal mengupdate data');
-                }
-
-            } else {
-                return redirect()->back()
-                    ->with('error', 'Data kalkulator pertama belum ada. Silakan isi terlebih dahulu.');
-            }
+            $data['updated_at'] = date('Y-m-d H:i:s');
+            $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->set($data)->update();
+            return redirect()->to(base_url('Risikokredit'))->with('message', 'Data kalkulator kualitas aset berhasil diupdate');
 
         } catch (\Exception $e) {
             log_message('error', 'Error simpanKalkulatorKualitasAset: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
     public function insertRasioKualitasAsetToKertasKerja()
     {
-        if ($redirect = $this->checkAuth()) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Unauthorized'
-            ]);
-        }
-
-        log_message('info', 'insertRasioKualitasAsetToKertasKerja dipanggil');
-
+        if ($redirect = $this->checkAuth())
+            return $redirect;
         if (!$this->userKodebpr || !$this->periodeId) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'User tidak memiliki kode BPR atau periode yang valid'
-            ]);
+            return $this->response->setJSON(['success' => false, 'message' => 'Data tidak valid']);
         }
 
-        // ✅ Ambil SEMUA data dari request
         $abanpl = $this->request->getPost('abanpl');
         $kydnpl3 = $this->request->getPost('kydnpl3');
         $kydnpl4 = $this->request->getPost('kydnpl4');
         $kydnpl5 = $this->request->getPost('kydnpl5');
         $kreditdpk2 = $this->request->getPost('kreditdpk2');
-        $kreditbermasalah = $this->request->getPost('kreditbermasalah');
-        $kreditrestruktur1 = $this->request->getPost('kreditrestruktur1');
+        $kreditbmsalah = $this->request->getPost('kreditbermasalah');
+        $kreditrstr = $this->request->getPost('kreditrestruktur1');
 
-        // Ambil rasio yang sudah dihitung
-        $rasioasetproduktifbermasalah = $this->request->getPost('rasioasetproduktifbermasalah');
-        $rasiokreditbermasalah = $this->request->getPost('rasiokreditbermasalah');
-        $rasiokreditkualitasrendah = $this->request->getPost('rasiokreditkualitasrendah');
+        $rasioAPB = $this->request->getPost('rasioasetproduktifbermasalah');
+        $rasioKB = $this->request->getPost('rasiokreditbermasalah');
+        $rasioKKR = $this->request->getPost('rasiokreditkualitasrendah');
 
-        log_message('info', 'Rasio values: ' . json_encode([
-            'rasioasetproduktifbermasalah' => $rasioasetproduktifbermasalah,
-            'rasiokreditbermasalah' => $rasiokreditbermasalah,
-            'rasiokreditkualitasrendah' => $rasiokreditkualitasrendah
-        ]));
-
-        if (
-            empty($rasioasetproduktifbermasalah) && empty($rasiokreditbermasalah) &&
-            empty($rasiokreditkualitasrendah)
-        ) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Tidak ada data rasio untuk dimasukkan. Silakan hitung terlebih dahulu.'
-            ]);
+        if (!$rasioAPB && !$rasioKB && !$rasioKKR) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Tidak ada data rasio. Silakan hitung terlebih dahulu.']);
         }
 
         $user = $this->userModel->find($this->userId);
 
         try {
-            // ✅ STEP 1: Simpan/Update ke database kalkulator_kredit
-            $existingKalkulator = $this->kalkulatorModel
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->first();
-
-            if (!$existingKalkulator) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Data kalkulator pertama belum ada. Silakan isi Kalkulator Komposisi Portofolio Aset terlebih dahulu.'
-                ]);
+            $existingKal = $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->first();
+            if (!$existingKal) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Isi Kalkulator Komposisi Portofolio Aset terlebih dahulu.']);
             }
 
-            // Hitung nilai turunan
-            $kydkoleknpl = ($kydnpl3 ?? 0) + ($kydnpl4 ?? 0) + ($kydnpl5 ?? 0);
-            $asetproduktifbermasalah = ($abanpl ?? 0) + $kydkoleknpl;
-            $kreditkualitasrendah = ($kreditdpk2 ?? 0) + ($kreditbermasalah ?? 0) + ($kreditrestruktur1 ?? 0);
+            $kydkolek = ($kydnpl3 ?? 0) + ($kydnpl4 ?? 0) + ($kydnpl5 ?? 0);
+            $asetprodukBmsalah = ($abanpl ?? 0) + $kydkolek;
 
-            $kalkulatorData = [
+            $this->kalkulatorModel->update($existingKal['id'], [
                 'abanpl' => $abanpl ?? 0,
                 'kydnpl3' => $kydnpl3 ?? 0,
                 'kydnpl4' => $kydnpl4 ?? 0,
                 'kydnpl5' => $kydnpl5 ?? 0,
                 'kreditdpk2' => $kreditdpk2 ?? 0,
-                'kreditbermasalah' => $kreditbermasalah ?? 0,
-                'kreditrestruktur1' => $kreditrestruktur1 ?? 0,
-                'kydkoleknpl' => $kydkoleknpl,
-                'asetproduktifbermasalah' => $asetproduktifbermasalah,
-                'rasioasetproduktifbermasalah' => $rasioasetproduktifbermasalah ?? 0,
-                'rasiokreditbermasalah' => $rasiokreditbermasalah ?? 0,
-                'rasiokreditkualitasrendah' => $rasiokreditkualitasrendah ?? 0,
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
+                'kreditbermasalah' => $kreditbmsalah ?? 0,
+                'kreditrestruktur1' => $kreditrstr ?? 0,
+                'kydkoleknpl' => $kydkolek,
+                'asetproduktifbermasalah' => $asetprodukBmsalah,
+                'rasioasetproduktifbermasalah' => $rasioAPB ?? 0,
+                'rasiokreditbermasalah' => $rasioKB ?? 0,
+                'rasiokreditkualitasrendah' => $rasioKKR ?? 0,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
 
-            $this->kalkulatorModel->update($existingKalkulator['id'], $kalkulatorData);
-            log_message('info', 'Kalkulator kualitas aset updated');
-
-            // ✅ STEP 2: Insert/Update rasio ke tabel risikokredit
-            $rasioMapping = [
-                7 => $rasioasetproduktifbermasalah,
-                8 => $rasiokreditbermasalah,
-                9 => $rasiokreditkualitasrendah,
-            ];
-
-            $successCount = 0;
-            $errorMessages = [];
-            $processedFaktors = [];
-
-            foreach ($rasioMapping as $faktorId => $rasioValue) {
-                if ($rasioValue === null || $rasioValue === '' || $rasioValue === false) {
-                    continue;
-                }
-
-                $rasioValue = (float) $rasioValue;
-
-                $existingData = $this->nilaiModel
-                    ->where('faktor1id', $faktorId)
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->first();
-
-                if ($existingData) {
-                    $updateData = [
-                        'rasiokredit' => $rasioValue,
-                        'user_id' => $this->userId,
-                        'fullname' => $user['fullname'] ?? 'Unknown',
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ];
-
-                    $result = $this->nilaiModel
-                        ->where('faktor1id', $faktorId)
-                        ->where('kodebpr', $this->userKodebpr)
-                        ->where('periode_id', $this->periodeId)
-                        ->set($updateData)
-                        ->update();
-
-                    if ($result) {
-                        $successCount++;
-                        $processedFaktors[] = $faktorId;
-                    }
-                } else {
-                    $insertData = [
-                        'faktor1id' => $faktorId,
-                        'rasiokredit' => $rasioValue,
-                        'fullname' => $user['fullname'] ?? 'Unknown',
-                        'user_id' => $this->userId,
-                        'kodebpr' => $this->userKodebpr,
-                        'periode_id' => $this->periodeId,
-                        'is_approved' => 0,
-                        'accdir2' => 0,
-                        'created_at' => date('Y-m-d H:i:s'),
-                    ];
-
-                    $result = $this->nilaiModel->insert($insertData);
-
-                    if ($result) {
-                        $successCount++;
-                        $processedFaktors[] = $faktorId;
-                    }
-                }
-
-                if ($result && in_array($faktorId, [7, 8, 9])) {
-                    $this->calculateAndSaveCategoryAverage(6, [7, 8, 9], $this->userKodebpr, $this->periodeId);
-                }
-            }
+            $rasioMapping = [7 => $rasioAPB, 8 => $rasioKB, 9 => $rasioKKR];
+            [$successCount, $processed] = $this->upsertRasioRows($rasioMapping, $user);
 
             if ($successCount > 0) {
+                $this->calculateAndSaveCategoryAverage(6, [7, 8, 9], $this->userKodebpr, $this->periodeId);
                 $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
                 $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
-
-                $message = "Berhasil menyimpan data kalkulator dan memasukkan {$successCount} rasio kualitas aset (Faktor: " .
-                    implode(', ', $processedFaktors) . ")";
-
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => $message,
-                    'count' => $successCount,
-                    'processed_faktors' => $processedFaktors
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Tidak ada rasio yang berhasil dimasukkan'
-                ]);
             }
+
+            return $this->response->setJSON(['success' => true, 'message' => "Berhasil memasukkan {$successCount} rasio kualitas aset", 'count' => $successCount, 'processed_faktors' => $processed]);
 
         } catch (\Exception $e) {
             log_message('error', 'Error insertRasioKualitasAsetToKertasKerja: ' . $e->getMessage());
-
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-            ]);
+            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
-    }
-
-    private function checkAuthentication()
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-        return null;
-    }
-
-    public function setNullKolom($id)
-    {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
-        }
-
-        $success = $this->nilaiModel->setNullKolom($id);
-
-        if ($success) {
-            session()->setFlashdata('message', 'Data berhasil dihapus');
-        } else {
-            session()->setFlashdata('err', 'Data gagal dihapus');
-        }
-
-        return redirect()->to(base_url('Risikokredit'));
-    }
-
-    public function approve($idNilai = null)
-    {
-        if ($idNilai === null) {
-            return redirect()->back()->with('err', 'ID Faktor tidak valid.');
-        }
-
-        $this->db->table('risikokredit')
-            ->where('id', $idNilai)
-            ->update([
-                'is_approved' => 1,
-                'approved_by' => $this->userId,
-                'approved_at' => date('Y-m-d H:i:s')
-            ]);
-
-        return redirect()->back()->with('message', 'Data berhasil disetujui');
-    }
-
-    public function unapprove($idNilai)
-    {
-        if (!is_numeric($idNilai) || $idNilai <= 0) {
-            return redirect()->back()->with('err', 'ID Faktor tidak valid.');
-        }
-
-        $nilaiFaktor = $this->nilaiModel->find($idNilai);
-        if (!$nilaiFaktor) {
-            return redirect()->back()->with('err', 'Data tidak ditemukan.');
-        }
-
-        $dataUpdate = [
-            'is_approved' => 0,
-            'approved_by' => $this->userId,
-            'approved_at' => date('Y-m-d H:i:s')
-        ];
-
-        if ($this->nilaiModel->update($idNilai, $dataUpdate)) {
-            return redirect()->back()->with('message', 'Data approval dibatalkan.');
-        }
-
-        return redirect()->back()->with('err', 'Terjadi kesalahan saat membatalkan approval.');
-    }
-
-    public function approveSemua()
-    {
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
-        }
-
-        // Faktor wajib: 1–11 dan 13 (12 diskip)
-        $requiredFaktor = array_merge(range(1, 11), [13]);
-        $totalRequired = count($requiredFaktor);
-
-        // Cek apakah semua faktor wajib sudah diisi
-        $checkData = $this->nilaiModel
-            ->select('COUNT(CASE WHEN penilaiankredit IS NOT NULL THEN 1 END) AS filled_count')
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->whereIn('faktor1id', $requiredFaktor)
-            ->first();
-
-        if ((int) $checkData['filled_count'] < $totalRequired) {
-            return redirect()->back()
-                ->with('err', 'Semua faktor wajib harus diisi terlebih dahulu');
-        }
-
-        try {
-            // Approve hanya faktor wajib
-            $this->db->table('risikokredit')
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->whereIn('faktor1id', $requiredFaktor)
-                ->update([
-                    'is_approved' => 1,
-                    'approved_by' => $this->userId,
-                    'approved_at' => date('Y-m-d H:i:s')
-                ]);
-
-            return redirect()->back()->with('message', 'Semua data berhasil disetujui.');
-        } catch (\Exception $e) {
-            log_message('error', 'Error in approveSemua: ' . $e->getMessage());
-            return redirect()->back()->with('err', 'Terjadi kesalahan sistem');
-        }
-    }
-
-
-    public function unapproveSemua()
-    {
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return redirect()->back()->with('err', 'Kode BPR atau Periode ID tidak valid');
-        }
-
-        try {
-            $this->db->table('risikokredit')
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->whereIn('faktor1id', range(1, 13))
-                ->update([
-                    'is_approved' => 0,
-                    'approved_by' => $this->userId,
-                    'approved_at' => date('Y-m-d H:i:s')
-                ]);
-
-            return redirect()->back()->with('message', 'Semua data berhasil dibatalkan persetujuannya.');
-        } catch (\Exception $e) {
-            log_message('error', 'Error in unapproveSemua: ' . $e->getMessage());
-            return redirect()->back()->with('err', 'Terjadi kesalahan sistem: ' . $e->getMessage());
-        }
-    }
-
-    public function accdir2()
-    {
-        $faktor1id = $this->request->getPost('faktor1id');
-
-        if (!$faktor1id) {
-            return redirect()->back()->with('error', 'Data tidak lengkap');
-        }
-
-        $this->db->table('risikokredit')
-            ->where('faktor1id', $faktor1id)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->update([
-                'accdir2' => 1,
-                'accdir2_by' => $this->userId,
-                'approved_at' => date('Y-m-d H:i:s')
-            ]);
-
-        return redirect()->back()->with('message', 'Data berhasil disetujui');
-    }
-
-    public function unapprovedir2()
-    {
-        if ($this->request->getMethod() !== 'post') {
-            return $this->response->setStatusCode(405, 'Method Not Allowed');
-        }
-
-        $faktor1id = $this->request->getPost('faktor1id');
-        $kodebpr = $this->request->getPost('kodebpr');
-        $periodeId = $this->request->getPost('periode_id');
-
-        if (!$faktor1id || !$kodebpr || !$periodeId) {
-            return redirect()->to('/Risikokredit')->with('error', 'Data tidak lengkap');
-        }
-
-        $nilaiFaktor = $this->nilaiModel
-            ->where('faktor1id', $faktor1id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
-
-        if (!$nilaiFaktor) {
-            return redirect()->to('/Risikokredit')->with('error', 'Data tidak ditemukan');
-        }
-
-        $dataUpdate = [
-            'accdir2' => 0,
-            'accdir2_by' => $this->userId,
-            'approved_at' => date('Y-m-d H:i:s'),
-        ];
-
-        if ($this->nilaiModel->update($nilaiFaktor['id'], $dataUpdate)) {
-            return redirect()->to('/Risikokredit')->with('message', 'Persetujuan dibatalkan');
-        }
-
-        return redirect()->to('/Risikokredit')->with('error', 'Gagal memperbarui data');
     }
 
     public function recalculateCategoryAverage()
     {
-        if (!$this->request->isAJAX()) {
+        if (!$this->request->isAJAX())
             return $this->response->setStatusCode(403);
-        }
 
         $faktorId = $this->request->getPost('faktor_id');
-
-        $categoryMapping = [
-            1 => [2, 3, 4, 5],
-            6 => [7, 8, 9]
-        ];
-
-        $categoryToRecalculate = null;
+        $categoryMapping = [1 => [2, 3, 4, 5], 6 => [7, 8, 9]];
 
         foreach ($categoryMapping as $categoryId => $childrenIds) {
             if (in_array($faktorId, $childrenIds)) {
-                $categoryToRecalculate = $categoryId;
-                break;
+                $this->calculateAndSaveCategoryAverage($categoryId, $childrenIds, $this->userKodebpr, $this->periodeId);
+
+                $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
+                $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Kategori berhasil di-recalculate']);
             }
         }
 
-        if ($categoryToRecalculate) {
-            $this->calculateAndSaveCategoryAverage(
-                $categoryToRecalculate,
-                $categoryMapping[$categoryToRecalculate],
-                $this->userKodebpr,
-                $this->periodeId
-            );
-
-            $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
-            $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
-
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Kategori berhasil di-recalculate'
-            ]);
-        }
-
-        return $this->response->setJSON([
-            'status' => 'error',
-            'message' => 'Kategori tidak ditemukan'
-        ]);
-    }
-
-    public function getUnreadCommentCountForFactor()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ]);
-        }
-
-        $faktorId = $this->request->getGet('faktor_id');
-
-        if (!$faktorId || !$this->userKodebpr || !$this->userId || !$this->periodeId) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'status' => 'error',
-                'message' => 'Missing data.'
-            ]);
-        }
-
-        $count = $this->commentReadsModel->countUnreadCommentsForUserByFactor(
-            $faktorId,
-            "KREDITINHEREN",
-            $this->userKodebpr,
-            $this->userId,
-            $this->periodeId
-        );
-
-        return $this->response->setJSON(['unread_count' => $count]);
-    }
-
-    public function markUserCommentsAsRead()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ]);
-        }
-
-        $faktorId = $this->request->getPost('faktor_id');
-
-        if (!$faktorId || !$this->userKodebpr || !$this->userId || !$this->periodeId) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'status' => 'error',
-                'message' => 'Missing data.'
-            ]);
-        }
-
-        $marked = $this->commentReadsModel->markAllAsReadForFactor(
-            $faktorId,
-            "KREDITINHEREN",
-            $this->userKodebpr,
-            $this->userId,
-            $this->periodeId
-        );
-
-        log_message('info', "User {$this->userId} marked {$marked} comments as read for factor {$faktorId}");
-
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Comments marked as read',
-            'marked_count' => $marked
-        ]);
-    }
-
-    public function getAllUnreadCounts()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ]);
-        }
-
-        if (!$this->userKodebpr || !$this->userId || !$this->periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Missing data'
-            ]);
-        }
-
-        $faktorIds = range(1, 13);
-        $counts = [];
-
-        foreach ($faktorIds as $faktorId) {
-            $count = $this->commentReadsModel->countUnreadCommentsForUserByFactor(
-                $faktorId,
-                "KREDITINHEREN",
-                $this->userKodebpr,
-                $this->userId,
-                $this->periodeId
-            );
-
-            if ($count > 0) {
-                $counts[$faktorId] = $count;
-            }
-        }
-
-        return $this->response->setJSON([
-            'status' => 'success',
-            'counts' => $counts
-        ]);
-    }
-
-    public function simpanNilai14()
-    {
-        if ($redirect = $this->checkAuth()) {
-            return $redirect;
-        }
-
-        $validation = $this->validate([
-            'penilaiankredit' => 'required|in_list[1,2,3,4,5]'
-        ]);
-
-        if (!$validation) {
-            return redirect()->back()->with('err', 'Pilih tingkat risiko terlebih dahulu');
-        }
-
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return redirect()->back()->with('error', 'Data user atau periode tidak valid');
-        }
-
-        $faktorId = 14;
-        $penilaiankredit = $this->request->getPost('penilaiankredit');
-        $user = $this->userModel->find($this->userId);
-
-        $penjelasanMapping = [
-            '1' => 'Tingkat Risiko Kredit Inheren: Sangat Rendah',
-            '2' => 'Tingkat Risiko Kredit Inheren: Rendah',
-            '3' => 'Tingkat Risiko Kredit Inheren: Sedang',
-            '4' => 'Tingkat Risiko Kredit Inheren: Tinggi',
-            '5' => 'Tingkat Risiko Kredit Inheren: Sangat Tinggis'
-        ];
-
-        $penjelasanpenilaian = $penjelasanMapping[$penilaiankredit] ?? 'N/A';
-
-        try {
-            $existingData = $this->nilaiModel
-                ->where('faktor1id', $faktorId)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->first();
-
-            if ($existingData) {
-                $updateData = [
-                    'penilaiankredit' => $penilaiankredit,
-                    'penjelasanpenilaian' => $penjelasanpenilaian,
-                    'keterangan' => 'Tingkat Risiko Kredit Inheren Posisi Sebelumnya',
-                    'user_id' => $this->userId,
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
-
-                $result = $this->nilaiModel
-                    ->where('faktor1id', $faktorId)
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->set($updateData)
-                    ->update();
-
-                if ($result) {
-                    return redirect()->to(base_url('Risikokredit'))
-                        ->with('message', 'Data Tingkat Risiko Kredit Inheren berhasil diupdate');
-                } else {
-                    throw new \Exception('Gagal mengupdate data');
-                }
-
-            } else {
-                $insertData = [
-                    'faktor1id' => $faktorId,
-                    'penilaiankredit' => $penilaiankredit,
-                    'penjelasanpenilaian' => $penjelasanpenilaian,
-                    'keterangan' => 'Tingkat Risiko Kredit Inheren Posisi Sebelumnya',
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'user_id' => $this->userId,
-                    'kodebpr' => $this->userKodebpr,
-                    'periode_id' => $this->periodeId,
-                    'is_approved' => 0,
-                    'accdir2' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                ];
-
-                $result = $this->nilaiModel->insert($insertData);
-
-                if ($result) {
-                    return redirect()->to(base_url('Risikokredit'))
-                        ->with('message', 'Data Tingkat Risiko Kredit Inheren berhasil disimpan');
-                } else {
-                    throw new \Exception('Gagal menyimpan data');
-                }
-            }
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error simpanNilai14: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
-    }
-
-    public function simpanNilai13()
-    {
-        if ($redirect = $this->checkAuth()) {
-            return $redirect;
-        }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-        $faktorId = 13;
-        $rataRata = 0;
-        $keterangan = $this->request->getPost('keterangan');
-
-        $this->nilaiModel->insertOrUpdateRataRata($rataRata, $faktorId, $kodebpr, $periodeId, $keterangan);
-
-        return redirect()->back()->with('message', 'Kesimpulan berhasil disimpan atau diperbarui.');
-    }
-
-    private function getNilai13()
-    {
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return null;
-        }
-
-        return $this->nilaiModel
-            ->where('faktor1id', 13)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->first();
-    }
-
-    public function simpanKesimpulan13()
-    {
-        if ($redirect = $this->checkAuth()) {
-            return $redirect;
-        }
-
-        $validation = $this->validate([
-            'keterangan' => 'required'
-        ]);
-
-        if (!$validation) {
-            return redirect()->back()
-                ->with('err', 'Keterangan kesimpulan harus diisi');
-        }
-
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return redirect()->back()->with('error', 'Data user atau periode tidak valid');
-        }
-
-        $faktorId = 13;
-        $keterangan = $this->request->getPost('keterangan');
-        $user = $this->userModel->find($this->userId);
-
-        try {
-            $existingData = $this->nilaiModel
-                ->where('faktor1id', $faktorId)
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->first();
-
-            if ($existingData) {
-                $updateData = [
-                    'keterangan' => $keterangan,
-                    'user_id' => $this->userId,
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
-
-                $result = $this->nilaiModel
-                    ->where('faktor1id', $faktorId)
-                    ->where('kodebpr', $this->userKodebpr)
-                    ->where('periode_id', $this->periodeId)
-                    ->set($updateData)
-                    ->update();
-
-                if ($result) {
-                    return redirect()->to(base_url('Risikokredit'))
-                        ->with('message', 'Kesimpulan berhasil diupdate');
-                } else {
-                    throw new \Exception('Gagal mengupdate kesimpulan');
-                }
-
-            } else {
-                $rataRata = $this->nilaiModel->hitungRataRata($faktorId, $this->userKodebpr, $this->periodeId);
-                $rataRata = ($rataRata - floor($rataRata) >= 0.5) ? ceil($rataRata) : floor($rataRata);
-
-                $penjelasanMapping = [
-                    '1' => 'Tingkat Risiko Kredit Inheren: Sangat Rendah',
-                    '2' => 'Tingkat Risiko Kredit Inheren: Rendah',
-                    '3' => 'Tingkat Risiko Kredit Inheren: Sedang',
-                    '4' => 'Tingkat Risiko Kredit Inheren: Tinggi',
-                    '5' => 'Tingkat Risiko Kredit Inheren: Sangat Tinggi'
-                ];
-
-                $insertData = [
-                    'faktor1id' => $faktorId,
-                    'penilaiankredit' => $rataRata,
-                    'penjelasanpenilaian' => $penjelasanMapping[$rataRata] ?? 'N/A',
-                    'keterangan' => $keterangan,
-                    'fullname' => $user['fullname'] ?? 'Unknown',
-                    'user_id' => $this->userId,
-                    'kodebpr' => $this->userKodebpr,
-                    'periode_id' => $this->periodeId,
-                    'is_approved' => 0,
-                    'accdir2' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                ];
-
-                $result = $this->nilaiModel->insert($insertData);
-
-                if ($result) {
-                    return redirect()->to(base_url('Risikokredit'))
-                        ->with('message', 'Kesimpulan berhasil disimpan');
-                } else {
-                    throw new \Exception('Gagal menyimpan kesimpulan');
-                }
-            }
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error simpan kesimpulan13: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('err', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
-    }
-
-    public function getNilai14()
-    {
-        if (!$this->userKodebpr || !$this->periodeId) {
-            return null;
-        }
-
-        return $this->nilaiModel
-            ->where('faktor1id', 14)
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->first();
-    }
-
-    public function saveKomentar()
-    {
-        $data = [
-            'faktor1id' => $this->request->getPost('faktor_id'),
-            'kodebpr' => $this->request->getPost('kodebpr'),
-            'komentar' => $this->request->getPost('komentar'),
-            'is_read' => 0,
-            'created_at' => date('Y-m-d H:i:s'),
-            'user_id' => $this->userId
-        ];
-
-        $this->komentarModel->insert($data);
-        return $this->response->setJSON(['status' => 'comment_saved']);
-    }
-
-    private function calculateAndSaveCategoryAverage($categoryFaktorId, $childrenFaktorIds, $kodebpr, $periodeId)
-    {
-        $childValues = [];
-        foreach ($childrenFaktorIds as $childId) {
-            $childData = $this->nilaiModel
-                ->where('faktor1id', $childId)
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->first();
-
-            if ($childData && !empty($childData['penilaiankredit'])) {
-                $childValues[] = (int) $childData['penilaiankredit'];
-            }
-        }
-
-        if (empty($childValues)) {
-            return null;
-        }
-
-        $average = array_sum($childValues) / count($childValues);
-        $roundedAverage = round($average);
-
-        $user = $this->userModel->find($this->userId);
-
-        $penilaianConfig = $this->getPenilaianConfig();
-        $autoKeterangan = '';
-
-        if (isset($penilaianConfig[$categoryFaktorId]['descriptions'][$roundedAverage])) {
-            $autoKeterangan = $penilaianConfig[$categoryFaktorId]['descriptions'][$roundedAverage];
-        }
-
-        $existingCategory = $this->nilaiModel
-            ->where('faktor1id', $categoryFaktorId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
-
-        $dataCategory = [
-            'faktor1id' => $categoryFaktorId,
-            'penilaiankredit' => $roundedAverage,
-            'penjelasanpenilaian' => $autoKeterangan,
-            'keterangan' => $autoKeterangan,
-            'user_id' => $this->userId,
-            'fullname' => $user['fullname'] ?? 'Unknown',
-            'kodebpr' => $kodebpr,
-            'periode_id' => $periodeId,
-            'updated_at' => date('Y-m-d H:i:s')
-        ];
-
-        if ($existingCategory) {
-            $this->nilaiModel->update($existingCategory['id'], $dataCategory);
-        } else {
-            $dataCategory['created_at'] = date('Y-m-d H:i:s');
-            $dataCategory['is_approved'] = 0;
-            $dataCategory['accdir2'] = 0;
-            $this->nilaiModel->insert($dataCategory);
-        }
-
-        return $roundedAverage;
-    }
-
-    private function getHierarchicalFactors($kodebpr, $periodeId)
-    {
-        $structure = [
-            [
-                'id' => 1,
-                'title' => 'Pilar Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit',
-                'type' => 'category',
-                'faktor_id' => 1,
-                'faktor_ids' => [2, 3, 4, 5],
-                'description' => 'Penilaian terhadap komposisi portofolio aset dan tingkat konsentrasi kredit',
-                'children' => [
-                    [
-                        'id' => 2,
-                        'title' => 'Parameter rasio aset produktif terhadap total aset',
-                        'type' => 'parameter',
-                        'faktor_id' => 2,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 3,
-                        'title' => 'Parameter rasio kredit yang diberikan terhadap total aset produktif',
-                        'type' => 'parameter',
-                        'faktor_id' => 3,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 4,
-                        'title' => 'Parameter rasio 25 debitur terbesar terhadap total kredit yang diberikan',
-                        'type' => 'parameter',
-                        'faktor_id' => 4,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 5,
-                        'title' => 'Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan',
-                        'type' => 'parameter',
-                        'faktor_id' => 5,
-                        'previous_periode_faktor_id' => null
-                    ]
-                ]
-            ],
-            [
-                'id' => 6,
-                'title' => 'Pilar Kualitas Aset',
-                'type' => 'category',
-                'faktor_id' => 6,
-                'faktor_ids' => [7, 8, 9],
-                'description' => 'Penilaian terhadap kualitas aset produktif',
-                'children' => [
-                    [
-                        'id' => 7,
-                        'title' => 'Parameter rasio aset produktif bermasalah terhadap total aset produktif',
-                        'type' => 'parameter',
-                        'faktor_id' => 7,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 8,
-                        'title' => 'Parameter kredit bermasalah neto / total kredit yang diberikan',
-                        'type' => 'parameter',
-                        'faktor_id' => 8,
-                        'previous_periode_faktor_id' => null
-                    ],
-                    [
-                        'id' => 9,
-                        'title' => 'Parameter kredit kualitas rendah / total kredit yang diberikan',
-                        'type' => 'parameter',
-                        'faktor_id' => 9,
-                        'previous_periode_faktor_id' => null
-                    ]
-                ]
-            ],
-            [
-                'id' => 10,
-                'title' => 'Pilar Strategi Penyediaan Dana',
-                'type' => 'single',
-                'faktor_id' => 10,
-                'description' => 'Penilaian strategi penyediaan dana'
-            ],
-            [
-                'id' => 11,
-                'title' => 'Pilar Faktor Eksternal',
-                'type' => 'single',
-                'faktor_id' => 11,
-                'description' => 'Penilaian pengaruh faktor eksternal'
-            ],
-            [
-                'id' => 12,
-                'title' => 'Faktor Lainnya',
-                'type' => 'single',
-                'faktor_id' => 12,
-                'description' => 'Faktor penilaian lainnya'
-            ]
-        ];
-
-        foreach ($structure as &$item) {
-            if ($item['type'] === 'category') {
-                $categoryData = $this->nilaiModel->getByFaktor($item['faktor_id'], $periodeId, $kodebpr);
-
-                foreach ($item['children'] as &$child) {
-                    $nilai = $this->nilaiModel->getByFaktor($child['faktor_id'], $periodeId, $kodebpr);
-                    $child['nilai'] = $nilai['penilaiankredit'] ?? null;
-                    $child['keterangan'] = $nilai['keterangan'] ?? null;
-                    $child['is_approved'] = $nilai['is_approved'] ?? 0;
-                    $child['rasiokredit'] = $nilai['rasiokredit'] ?? '';
-                }
-
-                $item['nilai'] = $categoryData['penilaiankredit'] ?? null;
-                $item['keterangan'] = $categoryData['keterangan'] ?? null;
-                $item['is_approved'] = $categoryData['is_approved'] ?? 0;
-
-            } else if ($item['type'] === 'single') {
-                $nilai = $this->nilaiModel->getByFaktor($item['faktor_id'], $periodeId, $kodebpr);
-                $item['nilai'] = $nilai['penilaiankredit'] ?? null;
-                $item['keterangan'] = $nilai['keterangan'] ?? null;
-                $item['is_approved'] = $nilai['is_approved'] ?? 0;
-            }
-        }
-
-        return $structure;
-    }
-
-    private function recalculateCategoryAverages($changedFaktorId, $kodebpr, $periodeId)
-    {
-        $categoryMapping = [
-            1 => [2, 3, 4, 5],
-            6 => [7, 8, 9],
-        ];
-
-        foreach ($categoryMapping as $categoryId => $childrenIds) {
-            if (in_array($changedFaktorId, $childrenIds)) {
-                $this->calculateAndSaveCategoryAverage($categoryId, $childrenIds, $kodebpr, $periodeId);
-                break;
-            }
-        }
+        return $this->response->setJSON(['status' => 'error', 'message' => 'Kategori tidak ditemukan']);
     }
 
     public function exporttxtrisikokredit()
@@ -2574,43 +1352,35 @@ class Risikokredit extends Controller
 
         $kodebpr = $this->userKodebpr;
         $periodeId = session('active_periode');
-
-        $profilResiko = $this->showprofilresikoModel
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
-
         $periodeDetail = $this->periodeModel->find($this->periodeId);
+
         $modalinti = $periodeDetail['modalinti'];
-        $totalaset = $periodeDetail['totalaset'];
-        $kantorcabang = $periodeDetail['kantorcabang'];
-        $atmdebit = $periodeDetail['atmdebit'];
-        $jenispelaporan = $periodeDetail['jenispelaporan'];
         $kategori = $periodeDetail['kategori'];
+        $nomorsurat = $periodeDetail['nomorsurat'];
+        $jeniskoreksi = $periodeDetail['jeniskoreksi'];
+        $jenispelaporan = $periodeDetail['jenispelaporan'];
 
-        $tanggal = new \DateTime($profilResiko['tanggal']);
-        $titleDate = $tanggal->format('Ymd');
-        $exportDate = $tanggal->format('Y-m-d');
+        $tahun = $periodeDetail['tahun'] ?? date('Y');
+        $semester = $periodeDetail['semester'] ?? '';
 
-        function sanitizeTxt($text)
-        {
+        $exportDate = (strtolower($semester) === 'ganjil' || $semester === '1')
+            ? "{$tahun}-06-30"
+            : "{$tahun}-12-31";
+
+        $titleDate = str_replace('-', '', $exportDate);
+
+        $sanitizeTxt = function ($text) {
             $text = str_replace(["\r", "\n"], ' ', $text);
-            $text = str_replace(
-                ['“', '”', '‘', '’', '%', '|'],
-                ['"', '"', "'", "'", ' persen ', ' '],
-                $text
-            );
+            $text = str_replace(['"', '"', '%', '|'], ['"', '"', "'", "'", ' persen ', ' '], $text);
             $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
             return trim(preg_replace('/\s+/', ' ', $text));
-        }
+        };
 
-        $data_risikokredit = $this->nilaiModel
-            ->getDataByKodebprAndPeriode($kodebpr, $periodeId);
-
+        $data_risikokredit = $this->nilaiModel->getDataByKodebprAndPeriode($kodebpr, $periodeId);
         $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
+
         $sandibpr = '';
         $kodejenis = '';
-
         if (!empty($data_infobpr)) {
             $infobpr = $data_infobpr[0];
             $sandibpr = $infobpr['sandibpr'] ?? '';
@@ -2635,55 +1405,40 @@ class Risikokredit extends Controller
 
         $indexedData = [];
         foreach ($data_risikokredit as $row) {
-            if (isset($row['faktor1id'])) {
+            if (isset($row['faktor1id']))
                 $indexedData[$row['faktor1id']] = $row;
-            }
         }
 
-        $output = '';
-
-        // HEADER
-        $output .= "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|PRBPRKS|0101|{$modalinti}|{$totalaset}|{$kantorcabang}|{$atmdebit}|{$kategori}||\r\n";
+        $output = "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|0101|{$modalinti}|{$kategori}|{$nomorsurat}|{$jeniskoreksi}\r\n";
 
         foreach ($kodeMap as $faktorId => $kode) {
-
             if (isset($indexedData[$faktorId])) {
                 $row = $indexedData[$faktorId];
-
-                $rasio = sanitizeTxt($row['rasiokredit'] ?? '');
-                $penilaiankredit = sanitizeTxt($row['penilaiankredit'] ?? '');
-                $keterangan = sanitizeTxt($row['keterangan'] ?? '');
+                $rasio = $sanitizeTxt($row['rasiokredit'] ?? '');
+                $pk = $sanitizeTxt($row['penilaiankredit'] ?? '');
+                $ket = $sanitizeTxt($row['keterangan'] ?? '-');
             } else {
                 $rasio = '';
-                $penilaiankredit = '';
-                $keterangan = '';
+                $pk = '';
+                $ket = '';
             }
-
-            $output .= "D01|{$kode}|{$rasio}|{$penilaiankredit}|{$keterangan}\r\n";
+            $output .= "D01|{$kode}|{$rasio}|{$pk}|{$ket}\r\n";
         }
 
-        $filename = "PRBPRKS-0101-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
+        $filename = "TKSBPRKS-0101-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
 
-        $response = service('response');
-        $response->setHeader('Content-Type', 'text/plain');
-        $response->setHeader(
-            'Content-Disposition',
-            'attachment; filename="' . $filename . '"'
-        );
-
-        return $response->setBody($output);
+        return service('response')
+            ->setHeader('Content-Type', 'text/plain')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setBody($output);
     }
 
-    // PDF
     public function exportPDF()
     {
-        if ($redirect = $this->checkAuth()) {
+        if ($redirect = $this->checkAuth())
             return $redirect;
-        }
-
-        if (!$this->userKodebpr || !$this->periodeId) {
+        if (!$this->userKodebpr || !$this->periodeId)
             return redirect()->back()->with('error', 'Data tidak valid');
-        }
 
         $periodeDetail = $this->periodeModel->find($this->periodeId);
         $bprData = $this->infobprModel->where('kodebpr', $this->userKodebpr)->first();
@@ -2691,87 +1446,26 @@ class Risikokredit extends Controller
         $nilaiData = $this->db->table('risikokredit as r')
             ->select('r.*, u.fullname')
             ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(1, 13))
-            ->orderBy('r.faktor1id', 'ASC')
-            ->get()
-            ->getResultArray();
+            ->where('r.kodebpr', $this->userKodebpr)->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(1, 13))->orderBy('r.faktor1id', 'ASC')
+            ->get()->getResultArray();
 
-        $kalkulatorData = $this->kalkulatorModel
-            ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', $this->periodeId)
-            ->first();
-
-        $nilai13 = $this->nilaiModel->where([
-            'faktor1id' => 13,
-            'kodebpr' => $this->userKodebpr,
-            'periode_id' => $this->periodeId
-        ])->first();
-
-        // Ambil nilai14 (Penilaian Risiko Periode Sebelumnya)
-        $nilai14 = $this->nilaiModel->where([
-            'faktor1id' => 14,
-            'kodebpr' => $this->userKodebpr,
-            'periode_id' => $this->periodeId
-        ])->first();
-
-        $pdfData = [
-            'periode' => $periodeDetail,
-            'bpr' => $bprData,
-            'nilai' => $this->strukturDataNilai($nilaiData),
-            'kalkulator' => $kalkulatorData,
-            'nilai13' => $nilai13,  // Tambahkan ini
-            'nilai14' => $nilai14,  // Tambahkan ini
-            'kesimpulan' => $nilai13  // Kesimpulan sama dengan nilai13
-        ];
+        $kalkulatorData = $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->first();
+        $nilai13 = $this->nilaiModel->where(['faktor1id' => 13, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
+        $nilai14 = $this->nilaiModel->where(['faktor1id' => 14, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
 
         return $this->response->setJSON([
             'status' => 'success',
-            'data' => $pdfData
+            'data' => [
+                'periode' => $periodeDetail,
+                'bpr' => $bprData,
+                'nilai' => $this->strukturDataNilai($nilaiData),
+                'kalkulator' => $kalkulatorData,
+                'nilai13' => $nilai13,
+                'nilai14' => $nilai14,
+                'kesimpulan' => $nilai13,
+            ],
         ]);
-    }
-
-    private function strukturDataNilai($nilaiData)
-    {
-        $struktur = [
-            'komposisi' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'kualitas' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'strategi' => null,
-            'eksternal' => null,
-            'lainnya' => null,
-            'rata_rata' => null
-        ];
-
-        foreach ($nilaiData as $nilai) {
-            $faktorId = $nilai['faktor1id'];
-
-            if ($faktorId == 1) {
-                $struktur['komposisi']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [2, 3, 4, 5])) {
-                $struktur['komposisi']['children'][] = $nilai;
-            } elseif ($faktorId == 6) {
-                $struktur['kualitas']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [7, 8, 9])) {
-                $struktur['kualitas']['children'][] = $nilai;
-            } elseif ($faktorId == 10) {
-                $struktur['strategi'] = $nilai;
-            } elseif ($faktorId == 11) {
-                $struktur['eksternal'] = $nilai;
-            } elseif ($faktorId == 12) {
-                $struktur['lainnya'] = $nilai;
-            } elseif ($faktorId == 13) {
-                $struktur['rata_rata'] = $nilai;
-            }
-        }
-
-        return $struktur;
     }
 
     public function viewPDFPreview()
@@ -2781,165 +1475,281 @@ class Risikokredit extends Controller
 
     public function exportPDFGabungan()
     {
-        if ($redirect = $this->checkAuth()) {
+        if ($redirect = $this->checkAuth())
             return $redirect;
-        }
-
-        if (!$this->userKodebpr || !$this->periodeId) {
+        if (!$this->userKodebpr || !$this->periodeId)
             return redirect()->back()->with('error', 'Data tidak valid');
-        }
-
-        // Ambil data untuk kedua bagian
-        $dataInheren = $this->getDataInheren();
-        $dataKPMR = $this->getDataKPMR();
-        $dataKepatuhan = $this->getDataKepatuhanInheren();
-        $dataKepatuhankpmr = $this->getDataKepatuhanKPMR();
-        $dataLikuiditas = $this->getDataLikuiditas();
-        $dataLikuiditasKPMR = $this->getDataLikuiditasKPMR();
-        $bprData = $this->infobprModel->where('kodebpr', $this->userKodebpr)->first();
-
-        $logoBase64 = '';
-        if (!empty($bprData['logo'])) {
-            $logoPath = FCPATH . 'asset/img/' . $bprData['logo'];
-            if (file_exists($logoPath)) {
-                $imageData = file_get_contents($logoPath);
-                $imageType = mime_content_type($logoPath);
-                $logoBase64 = 'data:' . $imageType . ';base64,' . base64_encode($imageData);
-            }
-        }
 
         return $this->response->setJSON([
             'status' => 'success',
             'data' => [
-                'inheren' => $dataInheren,
-                'kpmr' => $dataKPMR,
-                'kepatuhan' => $dataKepatuhan,
-                'kepatuhankpmr' => $dataKepatuhankpmr,
-                'likuiditas' => $dataLikuiditas,
-                'likuidiaskpmr' => $dataLikuiditasKPMR,
+                'inheren' => $this->getDataInheren(),
+                'kpmr' => $this->getDataKPMR(),
+                'kepatuhan' => $this->getDataKepatuhanInheren(),
+                'kepatuhankpmr' => $this->getDataKepatuhanKPMR(),
+                'likuiditas' => $this->getDataLikuiditas(),
+                'likuidiaskpmr' => $this->getDataLikuiditasKPMR(),
                 'periode' => $this->periodeModel->find($this->periodeId),
-                'bpr' => $this->infobprModel->where('kodebpr', $this->userKodebpr)->first()
-            ]
+                'bpr' => $this->infobprModel->where('kodebpr', $this->userKodebpr)->first(),
+            ],
         ]);
     }
 
-    // 2. Method helper untuk ambil data Inheren
-    private function getDataInheren()
+    public function exportPDFGabunganOperasional()
     {
-        $nilaiData = $this->db->table('risikokredit as r')
-            ->select('r.*, u.fullname')
-            ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(1, 14))
-            ->orderBy('r.faktor1id', 'ASC')
-            ->get()
-            ->getResultArray();
+        if (!$this->auth->check())
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
 
-        return [
-            'nilai' => $this->strukturDataNilai($nilaiData),
-            'kalkulator' => $this->kalkulatorModel
-                ->where('kodebpr', $this->userKodebpr)
-                ->where('periode_id', $this->periodeId)
-                ->first(),
-            'nilai13' => $this->nilaiModel->where([
-                'faktor1id' => 13,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first(),
-            'nilai14' => $this->nilaiModel->where([
-                'faktor1id' => 14,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first()
-        ];
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        if (!$kodebpr || !$periodeId)
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak lengkap']);
+
+        try {
+            $periodeDetail = $this->periodeModel->find($periodeId);
+            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
+
+            $dataInheren = $this->db->table('risikooperasional')
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(36, 49))->orderBy('faktor1id', 'ASC')
+                ->get()->getResultArray();
+
+            $dataKPMR = $this->db->table('risikooperasional_kpmr')
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(51, 71))->orderBy('faktor1id', 'ASC')
+                ->get()->getResultArray();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data' => [
+                    'periode' => ['semester' => $periodeDetail['semester'] ?? '', 'tahun' => $periodeDetail['tahun'] ?? ''],
+                    'bpr' => ['namabpr' => $bprData['namabpr'] ?? '', 'kodebpr' => $kodebpr],
+                    'inheren' => $this->buildOperasionalInherenStructure($dataInheren),
+                    'kpmr' => $this->buildOperasionalKPMRStructure($dataKPMR),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error exportPDFGabunganOperasional: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal mengambil data: ' . $e->getMessage()]);
+        }
     }
 
-    // 3. Method helper untuk ambil data KPMR
-    private function getDataKPMR()
+    public function exportPDFGabunganKepatuhan()
     {
-        $kpmrModel = new \App\Models\M_risikokreditkpmr();
+        if (!$this->auth->check())
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
 
-        $nilaiData = $this->db->table('risikokredit_kpmr as r')
-            ->select('r.*, u.fullname')
-            ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(16, 34))
-            ->orderBy('r.faktor1id', 'ASC')
-            ->get()
-            ->getResultArray();
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        if (!$kodebpr || !$periodeId)
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak lengkap']);
 
-        return [
-            'nilai' => $this->strukturDataNilaiKPMR($nilaiData),
-            'nilai33' => $kpmrModel->where([
-                'faktor1id' => 33,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first(),
-            'nilai34' => $kpmrModel->where([
-                'faktor1id' => 34,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first()
-        ];
+        try {
+            $periodeDetail = $this->periodeModel->find($periodeId);
+            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
+
+            $dataInheren = $this->db->table('risikokepatuhan')
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(73, 82))->orderBy('faktor1id', 'ASC')
+                ->get()->getResultArray();
+
+            $dataKPMR = $this->db->table('risikokepatuhan_kpmr')
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(84, 103))->orderBy('faktor1id', 'ASC')
+                ->get()->getResultArray();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data' => [
+                    'periode' => ['semester' => $periodeDetail['semester'] ?? '', 'tahun' => $periodeDetail['tahun'] ?? ''],
+                    'bpr' => ['namabpr' => $bprData['namabpr'] ?? '', 'kodebpr' => $kodebpr],
+                    'inheren' => $this->buildKepatuhanInherenStructure($dataInheren),
+                    'kpmr' => $this->buildKepatuhanKPMRStructure($dataKPMR),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error exportPDFGabunganKepatuhan: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal mengambil data: ' . $e->getMessage()]);
+        }
     }
 
-    // 4. Helper untuk struktur data KPMR
-    private function strukturDataNilaiKPMR($nilaiData)
+    public function exportPDFGabunganLikuiditas()
     {
-        $struktur = [
-            'pengawasan' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'kebijakan' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'proses' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'pengendalian' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'rata_rata' => null
-        ];
+        if (!$this->auth->check())
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
 
-        foreach ($nilaiData as $nilai) {
-            $faktorId = $nilai['faktor1id'];
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+        if (!$kodebpr || !$periodeId)
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak lengkap']);
 
-            if ($faktorId == 16) {
-                $struktur['pengawasan']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [17, 18, 19, 20, 21, 22])) {
-                $struktur['pengawasan']['children'][] = $nilai;
-            } elseif ($faktorId == 23) {
-                $struktur['kebijakan']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [24, 25, 26])) {
-                $struktur['kebijakan']['children'][] = $nilai;
-            } elseif ($faktorId == 27) {
-                $struktur['proses']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [28, 29])) {
-                $struktur['proses']['children'][] = $nilai;
-            } elseif ($faktorId == 30) {
-                $struktur['pengendalian']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [31, 32])) {
-                $struktur['pengendalian']['children'][] = $nilai;
-            } elseif ($faktorId == 33) {
-                $struktur['rata_rata'] = $nilai;
-            }
+        try {
+            $periodeDetail = $this->periodeModel->find($periodeId);
+            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
+
+            $dataInheren = $this->db->table('likuiditasinheren')
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(105, 116))->orderBy('faktor1id', 'ASC')
+                ->get()->getResultArray();
+
+            $dataKPMR = $this->db->table('likuiditaskpmr')
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(118, 136))->orderBy('faktor1id', 'ASC')
+                ->get()->getResultArray();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data' => [
+                    'periode' => ['semester' => $periodeDetail['semester'] ?? '', 'tahun' => $periodeDetail['tahun'] ?? ''],
+                    'bpr' => ['namabpr' => $bprData['namabpr'] ?? '', 'kodebpr' => $kodebpr],
+                    'inheren' => $this->buildLikuiditasInherenStructure($dataInheren),
+                    'kpmr' => $this->buildLikuiditasKPMRStructure($dataKPMR),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error exportPDFGabunganLikuiditas: ' . $e->getMessage());
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal mengambil data: ' . $e->getMessage()]);
+        }
+    }
+
+    public function exportPDFGabunganReputasi()
+    {
+        if (!$this->auth->check()) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Unauthorized'
+            ]);
         }
 
-        return $struktur;
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Data tidak lengkap'
+            ]);
+        }
+
+        try {
+            $periodeDetail = $this->periodeModel->find($periodeId);
+            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
+
+            $dataInheren = $this->db->table('reputasiinheren')
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(138, 149))
+                ->orderBy('faktor1id', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            $dataKPMR = $this->db->table('reputasikpmr')
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(151, 169))
+                ->orderBy('faktor1id', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            $inheren = $this->buildReputasiInherenStructure($dataInheren);
+            $kpmr = $this->buildReputasiKPMRStructure($dataKPMR);
+
+            $responseData = [
+                'status' => 'success',
+                'data' => [
+                    'periode' => [
+                        'semester' => $periodeDetail['semester'] ?? '',
+                        'tahun' => $periodeDetail['tahun'] ?? ''
+                    ],
+                    'bpr' => [
+                        'namabpr' => $bprData['namabpr'] ?? '',
+                        'kodebpr' => $kodebpr
+                    ],
+                    'inheren' => $inheren,
+                    'kpmr' => $kpmr
+                ]
+            ];
+
+            return $this->response->setJSON($responseData);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error exportPDFGabunganReputasi: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Gagal mengambil data: ' . $e->getMessage()
+            ]);
+        }
     }
 
-    // 5. View untuk preview PDF Gabungan
-    public function viewPDFGabunganPreview()
+    public function exportPDFGabunganStratejik()
     {
-        return view('Risikokredit/export_pdf');
+        if (!$this->auth->check()) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Unauthorized'
+            ]);
+        }
+
+        $kodebpr = $this->userKodebpr;
+        $periodeId = session('active_periode');
+
+        if (!$kodebpr || !$periodeId) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Data tidak lengkap'
+            ]);
+        }
+
+        try {
+            $periodeDetail = $this->periodeModel->find($periodeId);
+            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
+
+            $dataInheren = $this->db->table('stratejikinheren')
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(171, 180))
+                ->orderBy('faktor1id', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            $dataKPMR = $this->db->table('stratejikkpmr')
+                ->where('kodebpr', $kodebpr)
+                ->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', range(182, 200))
+                ->orderBy('faktor1id', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            $inheren = $this->buildStratejikInherenStructure($dataInheren);
+            $kpmr = $this->buildStratejikKPMRStructure($dataKPMR);
+
+            $responseData = [
+                'status' => 'success',
+                'data' => [
+                    'periode' => [
+                        'semester' => $periodeDetail['semester'] ?? '',
+                        'tahun' => $periodeDetail['tahun'] ?? ''
+                    ],
+                    'bpr' => [
+                        'namabpr' => $bprData['namabpr'] ?? '',
+                        'kodebpr' => $kodebpr
+                    ],
+                    'inheren' => $inheren,
+                    'kpmr' => $kpmr
+                ]
+            ];
+
+            return $this->response->setJSON($responseData);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error exportPDFGabunganStratejik: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Gagal mengambil data: ' . $e->getMessage()
+            ]);
+        }
     }
+
 
     public function viewExportPDFOperasional()
     {
@@ -2948,767 +1758,7 @@ class Risikokredit extends Controller
             unset($_SESSION['redirect_url']);
             return redirect()->to($redirectURL);
         }
-
-        $data = [
-            'judul' => 'Export PDF Risiko Operasional'
-        ];
-
-        return view('Risikokredit/export_pdf_operasional_view', $data);
-    }
-
-    public function exportPDFGabunganOperasional()
-    {
-        if (!$this->auth->check()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Unauthorized'
-            ]);
-        }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        if (!$kodebpr || !$periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak lengkap'
-            ]);
-        }
-
-        try {
-            // Get periode and BPR data
-            $periodeDetail = $this->periodeModel->find($periodeId);
-            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
-
-            // Get Risiko Operasional Inheren data (faktor 36-49)
-            $dataInheren = $this->db->table('risikooperasional')
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->whereIn('faktor1id', range(36, 49))
-                ->orderBy('faktor1id', 'ASC')
-                ->get()
-                ->getResultArray();
-
-            // Get Risiko Operasional KPMR data (faktor 51-71)
-            $dataKPMR = $this->db->table('risikooperasional_kpmr')
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->whereIn('faktor1id', range(51, 71))
-                ->orderBy('faktor1id', 'ASC')
-                ->get()
-                ->getResultArray();
-
-            // Build hierarchical structure
-            $inheren = $this->buildOperasionalInherenStructure($dataInheren);
-            $kpmr = $this->buildOperasionalKPMRStructure($dataKPMR);
-
-            // Prepare response data
-            $responseData = [
-                'status' => 'success',
-                'data' => [
-                    'periode' => [
-                        'semester' => $periodeDetail['semester'] ?? '',
-                        'tahun' => $periodeDetail['tahun'] ?? ''
-                    ],
-                    'bpr' => [
-                        'namabpr' => $bprData['namabpr'] ?? '',
-                        'kodebpr' => $kodebpr
-                    ],
-                    'inheren' => $inheren,
-                    'kpmr' => $kpmr
-                ]
-            ];
-
-            return $this->response->setJSON($responseData);
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error exportPDFGabunganOperasional: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal mengambil data: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    public function exportPDFGabunganKepatuhan()
-    {
-        if (!$this->auth->check()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Unauthorized'
-            ]);
-        }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        if (!$kodebpr || !$periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak lengkap'
-            ]);
-        }
-
-        try {
-            // Get periode and BPR data
-            $periodeDetail = $this->periodeModel->find($periodeId);
-            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
-
-            // Get Risiko Operasional Inheren data (faktor 36-49)
-            $dataInheren = $this->db->table('risikokepatuhan')
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->whereIn('faktor1id', range(73, 82))
-                ->orderBy('faktor1id', 'ASC')
-                ->get()
-                ->getResultArray();
-
-            //Get Risiko Operasional KPMR data (faktor 51-71)
-            $dataKPMR = $this->db->table('risikokepatuhan_kpmr')
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->whereIn('faktor1id', range(84, 103))
-                ->orderBy('faktor1id', 'ASC')
-                ->get()
-                ->getResultArray();
-
-            // Build hierarchical structure
-            $inheren = $this->buildKepatuhanInherenStructure($dataInheren);
-            $kpmr = $this->buildKepatuhanKPMRStructure($dataKPMR);
-
-            // Prepare response data
-            $responseData = [
-                'status' => 'success',
-                'data' => [
-                    'periode' => [
-                        'semester' => $periodeDetail['semester'] ?? '',
-                        'tahun' => $periodeDetail['tahun'] ?? ''
-                    ],
-                    'bpr' => [
-                        'namabpr' => $bprData['namabpr'] ?? '',
-                        'kodebpr' => $kodebpr
-                    ],
-                    'inheren' => $inheren,
-                    'kpmr' => $kpmr
-                ]
-            ];
-
-            return $this->response->setJSON($responseData);
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error exportPDFGabunganKepatuhan: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal mengambil data: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    public function exportPDFGabunganLikuiditas()
-    {
-        if (!$this->auth->check()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Unauthorized'
-            ]);
-        }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        if (!$kodebpr || !$periodeId) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data tidak lengkap'
-            ]);
-        }
-
-        try {
-            // Get periode and BPR data
-            $periodeDetail = $this->periodeModel->find($periodeId);
-            $bprData = $this->infobprModel->where('kodebpr', $kodebpr)->first();
-
-            // Get Risiko Operasional Inheren data (faktor 36-49)
-            $dataInheren = $this->db->table('likuiditasinheren')
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->whereIn('faktor1id', range(105, 116))
-                ->orderBy('faktor1id', 'ASC')
-                ->get()
-                ->getResultArray();
-
-            //Get Risiko Operasional KPMR data (faktor 51-71)
-            $dataKPMR = $this->db->table('likuiditaskpmr')
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->whereIn('faktor1id', range(118, 136))
-                ->orderBy('faktor1id', 'ASC')
-                ->get()
-                ->getResultArray();
-
-            // Build hierarchical structure
-            $inheren = $this->buildLikuiditasInherenStructure($dataInheren);
-            $kpmr = $this->buildLikuiditasKPMRStructure($dataKPMR);
-
-            // Prepare response data
-            $responseData = [
-                'status' => 'success',
-                'data' => [
-                    'periode' => [
-                        'semester' => $periodeDetail['semester'] ?? '',
-                        'tahun' => $periodeDetail['tahun'] ?? ''
-                    ],
-                    'bpr' => [
-                        'namabpr' => $bprData['namabpr'] ?? '',
-                        'kodebpr' => $kodebpr
-                    ],
-                    'inheren' => $inheren,
-                    'kpmr' => $kpmr
-                ]
-            ];
-
-            return $this->response->setJSON($responseData);
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error exportPDFGabunganLikuiditas: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Gagal mengambil data: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    private function buildOperasionalInherenStructure($dataArray)
-    {
-        $lookup = [];
-        foreach ($dataArray as $item) {
-            $lookup[$item['faktor1id']] = $item;
-        }
-
-        $structure = [
-            'nilai' => [
-                'kompleksitas' => [
-                    'kategori' => $lookup[36] ?? null,
-                    'children' => array_filter([
-                        $lookup[37] ?? null,
-                        $lookup[38] ?? null,
-                        $lookup[39] ?? null,
-                        $lookup[40] ?? null
-                    ])
-                ],
-                'sdm' => [
-                    'kategori' => $lookup[41] ?? null,
-                    'children' => array_filter([
-                        $lookup[42] ?? null,
-                        $lookup[43] ?? null
-                    ])
-                ],
-                'ti' => $lookup[44] ?? null,
-                'fraud' => $lookup[45] ?? null,
-                'eksternal' => $lookup[46] ?? null,
-                'lainnya' => $lookup[47] ?? null
-            ],
-            'nilai13' => $lookup[48] ?? null,
-            'nilai14' => $lookup[49] ?? null
-        ];
-
-        return $structure;
-    }
-
-    private function buildOperasionalKPMRStructure($dataArray)
-    {
-        $lookup = [];
-        foreach ($dataArray as $item) {
-            $lookup[$item['faktor1id']] = $item;
-        }
-
-        $structure = [
-            'nilai' => [
-                'pengawasan' => [
-                    'kategori' => $lookup[51] ?? null,
-                    'children' => array_filter([
-                        $lookup[52] ?? null,
-                        $lookup[53] ?? null,
-                        $lookup[54] ?? null,
-                        $lookup[55] ?? null,
-                        $lookup[56] ?? null,
-                        $lookup[57] ?? null
-                    ])
-                ],
-                'kebijakan' => [
-                    'kategori' => $lookup[58] ?? null,
-                    'children' => array_filter([
-                        $lookup[59] ?? null,
-                        $lookup[60] ?? null,
-                        $lookup[61] ?? null
-                    ])
-                ],
-                'proses' => [
-                    'kategori' => $lookup[62] ?? null,
-                    'children' => array_filter([
-                        $lookup[63] ?? null,
-                        $lookup[64] ?? null,
-                        $lookup[65] ?? null,
-                        $lookup[66] ?? null
-                    ])
-                ],
-                'pengendalian' => [
-                    'kategori' => $lookup[67] ?? null,
-                    'children' => array_filter([
-                        $lookup[68] ?? null,
-                        $lookup[69] ?? null
-                    ])
-                ]
-            ],
-            'nilai33' => $lookup[70] ?? null,
-            'nilai34' => $lookup[71] ?? null
-        ];
-
-        return $structure;
-    }
-
-    private function buildKepatuhanInherenStructure($dataArray)
-    {
-        $lookup = [];
-        foreach ($dataArray as $item) {
-            $lookup[$item['faktor1id']] = $item;
-        }
-
-        $structure = [
-            'nilai' => [
-                'pelanggaran' => [
-                    'kategori' => $lookup[73] ?? null,
-                    'children' => array_filter([
-                        $lookup[74] ?? null,
-                        $lookup[75] ?? null
-                    ])
-                ],
-                'hukum' => [
-                    'kategori' => $lookup[76] ?? null,
-                    'children' => array_filter([
-                        $lookup[77] ?? null,
-                        $lookup[78] ?? null,
-                        $lookup[79] ?? null
-                    ])
-                ],
-                'lainnya' => $lookup[80] ?? null
-            ],
-            'nilai81' => $lookup[81] ?? null,
-            'nilai82' => $lookup[82] ?? null
-        ];
-
-        return $structure;
-    }
-
-    private function buildKepatuhanKPMRStructure($dataArray)
-    {
-        $lookup = [];
-        foreach ($dataArray as $item) {
-            $lookup[$item['faktor1id']] = $item;
-        }
-
-        $structure = [
-            'nilai' => [
-                'pengawasan' => [
-                    'kategori' => $lookup[84] ?? null,
-                    'children' => array_filter([
-                        $lookup[85] ?? null,
-                        $lookup[86] ?? null,
-                        $lookup[87] ?? null,
-                        $lookup[88] ?? null,
-                        $lookup[89] ?? null,
-                        $lookup[90] ?? null,
-                        $lookup[91] ?? null
-                    ])
-                ],
-                'kebijakan' => [
-                    'kategori' => $lookup[92] ?? null,
-                    'children' => array_filter([
-                        $lookup[93] ?? null,
-                        $lookup[94] ?? null,
-                        $lookup[95] ?? null
-                    ])
-                ],
-                'proses' => [
-                    'kategori' => $lookup[96] ?? null,
-                    'children' => array_filter([
-                        $lookup[97] ?? null,
-                        $lookup[98] ?? null
-                    ])
-                ],
-                'pengendalian' => [
-                    'kategori' => $lookup[99] ?? null,
-                    'children' => array_filter([
-                        $lookup[100] ?? null,
-                        $lookup[101] ?? null
-                    ])
-                ]
-            ],
-            'nilai102' => $lookup[102] ?? null,
-            'nilai103' => $lookup[103] ?? null
-        ];
-
-        return $structure;
-    }
-
-    private function buildLikuiditasInherenStructure($dataArray)
-    {
-        $lookup = [];
-        foreach ($dataArray as $item) {
-            $lookup[$item['faktor1id']] = $item;
-        }
-
-        $structure = [
-            'nilai' => [ // ✅ BENAR
-                'konsentrasi' => [ // ✅ BENAR
-                    'kategori' => $lookup[105] ?? null,
-                    'children' => array_filter([
-                        $lookup[106] ?? null,
-                        $lookup[107] ?? null,
-                        $lookup[108] ?? null,
-                        $lookup[109] ?? null,
-                        $lookup[110] ?? null,
-                    ])
-                ],
-                'kerentanan' => [
-                    'kategori' => $lookup[111] ?? null,
-                    'children' => array_filter([
-                        $lookup[112] ?? null,
-                        $lookup[113] ?? null
-                    ])
-                ],
-                'lainnya' => $lookup[114] ?? null
-            ],
-            'nilai115' => $lookup[115] ?? null,
-            'nilai116' => $lookup[116] ?? null
-        ];
-
-        return $structure;
-    }
-
-    private function buildLikuiditasKPMRStructure($dataArray)
-    {
-        $lookup = [];
-        foreach ($dataArray as $item) {
-            $lookup[$item['faktor1id']] = $item;
-        }
-
-        $structure = [
-            'nilai' => [
-                'pengawasan' => [
-                    'kategori' => $lookup[118] ?? null,
-                    'children' => array_filter([
-                        $lookup[119] ?? null,
-                        $lookup[120] ?? null,
-                        $lookup[121] ?? null,
-                        $lookup[122] ?? null,
-                        $lookup[123] ?? null,
-                        $lookup[124] ?? null,
-
-                    ])
-                ],
-                'kebijakan' => [
-                    'kategori' => $lookup[125] ?? null,
-                    'children' => array_filter([
-                        $lookup[126] ?? null,
-                        $lookup[127] ?? null,
-                        $lookup[128] ?? null
-                    ])
-                ],
-                'proses' => [
-                    'kategori' => $lookup[129] ?? null,
-                    'children' => array_filter([
-                        $lookup[130] ?? null,
-                        $lookup[131] ?? null
-                    ])
-                ],
-                'pengendalian' => [
-                    'kategori' => $lookup[132] ?? null,
-                    'children' => array_filter([
-                        $lookup[133] ?? null,
-                        $lookup[134] ?? null
-                    ])
-                ]
-            ],
-            'nilai102' => $lookup[135] ?? null,
-            'nilai103' => $lookup[136] ?? null
-        ];
-
-        return $structure;
-    }
-
-    private function getDataKepatuhanInheren()
-    {
-        $kepatuhanModel = new \App\Models\M_risikokepatuhan();
-
-        $nilaiData = $this->db->table('risikokepatuhan as r')
-            ->select('r.*, u.fullname')
-            ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(73, 82))
-            ->orderBy('r.faktor1id', 'ASC')
-            ->get()
-            ->getResultArray();
-
-        return [
-            'nilai' => $this->strukturDataNilaiKepatuhan($nilaiData),
-            'nilai81' => $kepatuhanModel->where([
-                'faktor1id' => 81,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first(),
-            'nilai82' => $kepatuhanModel->where([
-                'faktor1id' => 82,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first()
-        ];
-    }
-
-    private function strukturDataNilaiKepatuhan($nilaiData)
-    {
-        $struktur = [
-            'pelanggaran' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'hukum' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'lainnya' => null
-        ];
-
-        foreach ($nilaiData as $nilai) {
-            $faktorId = $nilai['faktor1id'];
-
-            if ($faktorId == 73) {
-                $struktur['pelanggaran']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [74, 75])) {
-                $struktur['pelanggaran']['children'][] = $nilai;
-            } elseif ($faktorId == 76) {
-                $struktur['hukum']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [77, 78, 79])) {
-                $struktur['hukum']['children'][] = $nilai;
-            } elseif ($faktorId == 80) {
-                $struktur['lainnya'] = $nilai;
-            }
-        }
-
-        return $struktur;
-    }
-
-    private function getDataKepatuhanKPMR()
-    {
-        $kepatuhanKPMRModel = new \App\Models\M_kepatuhankpmr();
-
-        $nilaiData = $this->db->table('risikokepatuhan_kpmr as r')
-            ->select('r.*, u.fullname')
-            ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(84, 103))
-            ->orderBy('r.faktor1id', 'ASC')
-            ->get()
-            ->getResultArray();
-
-        return [
-            'nilai' => $this->strukturDataNilaiKepatuhanKPMR($nilaiData),
-            'nilai102' => $kepatuhanKPMRModel->where([
-                'faktor1id' => 102,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first(),
-            'nilai103' => $kepatuhanKPMRModel->where([
-                'faktor1id' => 103,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first()
-        ];
-    }
-
-    private function strukturDataNilaiKepatuhanKPMR($nilaiData)
-    {
-        $struktur = [
-            'pengawasan' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'kebijakan' => [  // ✅ Ganti dari 'kecukupan'
-                'kategori' => null,
-                'children' => []
-            ],
-            'proses' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'pengendalian' => [  // ✅ Ganti dari 'sistem'
-                'kategori' => null,
-                'children' => []
-            ],
-        ];
-
-        foreach ($nilaiData as $nilai) {
-            $faktorId = $nilai['faktor1id'];
-
-            if ($faktorId == 84) {
-                $struktur['pengawasan']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [85, 86, 87, 88, 89, 90, 91])) {
-                $struktur['pengawasan']['children'][] = $nilai;
-            } elseif ($faktorId == 92) {
-                $struktur['kebijakan']['kategori'] = $nilai;  // ✅ Ubah
-            } elseif (in_array($faktorId, [93, 94, 95])) {
-                $struktur['kebijakan']['children'][] = $nilai;  // ✅ Ubah
-            } elseif ($faktorId == 96) {
-                $struktur['proses']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [97, 98])) {
-                $struktur['proses']['children'][] = $nilai;
-            } elseif ($faktorId == 99) {
-                $struktur['pengendalian']['kategori'] = $nilai;  // ✅ Ubah
-            } elseif (in_array($faktorId, [100, 101])) {
-                $struktur['pengendalian']['children'][] = $nilai;  // ✅ Ubah
-            }
-        }
-
-        return $struktur;
-    }
-
-    private function getDataLikuiditas()
-    {
-        $likuiditasModel = new \App\Models\M_likuiditasinheren();
-
-        $nilaiData = $this->db->table('likuiditasinheren as r')
-            ->select('r.*, u.fullname')
-            ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(105, 116))
-            ->orderBy('r.faktor1id', 'ASC')
-            ->get()
-            ->getResultArray();
-
-        return [
-            'nilai' => $this->strukturDataNilaiLikuiditas($nilaiData),
-            'nilai115' => $likuiditasModel->where([
-                'faktor1id' => 115,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first(),
-            'nilai116' => $likuiditasModel->where([
-                'faktor1id' => 116,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first()
-        ];
-    }
-
-    private function strukturDataNilaiLikuiditas($nilaiData)
-    {
-        $struktur = [
-            'konsentrasi' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'kerentanan' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'lainnya' => null
-        ];
-
-        foreach ($nilaiData as $nilai) {
-            $faktorId = $nilai['faktor1id'];
-
-            if ($faktorId == 105) {
-                $struktur['konsentrasi']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [106, 107, 108, 109, 110])) {
-                $struktur['konsentrasi']['children'][] = $nilai;
-            } elseif ($faktorId == 111) {
-                $struktur['kerentanan']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [112, 113])) {
-                $struktur['kerentanan']['children'][] = $nilai;
-            } elseif ($faktorId == 114) {
-                $struktur['lainnya'] = $nilai;
-            }
-        }
-
-        return $struktur;
-    }
-
-    private function getDataLikuiditasKPMR()
-    {
-        $likuiditaskpmrModel = new \App\Models\M_likuiditaskpmr();
-
-        $nilaiData = $this->db->table('likuiditaskpmr as r')
-            ->select('r.*, u.fullname')
-            ->join('users as u', 'u.id = r.user_id', 'left')
-            ->where('r.kodebpr', $this->userKodebpr)
-            ->where('r.periode_id', $this->periodeId)
-            ->whereIn('r.faktor1id', range(118, 136))
-            ->orderBy('r.faktor1id', 'ASC')
-            ->get()
-            ->getResultArray();
-
-        return [
-            'nilai' => $this->strukturDataNilaiLikuiditasKPMR($nilaiData),
-            'nilai135' => $likuiditaskpmrModel->where([
-                'faktor1id' => 135,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first(),
-            'nilai136' => $likuiditaskpmrModel->where([
-                'faktor1id' => 136,
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId
-            ])->first()
-        ];
-    }
-
-    private function strukturDataNilaiLikuiditasKPMR($nilaiData)
-    {
-        $struktur = [
-            'pengawasan' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'kebijakan' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'proses' => [
-                'kategori' => null,
-                'children' => []
-            ],
-            'pengendalian' => [
-                'kategori' => null,
-                'children' => []
-            ],
-        ];
-
-        foreach ($nilaiData as $nilai) {
-            $faktorId = $nilai['faktor1id'];
-
-            if ($faktorId == 118) {
-                $struktur['pengawasan']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [119, 120, 121, 122, 123, 124])) {
-                $struktur['pengawasan']['children'][] = $nilai;
-            } elseif ($faktorId == 125) {
-                $struktur['kebijakan']['kategori'] = $nilai;  // ✅ Ubah
-            } elseif (in_array($faktorId, [126, 127, 128])) {
-                $struktur['kebijakan']['children'][] = $nilai;  // ✅ Ubah
-            } elseif ($faktorId == 129) {
-                $struktur['proses']['kategori'] = $nilai;
-            } elseif (in_array($faktorId, [130, 131])) {
-                $struktur['proses']['children'][] = $nilai;
-            } elseif ($faktorId == 132) {
-                $struktur['pengendalian']['kategori'] = $nilai;  // ✅ Ubah
-            } elseif (in_array($faktorId, [133, 134])) {
-                $struktur['pengendalian']['children'][] = $nilai;  // ✅ Ubah
-            }
-        }
-
-        return $struktur;
+        return view('Risikokredit/export_pdf_operasional_view', ['judul' => 'Export PDF Risiko Operasional']);
     }
 
     public function exportAllPDFToZipView()
@@ -3717,23 +1767,1034 @@ class Risikokredit extends Controller
             return $redirect;
         if ($redirect = $this->checkPeriode())
             return $redirect;
+        return view('risikokredit/export_pdf', ['baseUrl' => base_url()]);
+    }
 
-        $data = [
-            'baseUrl' => base_url()
+    // PRIVATE HELPERS
+    private function handleCategoryAndGlobalRecalc(int $faktorId): void
+    {
+        $categoryMapping = [1 => [2, 3, 4, 5], 6 => [7, 8, 9]];
+
+        foreach ($categoryMapping as $categoryId => $childrenIds) {
+            if (in_array($faktorId, $childrenIds)) {
+                $this->calculateAndSaveCategoryAverage($categoryId, $childrenIds, $this->userKodebpr, $this->periodeId);
+                break;
+            }
+        }
+
+        if (in_array($faktorId, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])) {
+            $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
+            $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
+        }
+
+        $this->db->table('risikokredit')
+            ->where('faktor1id', 13)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+            ->update(['accdir2' => 0, 'is_approved' => 0]);
+    }
+
+    private function upsertRasioRows(array $rasioMapping, array $user): array
+    {
+        $successCount = 0;
+        $processed = [];
+
+        foreach ($rasioMapping as $fid => $val) {
+            if ($val === null || $val === '')
+                continue;
+
+            $val = (float) $val;
+            $existing = $this->nilaiModel
+                ->where('faktor1id', $fid)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                ->first();
+
+            if ($existing) {
+                $this->nilaiModel
+                    ->where('faktor1id', $fid)->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)
+                    ->set(['rasiokredit' => $val, 'user_id' => $this->userId, 'fullname' => $user['fullname'] ?? 'Unknown', 'updated_at' => date('Y-m-d H:i:s')])
+                    ->update();
+            } else {
+                $this->nilaiModel->insert([
+                    'faktor1id' => $fid,
+                    'rasiokredit' => $val,
+                    'fullname' => $user['fullname'] ?? 'Unknown',
+                    'user_id' => $this->userId,
+                    'kodebpr' => $this->userKodebpr,
+                    'periode_id' => $this->periodeId,
+                    'is_approved' => 0,
+                    'accdir2' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+            }
+            $successCount++;
+            $processed[] = $fid;
+        }
+
+        return [$successCount, $processed];
+    }
+
+    private function calculateAndSaveCategoryAverage($categoryFaktorId, $childrenFaktorIds, $kodebpr, $periodeId)
+    {
+        $childRows = $this->nilaiModel
+            ->whereIn('faktor1id', $childrenFaktorIds)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+            ->findAll();
+
+        $childValues = array_filter(array_column($childRows, 'penilaiankredit'));
+        if (empty($childValues))
+            return null;
+
+        $roundedAverage = (int) round(array_sum($childValues) / count($childValues));
+        $user = $this->userModel->find($this->userId);
+        $penilaianConfig = $this->getPenilaianConfig();
+        $autoKeterangan = $penilaianConfig[$categoryFaktorId]['descriptions'][$roundedAverage] ?? '';
+
+        $existingCategory = $this->nilaiModel
+            ->where('faktor1id', $categoryFaktorId)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+            ->first();
+
+        $dataCategory = [
+            'faktor1id' => $categoryFaktorId,
+            'penilaiankredit' => $roundedAverage,
+            'penjelasanpenilaian' => $autoKeterangan,
+            'keterangan' => $autoKeterangan,
+            'user_id' => $this->userId,
+            'fullname' => $user['fullname'] ?? 'Unknown',
+            'kodebpr' => $kodebpr,
+            'periode_id' => $periodeId,
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        return view('risikokredit/export_pdf', $data);
-    }
-
-    private function checkPeriode()
-    {
-        if (!$this->periodeId) {
-            return redirect()->to('/Periodeprofilresiko')
-                ->with('error', 'Silakan pilih periode aktif terlebih dahulu.');
+        if ($existingCategory) {
+            $this->nilaiModel->update($existingCategory['id'], $dataCategory);
+        } else {
+            $dataCategory['created_at'] = date('Y-m-d H:i:s');
+            $dataCategory['is_approved'] = 0;
+            $dataCategory['accdir2'] = 0;
+            $this->nilaiModel->insert($dataCategory);
         }
-        return null;
+
+        return $roundedAverage;
     }
 
+    private function defaultKalkulatorData(): array
+    {
+        return [
+            'aba' => '',
+            'kydbank' => '',
+            'kydpihak3' => '',
+            'totalaset' => '',
+            'total25debitur' => '',
+            'perdagangan' => '',
+            'jasa' => '',
+            'konsumsirumah' => '',
+            'kydgross' => 0,
+            'asetproduktif' => 0,
+            'rasioasetproduktif' => 0,
+            'rasiokreditdiberikan' => 0,
+            'rasio25debitur' => 0,
+            'sektorekonomi' => 0,
+            'rasioekonomi' => 0,
+            'abanpl' => '',
+            'kydnpl3' => '',
+            'kydnpl4' => '',
+            'kydnpl5' => '',
+            'kreditdpk2' => '',
+            'kreditbermasalah' => '',
+            'kreditrestruktur1' => '',
+            'kydkoleknpl' => 0,
+            'asetproduktifbermasalah' => 0,
+            'rasioasetproduktifbermasalah' => 0,
+            'rasiokreditbermasalah' => 0,
+            'rasiokreditkualitasrendah' => 0,
+        ];
+    }
 
+    private function formatDateForDisplay($date): string
+    {
+        if (empty($date) || $date === '0000-00-00')
+            return '';
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date))
+            return $date;
+        $d = \DateTime::createFromFormat('Y-m-d', $date);
+        return $d ? $d->format('d/m/Y') : '';
+    }
+
+    private function strukturDataNilai($nilaiData): array
+    {
+        $struktur = [
+            'komposisi' => ['kategori' => null, 'children' => []],
+            'kualitas' => ['kategori' => null, 'children' => []],
+            'strategi' => null,
+            'eksternal' => null,
+            'lainnya' => null,
+            'rata_rata' => null,
+        ];
+        foreach ($nilaiData as $nilai) {
+            $fid = $nilai['faktor1id'];
+            if ($fid == 1)
+                $struktur['komposisi']['kategori'] = $nilai;
+            elseif (in_array($fid, [2, 3, 4, 5]))
+                $struktur['komposisi']['children'][] = $nilai;
+            elseif ($fid == 6)
+                $struktur['kualitas']['kategori'] = $nilai;
+            elseif (in_array($fid, [7, 8, 9]))
+                $struktur['kualitas']['children'][] = $nilai;
+            elseif ($fid == 10)
+                $struktur['strategi'] = $nilai;
+            elseif ($fid == 11)
+                $struktur['eksternal'] = $nilai;
+            elseif ($fid == 12)
+                $struktur['lainnya'] = $nilai;
+            elseif ($fid == 13)
+                $struktur['rata_rata'] = $nilai;
+        }
+        return $struktur;
+    }
+
+    private function getDataInheren(): array
+    {
+        $nilaiData = $this->db->table('risikokredit as r')
+            ->select('r.*, u.fullname')->join('users as u', 'u.id = r.user_id', 'left')
+            ->where('r.kodebpr', $this->userKodebpr)->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(1, 14))->orderBy('r.faktor1id', 'ASC')
+            ->get()->getResultArray();
+
+        return [
+            'nilai' => $this->strukturDataNilai($nilaiData),
+            'kalkulator' => $this->kalkulatorModel->where('kodebpr', $this->userKodebpr)->where('periode_id', $this->periodeId)->first(),
+            'nilai13' => $this->nilaiModel->where(['faktor1id' => 13, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+            'nilai14' => $this->nilaiModel->where(['faktor1id' => 14, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+        ];
+    }
+
+    private function getDataKPMR(): array
+    {
+        $kpmrModel = new \App\Models\M_risikokreditkpmr();
+        $nilaiData = $this->db->table('risikokredit_kpmr as r')
+            ->select('r.*, u.fullname')->join('users as u', 'u.id = r.user_id', 'left')
+            ->where('r.kodebpr', $this->userKodebpr)->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(16, 34))->orderBy('r.faktor1id', 'ASC')
+            ->get()->getResultArray();
+
+        return [
+            'nilai' => $this->strukturDataNilaiKPMR($nilaiData),
+            'nilai33' => $kpmrModel->where(['faktor1id' => 33, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+            'nilai34' => $kpmrModel->where(['faktor1id' => 34, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+        ];
+    }
+
+    private function strukturDataNilaiKPMR($nilaiData): array
+    {
+        $struktur = [
+            'pengawasan' => ['kategori' => null, 'children' => []],
+            'kebijakan' => ['kategori' => null, 'children' => []],
+            'proses' => ['kategori' => null, 'children' => []],
+            'pengendalian' => ['kategori' => null, 'children' => []],
+            'rata_rata' => null,
+        ];
+        foreach ($nilaiData as $nilai) {
+            $fid = $nilai['faktor1id'];
+            if ($fid == 16)
+                $struktur['pengawasan']['kategori'] = $nilai;
+            elseif (in_array($fid, [17, 18, 19, 20, 21, 22]))
+                $struktur['pengawasan']['children'][] = $nilai;
+            elseif ($fid == 23)
+                $struktur['kebijakan']['kategori'] = $nilai;
+            elseif (in_array($fid, [24, 25, 26]))
+                $struktur['kebijakan']['children'][] = $nilai;
+            elseif ($fid == 27)
+                $struktur['proses']['kategori'] = $nilai;
+            elseif (in_array($fid, [28, 29]))
+                $struktur['proses']['children'][] = $nilai;
+            elseif ($fid == 30)
+                $struktur['pengendalian']['kategori'] = $nilai;
+            elseif (in_array($fid, [31, 32]))
+                $struktur['pengendalian']['children'][] = $nilai;
+            elseif ($fid == 33)
+                $struktur['rata_rata'] = $nilai;
+        }
+        return $struktur;
+    }
+
+    private function getDataKepatuhanInheren(): array
+    {
+        $model = new \App\Models\M_risikokepatuhan();
+        $nilaiData = $this->db->table('risikokepatuhan as r')
+            ->select('r.*, u.fullname')->join('users as u', 'u.id = r.user_id', 'left')
+            ->where('r.kodebpr', $this->userKodebpr)->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(73, 82))->orderBy('r.faktor1id', 'ASC')
+            ->get()->getResultArray();
+
+        return [
+            'nilai' => $this->strukturDataNilaiKepatuhan($nilaiData),
+            'nilai81' => $model->where(['faktor1id' => 81, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+            'nilai82' => $model->where(['faktor1id' => 82, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+        ];
+    }
+
+    private function strukturDataNilaiKepatuhan($nilaiData): array
+    {
+        $struktur = ['pelanggaran' => ['kategori' => null, 'children' => []], 'hukum' => ['kategori' => null, 'children' => []], 'lainnya' => null];
+        foreach ($nilaiData as $nilai) {
+            $fid = $nilai['faktor1id'];
+            if ($fid == 73)
+                $struktur['pelanggaran']['kategori'] = $nilai;
+            elseif (in_array($fid, [74, 75]))
+                $struktur['pelanggaran']['children'][] = $nilai;
+            elseif ($fid == 76)
+                $struktur['hukum']['kategori'] = $nilai;
+            elseif (in_array($fid, [77, 78, 79]))
+                $struktur['hukum']['children'][] = $nilai;
+            elseif ($fid == 80)
+                $struktur['lainnya'] = $nilai;
+        }
+        return $struktur;
+    }
+
+    private function getDataKepatuhanKPMR(): array
+    {
+        $model = new \App\Models\M_kepatuhankpmr();
+        $nilaiData = $this->db->table('risikokepatuhan_kpmr as r')
+            ->select('r.*, u.fullname')->join('users as u', 'u.id = r.user_id', 'left')
+            ->where('r.kodebpr', $this->userKodebpr)->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(84, 103))->orderBy('r.faktor1id', 'ASC')
+            ->get()->getResultArray();
+
+        return [
+            'nilai' => $this->strukturDataNilaiKepatuhanKPMR($nilaiData),
+            'nilai102' => $model->where(['faktor1id' => 102, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+            'nilai103' => $model->where(['faktor1id' => 103, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+        ];
+    }
+
+    private function strukturDataNilaiKepatuhanKPMR($nilaiData): array
+    {
+        $struktur = [
+            'pengawasan' => ['kategori' => null, 'children' => []],
+            'kebijakan' => ['kategori' => null, 'children' => []],
+            'proses' => ['kategori' => null, 'children' => []],
+            'pengendalian' => ['kategori' => null, 'children' => []],
+        ];
+        foreach ($nilaiData as $nilai) {
+            $fid = $nilai['faktor1id'];
+            if ($fid == 84)
+                $struktur['pengawasan']['kategori'] = $nilai;
+            elseif (in_array($fid, [85, 86, 87, 88, 89, 90, 91]))
+                $struktur['pengawasan']['children'][] = $nilai;
+            elseif ($fid == 92)
+                $struktur['kebijakan']['kategori'] = $nilai;
+            elseif (in_array($fid, [93, 94, 95]))
+                $struktur['kebijakan']['children'][] = $nilai;
+            elseif ($fid == 96)
+                $struktur['proses']['kategori'] = $nilai;
+            elseif (in_array($fid, [97, 98]))
+                $struktur['proses']['children'][] = $nilai;
+            elseif ($fid == 99)
+                $struktur['pengendalian']['kategori'] = $nilai;
+            elseif (in_array($fid, [100, 101]))
+                $struktur['pengendalian']['children'][] = $nilai;
+        }
+        return $struktur;
+    }
+
+    private function getDataLikuiditas(): array
+    {
+        $model = new \App\Models\M_likuiditasinheren();
+        $nilaiData = $this->db->table('likuiditasinheren as r')
+            ->select('r.*, u.fullname')->join('users as u', 'u.id = r.user_id', 'left')
+            ->where('r.kodebpr', $this->userKodebpr)->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(105, 116))->orderBy('r.faktor1id', 'ASC')
+            ->get()->getResultArray();
+
+        return [
+            'nilai' => $this->strukturDataNilaiLikuiditas($nilaiData),
+            'nilai115' => $model->where(['faktor1id' => 115, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+            'nilai116' => $model->where(['faktor1id' => 116, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+        ];
+    }
+
+    private function strukturDataNilaiLikuiditas($nilaiData): array
+    {
+        $struktur = ['konsentrasi' => ['kategori' => null, 'children' => []], 'kerentanan' => ['kategori' => null, 'children' => []], 'lainnya' => null];
+        foreach ($nilaiData as $nilai) {
+            $fid = $nilai['faktor1id'];
+            if ($fid == 105)
+                $struktur['konsentrasi']['kategori'] = $nilai;
+            elseif (in_array($fid, [106, 107, 108, 109, 110]))
+                $struktur['konsentrasi']['children'][] = $nilai;
+            elseif ($fid == 111)
+                $struktur['kerentanan']['kategori'] = $nilai;
+            elseif (in_array($fid, [112, 113]))
+                $struktur['kerentanan']['children'][] = $nilai;
+            elseif ($fid == 114)
+                $struktur['lainnya'] = $nilai;
+        }
+        return $struktur;
+    }
+
+    private function getDataLikuiditasKPMR(): array
+    {
+        $model = new \App\Models\M_likuiditaskpmr();
+        $nilaiData = $this->db->table('likuiditaskpmr as r')
+            ->select('r.*, u.fullname')->join('users as u', 'u.id = r.user_id', 'left')
+            ->where('r.kodebpr', $this->userKodebpr)->where('r.periode_id', $this->periodeId)
+            ->whereIn('r.faktor1id', range(118, 136))->orderBy('r.faktor1id', 'ASC')
+            ->get()->getResultArray();
+
+        return [
+            'nilai' => $this->strukturDataNilaiLikuiditasKPMR($nilaiData),
+            'nilai135' => $model->where(['faktor1id' => 135, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+            'nilai136' => $model->where(['faktor1id' => 136, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first(),
+        ];
+    }
+
+    private function strukturDataNilaiLikuiditasKPMR($nilaiData): array
+    {
+        $struktur = [
+            'pengawasan' => ['kategori' => null, 'children' => []],
+            'kebijakan' => ['kategori' => null, 'children' => []],
+            'proses' => ['kategori' => null, 'children' => []],
+            'pengendalian' => ['kategori' => null, 'children' => []],
+        ];
+        foreach ($nilaiData as $nilai) {
+            $fid = $nilai['faktor1id'];
+            if ($fid == 118)
+                $struktur['pengawasan']['kategori'] = $nilai;
+            elseif (in_array($fid, [119, 120, 121, 122, 123, 124]))
+                $struktur['pengawasan']['children'][] = $nilai;
+            elseif ($fid == 125)
+                $struktur['kebijakan']['kategori'] = $nilai;
+            elseif (in_array($fid, [126, 127, 128]))
+                $struktur['kebijakan']['children'][] = $nilai;
+            elseif ($fid == 129)
+                $struktur['proses']['kategori'] = $nilai;
+            elseif (in_array($fid, [130, 131]))
+                $struktur['proses']['children'][] = $nilai;
+            elseif ($fid == 132)
+                $struktur['pengendalian']['kategori'] = $nilai;
+            elseif (in_array($fid, [133, 134]))
+                $struktur['pengendalian']['children'][] = $nilai;
+        }
+        return $struktur;
+    }
+
+    private function buildOperasionalInherenStructure(array $dataArray): array
+    {
+        $lookup = array_column($dataArray, null, 'faktor1id');
+        return [
+            'nilai' => [
+                'kompleksitas' => ['kategori' => $lookup[36] ?? null, 'children' => array_values(array_filter([$lookup[37] ?? null, $lookup[38] ?? null, $lookup[39] ?? null, $lookup[40] ?? null]))],
+                'sdm' => ['kategori' => $lookup[41] ?? null, 'children' => array_values(array_filter([$lookup[42] ?? null, $lookup[43] ?? null]))],
+                'ti' => $lookup[44] ?? null,
+                'fraud' => $lookup[45] ?? null,
+                'eksternal' => $lookup[46] ?? null,
+                'lainnya' => $lookup[47] ?? null,
+            ],
+            'nilai13' => $lookup[48] ?? null,
+            'nilai14' => $lookup[49] ?? null,
+        ];
+    }
+
+    private function buildOperasionalKPMRStructure(array $dataArray): array
+    {
+        $lookup = array_column($dataArray, null, 'faktor1id');
+        return [
+            'nilai' => [
+                'pengawasan' => ['kategori' => $lookup[51] ?? null, 'children' => array_values(array_filter([$lookup[52] ?? null, $lookup[53] ?? null, $lookup[54] ?? null, $lookup[55] ?? null, $lookup[56] ?? null, $lookup[57] ?? null]))],
+                'kebijakan' => ['kategori' => $lookup[58] ?? null, 'children' => array_values(array_filter([$lookup[59] ?? null, $lookup[60] ?? null, $lookup[61] ?? null]))],
+                'proses' => ['kategori' => $lookup[62] ?? null, 'children' => array_values(array_filter([$lookup[63] ?? null, $lookup[64] ?? null, $lookup[65] ?? null, $lookup[66] ?? null]))],
+                'pengendalian' => ['kategori' => $lookup[67] ?? null, 'children' => array_values(array_filter([$lookup[68] ?? null, $lookup[69] ?? null]))],
+            ],
+            'nilai33' => $lookup[70] ?? null,
+            'nilai34' => $lookup[71] ?? null,
+        ];
+    }
+
+    private function buildKepatuhanInherenStructure(array $dataArray): array
+    {
+        $lookup = array_column($dataArray, null, 'faktor1id');
+        return [
+            'nilai' => [
+                'pelanggaran' => ['kategori' => $lookup[73] ?? null, 'children' => array_values(array_filter([$lookup[74] ?? null, $lookup[75] ?? null]))],
+                'hukum' => ['kategori' => $lookup[76] ?? null, 'children' => array_values(array_filter([$lookup[77] ?? null, $lookup[78] ?? null, $lookup[79] ?? null]))],
+                'lainnya' => $lookup[80] ?? null,
+            ],
+            'nilai81' => $lookup[81] ?? null,
+            'nilai82' => $lookup[82] ?? null,
+        ];
+    }
+
+    private function buildKepatuhanKPMRStructure(array $dataArray): array
+    {
+        $lookup = array_column($dataArray, null, 'faktor1id');
+        return [
+            'nilai' => [
+                'pengawasan' => ['kategori' => $lookup[84] ?? null, 'children' => array_values(array_filter([$lookup[85] ?? null, $lookup[86] ?? null, $lookup[87] ?? null, $lookup[88] ?? null, $lookup[89] ?? null, $lookup[90] ?? null, $lookup[91] ?? null]))],
+                'kebijakan' => ['kategori' => $lookup[92] ?? null, 'children' => array_values(array_filter([$lookup[93] ?? null, $lookup[94] ?? null, $lookup[95] ?? null]))],
+                'proses' => ['kategori' => $lookup[96] ?? null, 'children' => array_values(array_filter([$lookup[97] ?? null, $lookup[98] ?? null]))],
+                'pengendalian' => ['kategori' => $lookup[99] ?? null, 'children' => array_values(array_filter([$lookup[100] ?? null, $lookup[101] ?? null]))],
+            ],
+            'nilai102' => $lookup[102] ?? null,
+            'nilai103' => $lookup[103] ?? null,
+        ];
+    }
+
+    private function buildLikuiditasInherenStructure(array $dataArray): array
+    {
+        $lookup = array_column($dataArray, null, 'faktor1id');
+        return [
+            'nilai' => [
+                'konsentrasi' => ['kategori' => $lookup[105] ?? null, 'children' => array_values(array_filter([$lookup[106] ?? null, $lookup[107] ?? null, $lookup[108] ?? null, $lookup[109] ?? null, $lookup[110] ?? null]))],
+                'kerentanan' => ['kategori' => $lookup[111] ?? null, 'children' => array_values(array_filter([$lookup[112] ?? null, $lookup[113] ?? null]))],
+                'lainnya' => $lookup[114] ?? null,
+            ],
+            'nilai115' => $lookup[115] ?? null,
+            'nilai116' => $lookup[116] ?? null,
+        ];
+    }
+
+    private function buildLikuiditasKPMRStructure(array $dataArray): array
+    {
+        $lookup = array_column($dataArray, null, 'faktor1id');
+        return [
+            'nilai' => [
+                'pengawasan' => ['kategori' => $lookup[118] ?? null, 'children' => array_values(array_filter([$lookup[119] ?? null, $lookup[120] ?? null, $lookup[121] ?? null, $lookup[122] ?? null, $lookup[123] ?? null, $lookup[124] ?? null]))],
+                'kebijakan' => ['kategori' => $lookup[125] ?? null, 'children' => array_values(array_filter([$lookup[126] ?? null, $lookup[127] ?? null, $lookup[128] ?? null]))],
+                'proses' => ['kategori' => $lookup[129] ?? null, 'children' => array_values(array_filter([$lookup[130] ?? null, $lookup[131] ?? null]))],
+                'pengendalian' => ['kategori' => $lookup[132] ?? null, 'children' => array_values(array_filter([$lookup[133] ?? null, $lookup[134] ?? null]))],
+            ],
+            'nilai102' => $lookup[135] ?? null,
+            'nilai103' => $lookup[136] ?? null,
+        ];
+    }
+
+    private function buildReputasiInherenStructure($dataArray)
+    {
+        $lookup = [];
+        foreach ($dataArray as $item) {
+            $lookup[$item['faktor1id']] = $item;
+        }
+
+        $structure = [
+            'nilai' => [
+                'pengelolaan' => [
+                    'kategori' => $lookup[138] ?? null,
+                    'children' => array_filter([
+                        $lookup[139] ?? null,
+                        $lookup[140] ?? null
+                    ])
+                ],
+                'frekuensi' => $lookup[141] ?? null,
+                'keluhan' => [
+                    'kategori' => $lookup[142] ?? null,
+                    'children' => array_filter([
+                        $lookup[143] ?? null
+                    ])
+                ],
+                'etika' => [
+                    'kategori' => $lookup[144] ?? null,
+                    'children' => array_filter([
+                        $lookup[145] ?? null,
+                        $lookup[146] ?? null
+                    ])
+                ],
+                'lainnya' => $lookup[147] ?? null
+            ],
+            'nilai148' => $lookup[148] ?? null,
+            'nilai149' => $lookup[149] ?? null
+        ];
+
+        return $structure;
+    }
+
+    private function buildReputasiKPMRStructure($dataArray)
+    {
+        $lookup = [];
+        foreach ($dataArray as $item) {
+            $lookup[$item['faktor1id']] = $item;
+        }
+
+        $structure = [
+            'nilai' => [
+                'pengawasan' => [
+                    'kategori' => $lookup[151] ?? null,
+                    'children' => array_filter([
+                        $lookup[152] ?? null,
+                        $lookup[153] ?? null,
+                        $lookup[154] ?? null,
+                        $lookup[155] ?? null,
+                        $lookup[156] ?? null,
+                        $lookup[157] ?? null
+                    ])
+                ],
+                'kebijakan' => [
+                    'kategori' => $lookup[158] ?? null,
+                    'children' => array_filter([
+                        $lookup[159] ?? null,
+                        $lookup[160] ?? null,
+                        $lookup[161] ?? null
+                    ])
+                ],
+                'proses' => [
+                    'kategori' => $lookup[162] ?? null,
+                    'children' => array_filter([
+                        $lookup[163] ?? null,
+                        $lookup[164] ?? null
+                    ])
+                ],
+                'pengendalian' => [
+                    'kategori' => $lookup[165] ?? null,
+                    'children' => array_filter([
+                        $lookup[166] ?? null,
+                        $lookup[167] ?? null
+                    ])
+                ]
+            ],
+            'nilai168' => $lookup[168] ?? null,
+            'nilai169' => $lookup[169] ?? null
+        ];
+
+        return $structure;
+    }
+
+    private function buildStratejikInherenStructure($dataArray)
+    {
+        $lookup = [];
+        foreach ($dataArray as $item) {
+            $lookup[$item['faktor1id']] = $item;
+        }
+
+        $structure = [
+            'nilai' => [
+                'penetapan' => $lookup[171] ?? null,
+                'penyusunan' => [
+                    'kategori' => $lookup[172] ?? null,
+                    'children' => array_filter([
+                        $lookup[173] ?? null,
+                        $lookup[174] ?? null
+                    ])
+                ],
+                'pencapaian' => [
+                    'kategori' => $lookup[175] ?? null,
+                    'children' => array_filter([
+                        $lookup[176] ?? null,
+                        $lookup[177] ?? null
+                    ])
+                ],
+                'lainnya' => $lookup[178] ?? null
+            ],
+            'nilai179' => $lookup[179] ?? null,
+            'nilai180' => $lookup[180] ?? null
+        ];
+
+        return $structure;
+    }
+
+    private function buildStratejikKPMRStructure($dataArray)
+    {
+        $lookup = [];
+        foreach ($dataArray as $item) {
+            $lookup[$item['faktor1id']] = $item;
+        }
+
+        $structure = [
+            'nilai' => [
+                'pengawasan' => [
+                    'kategori' => $lookup[182] ?? null,
+                    'children' => array_filter([
+                        $lookup[183] ?? null,
+                        $lookup[184] ?? null,
+                        $lookup[185] ?? null,
+                        $lookup[186] ?? null,
+                        $lookup[187] ?? null,
+                        $lookup[188] ?? null
+                    ])
+                ],
+                'kebijakan' => [
+                    'kategori' => $lookup[189] ?? null,
+                    'children' => array_filter([
+                        $lookup[190] ?? null,
+                        $lookup[191] ?? null,
+                        $lookup[192] ?? null
+                    ])
+                ],
+                'proses' => [
+                    'kategori' => $lookup[193] ?? null,
+                    'children' => array_filter([
+                        $lookup[194] ?? null,
+                        $lookup[195] ?? null
+                    ])
+                ],
+                'pengendalian' => [
+                    'kategori' => $lookup[196] ?? null,
+                    'children' => array_filter([
+                        $lookup[197] ?? null,
+                        $lookup[198] ?? null
+                    ])
+                ]
+            ],
+            'nilai199' => $lookup[199] ?? null,
+            'nilai200' => $lookup[200] ?? null
+        ];
+
+        return $structure;
+    }
+
+    private function getPenilaianConfig(): array
+    {
+        return [
+            1 => ['descriptions' => [1 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Sangat Rendah', 2 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Rendah', 3 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Sedang', 4 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Tinggi', 5 => 'Parameter Komposisi Portofolio Aset dan Tingkat Konsentrasi Kredit berada pada tingkat risiko yang Sangat Tinggi'], 'catatan' => '-'],
+            2 => ['threshold' => '95%', 'descriptions' => [1 => '<= 95%', 2 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit rendah', 3 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit moderat', 4 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit tinggi', 5 => '>95%, Komponen aset produktif memiliki eksposur Risiko kredit sangat tinggi'], 'catatan' => 'BPR dengan rasio <= 95% dimungkinkan mendapat peringkat lebih buruk dari 1 antara lain dalam hal BPR memiliki aset produktif dengan eksposur Risiko kredit yang lebih tinggi'],
+            3 => ['threshold' => '75%', 'descriptions' => [1 => '<= 75%', 2 => '>75%, Skema kredit sebagian besar atau seluruhnya sederhana, dan jenis kredit tidak beragam', 3 => '>75%, Skema kredit sebagian besar atau seluruhnya sederhana, dan jenis kredit beragam', 4 => '>75%, Skema kredit sebagian besar atau seluruhnya kompleks, dan jenis kredit tidak beragam', 5 => '>75%, Skema kredit sebagian besar atau seluruhnya kompleks, dan jenis kredit beragam'], 'catatan' => 'BPR dengan rasio <=75% dimungkinkan mendapat peringkat lebih buruk dari 1, dalam hal portofolio kredit'],
+            4 => ['threshold' => '20%', 'descriptions' => [1 => '<= 20%', 2 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang sangat lama', 3 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang lama', 4 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang cukup lama', 5 => '≥ 20%, Target pasar tidak berubah selama jangka waktu yang singkat'], 'catatan' => 'Konsentrasi kredit pada 25 debitur terbesar'],
+            5 => ['threshold' => '85%', 'descriptions' => [1 => '<= 85%', 2 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang sangat lama', 3 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang lama', 4 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang cukup lama', 5 => '≥ 85%, Kredit yang berasal dari 3 (tiga) sektor ekonomi terbesar tidak berubah selama jangka waktu yang singkat'], 'catatan' => 'Parameter rasio kredit per sektor ekonomi terhadap total kredit yang diberikan'],
+            6 => ['descriptions' => [1 => 'Parameter Kualitas aset berada pada tingkat risiko yang Sangat Rendah', 2 => 'Parameter Kualitas aset berada pada tingkat risiko yang Rendah', 3 => 'Parameter Kualitas aset berada pada tingkat risiko yang Sedang', 4 => 'Parameter Kualitas aset berada pada tingkat risiko yang Tinggi', 5 => 'Parameter Kualitas aset berada pada tingkat risiko yang Sangat Tinggi'], 'catatan' => '-'],
+            7 => ['threshold' => '7%', 'descriptions' => [1 => '<= 7%', 2 => "Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang baik, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi tidak signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan tidak signifikan <br>• Sektor ekonomi berisiko tinggi tidak signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari tidak signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain", 3 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang cukup baik, namun terdapat potensi penurunan, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi cukup signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan cukup signifikan <br>• Sektor ekonomi berisiko tinggi cukup signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari cukup <br>• Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain signifikan', 4 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang kurang baik, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan signifikan <br>• Sektor ekonomi berisiko tinggi signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan kredit', 5 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang buruk, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi sangat signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan sangat signifikan <br>• Sektor ekonomi berisiko tinggi sangat signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari sangat signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan kredit'], 'catatan' => 'Rasio aset produktif bermasalah terhadap total aset produktif'],
+            8 => ['threshold' => '5%', 'descriptions' => [1 => '<= 5%', 2 => "Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang baik, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi tidak signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan tidak signifikan <br>• Sektor ekonomi berisiko tinggi tidak signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari tidak signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain", 3 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang cukup baik, namun terdapat potensi penurunan, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi cukup signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan cukup signifikan <br>• Sektor ekonomi berisiko tinggi cukup signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari cukup <br>• Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain signifikan', 4 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang kurang baik, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan signifikan <br>• Sektor ekonomi berisiko tinggi signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan kredit', 5 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang buruk, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi sangat signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan sangat signifikan <br>• Sektor ekonomi berisiko tinggi sangat signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari sangat signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan kredit'], 'catatan' => 'Kredit bermasalah neto / total kredit yang diberikan'],
+            9 => ['threshold' => '7%', 'descriptions' => [1 => '<= 7%', 2 => "Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang baik, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi tidak signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan tidak signifikan <br>• Sektor ekonomi berisiko tinggi tidak signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari tidak signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain", 3 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang cukup baik, namun terdapat potensi penurunan, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi cukup signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan cukup signifikan <br>• Sektor ekonomi berisiko tinggi cukup signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari cukup <br>• Komponen aset produktif bermasalah sebagian besar merupakan penempatan pada bank lain signifikan', 4 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang kurang baik, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan signifikan <br>• Sektor ekonomi berisiko tinggi signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan kredit', 5 => 'Rasio di atas ambang batas peringkat 1, dengan kondisi pemberian kredit memiliki kualitas yang buruk, antara lain ditunjukkan dengan: <br>• Kredit restrukturisasi sangat signifikan <br>• Penurunan kualitas kredit dari Performing Loan ke Non Performing Loan sangat signifikan <br>• Sektor ekonomi berisiko tinggi sangat signifikan <br>• Jumlah kredit lancar yang menunggak >7 hari sangat signifikan <br>• Komponen aset produktif bermasalah sebagian besar merupakan kredit'], 'catatan' => 'Rasio aset produktif bermasalah terhadap total aset produktif'],
+            10 => ['descriptions' => [1 => '• Pertumbuhan kredit di atas rata-rata industri, dan <br>• Seluruhnya disalurkan kepada sektor ekonomi yang dikuasai.', 2 => '• Pertumbuhan kredit di atas rata-rata industri, dan <br>• Sebagian besar disalurkan kepada sektor ekonomi yang dikuasai.', 3 => '• Pertumbuhan kredit di atas atau sama dengan rata-rata industri, dan Sebagian kecil atau tidak sama sekali disalurkan kepada sektor ekonomi yang dikuasai atau <br>• Pertumbuhan kredit di bawah rata-rata industri, dan <br>• Seluruhnya disalurkan kepada sektor ekonomi yang dikuasai.', 4 => '• Pertumbuhan kredit di bawah rata-rata industri, dan <br>• Sebagian besar disalurkan kepada sektor ekonomi yang dikuasai.', 5 => '• Pertumbuhan kredit di bawah rata-rata industri, dan <br>• Sebagian kecil atau tidak sama sekali disalurkan kepada sektor ekonomi yang dikuasai.'], 'catatan' => 'Penilaian berdasarkan kualitas pelaksanaan tata kelola'],
+            11 => ['descriptions' => [1 => 'Terdapat perubahan faktor eksternal, namun tidak berdampak pada kemampuan debitur untuk membayar kembali pinjaman.', 2 => 'Terdapat perubahan faktor eksternal, yang berdampak pada kemampuan debitur untuk membayar kembali pinjaman sehingga terjadi tunggakan pinjaman namun tidak menyebabkan penurunan kualitas kredit debitur.', 3 => 'Terdapat perubahan faktor eksternal, yang berdampak pada kinerja bisnis debitur sehingga menyebabkan terjadi tunggakan pinjaman tetapi tidak menurunkan kualitas kredit debitur menjadi NPL.', 4 => 'Terdapat perubahan faktor eksternal, yang menyebabkan penurunan kualitas kredit debitur hingga menjadi NPL.', 5 => 'Terdapat perubahan faktor eksternal, yang menyebabkan kebangkrutan debitur.'], 'catatan' => 'Penilaian berdasarkan kualitas pelaksanaan tata kelola'],
+            12 => ['descriptions' => [1 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Sangat Rendah', 2 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Rendah', 3 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Sedang', 4 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Tinggi', 5 => 'Parameter Penilaian Risiko Kredit Inheren Lainnya berada pada tingkat risiko yang Sangat Tinggi'], 'catatan' => 'Pertumbuhan kredit year-on-year'],
+        ];
+    }
+    public function checkPrevPeriode()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+        if (!$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
+        }
+
+        $currentPeriode = $this->periodeModel->find($this->periodeId);
+        if (!$currentPeriode) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Periode tidak ditemukan']);
+        }
+
+        $prevPeriode = $this->resolvePrevPeriode($currentPeriode);
+        if (!$prevPeriode) {
+            return $this->response->setJSON([
+                'status' => 'no_prev',
+                'message' => 'Tidak ada periode sebelumnya yang terdaftar',
+            ]);
+        }
+
+        // Cek apakah periode aktif sudah punya data (untuk peringatan overwrite)
+        $currentCount = (int) $this->db->table('risikokredit')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $this->periodeId)
+            ->whereIn('faktor1id', range(1, 12))
+            ->where('penilaiankredit IS NOT NULL')
+            ->countAllResults();
+
+        // Cek jumlah data faktor di periode sebelumnya (query ringan — COUNT saja)
+        $prevCount = (int) $this->db->table('risikokredit')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $prevPeriode['id'])
+            ->whereIn('faktor1id', range(1, 12))
+            ->where('penilaiankredit IS NOT NULL')
+            ->countAllResults();
+
+        // Cek kalkulator di periode sebelumnya
+        $prevKalkulatorExists = $this->db->table('kalkulator_kredit')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $prevPeriode['id'])
+            ->countAllResults() > 0;
+
+        if ($prevCount === 0 && !$prevKalkulatorExists) {
+            return $this->response->setJSON([
+                'status' => 'no_data',
+                'message' => "Tidak ada data pada periode Semester {$prevPeriode['semester']} Tahun {$prevPeriode['tahun']}",
+                'prev_info' => [
+                    'semester' => $prevPeriode['semester'],
+                    'tahun' => $prevPeriode['tahun'],
+                ],
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => 'available',
+            'prev_info' => [
+                'semester' => $prevPeriode['semester'],
+                'tahun' => $prevPeriode['tahun'],
+                'faktor_count' => $prevCount,
+                'has_kalkulator' => $prevKalkulatorExists,
+            ],
+            'current_has_data' => $currentCount > 0,
+            'message' => "Data periode Semester {$prevPeriode['semester']} Tahun {$prevPeriode['tahun']} tersedia ({$prevCount} faktor)",
+        ]);
+    }
+    public function syncFromPrevPeriode()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error']);
+        }
+        if (!$this->userKodebpr || !$this->periodeId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);
+        }
+
+        $forceOverwrite = (int) $this->request->getPost('force_overwrite') === 1;
+
+        $currentPeriode = $this->periodeModel->find($this->periodeId);
+        if (!$currentPeriode) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Periode tidak ditemukan']);
+        }
+
+        $prevPeriode = $this->resolvePrevPeriode($currentPeriode);
+        if (!$prevPeriode) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Periode sebelumnya tidak ditemukan']);
+        }
+
+        // Ambil semua data faktor 1–12 dari periode sebelumnya sekaligus (1 query)
+        $prevRows = $this->db->table('risikokredit')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $prevPeriode['id'])
+            ->whereIn('faktor1id', range(1, 12))
+            ->get()->getResultArray();
+
+        // Ambil data existing di periode aktif untuk lookup cepat (1 query)
+        $existingRows = $this->db->table('risikokredit')
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $this->periodeId)
+            ->whereIn('faktor1id', range(1, 12))
+            ->get()->getResultArray();
+
+        // Buat lookup existing berdasarkan faktor1id → O(1)
+        $existingLookup = [];
+        foreach ($existingRows as $row) {
+            $existingLookup[(int) $row['faktor1id']] = $row;
+        }
+
+        // Ambil kalkulator dari periode sebelumnya (1 query)
+        $prevKalkulator = $this->kalkulatorModel
+            ->where('kodebpr', $this->userKodebpr)
+            ->where('periode_id', $prevPeriode['id'])
+            ->first();
+
+        $user = $this->userModel->find($this->userId);
+        $now = date('Y-m-d H:i:s');
+
+        // Kolom yang disalin dari risikokredit (tidak menyalin approval/accdir2)
+        $copyFields = [
+            'penilaiankredit',
+            'penjelasanpenilaian',
+            'keterangan',
+            'rasiokredit',
+        ];
+
+        $toInsert = [];
+        $toUpdate = []; // ['id' => ..., 'data' => [...]]
+        $syncedFaktors = [];
+        $skippedFaktors = [];
+
+        foreach ($prevRows as $prev) {
+            $fid = (int) $prev['faktor1id'];
+            if (empty($prev['penilaiankredit'])) {
+                continue; // skip baris kosong
+            }
+
+            $rowData = [];
+            foreach ($copyFields as $field) {
+                $rowData[$field] = $prev[$field] ?? null;
+            }
+            $rowData['user_id'] = $this->userId;
+            $rowData['fullname'] = $user['fullname'] ?? 'Unknown';
+            $rowData['kodebpr'] = $this->userKodebpr;
+            $rowData['periode_id'] = $this->periodeId;
+            $rowData['faktor1id'] = $fid;
+            $rowData['is_approved'] = 0;
+            $rowData['accdir2'] = 0;
+            $rowData['is_manual'] = 0;
+
+            if (isset($existingLookup[$fid])) {
+                $existing = $existingLookup[$fid];
+                if (!$forceOverwrite && !empty($existing['penilaiankredit'])) {
+                    // Sudah ada data dan tidak force → skip
+                    $skippedFaktors[] = $fid;
+                    continue;
+                }
+                // Update (preserve rasiokredit jika tidak ada di source)
+                $updateData = $rowData;
+                $updateData['updated_at'] = $now;
+                // Jangan timpa rasiokredit jika sumber tidak punya tapi existing punya
+                if (empty($rowData['rasiokredit']) && !empty($existing['rasiokredit'])) {
+                    $updateData['rasiokredit'] = $existing['rasiokredit'];
+                }
+                $toUpdate[] = ['id' => $existing['id'], 'data' => $updateData];
+            } else {
+                // Insert baru
+                $rowData['created_at'] = $now;
+                $toInsert[] = $rowData;
+            }
+            $syncedFaktors[] = $fid;
+        }
+
+        if (empty($toInsert) && empty($toUpdate) && empty($syncedFaktors)) {
+            return $this->response->setJSON([
+                'status' => 'no_change',
+                'message' => empty($skippedFaktors)
+                    ? 'Tidak ada data yang bisa disinkronisasi'
+                    : 'Semua data sudah terisi. Gunakan opsi "Timpa data" jika ingin mengganti.',
+                'skipped' => count($skippedFaktors),
+            ]);
+        }
+
+        // ── Eksekusi dalam satu transaction ──
+        $this->db->transStart();
+
+        try {
+            // Batch insert (1 query untuk semua insert)
+            if (!empty($toInsert)) {
+                $this->db->table('risikokredit')->insertBatch($toInsert);
+            }
+
+            // Update satu per satu (tidak bisa batch update dengan data berbeda-beda)
+            foreach ($toUpdate as $upd) {
+                $this->db->table('risikokredit')
+                    ->where('id', $upd['id'])
+                    ->update($upd['data']);
+            }
+
+            // Sync kalkulator jika ada dan (periode aktif belum punya ATAU force)
+            $kalSynced = false;
+            if ($prevKalkulator) {
+                $existingKal = $this->kalkulatorModel
+                    ->where('kodebpr', $this->userKodebpr)
+                    ->where('periode_id', $this->periodeId)
+                    ->first();
+
+                if (!$existingKal || $forceOverwrite) {
+                    // Kolom kalkulator yang disalin
+                    $kalCopyFields = [
+                        'aba',
+                        'kydbank',
+                        'kydpihak3',
+                        'kydgross',
+                        'totalaset',
+                        'total25debitur',
+                        'perdagangan',
+                        'jasa',
+                        'konsumsirumah',
+                        'sektorekonomi',
+                        'asetproduktif',
+                        'rasioasetproduktif',
+                        'rasiokreditdiberikan',
+                        'rasio25debitur',
+                        'rasioekonomi',
+                        'abanpl',
+                        'kydnpl3',
+                        'kydnpl4',
+                        'kydnpl5',
+                        'kreditdpk2',
+                        'kreditrestruktur1',
+                        'kreditbermasalah',
+                        'asetproduktifbermasalah',
+                        'kydkoleknpl',
+                        'rasioasetproduktifbermasalah',
+                        'rasiokreditbermasalah',
+                        'rasiokreditkualitasrendah',
+                    ];
+                    $kalData = [
+                        'user_id' => $this->userId,
+                        'fullname' => $user['fullname'] ?? 'Unknown',
+                        'kodebpr' => $this->userKodebpr,
+                        'periode_id' => $this->periodeId,
+                    ];
+                    foreach ($kalCopyFields as $f) {
+                        $kalData[$f] = $prevKalkulator[$f] ?? null;
+                    }
+
+                    if ($existingKal) {
+                        $kalData['updated_at'] = $now;
+                        $this->kalkulatorModel->update($existingKal['id'], $kalData);
+                    } else {
+                        $kalData['created_at'] = $now;
+                        $this->kalkulatorModel->insert($kalData);
+                    }
+                    $kalSynced = true;
+                }
+            }
+
+            // Recalculate rata-rata faktor 13 jika ada faktor yang baru disync
+            if (!empty($syncedFaktors)) {
+                // Recalculate category averages (faktor 1 dan 6)
+                $catMapping = [1 => [2, 3, 4, 5], 6 => [7, 8, 9]];
+                foreach ($catMapping as $catId => $childIds) {
+                    if (array_intersect($syncedFaktors, $childIds)) {
+                        $this->calculateAndSaveCategoryAverage(
+                            $catId,
+                            $childIds,
+                            $this->userKodebpr,
+                            $this->periodeId
+                        );
+                    }
+                }
+                // Recalculate faktor 13 (rata-rata inheren)
+                $rataRata = $this->nilaiModel->hitungRataRata(13, $this->userKodebpr, $this->periodeId);
+                $this->nilaiModel->insertOrUpdateRataRata($rataRata, 13, $this->userKodebpr, $this->periodeId);
+            }
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Transaksi database gagal');
+            }
+
+            $msg = sprintf(
+                '%d faktor berhasil disinkronisasi dari Semester %s Tahun %s',
+                count($syncedFaktors),
+                $prevPeriode['semester'],
+                $prevPeriode['tahun']
+            );
+            if ($kalSynced)
+                $msg .= ', termasuk data kalkulator';
+            if (!empty($skippedFaktors)) {
+                $msg .= sprintf('. %d faktor dilewati (sudah terisi)', count($skippedFaktors));
+            }
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => $msg,
+                'synced_count' => count($syncedFaktors),
+                'skipped_count' => count($skippedFaktors),
+                'kal_synced' => $kalSynced,
+                'prev_periode' => [
+                    'semester' => $prevPeriode['semester'],
+                    'tahun' => $prevPeriode['tahun'],
+                ],
+            ]);
+
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            log_message('error', 'syncFromPrevPeriode error: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Gagal sinkronisasi: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function resolvePrevPeriode(array $currentPeriode): ?array
+    {
+        $semester = (int) $currentPeriode['semester'];
+        $tahun = (int) $currentPeriode['tahun'];
+
+        if ($semester === 1) {
+            // Semester 1 tahun X → cari Semester 2 tahun X-1
+            $prevSemester = 2;
+            $prevTahun = $tahun - 1;
+        } else {
+            // Semester 2 tahun X → cari Semester 1 tahun X
+            $prevSemester = 1;
+            $prevTahun = $tahun;
+        }
+
+        // Cari periode yang cocok di tabel periodes
+        // (nama tabel disesuaikan dengan implementasi M_periodesemesteran)
+        $prev = $this->periodeModel
+            ->where('semester', $prevSemester)
+            ->where('tahun', $prevTahun)
+            ->first();
+
+        return $prev ?: null;
+    }
 
 }

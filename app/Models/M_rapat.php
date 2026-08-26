@@ -7,7 +7,7 @@ class M_rapat extends Model
 {
     protected $table = 'rapat';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'tangalrapat', 'jumlahpeserta', 'topikrapat', 'fullname', 'is_approved', 'approved_by', 'approved_at','accdekom', 'accdekom_by', 'accdekom_at'];
+    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'tanggalrapat', 'jumlahpeserta', 'topikrapat', 'fullname', 'is_approved', 'approved_by', 'approved_at','accdekom', 'accdekom_by', 'accdekom_at'];
     protected $useTimestamps = false;
 
     public function __construct()
