@@ -1,133 +1,64 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_shmusahadirdekom extends Model
+/**
+ * Laporan Transparansi 7 — Kepemilikan Saham Anggota Direksi, Dewan Komisaris, dan Pemegang Saham
+ * pada Kelompok Usaha BPR (E0302). Satu baris per kepemilikan. Mendukung "Tidak Ada Data".
+ */
+class M_shmusahadirdekom extends M_anggotatransparansi
 {
     protected $table = 'shmusahadirdekom';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['nik', 'kodebpr', 'periode_id', 'user_id', 'nama', 'jenisid', 'nik', 'jabatan', 'usaha', 'persensaham', 'persensahamlalu', 'dekom', 'nikdekom', 'usahadekom', 'persenshmdekom', 'persenshmdekomlalu', 'pshm', 'nikpshm', 'usahapshm', 'persenpshm', 'persenpshmlalu', 'keterangan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'fullname', 'is_null_record'];
-    protected $useTimestamps = false;
 
-    public function __construct()
+    public const SUBKATEGORI = 'Shmusahadirdekom';
+    public const FORM_CODE = 'E0302';
+    public const D01_CODE = '042010000000';
+    public const JABATAN = ['Direksi' => 'Direksi', 'Dekom' => 'Dewan Komisaris', 'Psaham' => 'Pemegang Saham'];
+    public const JENIS_ID = ['NIK' => 'NIK', 'NIB' => 'NIB'];
+
+    public const UNIQUE = null;   // satu orang boleh memiliki saham di beberapa perusahaan kelompok usaha
+    public const TITLE_FIELD = 'nama';
+    public const TAG_FIELD = 'jabatan';
+    public const SUB_FIELD = ['jenisid', 'nik'];
+    public const SUB_FORMAT = '%s %s';
+    public const BODY_FIELDS = ['usaha'];
+    public const CHIP_FIELDS = ['persen', 'persenlalu'];
+    public const UTAMA = ['Direksi'];
+    public const ORDER_COL = 'jabatan';
+
+    public const HAS_NAMES = false;
+    public const NODATA = true;
+
+    public static function fields(): array
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        return [
+            'nama' => ['col' => 'nama', 'label' => 'Nama', 'type' => 'text', 'max' => 100, 'col_md' => 7],
+            'jabatan' => ['col' => 'jabatan', 'label' => 'Jabatan', 'type' => 'select', 'options' => self::JABATAN, 'col_md' => 5],
+            'jenisid' => ['col' => 'jenisid', 'label' => 'Jenis Identitas', 'type' => 'select', 'options' => self::JENIS_ID, 'default' => 'NIK', 'col_md' => 4],
+            'nik' => ['col' => 'nik', 'label' => 'Nomor Identitas', 'type' => 'idnum', 'typeField' => 'jenisid', 'lengths' => ['NIK' => 16, 'NIB' => 13], 'col_md' => 8],
+            'usaha' => ['col' => 'usaha', 'label' => 'Nama Perusahaan Kelompok Usaha BPR', 'type' => 'text', 'max' => 150],
+            'persen' => ['col' => 'persensaham', 'label' => 'Persentase Saham (%)', 'short' => 'Saham', 'unit' => '%', 'type' => 'percent', 'col_md' => 6],
+            'persenlalu' => ['col' => 'persensahamlalu', 'label' => 'Persentase Saham Tahun Lalu (%)', 'short' => 'Tahun lalu', 'unit' => '%', 'type' => 'percent', 'col_md' => 6],
+        ];
     }
 
-    public function getAllData()
+    /** Kolom accdekom2_by ... accdir2_by di tabel ini bertipe DATETIME (punya default) -> jangan diisi 0. */
+    protected static function insertDefaults(): array
     {
-        return $this->builder->get()->getResultArray();
+        return ['is_approved' => 0, 'approved_by' => 0, 'accdekom' => 0, 'accdekom_by' => 0,
+            'accdekom2' => 0, 'accdekom3' => 0, 'accdekom4' => 0, 'accdekom5' => 0, 'accdir2' => 0];
     }
 
-    public function setIncrement($value)
+    /** Baris "Tidak Ada Data" (sama dengan versi lama). */
+    protected static function nodataValues(): array
     {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE shmusahadirdekom AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        return ['nama' => '', 'jabatan' => 'Direksi', 'jenisid' => 'NIK', 'nik' => '', 'usaha' => null, 'persensaham' => null, 'persensahamlalu' => null];
     }
 
-    public function tambah($data)
+    /** D01|042010000000|nomor identitas|usaha|persen|persen tahun lalu (format lama). */
+    public function txtLine(array $row, callable $clean): string
     {
-        return $this->builder->insert($data);
-    }
-
-    public function tambahketerangan($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function hapus($id)
-    {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-    // Dalam PenjelasantindakModel.php
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('shmusahadirdekom')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('shmusahadirdekom.*, users.fullname')
-            ->join('users', 'users.id = shmusahadirdekom.user_id', 'left')
-            ->where('shmusahadirdekom.id', $Id)
-            ->where('shmusahadirdekom.kodebpr', $kodebpr)
-            ->orderBy('shmusahadirdekom.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('shmusahadirdekom')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('shmusahadirdekom')
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $shmusahadirdekom, $kodebpr, $periodeId)
-    {
-        $this->builder->where('subkategori', $shmusahadirdekom)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
+        return 'D01|' . self::D01_CODE . '|' . $clean($row['nik']) . '|' . $clean($row['usaha'])
+            . '|' . $clean($row['persensaham']) . '|' . $clean($row['persensahamlalu']);
     }
 }

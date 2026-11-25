@@ -1,0 +1,109 @@
+/* Halaman periode (SAF & Semesteran) — dipakai bersama, di-cache browser. */
+.ps-title { font-size: clamp(1.25rem, 4vw, 1.75rem); font-weight: 700; color: #1f2937; margin-bottom: .5rem; display: flex; align-items: center; gap: .4rem; }
+.ps-sub { color: #6b7280; font-size: .95rem; margin: 0; }
+.ps-alert { border: none; border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 2px 8px rgba(0, 0, 0, .08); transition: opacity .4s; }
+
+.ps-card { border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 2px 10px rgba(15, 23, 42, .06); }
+.ps-card-header { padding: 1.1rem 1.5rem; background: linear-gradient(135deg, #1f2aa8, #141863); }
+.ps-card-header h5 { color: #fff; font-size: 1.05rem; font-weight: 600; }
+.ps-card-body { padding: clamp(1rem, 3vw, 1.5rem); }
+
+.ps-group { margin-bottom: 1rem; min-width: 0; }
+.ps-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.ps-label { font-size: .88rem; font-weight: 600; color: #374151; margin-bottom: .4rem; display: flex; align-items: center; gap: .4rem; }
+.ps-label i { color: #6b7280; width: 14px; text-align: center; }
+.ps-select, .ps-input { width: 100%; padding: .65rem .9rem; font-size: .93rem; color: #1f2937; background: #fff; border: 2px solid #e5e7eb; border-radius: 10px; transition: border-color .2s, box-shadow .2s; }
+.ps-select {
+    appearance: none; padding-right: 2.2rem; background-repeat: no-repeat; background-position: right 12px center; background-size: 10px 6px;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"%3E%3Cpath d="M0 0l5 5 5-5z" fill="none" stroke="%236b7280" stroke-width="1.5"/%3E%3C/svg%3E');
+}
+.ps-select:focus, .ps-input:focus { outline: none; border-color: #1f2aa8; box-shadow: 0 0 0 3px rgba(31, 42, 168, .1); }
+.ps-input { padding-left: 2.8rem; }
+.ps-input.ps-plain { padding-left: .9rem; }
+.ps-input-wrap { position: relative; }
+.ps-prefix { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); font-size: .88rem; font-weight: 600; color: #6b7280; pointer-events: none; }
+.is-invalid { border-color: #dc3545 !important; box-shadow: 0 0 0 3px rgba(220, 53, 69, .1) !important; }
+.ps-err { display: none; font-size: .78rem; color: #dc3545; margin-top: .25rem; }
+.ps-group.has-error .ps-err { display: block; }
+
+.ps-inline { border-radius: 8px; padding: .45rem .7rem; font-size: .78rem; font-weight: 500; }
+.ps-inline.warn { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.ps-inline.info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+.ps-inline.ok { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+.ps-jenis-group { display: flex; gap: 8px; }
+.ps-jenis {
+    flex: 1; height: 46px; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+    border: 2px solid #e5e7eb; border-radius: 10px; background: #fff; font-weight: 600; color: #6b7280; transition: border-color .2s, background .2s, color .2s;
+}
+.ps-jenis input { position: absolute; opacity: 0; pointer-events: none; }
+.ps-jenis:has(input:focus-visible) { box-shadow: 0 0 0 3px rgba(31, 42, 168, .2); }
+.ps-jenis-r:has(input:checked) { border-color: #1f2aa8; background: #eff4ff; color: #1f2aa8; }
+.ps-jenis-k:has(input:checked) { border-color: #d97706; background: #fffbeb; color: #92400e; }
+.ps-koreksi { padding: .8rem; margin: -.25rem 0 1rem; border-radius: 10px; background: #fffbeb; border: 1px dashed #fcd34d; }
+.ps-koreksi[hidden] { display: none; }
+
+.ps-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 46px; padding: 0 1.25rem; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.ps-btn-create { background: linear-gradient(135deg, #1fa85a, #146337); color: #fff; }
+.ps-btn-create:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, .3); color: #fff; }
+.ps-btn:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+.ps-btn-cancel { background: #f1f5f9; color: #475569; }
+.ps-btn-cancel:hover { background: #e2e8f0; }
+
+.ps-empty { text-align: center; padding: 3rem 1rem; color: #6b7280; }
+.ps-empty-icon { font-size: 3.5rem; color: #d1d5db; margin-bottom: 1rem; }
+
+.ps-list { display: flex; flex-direction: column; gap: .75rem; max-height: 560px; overflow-y: auto; padding-right: .4rem; }
+.ps-item-wrap { display: flex; align-items: stretch; gap: 8px; }
+.ps-item-form { flex: 1; min-width: 0; margin: 0; }
+.ps-item {
+    width: 100%; height: 100%; display: flex; align-items: center; padding: 1rem; text-align: left; cursor: pointer;
+    background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.ps-item:hover { background: #fff; border-color: #1f2aa8; transform: translateX(4px); box-shadow: 0 4px 12px rgba(0, 0, 0, .08); }
+.ps-item.active { background: linear-gradient(135deg, #1fa85a, #146337); color: #fff; border-color: transparent; }
+.ps-item-icon { width: 44px; height: 44px; margin-right: 1rem; flex-shrink: 0; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #1f2aa8; }
+.ps-item.active .ps-item-icon { background: rgba(255, 255, 255, .2); color: #fff; }
+.ps-item-body { flex: 1; min-width: 0; }
+.ps-item-title { font-size: 1rem; font-weight: 700; color: #1f2937; margin-bottom: .4rem; }
+.ps-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: .4rem; }
+.ps-badge { display: inline-flex; align-items: center; gap: 4px; padding: .25rem .6rem; border-radius: 6px; font-size: .75rem; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-badge-r { background: #dbeafe; color: #1e40af; }
+.ps-badge-k { background: #fef3c7; color: #92400e; }
+.ps-badge-n { background: #f1f5f9; color: #475569; }
+.ps-details { display: flex; flex-wrap: wrap; gap: .3rem .9rem; font-size: .8rem; color: #6b7280; }
+.ps-item.active .ps-item-title, .ps-item.active .ps-details { color: #fff; }
+.ps-item.active .ps-badge { background: rgba(255, 255, 255, .2); color: #fff; }
+.ps-active-badge { background: rgba(255, 255, 255, .2); padding: .45rem .75rem; border-radius: 8px; font-size: .85rem; font-weight: 600; color: #fff; flex-shrink: 0; white-space: nowrap; }
+.ps-arrow { color: #9ca3af; flex-shrink: 0; margin-left: .5rem; transition: transform .2s, color .2s; }
+.ps-item:hover .ps-arrow { color: #1f2aa8; transform: translateX(3px); }
+.ps-btn-edit { width: 42px; min-width: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #fff; border: 2px solid #e5e7eb; border-radius: 10px; color: #6b7280; transition: border-color .2s, color .2s, background .2s; }
+.ps-btn-edit:hover { border-color: #1f2aa8; color: #1f2aa8; background: #eff4ff; }
+
+.ps-overlay { position: fixed; inset: 0; z-index: 1050; display: flex; align-items: center; justify-content: center; padding: 1rem; background: rgba(15, 23, 42, .5); }
+.ps-overlay[hidden] { display: none; }
+.ps-modal { width: 500px; max-width: 100%; max-height: calc(100vh - 2rem); display: flex; flex-direction: column; overflow: hidden; background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, .2); animation: psIn .2s ease; }
+@keyframes psIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.ps-modal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 1.1rem 1.4rem; background: linear-gradient(135deg, #1f2aa8, #141863); color: #fff; }
+.ps-mh-title { font-weight: 700; }
+.ps-mh-sub { font-size: .82rem; opacity: .85; }
+.ps-mh-close { width: 34px; height: 34px; border: none; border-radius: 8px; background: rgba(255, 255, 255, .15); color: #fff; }
+.ps-modal-body { padding: 1.25rem 1.4rem; overflow-y: auto; flex: 1; }
+.ps-modal-footer { display: flex; gap: 10px; padding: 1rem 1.4rem; border-top: 1px solid #e5e7eb; }
+.ps-modal-footer .ps-btn-cancel { flex: 1; }
+.ps-modal-footer .ps-btn-create { flex: 2; }
+
+@media (max-width: 991px) { .ps-list { max-height: none; } }
+@media (max-width: 575.98px) {
+    .ps-row { grid-template-columns: 1fr; }
+    .ps-item { flex-wrap: wrap; }
+    .ps-item-icon { display: none; }
+    .ps-active-badge { width: 100%; margin-top: .5rem; text-align: center; }
+    .ps-arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* Pilihan Ya/Tidak (kartu ATM/debit) */
+.ps-jenis-y:has(input:checked) { border-color: #059669; background: #ecfdf5; color: #047857; }
+.ps-jenis-n:has(input:checked) { border-color: #64748b; background: #f1f5f9; color: #334155; }
+.ps-group.has-error .ps-jenis-group .ps-jenis { border-color: #fca5a5; }

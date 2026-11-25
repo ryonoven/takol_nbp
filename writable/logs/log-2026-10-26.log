@@ -1,0 +1,83 @@
+INFO - 2026-10-26 08:14:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:14:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-10-26 08:14:21 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-10-26 08:14:21 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-10-26 08:19:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:26:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 08:26:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 08:27:02 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 08:53:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 08:53:45 --> ShowTransparansi: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 09:25:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 09:25:35 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 09:36:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-10-26 09:36:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-10-26 09:36:34 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-10-26 09:36:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 09:36:37 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 09:37:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 09:37:32 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 13:47:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-10-26 13:47:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-10-26 13:47:41 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-10-26 13:47:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-26 13:47:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 13:47:54 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 14:24:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 14:24:43 --> ShowTransparansi: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 14:24:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 14:24:47 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 15:48:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 15:48:46 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 16:31:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 16:31:46 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5
+INFO - 2026-10-26 17:05:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-26 17:05:53 --> ShowFaktor: User ID: 1, Kode BPR: 001811, Periode ID: 5

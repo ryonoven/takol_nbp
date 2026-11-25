@@ -1,137 +1,62 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_kehadirandekom extends Model
+/**
+ * Laporan Transparansi 14 — Kehadiran Anggota Dewan Komisaris (E0702).
+ * Satu baris per anggota Dewan Komisaris. Tabel: accdekom2..5 tanpa accdir2, tanpa komut/dirut,
+ * kolom keterangan TEXT NOT NULL tanpa default.
+ */
+class M_kehadirandekom extends M_anggotatransparansi
 {
     protected $table = 'kehadirandekom';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'dekom', 'nik', 'hadirfisik', 'hadironline', 'persen', 'fullname', 'is_approved', 'approved_by', 'approved_at', 'accdekom', 'accdekom_by', 'accdekom_at'];
-    protected $useTimestamps = false;
 
-    public function __construct()
+    public const SUBKATEGORI = 'Kehadirandekom';
+    public const FORM_CODE = 'E0702';
+    public const D01_CODE = '082010000000';
+
+    public const UNIQUE = 'nik';
+    public const UNIQUE_MSG = 'NIK sudah terdaftar pada periode ini.';
+    public const TITLE_FIELD = 'nama';
+    public const TAG_FIELD = null;
+    public const SUB_FIELD = 'nik';
+    public const SUB_FORMAT = 'NIK %s';
+    public const BODY_FIELDS = [];
+    public const CHIP_FIELDS = ['fisik', 'online', 'persen'];
+    public const ORDER_COL = 'id';
+
+    public const HAS_NAMES = false;
+    public const HAS_EXTRA_ACC = false;   // accdekom2..5 diisi lewat insertDefaults() (tabel tanpa accdir2)
+
+    public static function fields(): array
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        return [
+            'nama' => ['col' => 'dekom', 'label' => 'Nama Anggota Dewan Komisaris', 'type' => 'text', 'max' => 50, 'col_md' => 7],
+            'nik' => ['col' => 'nik', 'label' => 'NIK', 'type' => 'nik', 'max' => 16, 'col_md' => 5],
+            'fisik' => ['col' => 'hadirfisik', 'label' => 'Frekuensi Kehadiran Fisik', 'short' => 'Fisik', 'unit' => ' kali', 'type' => 'number', 'max' => 999, 'col_md' => 4],
+            'online' => ['col' => 'hadironline', 'label' => 'Frekuensi Kehadiran Online', 'short' => 'Online', 'unit' => ' kali', 'type' => 'number', 'max' => 999, 'col_md' => 4],
+            'persen' => ['col' => 'persen', 'label' => 'Persentase Kehadiran (%)', 'short' => 'Kehadiran', 'unit' => '%', 'type' => 'percent', 'col_md' => 4],
+        ];
     }
 
-    public function getAllData()
+    protected static function insertDefaults(): array
     {
-        return $this->builder->get()->getResultArray();
+        return ['is_approved' => 0, 'approved_by' => 0, 'accdekom' => 0, 'accdekom_by' => 0,
+            'accdekom2' => 0, 'accdekom2_by' => 0, 'accdekom3' => 0, 'accdekom3_by' => 0,
+            'accdekom4' => 0, 'accdekom4_by' => 0, 'accdekom5' => 0, 'accdekom5_by' => 0,
+            'keterangan' => ''];
     }
 
-    public function setIncrement($value)
+    /** Sinkronisasi: nama & NIK disalin, angka kehadiran dikosongkan (diisi ulang untuk tahun berjalan). */
+    public static function syncRow(array $row): array
     {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE kehadirandekom AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        return ['hadirfisik' => '0', 'hadironline' => '0', 'persen' => 0] + $row;
     }
 
-    public function tambah($data)
+    /** D01|082010000000|nik|nama|fisik|online|persen (format lama). */
+    public function txtLine(array $row, callable $clean): string
     {
-        return $this->builder->insert($data);
+        return 'D01|' . self::D01_CODE . '|' . $clean($row['nik']) . '|' . $clean($row['dekom']) . '|' . $clean($row['hadirfisik'])
+            . '|' . $clean($row['hadironline']) . '|' . $clean($row['persen']);
     }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('kehadirandekom')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('kehadirandekom.*, users.fullname')
-            ->join('users', 'users.id = kehadirandekom.user_id', 'left')
-            ->where('kehadirandekom.id', $Id)
-            ->where('kehadirandekom.kodebpr', $kodebpr)
-            ->orderBy('kehadirandekom.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('kehadirandekom')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function hapus($id)
-    {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $kehadirandekom, $kodebpr, $periodeId)
-    {
-        $this->builder->where('subkategori', $kehadirandekom)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('kehadirandekom')
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function setNullKolom($id)
-    {
-        return $this->builder->update(
-            ['nilai' => null, 'keterangan' => null],
-            ['id' => $id]
-        );
-    }    
-
 }

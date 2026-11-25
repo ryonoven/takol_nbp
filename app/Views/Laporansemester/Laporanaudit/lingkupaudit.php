@@ -1174,7 +1174,7 @@ $_kodebpr = addslashes($kodebpr ?? '');
             document.getElementById('sync-current-label').textContent = _syncData.current_label || '-';
             document.getElementById('sync-prev-label').textContent    = _syncData.prev_label    || '-';
 
-            var rows         = _syncData.rows         || [];
+            var rows = _syncData.rows || [];
             var existingKeys = _syncData.existing_keys || [];
 
             var keySet = {};

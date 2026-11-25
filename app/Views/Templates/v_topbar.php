@@ -1,190 +1,104 @@
+<?php
+/**
+ * Topbar: tombol menu (mobile: buka laci, desktop: ciutkan sidebar), judul halaman, menu user.
+ */
+$u = user();
+$fullname = trim((string) ($u->fullname ?? '')) ?: (string) ($u->username ?? 'Pengguna');
+$initials = strtoupper(implode('', array_map(static fn($w) => mb_substr($w, 0, 1), array_slice(preg_split('/\s+/', $fullname), 0, 2))));
+// Label peran (grup Myth\Auth; pengecekan grup memakai cache Myth, tanpa query tambahan)
+$roles = [
+    'admin' => 'Admin', 'direksi' => 'Direktur Utama', 'direksi2' => 'Direksi', 'dekom' => 'Komisaris Utama',
+    'dekom2' => 'Komisaris', 'dekom3' => 'Komisaris', 'dekom4' => 'Komisaris', 'dekom5' => 'Komisaris',
+    'pe' => 'Pejabat Eksekutif', 'auditor' => 'Auditor', 'user' => 'Karyawan',
+];
+$role = '';
+foreach ($roles as $g => $label) {
+    if (in_groups($g)) {
+        $role = $label;
+        break;
+    }
+}
+?>
 <!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
 
     <!-- Main Content -->
     <div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-2 sticky-top shadow">
-            <nav class="navbar bg-body-tertiary">
-            </nav>
+        <header class="app-tb" id="appTopbar">
+            <button type="button" class="app-tb-btn" id="appSbToggle" aria-controls="appSidebar" aria-expanded="false" aria-label="Buka/tutup menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
 
-            <!-- Sidebar Toggle (Topbar) -->
-            <!-- <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                <i class="fa fa-bars"></i>
-            </button> -->
+            <div class="app-tb-title" title="<?= esc($judul ?? '', 'attr') ?>"><?= esc($judul ?? '') ?></div>
 
-            <!-- Topbar Navbar -->
-            <ul class="navbar-nav ml-auto">
-
-                <!-- Nav Item - User Information -->
-                <li class="nav-item dropdown no-arrow">
-                    <a class="nav-link2 dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <div class="topbar-divider d-none d-sm-block"></div>
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= user()->fullname; ?></span>                        
-                    </a>
-                    <!-- Dropdown - User Information -->
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                        aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="<?= base_url('user') ?>">
-                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
-                        </a>
-                        <!-- <a class="dropdown-item" href="#">
-                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Activity Log
-                        </a> -->
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Logout
-                        </a>
+            <div class="dropdown app-tb-user">
+                <button type="button" class="app-tb-userbtn" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="app-tb-avatar" aria-hidden="true"><?= esc($initials) ?></span>
+                    <span class="app-tb-who">
+                        <span class="app-tb-name"><?= esc($fullname) ?></span>
+                        <?php if ($role): ?><span class="app-tb-role"><?= esc($role) ?></span><?php endif; ?>
+                    </span>
+                    <i class="fas fa-chevron-down app-tb-caret" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right app-tb-menu" aria-labelledby="userDropdown">
+                    <div class="app-tb-menuhead">
+                        <strong><?= esc($fullname) ?></strong>
+                        <?php if ($role): ?><small><?= esc($role) ?></small><?php endif; ?>
                     </div>
-                </li>
-
-            </ul>
-
-        </nav>
-        <!-- End of Topbar -->
+                    <a class="dropdown-item" href="<?= base_url('user') ?>"><i class="fas fa-user fa-fw"></i> Profil</a>
+                    <a class="dropdown-item" href="<?= base_url('infobpr') ?>"><i class="fas fa-laptop-house fa-fw"></i> Informasi BPR</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item app-tb-logout" href="#" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-sign-out-alt fa-fw"></i> Logout</a>
+                </div>
+            </div>
+        </header>
 
         <style>
-            /* Custom Styles for Topbar */
-            .topbar {
-                background-color: #fff;
-                /* White background for a clean look */
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                /* Softer shadow for elegance */
-                padding: 0.75rem 1.5rem;
-                /* Slightly more vertical padding */
-                height: 11vh;
-                /* Allow height to adjust based on content */
-                display: flex;
-                /* Ensure flexbox layout for alignment */
-                align-items: center;
-                /* Vertically align items */
-                justify-content: space-between;
-                /* Space out items */
+            .app-tb {
+                position: sticky; top: 0; z-index: 1030; height: var(--tb-h, 64px); margin-bottom: 1rem;
+                display: flex; align-items: center; gap: 12px; padding: 0 20px;
+                background: rgba(255, 255, 255, .92); border-bottom: 1px solid #e5e7eb;
+                -webkit-backdrop-filter: saturate(180%) blur(8px); backdrop-filter: saturate(180%) blur(8px);
             }
+            .app-tb-btn {
+                width: 40px; height: 40px; flex-shrink: 0; border: none; border-radius: 10px; background: transparent;
+                color: #475569; font-size: 1.1rem; display: inline-flex; align-items: center; justify-content: center; transition: background-color .15s;
+            }
+            .app-tb-btn:hover { background: #f1f5f9; color: #1f2aa8; }
+            .app-tb-btn:focus-visible, .app-tb-userbtn:focus-visible { outline: 2px solid #1f2aa8; outline-offset: 2px; }
+            .app-tb-title { flex: 1; min-width: 0; font-weight: 700; font-size: 1.05rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-            /* Specific styling for the inner navbar if needed, though topbar itself usually suffices */
-            .topbar .navbar {
-                padding: 0;
-                /* Remove default padding from inner navbar if it causes issues */
+            .app-tb-userbtn {
+                display: flex; align-items: center; gap: 10px; padding: 4px 8px 4px 4px; border: 1px solid transparent; border-radius: 999px;
+                background: transparent; transition: background-color .15s, border-color .15s; max-width: 280px;
             }
+            .app-tb-userbtn:hover, .app-tb-user.show .app-tb-userbtn { background: #f8fafc; border-color: #e2e8f0; }
+            .app-tb-avatar {
+                width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+                background: linear-gradient(135deg, #1f2aa8, #141863); color: #fff; font-weight: 700; font-size: .85rem; letter-spacing: .02em;
+            }
+            .app-tb-who { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; line-height: 1.2; }
+            .app-tb-name { font-size: .9rem; font-weight: 600; color: #1e293b; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .app-tb-role { font-size: .72rem; color: #64748b; }
+            .app-tb-caret { font-size: .7rem; color: #94a3b8; }
 
-            /* Sidebar Toggle (Topbar) button */
-            #sidebarToggleTop {
-                background-color: transparent;
-                /* Transparent background */
-                border: none;
-                /* No border */
-                color: #4a5c6c;
-                /* Dark icon color for contrast on white */
-                font-size: 1.5rem;
-                /* Larger icon */
-                transition: color 0.3s ease, transform 0.3s ease;
-            }
+            .app-tb-menu { min-width: 230px; margin-top: 8px !important; padding: 6px; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 12px 30px rgba(15, 23, 42, .12); }
+            .app-tb-menuhead { padding: 8px 12px 10px; border-bottom: 1px solid #f1f5f9; margin-bottom: 4px; display: flex; flex-direction: column; }
+            .app-tb-menuhead strong { font-size: .9rem; color: #1e293b; }
+            .app-tb-menuhead small { color: #64748b; }
+            .app-tb-menu .dropdown-item { border-radius: 8px; padding: 9px 12px; font-size: .88rem; color: #334155; }
+            .app-tb-menu .dropdown-item i { color: #94a3b8; margin-right: 6px; }
+            .app-tb-menu .dropdown-item:hover { background: #eef2ff; color: #1f2aa8; }
+            .app-tb-menu .dropdown-item:hover i { color: #1f2aa8; }
+            .app-tb-menu .app-tb-logout:hover { background: #fef2f2; color: #b91c1c; }
+            .app-tb-menu .app-tb-logout:hover i { color: #b91c1c; }
 
-            #sidebarToggleTop:hover {
-                color: #fff;
-                /* Primary blue on hover */
-                transform: scale(1.1);
-                /* Slight zoom effect */
+            @media (max-width: 575.98px) {
+                .app-tb { padding: 0 12px; gap: 8px; }
+                .app-tb-who, .app-tb-caret { display: none; }
+                .app-tb-userbtn { padding: 2px; }
+                .app-tb-title { font-size: .95rem; }
             }
-
-            /* User Information Section */
-            .navbar-nav .nav-item.dropdown.no-arrow {
-                display: flex;
-                /* Use flexbox for alignment */
-                align-items: center;
-                /* Vertically align items */
-            }
-
-            .navbar-nav .nav-item.dropdown.no-arrow .nav-link {
-                display: flex;
-                align-items: center;
-                padding: 0.5rem 1rem;
-                /* Adjust padding around user info */
-            }
-
-            /* User Fullname */
-            .topbar .text-gray-600.small {
-                color: #4a5c6c !important;
-                /* Ensure dark text for the username */
-                font-size: 0.95rem;
-                /* Slightly larger font for readability */
-                font-weight: 500;
-                /* A bit bolder */
-                margin-right: 0.5rem;
-                /* Space between name and image */
-            }
-
-            /* User Profile Image */
-            .topbar .img-profile {
-                width: 40px;
-                /* Standard size for profile image */
-                height: 40px;
-                /* Standard size for profile image */
-                object-fit: cover;
-                /* Ensures image fills the space without distortion */
-                border: 2px solid #e0e0e0;
-                /* Subtle light grey border */
-            }
-
-            /* Dropdown Menu (User Information) */
-            .dropdown-menu.shadow.animated--grow-in {
-                border-radius: 0.5rem;
-                /* Slightly rounded corners for the dropdown */
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-                /* More prominent shadow for depth */
-                margin-top: 0.75rem;
-                /* Space below the topbar */
-            }
-
-            .dropdown-menu .dropdown-item {
-                color: #4a5c6c;
-                /* Dark text for dropdown items */
-                padding: 0.75rem 1.25rem;
-                /* More padding for clickable area */
-                transition: background-color 0.2s ease, color 0.2s ease;
-            }
-
-            .dropdown-menu .dropdown-item:hover {
-                background-color: #f8f9fa;
-                /* Light background on hover */
-                color: #007bff;
-                /* Primary blue text on hover */
-            }
-
-            .dropdown-menu .dropdown-item .fas {
-                color: #8898aa;
-                /* Softer color for icons in dropdown */
-            }
-
-            .dropdown-menu .dropdown-item:hover .fas {
-                color: #007bff;
-                /* Primary blue for icons on hover */
-            }
-
-            .dropdown-divider {
-                border-top: 1px solid rgba(0, 0, 0, 0.08);
-                /* Lighter divider */
-            }
-
-            /* Hide Topbar Divider (often unnecessary if elements are well-spaced) */
-            .topbar-divider.d-none.d-sm-block {
-                display: none !important;
-                /* Hide the vertical divider between user elements */
-            }
-
-            /* Ensure proper spacing for the main content area below topbar */
-            #content {
-                margin-top: 0;
-                /* Reset default margin if any, as topbar handles spacing */
-            }
+            @media print { .app-tb { display: none !important; } }
         </style>

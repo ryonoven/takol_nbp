@@ -59,70 +59,55 @@
 <script src="/asset/js/sb-admin-2.min.js"></script>
 
 <script>
-    $(function () {
-        const $sidebar = $('#accordionSidebar');
-        const $overlay = $('#sidebarOverlay');
+    // Sidebar & topbar (vanilla JS, tanpa listener resize/scroll terus-menerus)
+    (function () {
+        'use strict';
+        if (window.__appSidebarInit) return;
+        window.__appSidebarInit = true;
 
-        function closeSidebar() {
-            $sidebar.removeClass('active');
-            $overlay.removeClass('active');
-            $('body').css('overflow', 'auto');
+        var body = document.body,
+            sb = document.getElementById('appSidebar'),
+            overlay = document.getElementById('appSbOverlay'),
+            toggle = document.getElementById('appSbToggle'),
+            closeBtn = document.getElementById('appSbClose');
+        if (!sb || !toggle) return;
+
+        var mq = window.matchMedia('(max-width: 991.98px)');
+        var isMobile = function () { return mq.matches; };
+
+        function openDrawer() {
+            body.classList.add('sb-open');
+            overlay.hidden = false;
+            toggle.setAttribute('aria-expanded', 'true');
+            var first = sb.querySelector('.app-sb-link.is-active') || sb.querySelector('.app-sb-link');
+            if (first) first.focus({ preventScroll: true });
+        }
+        function closeDrawer(returnFocus) {
+            if (!body.classList.contains('sb-open')) return;
+            body.classList.remove('sb-open');
+            overlay.hidden = true;
+            toggle.setAttribute('aria-expanded', 'false');
+            if (returnFocus) toggle.focus();
+        }
+        function setMini(on) {
+            body.classList.toggle('sb-mini', on);
+            try { localStorage.setItem('sbMini', on ? '1' : '0'); } catch (e) { }
         }
 
-        $('#sidebarToggleBtn').on('click', function () {
-            $sidebar.addClass('active');
-            $overlay.addClass('active');
-            $('body').css('overflow', 'hidden');
-        });
-
-        $('#sidebarClose, #sidebarOverlay').on('click', closeSidebar);
-
-        $('.nav-link.has-submenu').on('click', function (e) {
-            e.preventDefault();
-
-            const $this = $(this);
-            const $submenu = $this.next('.submenu');
-
-            $('.nav-link.has-submenu').not($this).removeClass('open');
-            $('.submenu').not($submenu).removeClass('open');
-
-            $this.toggleClass('open');
-            $submenu.toggleClass('open');
-        });
-
-        if ($(window).width() <= 991) {
-            $('.submenu-link').on('click', function () {
-                setTimeout(closeSidebar, 300);
-            });
-        }
-
-        $(window).on('resize', function () {
-            if ($(window).width() > 991) {
-                closeSidebar();
+        toggle.addEventListener('click', function () {
+            if (isMobile()) {
+                body.classList.contains('sb-open') ? closeDrawer(true) : openDrawer();
+            } else {
+                setMini(!body.classList.contains('sb-mini'));
             }
         });
+        if (closeBtn) closeBtn.addEventListener('click', function () { closeDrawer(true); });
+        overlay.addEventListener('click', function () { closeDrawer(false); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(true); });
+        sb.addEventListener('click', function (e) { if (isMobile() && e.target.closest('a[href]:not([href="#"])')) closeDrawer(false); });
 
-        const currentUrl = window.location.href;
-
-        $('.sidebar .submenu-link').each(function () {
-            const linkUrl = $(this).attr('href');
-
-            if (linkUrl && linkUrl !== '#' && currentUrl.includes(linkUrl)) {
-                $(this).addClass('active');
-                $(this).closest('.submenu')
-                    .addClass('open')
-                    .prev('.nav-link.has-submenu')
-                    .addClass('open');
-            }
-        });
-
-        $('.sidebar .nav-link').not('.has-submenu').each(function () {
-            const linkUrl = $(this).attr('href');
-
-            if (linkUrl && linkUrl !== '#' && currentUrl.includes(linkUrl)) {
-                $(this).addClass('active');
-            }
-        });
-
-    });
+        // Pindah ke desktop -> pastikan laci tertutup (event hanya saat melewati batas 992px)
+        var onChange = function () { if (!isMobile()) closeDrawer(false); };
+        mq.addEventListener ? mq.addEventListener('change', onChange) : mq.addListener(onChange);
+    })();
 </script>

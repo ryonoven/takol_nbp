@@ -47,6 +47,10 @@
 </head>
 
 <body id="page-top">
+    <script>
+        // Terapkan sidebar ringkas sebelum halaman digambar (hindari kedip)
+        try { if (localStorage.getItem('sbMini') === '1') document.body.classList.add('sb-mini'); } catch (e) { }
+    </script>
 
     <!-- Page Wrapper -->
     <div id="wrapper">

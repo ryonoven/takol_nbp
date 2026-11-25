@@ -1,141 +1,122 @@
 <?php
+
 namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * Laporan Transparansi 1 — Penjelasan Umum Penerapan Tata Kelola (form E0100).
+ * Satu baris per BPR + periode tahunan. Approval: Komisaris Utama (accdekom) lalu Direktur Utama (is_approved).
+ */
 class M_penjelasanumum extends Model
 {
     protected $table = 'penjelasanumum';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['namabpr', 'alamat', 'nomor', 'penjelasan', 'peringkatkomposit', 'penjelasankomposit', 'keterangan', 'is_approved', 'approved_by', 'approved_at', 'user_id', 'fullname', 'kodebpr', 'periode_id', 'accdekom', 'accdekom_by', 'accdekom_at', 'dirut', 'komut'];
+    protected $returnType = 'array';
     protected $useTimestamps = false;
+    protected $allowedFields = [
+        'namabpr', 'alamat', 'nomor', 'penjelasan', 'peringkatkomposit', 'penjelasankomposit', 'keterangan',
+        'is_approved', 'approved_by', 'approved_at', 'dirut',
+        'accdekom', 'accdekom_by', 'accdekom_at', 'komut',
+        'user_id', 'fullname', 'kodebpr', 'periode_id',
+        'accdekom2', 'accdekom2_by', 'accdekom3', 'accdekom3_by', 'accdekom4', 'accdekom4_by',
+        'accdekom5', 'accdekom5_by', 'accdir2', 'accdir2_by',
+    ];
 
-    public function __construct()
+    public const FORM_CODE = 'E0100';
+
+    /** Field isian => panjang maksimum (karakter). */
+    public const MAX = [
+        'namabpr' => 250,
+        'alamat' => 500,
+        'nomor' => 25,
+        'penjelasan' => 2000,
+        'peringkatkomposit' => 1,
+        'penjelasankomposit' => 2000,
+    ];
+
+    public const PERINGKAT = [
+        '1' => '1 — Sangat Baik',
+        '2' => '2 — Baik',
+        '3' => '3 — Cukup Baik',
+        '4' => '4 — Kurang Baik',
+        '5' => '5 — Tidak Baik',
+    ];
+
+    /**
+     * Kolom NOT NULL tanpa default di tabel: wajib diisi saat insert agar tetap jalan
+     * di hosting dengan sql_mode STRICT_TRANS_TABLES.
+     */
+    private const INSERT_DEFAULTS = [
+        'keterangan' => '',
+        'is_approved' => 0, 'approved_by' => 0, 'dirut' => '',
+        'accdekom' => 0, 'accdekom_by' => 0, 'komut' => '',
+        'accdekom2' => 0, 'accdekom2_by' => 0, 'accdekom3' => 0, 'accdekom3_by' => 0,
+        'accdekom4' => 0, 'accdekom4_by' => 0, 'accdekom5' => 0, 'accdekom5_by' => 0,
+        'accdir2' => 0, 'accdir2_by' => 0,
+    ];
+
+    /** Dipakai Pdfgcg. */
+    public function getAllData(): array
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        return $this->db->table($this->table)->get()->getResultArray();
     }
 
-    public function checkIncrement()
+    public function getDataByKodebprAndPeriode($kodebpr, $periodeId): array
     {
-        if (empty($this->getAllData())) {
-            $this->db->query('ALTER TABLE penjelasanumum AUTO_INCREMENT = 1');
+        return $this->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->findAll();
+    }
+
+    /** Baris periode aktif (terbaru bila ada duplikat lama). */
+    public function getByPeriode(int $periodeId, string $kodebpr): ?array
+    {
+        return $this->where('periode_id', $periodeId)->where('kodebpr', $kodebpr)
+            ->orderBy('id', 'DESC')->first();
+    }
+
+    /** Data Penjelasan Umum tahun sebelumnya (periode apa pun di tahun tsb, yang terbaru). */
+    public function getPrevYear(string $kodebpr, int $tahun): ?array
+    {
+        return $this->db->table($this->table . ' p')
+            ->select('p.namabpr, p.alamat, p.nomor, p.penjelasan, p.peringkatkomposit, p.penjelasankomposit')
+            ->join('periode_tahunan t', 't.id = p.periode_id')
+            ->where('p.kodebpr', $kodebpr)
+            ->where('t.tahun', $tahun - 1)
+            ->orderBy('p.id', 'DESC')
+            ->get(1)->getRowArray();
+    }
+
+    public function saveRow(?int $id, array $data): bool
+    {
+        if ($id) {
+            return (bool) $this->update($id, $data);
         }
+        return (bool) $this->insert($data + self::INSERT_DEFAULTS);
     }
 
-    public function insertNilai($data)
+    /** Data reset kedua approval (kolom NOT NULL -> 0, bukan NULL). */
+    public static function resetApprovalData(): array
     {
-        return $this->insert($data);
+        return ['accdekom' => 0, 'accdekom_by' => 0, 'is_approved' => 0, 'approved_by' => 0];
     }
 
-    public function setIncrement($value)
+    /**
+     * Set / batalkan approval.
+     *  komut : accdekom (membatalkan Komisaris Utama juga membatalkan Direktur Utama)
+     *  dirut : is_approved
+     */
+    public function setApproval(int $id, string $type, bool $approve, int $userId, string $fullname): bool
     {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE penjelasanumum AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        $now = date('Y-m-d H:i:s');
+        if ($type === 'komut') {
+            $data = $approve
+                ? ['accdekom' => 1, 'accdekom_by' => $userId, 'accdekom_at' => $now, 'komut' => $fullname]
+                : ['accdekom' => 0, 'accdekom_by' => 0, 'is_approved' => 0, 'approved_by' => 0];
+        } else {
+            $data = $approve
+                ? ['is_approved' => 1, 'approved_by' => $userId, 'approved_at' => $now, 'dirut' => $fullname]
+                : ['is_approved' => 0, 'approved_by' => 0];
+        }
+        return (bool) $this->update($id, $data);
     }
-
-    public function getAllData()
-    {
-        return $this->builder->get()->getResultArray();
-    }
-
-    public function tambahNilai($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('penjelasanumum.*, users.fullname')
-            ->join('users', 'users.id = penjelasanumum.user_id', 'left')
-            ->where('penjelasanumum.id', $Id)
-            ->where('penjelasanumum.kodebpr', $kodebpr)
-            ->orderBy('penjelasanumum.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    // Menyaring data berdasarkan user_id, kodebpr, dan periode
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->penjelasanModel->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktorId($Id)
-    {
-        return $this->db->table($this->table)
-            ->select('penjelasanumum.*, users.fullname')
-            ->join('users', 'users.id = penjelasanumum.user_id', 'left')
-            ->where('penjelasanumum.faktor1id', $Id) // INI KUNCI FILTERING
-            ->orderBy('penjelasanumum.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function tambahpenjelas($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    public function hapus($id)
-    {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('penjelasan_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('penjelasanumum')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function setNullKolom($id)
-    {
-        return $this->builder->update(
-            ['nilai' => null, 'keterangan' => null],
-            ['id' => $id]
-        );
-    }
-
-
-
-}   
+}

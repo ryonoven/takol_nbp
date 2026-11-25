@@ -226,7 +226,6 @@ class Showsemesteran extends Controller
             $allRisikoApproved = $approvalKredit && $approvalOperasional && $approvalKepatuhan
                 && $approvalLikuiditas && $approvalReputasi && $approvalStratejik;
         } else {
-            // Kategori B: hanya 4 risiko wajib (Reputasi & Stratejik tidak dinilai)
             $allRisikoApproved = $approvalKredit && $approvalOperasional && $approvalKepatuhan
                 && $approvalLikuiditas;
         }

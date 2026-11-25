@@ -123,7 +123,7 @@ class Risikokredit extends Controller
         $nilai13 = $this->nilaiModel->where(['faktor1id' => 13, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
         $nilai14 = $this->nilaiModel->where(['faktor1id' => 14, 'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])->first();
 
-        // ── TAMBAHKAN BLOK INI ──
+        // TAMBAHKAN BLOK INI
         $nilaiData = $this->db->table('risikokredit as r')
             ->select('r.*, u.fullname')
             ->join('users as u', 'u.id = r.user_id', 'left')
@@ -1941,7 +1941,7 @@ class Risikokredit extends Controller
                 $struktur['strategi'] = $nilai;
             elseif ($fid == 11)
                 $struktur['eksternal'] = $nilai;
-            elseif ($fid == 12)
+                    elseif ($fid == 12)
                 $struktur['lainnya'] = $nilai;
             elseif ($fid == 13)
                 $struktur['rata_rata'] = $nilai;
@@ -2788,7 +2788,6 @@ class Risikokredit extends Controller
         }
 
         // Cari periode yang cocok di tabel periodes
-        // (nama tabel disesuaikan dengan implementasi M_periodesemesteran)
         $prev = $this->periodeModel
             ->where('semester', $prevSemester)
             ->where('tahun', $prevTahun)

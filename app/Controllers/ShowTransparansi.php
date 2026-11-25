@@ -2,341 +2,147 @@
 
 namespace App\Controllers;
 
-use App\Models\M_periodetahunan;
-use CodeIgniter\Controller;
-use App\Models\M_showtransparansi;
 use App\Models\M_infobpr;
-use App\Models\M_penjelasanumum;
-use App\Models\M_tgjwbdir;
-use App\Models\M_tgjwbdekom;
-use App\Models\M_tgjwbkomite;
-use App\Models\M_strukturkomite;
-use App\Models\M_sahamdirdekom;
-use App\Models\M_shmusahadirdekom;
-use App\Models\M_shmdirdekomlain;
-use App\Models\M_keuangandirdekompshm;
-use App\Models\M_keluargadirdekompshm;
-use App\Models\M_paketkebijakandirdekom;
-use App\Models\M_rasiogaji;
-use App\Models\M_rapat;
-use App\Models\M_kehadirandekom;
-use App\Models\M_fraudinternal;
-use App\Models\M_masalahhukum;
-use App\Models\M_transaksikepentingan;
-use App\Models\M_danasosial;
+use App\Models\M_periodetahunan;
+use App\Models\M_showtransparansi;
 use App\Models\M_user;
+use CodeIgniter\Controller;
 
-use Myth\Auth\Config\Services as AuthServices;
-
+/**
+ * Ringkasan Laporan Transparansi Pelaksanaan Tata Kelola + export ZIP seluruh TXT.
+ */
 class ShowTransparansi extends Controller
 {
-    protected $auth;
-    protected $session;
-    protected $userKodebpr;
-    protected $userId;
-
-    protected $showtransparansiModel;
-    protected $userModel;
+    protected $transparansiModel;
+    protected $periodeModel;
     protected $infobprModel;
-    protected $periodetransparansiModel;
-    protected $komentarModel;
-    protected $penjelasanumumModel;
-    protected $tgjwbdirModel;
-    protected $tgjwbdekomModel;
-    protected $tgjwbkomiteModel;
-    protected $strukturkomiteModel;
-    protected $sahamdirdekomModel;
-    protected $shmusahadirdekomModel;
-    protected $shmdirdekomlainModel;
-    protected $keuangandirdekompshmModel;
-    protected $keluargadirdekompshmModel;
-    protected $paketkebijakandirdekomModel;
-    protected $rasiogajiModel;
-    protected $rapatModel;
-    protected $kehadirandekomModel;
-    protected $fraudinternalModel;
-    protected $masalahhukumModel;
-    protected $transaksikepentinganModel;
-    protected $danasosialModel;
+    protected $auth;
+    protected $userKodebpr;
 
-    private $userPermissions = null;
-    private $userData = null;
-
-    protected $userInGroupPE;
-    protected $userInGroupAdmin;
-    protected $userInGroupDekom;
-    protected $userInGroupDireksi;
+    private const VIEW = 'Laporantahunan/Transparansi/showtransparansi';
 
     public function __construct()
     {
-        $this->penjelasanumumModel = new M_penjelasanumum();
-        $this->tgjwbdirModel = new M_tgjwbdir();
-        $this->tgjwbdekomModel = new M_tgjwbdekom();
-        $this->tgjwbkomiteModel = new M_tgjwbkomite();
-        $this->strukturkomiteModel = new M_strukturkomite;
-        $this->sahamdirdekomModel = new M_sahamdirdekom();
-        $this->shmusahadirdekomModel = new M_shmusahadirdekom();
-        $this->shmdirdekomlainModel = new M_shmdirdekomlain();
-        $this->keuangandirdekompshmModel = new M_keuangandirdekompshm();
-        $this->keluargadirdekompshmModel = new M_keluargadirdekompshm();
-        $this->paketkebijakandirdekomModel = new M_paketkebijakandirdekom();
-        $this->rasiogajiModel = new M_rasiogaji();
-        $this->rapatModel = new M_rapat();
-        $this->kehadirandekomModel = new M_kehadirandekom();
-        $this->fraudinternalModel = new M_fraudinternal();
-        $this->masalahhukumModel = new M_masalahhukum();
-        $this->transaksikepentinganModel = new M_transaksikepentingan();
-        $this->danasosialModel = new M_danasosial();
+        $this->transparansiModel = new M_showtransparansi();
+        $this->periodeModel = new M_periodetahunan();
         $this->infobprModel = new M_infobpr();
-        // $this->periodetransparansiModel = new M_periodetransparansi();
-        $this->userModel = new M_user();
-        $this->showtransparansiModel = new M_showtransparansi();
-        $this->session = service('session');
         $this->auth = service('authentication');
 
-        helper('text');
-
-        if ($this->auth->isLoggedIn()) {
-            $userId = $this->auth->id();
-            $user = $this->userModel->find($userId);
+        $this->userKodebpr = null;
+        if ($this->auth->check()) {
+            $user = (new M_user())->find($this->auth->id());
             $this->userKodebpr = $user['kodebpr'] ?? null;
-
-            $authorize = AuthServices::authorization();
-            $this->userInGroupPE = $authorize->inGroup('pe', $userId);
-            $this->userInGroupAdmin = $authorize->inGroup('admin', $userId);
-            $this->userInGroupDekom = $authorize->inGroup('dekom', $userId);
-            $this->userInGroupDireksi = $authorize->inGroup('direksi', $userId);
-        } else {
-            $this->userKodebpr = null;
-            $this->userInGroupPE = false;
-            $this->userInGroupAdmin = false;
-            $this->userInGroupDekom = false;
-            $this->userInGroupDireksi = false;
         }
     }
 
-    private function getPeriodeModel()
-    {
-        if (!$this->periodetransparansiModel) {
-            $this->periodetransparansiModel = new M_periodetahunan();
-        }
-        return $this->periodetransparansiModel;
-    }
-
-    public function index()
+    private function checkAuth(): ?\CodeIgniter\HTTP\RedirectResponse
     {
         if (!$this->auth->check()) {
             session()->set('redirect_url', current_url());
             return redirect()->to('/login');
         }
-
         if (!session('active_periode')) {
-            return redirect()->to('/Periodetransparansi')->with('error', 'Silakan pilih periode aktif terlebih dahulu.');
+            return redirect()->to('/periodetahunan')->with('error', 'Silakan pilih periode aktif terlebih dahulu.');
         }
-
-        $periodeId = session('active_periode');
-        $kodebpr = $this->userKodebpr;
-
-        $showtransparansi = $this->showtransparansiModel
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
-
-        $id = $showtransparansi['id'] ?? null;
-
-        $allShowTransparansi = $this->showtransparansiModel->findAll();
-
-        log_message('debug', 'ShowTransparansi: User ID: ' . $this->auth->id() . ', Kode BPR: ' . $kodebpr . ', Periode ID: ' . $periodeId);
-
-        if (!$kodebpr) {
+        if (!$this->userKodebpr) {
             return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid.');
         }
+        return null;
+    }
 
-        $periodeDetail = $this->getPeriodeModel()->getPeriodeDetail($periodeId);
-        $bprData = $this->infobprModel->getBprByKode($kodebpr);
+    public function index()
+    {
+        if ($redirect = $this->checkAuth()) {
+            return $redirect;
+        }
 
-        $penjelasanRow = $this->penjelasanumumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $tgjwbdirRow = $this->tgjwbdirModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $tgjwbdekomRow = $this->tgjwbdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $tgjwbkomiteRow = $this->tgjwbkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $strukturkomiteRow = $this->strukturkomiteModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $sahamdirdekomRow = $this->sahamdirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $shmusahadirdekomRow = $this->shmusahadirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $shmdirdekomlainRow = $this->shmdirdekomlainModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $keuanganRow = $this->keuangandirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $keluargaRow = $this->keluargadirdekompshmModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $paketRow = $this->paketkebijakandirdekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $rasiogajiRow = $this->rasiogajiModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $rapatRow = $this->rapatModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $kehadiranRow = $this->kehadirandekomModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $fraudRow = $this->fraudinternalModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $masalahRow = $this->masalahhukumModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $transaksiRow = $this->transaksikepentinganModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-        $danasosialRow = $this->danasosialModel->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->first();
-
-        $transparan = [
-            ['name' => '1. Penjelasan Umum Penerapan Tata Kelola', 'link' => base_url('Penjelasanumum'), 'accdekom' => $penjelasanRow['accdekom'] ?? null, 'is_approved' => $penjelasanRow['is_approved'] ?? null, 'has_data' => !empty($penjelasanRow)],
-            ['name' => '2. Pelaksanaan Tugas dan Tanggung Jawab Anggota Direksi', 'link' => base_url('Tgjwbdir'), 'accdekom' => $tgjwbdirRow['accdekom'] ?? null, 'is_approved' => $tgjwbdirRow['is_approved'] ?? null, 'has_data' => !empty($tgjwbdirRow)],
-            ['name' => '3. Pelaksanaan Tugas dan Tanggung Jawab Anggota Dewan Komisaris', 'link' => base_url('Tgjwbdekom'), 'accdekom' => $tgjwbdekomRow['accdekom'] ?? null, 'is_approved' => $tgjwbdekomRow['is_approved'] ?? null, 'has_data' => !empty($tgjwbdekomRow)],
-            ['name' => '4. Tugas, Tanggung Jawab, Program Kerja, dan Realisasi Program Kerja Komite', 'link' => base_url('Tgjwbkomite'), 'accdekom' => $tgjwbkomiteRow['accdekom'] ?? null, 'is_approved' => $tgjwbkomiteRow['is_approved'] ?? null, 'has_data' => !empty($tgjwbkomiteRow)],
-            ['name' => '5. Struktur, Keanggotaan, Keahlian, dan Independensi Anggota Komite', 'link' => base_url('Strukturkomite'), 'accdekom' => $strukturkomiteRow['accdekom'] ?? null, 'is_approved' => $strukturkomiteRow['is_approved'] ?? null, 'has_data' => !empty($strukturkomiteRow)],
-            ['name' => '6. Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada BPR', 'link' => base_url('Sahamdirdekom'), 'accdekom' => $sahamdirdekomRow['accdekom'] ?? null, 'is_approved' => $sahamdirdekomRow['is_approved'] ?? null, 'has_data' => !empty($sahamdirdekomRow)],
-            ['name' => '7. Kepemilikan Saham Anggota Direksi, Dewan Komisaris, dan Pemegang Saham pada Kelompok Usaha BPR', 'link' => base_url('Shmusahadirdekom'), 'accdekom' => $shmusahadirdekomRow['accdekom'] ?? null, 'is_approved' => $shmusahadirdekomRow['is_approved'] ?? null, 'has_data' => !empty($shmusahadirdekomRow)],
-            ['name' => '8. Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada Perusahaan Lain', 'link' => base_url('Shmdirdekomlain'), 'accdekom' => $shmdirdekomlainRow['accdekom'] ?? null, 'is_approved' => $shmdirdekomlainRow['is_approved'] ?? null, 'has_data' => !empty($shmdirdekomlainRow)],
-            ['name' => '9. Hubungan Keuangan Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR', 'link' => base_url('Keuangandirdekompshm'), 'accdekom' => $keuanganRow['accdekom'] ?? null, 'is_approved' => $keuanganRow['is_approved'] ?? null, 'has_data' => !empty($keuanganRow)],
-            ['name' => '10. Hubungan Keluarga Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR', 'link' => base_url('Keluargadirdekompshm'), 'accdekom' => $keluargaRow['accdekom'] ?? null, 'is_approved' => $keluargaRow['is_approved'] ?? null, 'has_data' => !empty($keluargaRow)],
-            ['name' => '11. Paket/Kebijakan Remunerasi dan Fasilitas Lain bagi Direksi dan Dewan Komisaris', 'link' => base_url('Paketkebijakandirdekom'), 'accdekom' => $paketRow['accdekom'] ?? null, 'is_approved' => $paketRow['is_approved'] ?? null, 'has_data' => !empty($paketRow)],
-            ['name' => '12. Rasio Gaji Tertinggi dan Gaji Terendah', 'link' => base_url('Rasiogaji'), 'accdekom' => $rasiogajiRow['accdekom'] ?? null, 'is_approved' => $rasiogajiRow['is_approved'] ?? null, 'has_data' => !empty($rasiogajiRow)],
-            ['name' => '13. Pelaksanaan Rapat dalam 1 (satu) tahun', 'link' => base_url('Rapat'), 'accdekom' => $rapatRow['accdekom'] ?? null, 'is_approved' => $rapatRow['is_approved'] ?? null, 'has_data' => !empty($rapatRow)],
-            ['name' => '14. Kehadiran Anggota Dewan Komisaris', 'link' => base_url('Kehadirandekom'), 'accdekom' => $kehadiranRow['accdekom'] ?? null, 'is_approved' => $kehadiranRow['is_approved'] ?? null, 'has_data' => !empty($kehadiranRow)],
-            ['name' => '15. Jumlah Penyimpangan Intern (Internal Fraud)', 'link' => base_url('Fraudinternal'), 'accdekom' => $fraudRow['accdekom'] ?? null, 'is_approved' => $fraudRow['is_approved'] ?? null, 'has_data' => !empty($fraudRow)],
-            ['name' => '16. Permasalahan Hukum yang Dihadapi', 'link' => base_url('Masalahhukum'), 'accdekom' => $masalahRow['accdekom'] ?? null, 'is_approved' => $masalahRow['is_approved'] ?? null, 'has_data' => !empty($masalahRow)],
-            ['name' => '17. Transaksi yang Mengandung Benturan Kepentingan', 'link' => base_url('Transaksikepentingan'), 'accdekom' => $transaksiRow['accdekom'] ?? null, 'is_approved' => $transaksiRow['is_approved'] ?? null, 'has_data' => !empty($transaksiRow)],
-            ['name' => '18. Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik', 'link' => base_url('Danasosial'), 'accdekom' => $danasosialRow['accdekom'] ?? null, 'is_approved' => $danasosialRow['is_approved'] ?? null, 'has_data' => !empty($danasosialRow)],
-        ];
+        $periodeId = (int) session('active_periode');
+        $sections = $this->transparansiModel->getSections($this->userKodebpr, $periodeId);
+        $pending = array_values(array_filter($sections, static fn($s) => !$s['done']));
 
         $data = [
             'judul' => 'Laporan Transparansi Tata Kelola',
-            'bprData' => $bprData,
-            'transparan' => $transparan,
-            'periodeDetail' => $periodeDetail,
-            'showtransparansi' => $showtransparansi,
-            'allShowTransparansi' => $allShowTransparansi
+            'namabpr' => $this->infobprModel->getBprByKode($this->userKodebpr)['namabpr'] ?? null,
+            'tahun' => $this->periodeModel->find($periodeId)['tahun'] ?? '',
+            'sections' => $sections,
+            'pending' => $pending,
+            'doneCount' => count($sections) - count($pending),
+            'canExport' => !$pending,
         ];
-
-        $showTransparansiModel = new M_showtransparansi();
-        $showTransparansiModel->simpanShowTransparansi([
-            'kodebpr' => $kodebpr,
-            'periode_id' => $periodeId,
-            'semester' => $periodeDetail['semester'] ?? 'N/A',
-            'tahun' => $periodeDetail['tahun'] ?? 'N/A',
-        ]);
 
         return view('templates/v_header', $data)
             . view('templates/v_sidebar')
             . view('templates/v_topbar')
-            . view('Laporantahunan/Transparansi/ShowTransparansi', $data)
+            . view(self::VIEW, $data)
             . view('templates/v_footer');
     }
 
-    public function update()
-    {
-        $id = $this->request->getPost('id');
-        $data = [
-            'kesimpulan' => $this->request->getPost('kesimpulan'),
-            'positifstruktur' => $this->request->getPost('positifstruktur'),
-            'positifproses' => $this->request->getPost('positifproses'),
-            'positifhasil' => $this->request->getPost('positifhasil'),
-            'negatifstruktur' => $this->request->getPost('negatifstruktur'),
-            'negatifproses' => $this->request->getPost('negatifproses'),
-            'negatifhasil' => $this->request->getPost('negatifhasil')
-        ];
-        $this->showtransparansiModel->update($id, $data);
-        return redirect()->to(base_url('ShowTransparansi'))->with('message', 'Data berhasil diupdate!');
-    }
-
-    public function updatettd()
-    {
-        $id = $this->request->getPost('id');
-        $data = [
-            'dirut' => $this->request->getPost('dirut'),
-            'komut' => $this->request->getPost('komut'),
-            'tanggal' => $this->request->getPost('tanggal'),
-            'lokasi' => $this->request->getPost('lokasi')
-        ];
-        $this->showtransparansiModel->update($id, $data);
-        return redirect()->to(base_url('ShowTransparansi'))->with('message', 'Data berhasil diupdate!');
-    }
-
-    public function updatecover()
-    {
-        $id = $this->request->getPost('id');
-        $data = [
-            'cover' => $this->request->getPost('cover')
-        ];
-
-        if (!empty($id)) {
-            $this->showtransparansiModel->update($id, $data);
-
-            return redirect()->to(base_url('ShowTransparansi'))->with('message', 'Data berhasil diupdate!');
-        } else {
-            return redirect()->to(base_url('ShowTransparansi'))->with('error', 'ID tidak ditemukan!');
-        }
-    }
-
+    /** ZIP berisi TXT seluruh bagian yang memiliki export. Hanya bila semua bagian wajib sudah disetujui. */
     public function exportAllToZip()
     {
-        if (!$this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? '/login';
-            unset($_SESSION['redirect_url']);
-            return redirect()->to($redirectURL);
+        if ($redirect = $this->checkAuth()) {
+            return $redirect;
         }
+
+        $periodeId = (int) session('active_periode');
+        $sections = $this->transparansiModel->getSections($this->userKodebpr, $periodeId);
+        if (array_filter($sections, static fn($s) => !$s['done'])) {
+            return redirect()->to(base_url('ShowTransparansi'))
+                ->with('err', 'ZIP belum dapat dibuat: masih ada bagian yang belum disetujui Direktur Utama.');
+        }
+
+        $tahun = (string) ($this->periodeModel->find($periodeId)['tahun'] ?? date('Y'));
+        $zipFileName = 'NBPSIMPEL - Laporan Transparansi Tahunan - ' . $tahun . '-12-31.zip';
+        $zipFilePath = tempnam(sys_get_temp_dir(), 'trans');
 
         $zip = new \ZipArchive();
-        $zipFileName = 'NBPSIMPEL-LAPORAN TRANSPARANSI TAHUNAN -' . date('Y') . "-12-31" . '.zip';
-        $zipFilePath = WRITEPATH . 'uploads/' . $zipFileName;
-
-        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
-            $this->addTxtToZip('penjelasanumum', 'exporttxtpenjelasanumum', $zip);
-            $this->addTxtToZip('tgjwbdir', 'exporttxttgjwbdir', $zip);
-            $this->addTxtToZip('tgjwbdekom', 'exporttxttgjwbdekom', $zip);
-            $this->addTxtToZip('tgjwbkomite', 'exporttxttgjwbkomite', $zip);
-            $this->addTxtToZip('strukturkomite', 'exporttxtstrukturkomite', $zip);
-            $this->addTxtToZip('shmusahadirdekom', 'exporttxtshmusahadirdekom', $zip);
-            $this->addTxtToZip('shmdirdekomlain', 'exporttxtshmdirdekomlain', $zip);
-            $this->addTxtToZip('keuangandirdekompshm', 'exporttxtkeuangandirdekompshm', $zip);
-            $this->addTxtToZip('keluargadirdekompshm', 'exporttxtkeluargadirdekompshm', $zip);
-            $this->addTxtToZip('paketkebijakandirdekom', 'exporttxtpaketkebijakandirdekom', $zip);
-            // $this->addTxtToZip('remunlaindirdekom', 'exporttxtremunlaindirdekom', $zip);
-            $this->addTxtToZip('rasiogaji', 'exporttxtrasiogaji', $zip);
-            $this->addTxtToZip('rapat', 'exporttxtrapat', $zip);
-            $this->addTxtToZip('kehadirandekom', 'exporttxtkehadirandekom', $zip);
-            $this->addTxtToZip('fraudinternal', 'exporttxtfraudinternal', $zip);
-            $this->addTxtToZip('masalahhukum', 'exporttxtmasalahhukum', $zip);
-            $this->addTxtToZip('transaksikepentingan', 'exporttxttransaksikepentingan', $zip);
-            $this->addTxtToZip('danasosial', 'exporttxtdanasosial', $zip);
-
-            $zip->close();
-
-            $this->response->setHeader('Content-Type', 'application/zip');
-            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $zipFileName . '"');
-            $this->response->setHeader('Content-Length', filesize($zipFilePath));
-
-            readfile($zipFilePath);
-
-            unlink($zipFilePath);
-        } else {
-            echo 'Gagal membuat file ZIP';
+        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+            return redirect()->to(base_url('ShowTransparansi'))->with('err', 'Gagal membuat file ZIP.');
         }
-    }
-
-    private function addTxtToZip(string $controllerName, string $methodName, \ZipArchive &$zip)
-    {
-        $controllerClassName = 'App\Controllers\\' . ucfirst($controllerName);
-        if (class_exists($controllerClassName)) {
-            $controllerInstance = new $controllerClassName();
-            if (method_exists($controllerInstance, $methodName)) {
-                $response = $controllerInstance->$methodName();
-                if ($response instanceof \CodeIgniter\HTTP\Response) {
-                    $txtContent = $response->getBody();
-
-                    $contentDisposition = $response->getHeaderLine('Content-Disposition');
-                    $fileNameInZip = $controllerName . '.txt';
-
-                    if (preg_match('/filename="([^"]+)"/', $contentDisposition, $matches)) {
-                        $fileNameInZip = $matches[1];
-                    }
-
-                    $zip->addFromString($fileNameInZip, $txtContent);
-                } else {
-                    log_message('warning', "Method '$methodName' di controller '$controllerName' tidak mengembalikan objek Response yang valid.");
-                }
-            } else {
-                log_message('warning', "Method '$methodName' tidak ditemukan di controller '$controllerName'");
+        foreach ($sections as $s) {
+            if ($s['export']) {
+                $this->addTxtToZip($s['controller'], $s['export'], $zip);
             }
-        } else {
-            log_message('warning', "Controller '$controllerName' tidak ditemukan");
         }
+        $zip->close();
+
+        $content = (string) file_get_contents($zipFilePath);
+        @unlink($zipFilePath);
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/zip')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $zipFileName . '"')
+            ->setHeader('Content-Length', (string) strlen($content))
+            ->setBody($content);
     }
 
+    /** Jalankan method export TXT controller lain lalu masukkan hasilnya ke ZIP. */
+    private function addTxtToZip(string $controller, string $method, \ZipArchive $zip): void
+    {
+        $fqcn = 'App\\Controllers\\' . $controller;
+        if (!class_exists($fqcn) || !method_exists($fqcn, $method)) {
+            log_message('warning', "ShowTransparansi ZIP: {$fqcn}::{$method} tidak ditemukan.");
+            return;
+        }
+
+        try {
+            ob_start();
+            $result = (new $fqcn())->$method();
+            $buffered = ob_get_clean();
+
+            $fileName = strtolower($controller) . '.txt';
+            $content = $buffered;
+            if ($result instanceof \CodeIgniter\HTTP\Response) {
+                $content = $result->getBody();
+                if (preg_match('/filename=["\']?([^"\';]+)["\']?/i', $result->getHeaderLine('Content-Disposition'), $m)) {
+                    $fileName = trim($m[1]);
+                }
+            }
+            if ((string) $content !== '') {
+                $zip->addFromString($fileName, (string) $content);
+            }
+        } catch (\Throwable $e) {
+            log_message('error', "ShowTransparansi ZIP [{$controller}::{$method}]: " . $e->getMessage());
+        }
+    }
 }

@@ -1,230 +1,208 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\M_periodetahunan;
 use App\Models\M_user;
 
+/**
+ * Periode Laporan Tahunan: buat, edit, dan pilih periode aktif (session 'active_periode').
+ * Jenis pelaporan Koreksi (K) wajib menyertakan nomor surat.
+ */
 class Periodetahunan extends BaseController
 {
-    protected $periodetahunanModel;
+    protected $periodeModel;
     protected $userModel;
+
+    private const TAHUN_MIN = 2024;
+    private const TAHUN_MAX = 2030;
+    private const NOMORSURAT_MAX = 30;           // panjang kolom periode_tahunan.nomorsurat
 
     public function __construct()
     {
         date_default_timezone_set('Asia/Jakarta');
-        $this->periodetahunanModel = new M_periodetahunan();
+        $this->periodeModel = new M_periodetahunan();
         $this->userModel = new M_user();
     }
 
+    // ------------------------------------------------------------------ helpers
+
+    private function kodebpr(): ?string
+    {
+        return $this->userModel->find(user_id())['kodebpr'] ?? null;
+    }
+
+    /** Periode milik BPR user, atau null. */
+    private function findOwn($id): ?array
+    {
+        $kodebpr = $this->kodebpr();
+        if (!$kodebpr || !$id) {
+            return null;
+        }
+        return $this->periodeModel->where(['id' => (int) $id, 'kodebpr' => $kodebpr])->first();
+    }
+
+    /** Aturan validasi bersama create & edit. */
+    private function rules(bool $withTahun): array
+    {
+        $rules = [
+            'modalinti' => [
+                'rules' => 'required|numeric|greater_than[0]',
+                'errors' => ['required' => 'Modal inti harus diisi.', 'numeric' => 'Modal inti harus berupa angka.', 'greater_than' => 'Modal inti harus lebih dari 0.'],
+            ],
+            'totalaset' => [
+                'rules' => 'required|numeric|greater_than[0]',
+                'errors' => ['required' => 'Total aset harus diisi.', 'numeric' => 'Total aset harus berupa angka.', 'greater_than' => 'Total aset harus lebih dari 0.'],
+            ],
+            'jenispelaporan' => [
+                'rules' => 'required|in_list[R,K]',
+                'errors' => ['required' => 'Jenis pelaporan harus dipilih.', 'in_list' => 'Jenis pelaporan tidak valid.'],
+            ],
+        ];
+
+        if ($withTahun) {
+            $rules['tahun'] = [
+                'rules' => 'required|integer|greater_than_equal_to[' . self::TAHUN_MIN . ']|less_than_equal_to[' . self::TAHUN_MAX . ']',
+                'errors' => ['required' => 'Tahun harus dipilih.', 'integer' => 'Tahun tidak valid.',
+                    'greater_than_equal_to' => 'Tahun minimal ' . self::TAHUN_MIN . '.', 'less_than_equal_to' => 'Tahun maksimal ' . self::TAHUN_MAX . '.'],
+            ];
+        }
+
+        if ($this->request->getPost('jenispelaporan') === 'K') {
+            $rules['nomorsurat'] = [
+                'rules' => 'required|max_length[' . self::NOMORSURAT_MAX . ']',
+                'errors' => ['required' => 'Nomor surat wajib diisi untuk pelaporan Koreksi.', 'max_length' => 'Nomor surat maksimal ' . self::NOMORSURAT_MAX . ' karakter.'],
+            ];
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Data yang disimpan dari form (create & edit).
+     * kategori = jenis pelaporan (R = Rutin, K = Koreksi); nomor surat dikosongkan bila Rutin.
+     */
+    private function formData(): array
+    {
+        $jenis = (string) $this->request->getPost('jenispelaporan');
+
+        return [
+            'modalinti' => (float) $this->request->getPost('modalinti'),
+            'totalaset' => (float) $this->request->getPost('totalaset'),
+            'kategori' => $jenis,
+            'jenispelaporan' => $jenis,
+            'nomorsurat' => $jenis === 'K' ? trim((string) $this->request->getPost('nomorsurat')) : '',
+        ];
+    }
+
+    private function invalid(): \CodeIgniter\HTTP\RedirectResponse
+    {
+        return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+    }
+
+    private function setActivePeriode(int $id): void
+    {
+        session()->set('active_periode', $id);
+        session()->set('periode_data', $this->periodeModel->find($id));
+    }
+
+    // ------------------------------------------------------------------ halaman
+
     public function index()
     {
-        $user = $this->userModel->find(user_id());
+        $kodebpr = $this->kodebpr();
 
         $data = [
             'judul' => 'Periode Pelaporan Transparansi Tahunan',
-            'periodes' => $this->periodetahunanModel->getPeriodeByBpr($user['kodebpr']),
-            'current_periode' => session('active_periode'),
-            'kodebpr' => $user['kodebpr'],
-            'validation' => \Config\Services::validation(),
+            'periodes' => $kodebpr ? $this->periodeModel->where('kodebpr', $kodebpr)->orderBy('tahun', 'DESC')->findAll() : [],
+            'current_periode' => (int) session('active_periode'),
+            'tahunMin' => self::TAHUN_MIN,
+            'tahunMax' => self::TAHUN_MAX,
+            'nomorsuratMax' => self::NOMORSURAT_MAX,
         ];
 
-        echo view('templates/v_header', $data);
-        echo view('templates/v_sidebar');
-        echo view('templates/v_topbar');
-        echo view('Periode/periodetahunan', $data);
-        echo view('templates/v_footer');
+        return view('templates/v_header', $data)
+            . view('templates/v_sidebar')
+            . view('templates/v_topbar')
+            . view('Periode/periodetahunan', $data)
+            . view('templates/v_footer');
     }
 
     public function handlePeriode()
     {
-        $action = $this->request->getPost('action');
-
-        if (!in_array($action, ['create', 'select', 'edit'])) {
-            return redirect()->back()->with('error', 'Aksi tidak valid');
-        }
-
-        return $this->$action();
+        return match ($this->request->getPost('action')) {
+            'create' => $this->create(),
+            'edit' => $this->edit(),
+            'select' => $this->select(),
+            default => redirect()->back()->with('error', 'Aksi tidak valid.'),
+        };
     }
 
     protected function create()
     {
-        $user = $this->userModel->find(user_id());
-
-        $rules = [
-            'tahun' => 'required|integer|greater_than[2023]|less_than[2031]',
-            'modalinti' => 'required|numeric|greater_than[0]',
-            'totalaset' => 'required|numeric|greater_than[0]',
-            'kategori' => 'permit_empty|in_list[A,B]',
-            'jenispelaporan' => 'required|in_list[R,K]',
-            // 'jeniskoreksi' => 'permit_empty',
-        ];
-
-        $messages = [
-            'tahun' => [
-                'required' => 'Tahun harus dipilih.',
-                'integer' => 'Tahun tidak valid.',
-                'greater_than' => 'Tahun minimal 2024.',
-                'less_than' => 'Tahun maksimal 2030.',
-            ],
-            'modalinti' => [
-                'required' => 'Modal inti harus diisi.',
-                'numeric' => 'Modal inti harus berupa angka.',
-                'greater_than' => 'Modal inti harus lebih dari 0.',
-            ],
-            'totalaset' => [
-                'required' => 'Total aset harus diisi.',
-                'numeric' => 'Total aset harus berupa angka.',
-                'greater_than' => 'Total aset harus lebih dari 0.',
-            ],
-        ];
-
-        if (!$this->validate($rules, $messages)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('errors', $this->validator->getErrors());
+        $kodebpr = $this->kodebpr();
+        if (!$kodebpr) {
+            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid.');
+        }
+        if (!$this->validate($this->rules(true))) {
+            return $this->invalid();
         }
 
         $tahun = (int) $this->request->getPost('tahun');
-        $modalInti = (float) $this->request->getPost('modalinti');
-        $totalAset = (float) $this->request->getPost('totalaset');
-        $kategori = $this->request->getPost('kategori') ?: $this->hitungKategori($modalInti);
-        $jenispelaporan = $this->request->getPost('jenispelaporan') ?: 'R';
-        $jeniskoreksi = $jenispelaporan === 'K' ? ($this->request->getPost('jeniskoreksi') ?: null) : null;
-
-        $existing = $this->periodetahunanModel->where([
-            'kodebpr' => $user['kodebpr'],
-            'tahun' => $tahun,
-        ])->first();
-
-        if ($existing) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Periode tahun ' . $tahun . ' sudah ada.');
+        if ($this->periodeModel->where(['kodebpr' => $kodebpr, 'tahun' => $tahun])->first()) {
+            return redirect()->back()->withInput()->with('error', 'Periode tahun ' . $tahun . ' sudah ada.');
         }
 
-        $periodeId = $this->periodetahunanModel->insert([
+        $id = $this->periodeModel->insert($this->formData() + [
             'user_id' => user_id(),
-            'kodebpr' => $user['kodebpr'],
+            'kodebpr' => $kodebpr,
             'tahun' => $tahun,
-            'modalinti' => $modalInti,
-            'totalaset' => $totalAset,
-            'kategori' => $kategori,
-            'jenispelaporan' => $jenispelaporan,
-            // 'jeniskoreksi' => $jeniskoreksi,
         ]);
+        if (!$id) {
+            return redirect()->back()->withInput()->with('error', 'Periode gagal dibuat.');
+        }
 
-        $this->setActivePeriode($periodeId);
-
-        return redirect()->to('/Showtahunan')
-            ->with('message', 'Periode tahun ' . $tahun . ' berhasil dibuat.');
+        $this->setActivePeriode((int) $id);
+        return redirect()->to('/Showtahunan')->with('message', 'Periode tahun ' . $tahun . ' berhasil dibuat.');
     }
 
     protected function edit()
     {
-        $user = $this->userModel->find(user_id());
-        $periodeId = $this->request->getPost('periode_id');
-
-        $periode = $this->periodetahunanModel->where([
-            'id' => $periodeId,
-            'kodebpr' => $user['kodebpr'],
-        ])->first();
-
+        $periode = $this->findOwn($this->request->getPost('periode_id'));
         if (!$periode) {
             return redirect()->back()->with('error', 'Periode tidak valid.');
         }
-
-        $rules = [
-            'modalinti' => 'required|numeric|greater_than[0]',
-            'totalaset' => 'required|numeric|greater_than[0]',
-            'jenispelaporan' => 'required|in_list[R,K]',
-            // 'jeniskoreksi' => 'permit_empty',
-        ];
-
-        $messages = [
-            'modalinti' => ['required' => 'Modal inti harus diisi.', 'numeric' => 'Modal inti harus berupa angka.', 'greater_than' => 'Modal inti harus lebih dari 0.'],
-            'totalaset' => ['required' => 'Total aset harus diisi.', 'numeric' => 'Total aset harus berupa angka.', 'greater_than' => 'Total aset harus lebih dari 0.'],
-            'jenispelaporan' => ['required' => 'Jenis pelaporan harus dipilih.', 'in_list' => 'Jenis pelaporan tidak valid.'],
-        ];
-
-        if (!$this->validate($rules, $messages)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('errors', $this->validator->getErrors());
+        if (!$this->validate($this->rules(false))) {
+            return $this->invalid()->with('edit_id', (int) $periode['id']);
         }
 
-        $modalInti = (float) $this->request->getPost('modalinti');
-        $totalAset = (float) $this->request->getPost('totalaset');
-        $jenispelaporan = $this->request->getPost('jenispelaporan');
-        // $jeniskoreksi = $jenispelaporan === 'K' ? ($this->request->getPost('jeniskoreksi') ?: null) : null;
-        $kategori = $this->request->getPost('kategori') ?: $this->hitungKategori($modalInti);
+        $this->periodeModel->update((int) $periode['id'], $this->formData());
 
-        $this->periodetahunanModel->update($periodeId, [
-            'modalinti' => $modalInti,
-            'totalaset' => $totalAset,
-            'kategori' => $kategori,
-            'jenispelaporan' => $jenispelaporan,
-            // 'jeniskoreksi' => $jeniskoreksi,
-        ]);
-
-        if (session('active_periode') == $periodeId) {
-            $this->setActivePeriode($periodeId);
+        if ((int) session('active_periode') === (int) $periode['id']) {
+            $this->setActivePeriode((int) $periode['id']);
         }
-
-        return redirect()->back()
-            ->with('message', 'Periode tahun ' . $periode['tahun'] . ' berhasil diperbarui.');
+        return redirect()->back()->with('message', 'Periode tahun ' . $periode['tahun'] . ' berhasil diperbarui.');
     }
 
     public function select()
     {
-        $periodeId = $this->request->getPost('periode_id');
-        $user = $this->userModel->find(user_id());
-
-        $periode = $this->periodetahunanModel->where([
-            'id' => $periodeId,
-            'kodebpr' => $user['kodebpr'],
-        ])->first();
-
+        $periode = $this->findOwn($this->request->getPost('periode_id'));
         if (!$periode) {
             return redirect()->back()->with('error', 'Periode tidak valid.');
         }
 
-        $this->setActivePeriode($periodeId);
-
-        return redirect()->to('/Showtahunan')
-            ->with('message', 'Periode berhasil dipilih.');
+        $this->setActivePeriode((int) $periode['id']);
+        return redirect()->to('/Showtahunan')->with('message', 'Periode tahun ' . $periode['tahun'] . ' berhasil dipilih.');
     }
 
     public function switch($id)
     {
-        $user = $this->userModel->find(user_id());
-
-        $periode = $this->periodetahunanModel->where([
-            'id' => $id,
-            'kodebpr' => $user['kodebpr'],
-        ])->first();
-
+        $periode = $this->findOwn($id);
         if (!$periode) {
             return redirect()->back()->with('error', 'Periode tidak valid.');
         }
 
-        $this->setActivePeriode($id);
-
+        $this->setActivePeriode((int) $periode['id']);
         return redirect()->back()->with('message', 'Periode berhasil diubah.');
-    }
-
-    protected function setActivePeriode($id)
-    {
-        session()->set('active_periode', $id);
-        session()->set('periode_data', $this->periodetahunanModel->find($id));
-    }
-
-    protected function hasActivePeriode()
-    {
-        return session()->has('active_periode');
-    }
-
-    protected function hitungKategori(float $modalInti): string
-    {
-        return $modalInti >= 50_000_000_000 ? 'A' : 'B';
     }
 }

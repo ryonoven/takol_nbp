@@ -15,7 +15,7 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute('true');
+$routes->setAutoRoute(True);
 $routes->post('pdfself/uploadPdf', 'Pdfself::uploadPdf');
 $routes->get('pdfself/generateFullReport', 'Pdfself::generateFullReport'); // Pastikan rute ini ada dan mengarah ke generateFullReport
 $routes->get('pdfself/download/(:segment)', 'Pdfself::downloadPdf/$1');

@@ -1,144 +1,45 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_sahamdirdekom extends Model
+/**
+ * Laporan Transparansi 6 — Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada BPR.
+ * Satu baris per pemilik saham. Mendukung "Tidak Ada Data" (is_null_record = 1). Tidak memiliki export TXT.
+ */
+class M_sahamdirdekom extends M_anggotatransparansi
 {
     protected $table = 'sahamdirdekom';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['nik', 'nama', 'persensaham', 'nik', 'jabatan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'user_id', 'kodebpr', 'periode_id', 'fullname', 'is_null_record'];
-    protected $useTimestamps = false;
 
-    public function __construct()
+    public const SUBKATEGORI = 'Sahamdirdekom';
+    public const FORM_CODE = '';
+    public const JABATAN = ['Direksi' => 'Direksi', 'Dekom' => 'Dewan Komisaris'];
+
+    public const UNIQUE = 'nik';
+    public const UNIQUE_MSG = 'NIK sudah terdaftar pada periode ini.';
+    public const TITLE_FIELD = 'nama';
+    public const TAG_FIELD = 'jabatan';
+    public const SUB_FIELD = ['nik', 'persen'];
+    public const SUB_FORMAT = 'NIK %s · Kepemilikan saham %s%';
+    public const BODY_FIELDS = [];
+    public const UTAMA = ['Direksi'];
+    public const ORDER_COL = 'jabatan';
+
+    public const HAS_NAMES = false;
+    public const NODATA = true;
+
+    public static function fields(): array
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        return [
+            'nama' => ['col' => 'nama', 'label' => 'Nama', 'type' => 'text', 'max' => 255, 'col_md' => 7],
+            'nik' => ['col' => 'nik', 'label' => 'NIK', 'type' => 'nik', 'max' => 16, 'col_md' => 5],
+            'jabatan' => ['col' => 'jabatan', 'label' => 'Jabatan', 'type' => 'select', 'options' => self::JABATAN, 'col_md' => 7],
+            'persen' => ['col' => 'persensaham', 'label' => 'Persentase Saham (%)', 'type' => 'percent', 'col_md' => 5],
+        ];
     }
 
-    public function checkIncrement()
+    /** Kolom nama / jabatan NOT NULL: baris "Tidak Ada Data" diisi nilai kosong (sama dengan versi lama). */
+    protected static function nodataValues(): array
     {
-        if (empty($this->getAllData())) {
-            $this->db->query('ALTER TABLE sahamdirdekom AUTO_INCREMENT = 1');
-        }
+        return ['nama' => '', 'nik' => '', 'jabatan' => 'Direksi', 'persensaham' => '0'];
     }
-
-    public function getAllData()
-    {
-        return $this->builder->get()->getResultArray();
-    }
-
-    public function tambah($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    public function setIncrement($value)
-    {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE sahamdirdekom AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
-    }
-
-    public function tambahketerangan($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function hapus($id)
-    {
-        // Menggunakan metode delete() pada tabel "" dengan kondisi ID = $id
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-    // Dalam PenjelasantindakModel.php
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('sahamdirdekom')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('sahamdirdekom.*, users.fullname')
-            ->join('users', 'users.id = sahamdirdekom.user_id', 'left')
-            ->where('sahamdirdekom.id', $Id)
-            ->where('sahamdirdekom.kodebpr', $kodebpr)
-            ->orderBy('sahamdirdekom.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('sahamdirdekom')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('sahamdirdekom')
-            ->where('id', $id)  // Menambahkan kondisi berdasarkan ID
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $sahamdirdekom, $kodebpr, $periodeId)
-    {
-        // Pastikan update hanya terjadi untuk faktor4id, kodebpr, dan periode_id yang sesuai
-        $this->builder->where('subkategori', $sahamdirdekom)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
-    }
-
-
 }

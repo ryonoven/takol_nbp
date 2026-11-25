@@ -1,136 +1,87 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_danasosial extends Model
+/**
+ * Laporan Transparansi 18 — Pemberian Dana untuk Kegiatan Sosial dan Kegiatan Politik (E1100).
+ * Satu baris per pemberian dana. Mendukung "Tidak Ada Data". Tabel: accdekom2..5 tanpa accdir2;
+ * kolom komut/dirut NOT NULL (tidak dipakai, diisi '').
+ */
+class M_danasosial extends M_anggotatransparansi
 {
     protected $table = 'danasosial';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['tanggalpelaksanaan', 'jeniskegiatan', 'penerimadana', 'penjelasankegiatan', 'jumlah', 'keterangan', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'kodebpr', 'periode_id', 'user_id', 'is_null_record'];
-    protected $useTimestamps = false;
 
-    public function __construct()
+    public const SUBKATEGORI = 'Danasosial';
+    public const FORM_CODE = 'E1100';
+    public const D01_CODE = '110100000000';
+    public const JENIS = ['01' => 'Kegiatan Sosial', '02' => 'Kegiatan Politik'];
+
+    public const UNIQUE = null;
+    public const TITLE_FIELD = 'penerima';
+    public const TAG_FIELD = 'jenis';
+    public const SUB_FIELD = null;
+    public const EXTRA_LINES = [['Tanggal pelaksanaan: %s', ['tanggal']]];
+    public const BODY_FIELDS = ['penjelasan'];
+    public const CHIP_FIELDS = ['jumlah'];
+    public const UTAMA = ['01'];
+    public const ORDER_COL = 'tanggalpelaksanaan';
+
+    public const HAS_NAMES = false;
+    public const HAS_EXTRA_ACC = false;   // accdekom2..5 + komut/dirut diisi lewat insertDefaults() (tabel tanpa accdir2)
+    public const NODATA = true;
+
+    public static function fields(): array
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        return [
+            'tanggal' => ['col' => 'tanggalpelaksanaan', 'label' => 'Tanggal Pelaksanaan', 'type' => 'date', 'col_md' => 6],
+            'jenis' => ['col' => 'jeniskegiatan', 'label' => 'Jenis Kegiatan', 'type' => 'select', 'options' => self::JENIS, 'col_md' => 6],
+            'penerima' => ['col' => 'penerimadana', 'label' => 'Penerima Dana', 'type' => 'text', 'max' => 50],
+            'penjelasan' => ['col' => 'penjelasankegiatan', 'label' => 'Penjelasan Kegiatan', 'type' => 'text', 'max' => 50],
+            'jumlah' => ['col' => 'jumlah', 'label' => 'Total Dana (Rp)', 'short' => 'Dana', 'type' => 'rupiah', 'min' => 1, 'col_md' => 6],
+        ];
     }
 
-    public function checkIncrement()
+    protected static function insertDefaults(): array
     {
-        if (empty($this->getAllData())) {
-            $this->db->query('ALTER TABLE danasosial AUTO_INCREMENT = 1');
+        return ['is_approved' => 0, 'approved_by' => 0, 'accdekom' => 0, 'accdekom_by' => 0,
+            'accdekom2' => 0, 'accdekom2_by' => 0, 'accdekom3' => 0, 'accdekom3_by' => 0,
+            'accdekom4' => 0, 'accdekom4_by' => 0, 'accdekom5' => 0, 'accdekom5_by' => 0,
+            'komut' => '', 'dirut' => ''];
+    }
+
+    /** Baris "Tidak Ada Data": tanggal = hari ditandai, jenis 00 (sama dengan versi lama). */
+    protected static function nodataValues(): array
+    {
+        return ['tanggalpelaksanaan' => date('Y-m-d'), 'jeniskegiatan' => '00', 'penerimadana' => '', 'penjelasankegiatan' => '', 'jumlah' => 0];
+    }
+
+    /** Sinkronisasi: tanggal pelaksanaan digeser +1 tahun (silakan disesuaikan setelahnya). */
+    public static function syncRow(array $row): array
+    {
+        $ts = !empty($row['tanggalpelaksanaan']) ? strtotime($row['tanggalpelaksanaan'] . ' +1 year') : false;
+        if ($ts) {
+            $row['tanggalpelaksanaan'] = date('Y-m-d', $ts);
         }
+        return $row;
     }
 
-    public function getAllData()
+    private static function ymd($v): string
     {
-        return $this->builder->get()->getResultArray();
+        $ts = !empty($v) ? strtotime((string) $v) : false;
+        return $ts ? date('Ymd', $ts) : '';
     }
 
-    public function setIncrement($value)
+    /** D01|110100000000|YYYYMMDD|jenis|penerima|penjelasan|jumlah (format lama). */
+    public function txtLine(array $row, callable $clean): string
     {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE danasosial AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        return 'D01|' . self::D01_CODE . '|' . self::ymd($row['tanggalpelaksanaan']) . '|' . $clean($row['jeniskegiatan'])
+            . '|' . $clean($row['penerimadana']) . '|' . $clean($row['penjelasankegiatan']) . '|' . $clean($row['jumlah']);
     }
 
-    public function tambah($data)
+    /** "Tidak Ada Data": D01|110100000000|<tanggal ditandai>|00|||0 (format lama); belum diisi sama sekali: tanpa baris. */
+    public function txtEmptyLine(array $ctx = []): ?string
     {
-        return $this->builder->insert($data);
+        $n = $ctx['nodata'] ?? null;
+        return $n ? 'D01|' . self::D01_CODE . '|' . self::ymd($n['tanggalpelaksanaan'] ?? '') . '|00|||0' : null;
     }
-
-    public function hapus($id)
-    {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('danasosial')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('danasosial.*, users.fullname')
-            ->join('users', 'users.id = danasosial.user_id', 'left')
-            ->where('danasosial.id', $Id)
-            ->where('danasosial.kodebpr', $kodebpr)
-            ->orderBy('danasosial.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('danasosial')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('danasosial')
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $danasosial, $kodebpr, $periodeId)
-    {        
-        $this->builder->where('subkategori', $danasosial)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
-    }
-
 }

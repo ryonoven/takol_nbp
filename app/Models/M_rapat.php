@@ -1,136 +1,60 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_rapat extends Model
+/**
+ * Laporan Transparansi 13 — Pelaksanaan Rapat dalam 1 (satu) tahun (E0701).
+ * Satu baris per rapat. Tabel: accdekom2..5 (+_by) tanpa accdir2, tanpa kolom komut/dirut.
+ */
+class M_rapat extends M_anggotatransparansi
 {
     protected $table = 'rapat';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['kodebpr', 'periode_id', 'user_id', 'tanggalrapat', 'jumlahpeserta', 'topikrapat', 'fullname', 'is_approved', 'approved_by', 'approved_at','accdekom', 'accdekom_by', 'accdekom_at'];
-    protected $useTimestamps = false;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
-    }  
+    public const SUBKATEGORI = 'Rapat';
+    public const FORM_CODE = 'E0701';
+    public const D01_CODE = '081010000000';
 
-    public function getAllData()
+    public const UNIQUE = null;   // beberapa rapat bisa pada tanggal yang sama
+    public const TITLE_FIELD = 'tanggal';
+    public const TAG_FIELD = null;
+    public const SUB_FIELD = 'peserta';
+    public const SUB_FORMAT = '%s peserta';
+    public const BODY_FIELDS = ['topik'];
+    public const ORDER_COL = 'tanggalrapat';
+
+    public const HAS_NAMES = false;
+    public const HAS_EXTRA_ACC = false;   // accdekom2..5 diisi lewat insertDefaults() (tabel tanpa accdir2)
+
+    public static function fields(): array
     {
-        return $this->builder->get()->getResultArray();
+        return [
+            'tanggal' => ['col' => 'tanggalrapat', 'label' => 'Tanggal Pelaksanaan Rapat', 'type' => 'date', 'col_md' => 6],
+            'peserta' => ['col' => 'jumlahpeserta', 'label' => 'Jumlah Peserta Rapat', 'type' => 'number', 'min' => 1, 'max' => 9999, 'col_md' => 6],
+            'topik' => ['col' => 'topikrapat', 'label' => 'Topik Rapat', 'type' => 'textarea', 'max' => 4000],
+        ];
     }
 
-    public function setIncrement($value) {
-        $value = (int)$value;
-        $sql = 'ALTER TABLE rapat AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+    protected static function insertDefaults(): array
+    {
+        return ['is_approved' => 0, 'approved_by' => 0, 'accdekom' => 0, 'accdekom_by' => 0,
+            'accdekom2' => 0, 'accdekom2_by' => 0, 'accdekom3' => 0, 'accdekom3_by' => 0,
+            'accdekom4' => 0, 'accdekom4_by' => 0, 'accdekom5' => 0, 'accdekom5_by' => 0];
     }
 
-    public function tambah($data)
+    /** Sinkronisasi: tanggal rapat tahun lalu digeser +1 tahun (silakan disesuaikan setelahnya). */
+    public static function syncRow(array $row): array
     {
-        return $this->builder->insert($data);
+        $ts = !empty($row['tanggalrapat']) ? strtotime($row['tanggalrapat'] . ' +1 year') : false;
+        if ($ts) {
+            $row['tanggalrapat'] = date('Y-m-d', $ts);
+        }
+        return $row;
     }
 
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
+    /** D01|081010000000|YYYYMMDD|jumlah peserta|topik (format lama). */
+    public function txtLine(array $row, callable $clean): string
     {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
+        $ts = !empty($row['tanggalrapat']) ? strtotime($row['tanggalrapat']) : false;
+        return 'D01|' . self::D01_CODE . '|' . ($ts ? date('Ymd', $ts) : '') . '|' . $clean($row['jumlahpeserta']) . '|' . $clean($row['topikrapat']);
     }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('rapat')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('rapat.*, users.fullname')
-            ->join('users', 'users.id = rapat.user_id', 'left')
-            ->where('rapat.id', $Id)
-            ->where('rapat.kodebpr', $kodebpr)
-            ->orderBy('rapat.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-    
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('shmdirdekomlain')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function hapus($id)
-    {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $rapat, $kodebpr, $periodeId)
-    {
-        $this->builder->where('subkategori', $rapat)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('rapat')
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function setNullKolom($id)
-    {
-        return $this->builder->update(
-            ['nilai' => null, 'keterangan' => null],
-            ['id' => $id]
-        );
-    }
-
 }

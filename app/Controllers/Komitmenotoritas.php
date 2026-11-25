@@ -752,7 +752,7 @@ class Komitmenotoritas extends Controller
                 ]);
             }
 
-            // Composite key "uraian||pemberikomitmen" yang sudah ada
+            // Composite key "uraian pemberikomitmen" yang sudah ada
             $existingKeys = $this->komitmenModel
                 ->getUraianPemberiByPeriode($kodebpr, $periodeId);
 

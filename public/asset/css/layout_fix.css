@@ -1,6 +1,4 @@
-/* ============================================
-   LAYOUT WRAPPER FIX - Menghilangkan Gap
-   ============================================ */
+/* LAYOUT WRAPPER FIX - Menghilangkan Gap */
 
 /* Reset dasar */
 * {
@@ -81,9 +79,7 @@ body {
     }
 }
 
-/* ============================================
-   SIDEBAR POSITIONING FIX
-   ============================================ */
+/* SIDEBAR POSITIONING FIX */
 
 .sidebar {
     position: fixed !important;
@@ -113,9 +109,7 @@ body {
     }
 }
 
-/* ============================================
-   TOPBAR POSITIONING FIX
-   ============================================ */
+/* TOPBAR POSITIONING FIX */
 
 .topbar {
     position: sticky;
@@ -149,9 +143,7 @@ body {
     }
 }
 
-/* ============================================
-   TOGGLE BUTTON POSITIONING
-   ============================================ */
+/* TOGGLE BUTTON POSITIONING */
 
 .sidebar-toggle-btn {
     position: fixed;
@@ -173,9 +165,7 @@ body {
     }
 }
 
-/* ============================================
-   OVERLAY
-   ============================================ */
+/* OVERLAY */
 
 .sidebar-overlay {
     position: fixed;
@@ -195,9 +185,7 @@ body {
     opacity: 1;
 }
 
-/* ============================================
-   PREVENT HORIZONTAL SCROLL
-   ============================================ */
+/* PREVENT HORIZONTAL SCROLL */
 
 body.sidebar-open {
     overflow: hidden;
@@ -211,9 +199,7 @@ body.sidebar-open {
     }
 }
 
-/* ============================================
-   CONTAINER FIXES
-   ============================================ */
+/* CONTAINER FIXES */
 
 .container,
 .container-fluid {

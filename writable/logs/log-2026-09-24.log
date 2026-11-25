@@ -1,0 +1,172 @@
+INFO - 2026-09-24 08:20:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:20:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:20:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:20:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:20:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:20:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:20:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:21:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:21:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-09-24 08:21:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-09-24 08:21:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-09-24 08:21:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:21:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 08:21:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 09:51:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-09-24 09:51:37 --> mysqli_sql_exception: Unknown column 'is_null_record' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\app\Models\LaporanPdfSafModel.php(144): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Controllers\Laporanpdfsaf.php(145): App\Models\LaporanPdfSafModel->kejadianFraud()
+#5 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->index()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#10 {main}
+ERROR - 2026-09-24 09:51:37 --> kejadianFraud: Unknown column 'is_null_record' in 'field list'
+INFO - 2026-09-24 09:51:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2026-09-24 13:52:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$session is deprecated in APPPATH\Controllers\Home.php on line 9.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+WARNING - 2026-09-24 13:52:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\Home::$auth is deprecated in APPPATH\Controllers\Home.php on line 10.
+ 1 SYSTEMPATH\CodeIgniter.php(904): App\Controllers\Home->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-09-24 13:52:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 13:52:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-09-24 13:52:31 --> mysqli_sql_exception: Unknown column 'is_null_record' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\app\Models\LaporanPdfSafModel.php(144): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Controllers\Laporanpdfsaf.php(145): App\Models\LaporanPdfSafModel->kejadianFraud()
+#5 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->index()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#10 {main}
+ERROR - 2026-09-24 13:52:31 --> kejadianFraud: Unknown column 'is_null_record' in 'field list'
+INFO - 2026-09-24 13:52:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:23:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:23:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-09-24 15:23:16 --> mysqli_sql_exception: Unknown column 'is_null_record' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\app\Models\LaporanPdfSafModel.php(144): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Controllers\Laporanpdfsaf.php(145): App\Models\LaporanPdfSafModel->kejadianFraud()
+#5 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->index()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#10 {main}
+ERROR - 2026-09-24 15:23:16 --> kejadianFraud: Unknown column 'is_null_record' in 'field list'
+INFO - 2026-09-24 15:23:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-09-24 15:23:20 --> Call to undefined method App\Controllers\Laporanpdfsaf::namaFile()
+in APPPATH\Controllers\Laporanpdfsaf.php on line 287.
+ 1 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->pdf()
+ 2 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\xampp\\htdocs\\nbp\\public\\index.php')
+INFO - 2026-09-24 15:23:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-09-24 15:23:56 --> mysqli_sql_exception: Unknown column 'is_null_record' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\app\Models\LaporanPdfSafModel.php(144): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Controllers\Laporanpdfsaf.php(145): App\Models\LaporanPdfSafModel->kejadianFraud()
+#5 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->index()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#10 {main}
+ERROR - 2026-09-24 15:23:56 --> kejadianFraud: Unknown column 'is_null_record' in 'field list'
+INFO - 2026-09-24 15:23:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:27:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-09-24 15:27:20 --> mysqli_sql_exception: Unknown column 'is_null_record' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\app\Models\LaporanPdfSafModel.php(144): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Controllers\Laporanpdfsaf.php(145): App\Models\LaporanPdfSafModel->kejadianFraud()
+#5 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->index()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#10 {main}
+ERROR - 2026-09-24 15:27:20 --> kejadianFraud: Unknown column 'is_null_record' in 'field list'
+INFO - 2026-09-24 15:27:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:27:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:27:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-09-24 15:27:42 --> mysqli_sql_exception: Unknown column 'is_null_record' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\app\Models\LaporanPdfSafModel.php(144): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Controllers\Laporanpdfsaf.php(145): App\Models\LaporanPdfSafModel->kejadianFraud()
+#5 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->index()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#10 {main}
+ERROR - 2026-09-24 15:27:42 --> kejadianFraud: Unknown column 'is_null_record' in 'field list'
+INFO - 2026-09-24 15:27:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:28:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:29:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-09-24 15:29:29 --> mysqli_sql_exception: Unknown column 'is_null_record' in 'field list' in C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\xampp\htdocs\nbp\system\Database\MySQLi\Connection.php(295): mysqli->query()
+#1 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\xampp\htdocs\nbp\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\xampp\htdocs\nbp\app\Models\LaporanPdfSafModel.php(144): CodeIgniter\Database\BaseConnection->query()
+#4 C:\xampp\htdocs\nbp\app\Controllers\Laporanpdfsaf.php(145): App\Models\LaporanPdfSafModel->kejadianFraud()
+#5 C:\xampp\htdocs\nbp\system\CodeIgniter.php(932): App\Controllers\Laporanpdfsaf->index()
+#6 C:\xampp\htdocs\nbp\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 C:\xampp\htdocs\nbp\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\xampp\htdocs\nbp\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\nbp\system\Commands\Server\rewrite.php(47): require_once('...')
+#10 {main}
+ERROR - 2026-09-24 15:29:29 --> kejadianFraud: Unknown column 'is_null_record' in 'field list'
+INFO - 2026-09-24 15:29:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-09-24 15:29:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

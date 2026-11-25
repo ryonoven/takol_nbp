@@ -1,141 +1,90 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_strukturkomite extends Model
+/**
+ * Laporan Transparansi 5 — Struktur, Keanggotaan, Keahlian, dan Independensi Anggota Komite (E0204).
+ * Satu baris per anggota komite. Mendukung "Tidak Ada Data" (is_null_record = 1).
+ */
+class M_strukturkomite extends M_anggotatransparansi
 {
     protected $table = 'strukturkomite';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'kodebpr', 'periode_id', 'anggotakomite', 'nikkomite', 'keahlian', 'fullname', 'jbtaudit', 'jbtpantauresiko', 'jbtremunerasi', 'jbtmanrisk', 'jbtlain', 'independen', 'tindakstrukturkomite', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'date', 'accdekom2', 'accdekom2_by', 'accdekom3', 'accdekom3_by', 'accdekom4', 'accdekom4_by', 'accdekom5', 'accdekom5_by', 'accdir2', 'accdir2_by', 'is_null_record'];
-    protected $useTimestamps = false;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
-    }
+    public const SUBKATEGORI = 'Strukturkomite';
+    public const FORM_CODE = 'E0204';
+    public const D01_CODE = '013201000000';
 
-    public function checkIncrement()
+    public const JABATAN = ['00' => '00. Tidak menjabat', '01' => '01. Ketua', '02' => '02. Anggota'];
+    public const INDEPENDEN = ['1' => 'Pihak independen', '2' => 'Bukan pihak independen'];
+    /** key field => [kolom, label, label singkat chip] */
+    private const KOMITE = [
+        'audit' => ['jbtaudit', 'Jabatan di Komite Audit', 'Audit'],
+        'pantau' => ['jbtpantauresiko', 'Jabatan di Komite Pemantau Risiko', 'Pemantau Risiko'],
+        'remunerasi' => ['jbtremunerasi', 'Jabatan di Komite Remunerasi & Nominasi', 'Remunerasi & Nominasi'],
+        'manrisk' => ['jbtmanrisk', 'Jabatan di Komite Manajemen Risiko', 'Manajemen Risiko'],
+        'lain' => ['jbtlain', 'Jabatan di Komite Lainnya', 'Lainnya'],
+    ];
+
+    public const UNIQUE = 'nik';
+    public const UNIQUE_MSG = 'NIK sudah terdaftar pada periode ini.';
+    public const TITLE_FIELD = 'nama';
+    public const TAG_FIELD = 'independen';
+    public const SUB_FIELD = 'nik';
+    public const SUB_FORMAT = 'NIK %s';
+    public const BODY_FIELDS = ['keahlian'];
+    public const CHIP_FIELDS = ['audit', 'pantau', 'remunerasi', 'manrisk', 'lain'];
+    public const CHIP_SKIP = ['00'];
+    public const UTAMA = ['1'];
+    public const ORDER_COL = 'id';
+
+    public const HAS_NAMES = false;
+    public const NODATA = true;
+
+    public static function fields(): array
     {
-        if (empty($this->getAllData())) {
-            $this->db->query('ALTER TABLE strukturkomite AUTO_INCREMENT = 1');
+        $f = [
+            'nama' => ['col' => 'anggotakomite', 'label' => 'Nama Anggota Komite', 'type' => 'text', 'max' => 250, 'col_md' => 7],
+            'nik' => ['col' => 'nikkomite', 'label' => 'NIK', 'type' => 'nik', 'max' => 16, 'col_md' => 5],
+            'keahlian' => ['col' => 'keahlian', 'label' => 'Keahlian', 'type' => 'textarea', 'max' => 4000],
+        ];
+        foreach (self::KOMITE as $k => [$col, $label, $short]) {
+            $f[$k] = ['col' => $col, 'label' => $label, 'short' => $short, 'type' => 'select', 'options' => self::JABATAN, 'default' => '00', 'col_md' => 6];
         }
+        $f['independen'] = ['col' => 'independen', 'label' => 'Independensi', 'type' => 'select', 'options' => self::INDEPENDEN, 'col_md' => 6];
+        return $f;
     }
 
-    public function setIncrement($value)
+    /** Anggota komite harus menjabat minimal di satu komite. */
+    public static function validateRow(array $data): array
     {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE strukturkomite AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        foreach (self::KOMITE as [$col]) {
+            if (($data[$col] ?? '00') !== '00') {
+                return [];
+            }
+        }
+        return ['audit' => 'Pilih jabatan minimal di satu komite.'];
     }
 
-    public function getAllData()
+    /** Kolom tabel NOT NULL: baris "Tidak Ada Data" diisi nilai kosong (sama dengan versi lama). */
+    protected static function nodataValues(): array
     {
-        return $this->builder->get()->getResultArray();
+        $v = ['anggotakomite' => '', 'nikkomite' => '', 'keahlian' => '', 'independen' => '0'];
+        foreach (self::KOMITE as [$col]) {
+            $v[$col] = '00';
+        }
+        return $v;
     }
 
-    public function tambahstrukturkomite($data)
+    /** D01|013201000000|nama|nik|keahlian|audit|pantau|remunerasi|manrisk|lain|independen (format lama). */
+    public function txtLine(array $row, callable $clean): string
     {
-        return $this->builder->insert($data);
+        $cols = ['anggotakomite', 'nikkomite', 'keahlian', 'jbtaudit', 'jbtpantauresiko', 'jbtremunerasi', 'jbtmanrisk', 'jbtlain', 'independen'];
+        return 'D01|' . self::D01_CODE . '|' . implode('|', array_map(static fn($c) => $clean($row[$c] ?? ''), $cols));
     }
 
-    public function hapus($id)
+    /** Tidak ada anggota komite: baris default (format lama). */
+    public function txtEmptyLine(array $ctx = []): ?string
     {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
+        return 'D01|' . self::D01_CODE . '| |0| |00|00|00|00|00|2';
     }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-    public function ubahketerangan($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('strukturkomite')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('strukturkomite.*, users.fullname')
-            ->join('users', 'users.id = strukturkomite.user_id', 'left')
-            ->where('strukturkomite.id', $Id)
-            ->where('strukturkomite.kodebpr', $kodebpr)
-            ->orderBy('strukturkomite.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('strukturkomite')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('strukturkomite')
-            ->where('id', $id)  // Menambahkan kondisi berdasarkan ID
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $strukturkomite, $kodebpr, $periodeId)
-    {
-        // Pastikan update hanya terjadi untuk faktor4id, kodebpr, dan periode_id yang sesuai
-        $this->builder->where('subkategori', $strukturkomite)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
-    }
-
 }

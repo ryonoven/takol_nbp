@@ -1159,7 +1159,7 @@ function init($){
 
         if (!syncBtn) return; // tombol tidak dirender (bukan PE/admin)
 
-        // ── Check periode sebelumnya (sekali saat load) ─────────────
+        // Check periode sebelumnya
         function syncCheckPrev(cb) {
             if (_syncChecked) { cb && cb(_syncData); return; }
             fetch(BASE + '/Temuanaudit/checkPrevPeriode', {
@@ -1190,7 +1190,7 @@ function init($){
             }
         });
 
-        // ── Klik tombol sync → isi & tampilkan modal ────────────────
+        // Klik tombol sync → isi & tampilkan modal
         syncBtn.addEventListener('click', function() {
             if (!_syncData || _syncData.status !== 'found') return;
 
@@ -1236,7 +1236,7 @@ function init($){
             jQuery('#modalSyncPeriode').modal('show');
         });
 
-        // ── Konfirmasi eksekusi sync ─────────────────────────────────
+        // Konfirmasi eksekusi sync
         var _syncPending = false;
         document.getElementById('btn-konfirmasi-sync').addEventListener('click', debounce(function() {
             if (_syncPending) return;

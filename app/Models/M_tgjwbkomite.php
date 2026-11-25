@@ -1,154 +1,61 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_tgjwbkomite extends Model
+/**
+ * Laporan Transparansi 4 — Tugas, Tanggung Jawab, Program Kerja, dan Realisasi Program Kerja Komite (E0203).
+ * Satu baris per komite. Mendukung "Tidak Ada Data" (is_null_record = 1) bila BPR tidak memiliki komite.
+ */
+class M_tgjwbkomite extends M_anggotatransparansi
 {
     protected $table = 'tgjwbkomite';
-    protected $primaryKey = 'id';
-    protected $allowedFields = [
-        'komite',
-        'tugastgjwbkomite',
-        'jumlahrapat',
-        'prokerkomite',
-        'hasilprokerkomite',
-        'is_null_record',
-        'periode_id',
-        'user_id',
-        'kodebpr',
-        'fullname',
-        'accdekom',
-        'accdekom_by',
-        'accdekom_at',
-        'is_approved',
-        'approved_by',
-        'approved_at',
+
+    public const SUBKATEGORI = 'Tgjwbkomite';
+    public const FORM_CODE = 'E0203';
+    public const D01_CODE = '013301000000';
+    public const KOMITE = [
+        '01' => 'Komite Audit',
+        '02' => 'Komite Pemantau Risiko',
+        '03' => 'Komite Remunerasi dan Nominasi',
+        '04' => 'Komite Manajemen Risiko',
+        '05' => 'Komite Lainnya',
     ];
-    protected $useTimestamps = false;
 
-    public function __construct()
+    /** Satu baris per jenis komite, kecuali "Komite Lainnya" yang boleh lebih dari satu. */
+    public const UNIQUE = 'komite';
+    public const UNIQUE_EXCEPT = ['05'];
+    public const UNIQUE_MSG = 'Komite ini sudah diisi pada periode ini.';
+    public const TITLE_FIELD = 'komite';
+    public const TAG_FIELD = null;
+    public const SUB_FIELD = 'jumlahrapat';
+    public const SUB_FORMAT = '%s kali rapat dalam setahun';
+    public const BODY_FIELDS = ['tugas', 'proker', 'hasil'];
+    public const ORDER_COL = 'komite';
+
+    public const HAS_NAMES = false;
+    public const NODATA = true;
+
+    public static function fields(): array
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        return [
+            'komite' => ['col' => 'komite', 'label' => 'Komite', 'type' => 'select', 'options' => self::KOMITE, 'col_md' => 8],
+            'jumlahrapat' => ['col' => 'jumlahrapat', 'label' => 'Jumlah Rapat', 'type' => 'number', 'max' => 999, 'col_md' => 4],
+            'tugas' => ['col' => 'tugastgjwbkomite', 'label' => 'Tugas dan Tanggung Jawab', 'type' => 'textarea', 'max' => 4000],
+            'proker' => ['col' => 'prokerkomite', 'label' => 'Program Kerja Komite', 'type' => 'textarea', 'max' => 4000],
+            'hasil' => ['col' => 'hasilprokerkomite', 'label' => 'Realisasi Program Kerja Komite', 'type' => 'textarea', 'max' => 4000],
+        ];
     }
 
-    public function checkIncrement()
+    /** D01|013301000000|komite|tugas|proker|realisasi|jumlahrapat (format lama). */
+    public function txtLine(array $row, callable $clean): string
     {
-        if (empty($this->getAllData())) {
-            $this->db->query('ALTER TABLE tgjwbkomite AUTO_INCREMENT = 1');
-        }
+        return 'D01|' . self::D01_CODE . '|' . $clean($row['komite']) . '|' . $clean($row['tugastgjwbkomite'])
+            . '|' . $clean($row['prokerkomite']) . '|' . $clean($row['hasilprokerkomite']) . '|' . $clean($row['jumlahrapat']);
     }
 
-    public function setIncrement($value)
+    /** Tidak ada komite: baris default "05" (format lama). */
+    public function txtEmptyLine(array $ctx = []): ?string
     {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE tgjwbkomite AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        return 'D01|' . self::D01_CODE . '|05| | | |0';
     }
-
-    public function getAllData()
-    {
-        return $this->builder->get()->getResultArray();
-    }
-
-    public function tambahtgjwbkomite($data)
-    {
-        return $this->builder->insert($data);
-    }
-
-    public function hapus($id)
-    {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('tgjwbkomite')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('tgjwbkomite.*, users.fullname')
-            ->join('users', 'users.id = tgjwbkomite.user_id', 'left')
-            ->where('tgjwbkomite.id', $Id)
-            ->where('tgjwbkomite.kodebpr', $kodebpr)
-            ->orderBy('tgjwbkomite.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('tgjwbkomite')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('tgjwbkomite')
-            ->where('id', $id)  // Menambahkan kondisi berdasarkan ID
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $Tgjwbkomite, $kodebpr, $periodeId)
-    {
-        $this->builder->where('subkategori', $Tgjwbkomite)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
-    }
-
-
 }

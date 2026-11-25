@@ -34,6 +34,17 @@ class PdfNormalizer
             return null;
         }
 
+        if (PHP_OS_FAMILY === 'Windows') {
+            // Windows: gswin64c di PATH, atau instalasi standar C:\Program Files\gs\gs*\bin
+            $path = trim((string) strtok((string) @shell_exec('where gswin64c 2>NUL'), "\r\n"));
+            if ($path === '') {
+                $found = glob('C:/Program Files/gs/gs*/bin/gswin64c.exe') ?: [];
+                rsort($found);
+                $path = $found[0] ?? '';
+            }
+            return $path !== '' ? $path : null;
+        }
+
         $path = trim((string) @shell_exec('which gs 2>/dev/null'));
 
         return !empty($path) ? $path : null;
@@ -59,7 +70,7 @@ class PdfNormalizer
 
         $cmd = sprintf(
             '%s -dCompatibilityLevel=1.4 -dPDFSETTINGS=/prepress -dNOPAUSE -dBATCH -dQUIET -sDEVICE=pdfwrite -sOutputFile=%s %s 2>&1',
-            escapeshellcmd($this->gsBinary),
+            PHP_OS_FAMILY === 'Windows' ? '"' . $this->gsBinary . '"' : escapeshellcmd($this->gsBinary),
             escapeshellarg($outputPath),
             escapeshellarg($inputPath)
         );

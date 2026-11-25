@@ -1,136 +1,75 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_keluargadirdekompshm extends Model
+/**
+ * Laporan Transparansi 10 — Hubungan Keluarga Anggota Direksi, Anggota Dewan Komisaris, dan Pemegang Saham pada BPR (E0402).
+ * Satu baris per orang. Mendukung "Tidak Ada Data".
+ * Tabel: punya accdekom2..5 (+_by) tetapi tanpa accdir2; kolom keterangan TEXT NOT NULL tanpa default.
+ */
+class M_keluargadirdekompshm extends M_anggotatransparansi
 {
     protected $table = 'keluargadirdekompshm';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['nik', 'nama', 'jabatan', 'hubkeldir', 'hubkeldekom', 'hubpkelshm', 'is_approved', 'approved_by', 'approved_at', 'fullname', 'accdekom', 'accdekom_by', 'accdekom_at', 'kodebpr', 'periode_id', 'user_id', 'is_null_record'];
-    protected $useTimestamps = false;
 
-    public function __construct()
+    public const SUBKATEGORI = 'Keluargadirdekompshm';
+    public const FORM_CODE = 'E0402';
+    public const D01_CODE = '032010000000';
+    public const JABATAN = ['Direksi' => 'Direksi', 'Dekom' => 'Dewan Komisaris', 'PSaham' => 'Pemegang Saham'];
+
+    public const UNIQUE = 'nik';
+    public const UNIQUE_MSG = 'NIK sudah terdaftar pada periode ini.';
+    public const TITLE_FIELD = 'nama';
+    public const TAG_FIELD = 'jabatan';
+    public const SUB_FIELD = 'nik';
+    public const SUB_FORMAT = 'NIK %s';
+    public const BODY_FIELDS = ['hubdir', 'hubdekom', 'hubpshm'];
+    public const UTAMA = ['Direksi'];
+    public const ORDER_COL = 'jabatan';
+
+    public const HAS_NAMES = false;
+    public const HAS_EXTRA_ACC = false;   // accdekom2..5 diisi lewat insertDefaults() (tabel tanpa accdir2)
+    public const NODATA = true;
+
+    public static function fields(): array
     {
-        parent::__construct();
-        $this->builder = $this->db->table($this->table);
+        $hub = static fn(string $col, string $label, string $short) => [
+            'col' => $col, 'label' => $label, 'short' => $short, 'type' => 'text', 'max' => 50, 'default' => 'Tidak ada',
+        ];
+        return [
+            'nama' => ['col' => 'nama', 'label' => 'Nama', 'type' => 'text', 'max' => 100, 'col_md' => 7],
+            'nik' => ['col' => 'nik', 'label' => 'NIK', 'type' => 'nik', 'max' => 16, 'col_md' => 5],
+            'jabatan' => ['col' => 'jabatan', 'label' => 'Jabatan', 'type' => 'select', 'options' => self::JABATAN],
+            'hubdir' => $hub('hubkeldir', 'Hubungan Keluarga dengan Anggota Direksi Lain', 'Dengan Direksi lain'),
+            'hubdekom' => $hub('hubkeldekom', 'Hubungan Keluarga dengan Anggota Dewan Komisaris Lain', 'Dengan Dewan Komisaris lain'),
+            'hubpshm' => $hub('hubkelpshm', 'Hubungan Keluarga dengan Pemegang Saham Lain', 'Dengan Pemegang Saham lain'),
+        ];
     }
 
-    public function checkIncrement()
+    /** Kolom NOT NULL tanpa default di tabel ini (aman untuk MySQL strict mode). */
+    protected static function insertDefaults(): array
     {
-        if (empty($this->getAllData())) {
-            $this->db->query('ALTER TABLE keluargadirdekompshm AUTO_INCREMENT = 1');
-        }
+        return ['is_approved' => 0, 'approved_by' => 0, 'accdekom' => 0, 'accdekom_by' => 0,
+            'accdekom2' => 0, 'accdekom2_by' => 0, 'accdekom3' => 0, 'accdekom3_by' => 0,
+            'accdekom4' => 0, 'accdekom4_by' => 0, 'accdekom5' => 0, 'accdekom5_by' => 0,
+            'keterangan' => ''];
     }
 
-    public function getAllData()
+    /** Baris "Tidak Ada Data" (sama dengan versi lama). */
+    protected static function nodataValues(): array
     {
-        return $this->builder->get()->getResultArray();
+        return ['nama' => '', 'nik' => '', 'jabatan' => 'Direksi', 'hubkeldir' => '', 'hubkeldekom' => '', 'hubkelpshm' => ''];
     }
 
-    public function setIncrement($value)
+    /** D01|032010000000|nik|hubkeldir|hubkeldekom|hubkelpshm (format lama). */
+    public function txtLine(array $row, callable $clean): string
     {
-        $value = (int) $value;
-        $sql = 'ALTER TABLE keluargadirdekompshm AUTO_INCREMENT = ?';
-        $query = $this->db->query($sql, $value);
-        return $query;
+        return 'D01|' . self::D01_CODE . '|' . $clean($row['nik']) . '|' . $clean($row['hubkeldir'])
+            . '|' . $clean($row['hubkeldekom']) . '|' . $clean($row['hubkelpshm']);
     }
 
-    public function tambah($data)
+    /** Tidak ada data: baris default (format lama). */
+    public function txtEmptyLine(array $ctx = []): ?string
     {
-        return $this->builder->insert($data);
+        return 'D01|' . self::D01_CODE . '|0| | | ';
     }
-
-    public function hapus($id)
-    {
-        $lastData = $this->builder->orderBy('id', 'DESC')->limit(1)->get()->getResultArray();
-        $this->builder->delete(['id' => $id]);
-        $this->setIncrement($lastData[0]['id']);
-    }
-
-    public function ubah($data, $id)
-    {
-        return $this->builder->update($data, ['id' => $id]);
-    }
-
-    public function getDataByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->findAll();
-    }
-    // Dalam PenjelasantindakModel.php
-    public function getDataPenjelasByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->db->table('keluargadirdekompshm')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByKodebpr($kodebpr)
-    {
-        return $this->builder()
-            ->where('kodebpr', $kodebpr)
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($Id, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('keluargadirdekompshm.*, users.fullname')
-            ->join('users', 'users.id = keluargadirdekompshm.user_id', 'left')
-            ->where('keluargadirdekompshm.id', $Id)
-            ->where('keluargadirdekompshm.kodebpr', $kodebpr)
-            ->orderBy('keluargadirdekompshm.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getDataByUserAndPeriod($userId, $kodebpr, $periode)
-    {
-        return $this->builder
-            ->where('user_id', $userId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode', $periode)
-            ->findAll();
-    }
-
-    public function getKomentarByFaktor($Id)
-    {
-        return $this->db->table('transparansi_comments')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getNilaiByFaktor($Id)
-    {
-        return $this->db->table('keluargadirdekompshm')
-            ->where('id', $Id)
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->getResultArray();
-    }
-
-    public function editbasedkodedanperiode($data, $kodebpr, $periodeId, $id)
-    {
-        return $this->db->table('keluargadirdekompshm')
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    public function ubahBerdasarkanFaktorId($data, $keluargadirdekompshm, $kodebpr, $periodeId)
-    {        
-        $this->builder->where('subkategori', $keluargadirdekompshm)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId);
-        return $this->builder->update($data);
-    }
-
 }

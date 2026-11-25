@@ -196,7 +196,6 @@ class M_ketentuanbpr extends Model
             return true;
 
         $result = $this->db->table($this->table)->insertBatch($rows);
-
         return $result !== false;
     }
 

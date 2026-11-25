@@ -11,10 +11,6 @@ use CodeIgniter\Filters\SecureHeaders;
 
 class Filters extends BaseConfig
 {
-    /**
-     * Configures aliases for Filter classes to
-     * make reading things nicer and simpler.
-     */
     public array $aliases = [
         'csrf' => CSRF::class,
         'toolbar' => DebugToolbar::class,
@@ -25,6 +21,8 @@ class Filters extends BaseConfig
         'role' => \Myth\Auth\Filters\RoleFilter::class,
         'permission' => \Myth\Auth\Filters\PermissionFilter::class,
         'kodebpr' => \App\Filters\KodebprFilter::class,
+        // 'nav' => \App\Filters\NavFilter::class,
+        // 'guard' => \App\Filters\GuardFilter::class
     ];
 
     /**
