@@ -169,7 +169,7 @@ class Kerjasamabpr extends Controller
             . view('templates/v_footer');
     }
 
-    /** Tambah (id kosong) atau ubah satu baris. */
+    /** Tambah atau ubah satu baris. */
     public function save()
     {
         [$periode, $err] = $this->guardPost(true);
@@ -257,7 +257,7 @@ class Kerjasamabpr extends Controller
             : $this->json(500, ['ok' => false, 'message' => 'Data gagal disimpan.']);
     }
 
-    /** Simpan Keterangan (footer F01) untuk seluruh baris periode. */
+    /** Simpan Keterangan untuk seluruh baris periode. */
     public function savefooter()
     {
         [$periode, $err] = $this->guardPost(true);
@@ -306,7 +306,7 @@ class Kerjasamabpr extends Controller
             : $this->json(500, ['ok' => false, 'message' => 'Data gagal dihapus.']);
     }
 
-    // ------------------------------------------------------------------ approval
+    // approval
 
     public function approve()
     {
@@ -318,7 +318,7 @@ class Kerjasamabpr extends Controller
             return $this->json(403, ['ok' => false, 'message' => 'Anda tidak memiliki akses untuk approval ini.']);
         }
 
-        $act = (string) $this->request->getPost('act');   // approve | cancel
+        $act = (string) $this->request->getPost('act');
         if (!in_array($act, ['approve', 'cancel'], true)) {
             return $this->json(422, ['ok' => false, 'message' => 'Permintaan tidak valid.']);
         }

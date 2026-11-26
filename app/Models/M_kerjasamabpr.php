@@ -4,11 +4,6 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-/**
- * Form A0506 — Kerja Sama BPR dengan Bank atau Lembaga Lain (laporan tahunan).
- * Banyak baris per BPR + periode. Keterangan = footer (satu per periode, disimpan sama di semua baris).
- * Approval Direktur Utama berlaku untuk seluruh baris periode.
- */
 class M_kerjasamabpr extends Model
 {
     protected $table         = 'kerjasamabpr';
@@ -25,11 +20,6 @@ class M_kerjasamabpr extends Model
 
     public const FORM_CODE     = 'A0506';
     public const KODE_KOMPONEN = '05002';
-
-    /**
-     * Referensi Lembaga (char 1, Mandatory).
-     * !!! Kode belum tercantum di spesifikasi — SESUAIKAN dengan referensi OJK.
-     */
     public const REF_BANK    = '1';
     public const REF_LAINNYA = '2';
     public const REFLEMBAGA = [
@@ -37,7 +27,6 @@ class M_kerjasamabpr extends Model
         self::REF_LAINNYA => 'Lembaga Lain',
     ];
 
-    /** Batas panjang teks per baris (detail). */
     public const MAX = [
         'namabank'        => 2000,
         'sandibank'       => 50,
@@ -106,8 +95,8 @@ class M_kerjasamabpr extends Model
         $approved = $rows !== [] && !in_array(0, array_map(static fn($r) => (int) $r['is_approved'], $rows), true);
         return [
             'approved' => $approved,
-            'by'       => $approved ? (int) $rows[0]['approved_by'] : 0,
-            'at'       => $approved ? $rows[0]['approved_at'] : null,
+            'by' => $approved ? (int) $rows[0]['approved_by'] : 0,
+            'at' => $approved ? $rows[0]['approved_at'] : null,
         ];
     }
 

@@ -30,7 +30,8 @@ $menu = [
     ['heading' => null, 'items' => [
         ['Home', 'fa-house-user', 'Dashboard'],
     ]],
-    ['heading' => 'Manajemen User', 'admin' => true, 'items' => [
+    ['heading' => 'Admin', 'admin' => true, 'items' => [
+        ['monitoring', 'fa-chart-pie', 'Monitoring Pelaporan'],
         ['admin', 'fa-users', 'Daftar User'],
     ]],
     ['heading' => 'Pelaporan', 'items' => [

@@ -118,7 +118,7 @@ $approved = $approval['approved'];
             </div>
         <?php endif; ?>
 
-        <!-- ===== Daftar ===== -->
+        <!-- Daftar -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background: var(--grad);">
                 <h5 class="m-0 font-weight-bold text-white">

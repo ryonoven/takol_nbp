@@ -4,23 +4,8 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-/**
- * Ringkasan halaman Pelaporan Tahunan.
- * Daftar bagian laporan + status approval Direktur Utama dari tabel masing-masing.
- */
 class M_showtahunan extends Model
 {
-    /**
-     * Bagian laporan tahunan (urutan = nomor romawi di halaman).
-     *  - link  : controller tujuan; null = halaman belum tersedia.
-     *  - table : tabel sumber status approval (kolom is_approved, kodebpr, periode_id).
-     *  - where : filter tambahan (opsional).
-     *  - via   : 'transparansi' = status diambil dari ringkasan Laporan Transparansi
-     *            (disetujui bila seluruh 18 bagian wajib sudah disetujui Direktur Utama);
-     *            'dokumenpendukung' = selesai bila ketiga PDF bertanda tangan sudah diunggah (tanpa approval).
-     *  - statusLabel : teks chip status (default "Disetujui oleh: Direktur Utama").
-     * Bagian tanpa 'table' tidak dihitung dalam syarat export ZIP.
-     */
     public const SECTIONS = [
         ['name' => 'Riwayat Pendirian BPR', 'link' => 'Riwayatbpr', 'table' => 'riwayatbpr'],
         ['name' => 'Penjelasan NPL', 'link' => 'Penjelasannpl', 'table' => 'penjelasannpl'],
@@ -38,7 +23,7 @@ class M_showtahunan extends Model
         ['name' => 'Transparansi Pelaksanaan Tata Kelola', 'link' => 'Showtransparansi', 'table' => 'showtransparansi', 'via' => 'transparansi'],
     ];
 
-    /** Daftar bagian lengkap dengan status: available (bool) & approved (bool). */
+    /** Daftar bagian lengkap dengan status: available & approved */
     public function getSections(string $kodebpr, int $periodeId): array
     {
         $out = [];

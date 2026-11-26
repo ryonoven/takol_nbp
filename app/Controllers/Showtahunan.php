@@ -31,8 +31,8 @@ class Showtahunan extends Controller
         'Kerjasamabpr'           => ['exporttxt'],
         'Kegiatanpengembangan'   => ['exporttxt'],
         'Laporanakuntan'         => ['pdf'],
-        'Suratpernyataandireksi' => ['pdf'],         // LTBPRK D0000
-        'Dokumenpendukung'       => ['exportpdf'],   // PDF gabungan dokumen pendukung, LTBPRK F0000
+        'Suratpernyataandireksi' => ['pdf'],
+        'Dokumenpendukung'       => ['exportpdf'], 
     ];
 
     public function __construct()
@@ -64,10 +64,6 @@ class Showtahunan extends Controller
         return null;
     }
 
-    /**
-     * Syarat export ZIP: seluruh bagian laporan tahunan (termasuk Transparansi) sudah disetujui Direktur Utama.
-     * Mengembalikan [sections, canGenerate, warnings].
-     */
     private function exportStatus(string $kodebpr, int $periodeId): array
     {
         $sections = $this->showtahunanModel->getSections($kodebpr, $periodeId);
@@ -77,10 +73,6 @@ class Showtahunan extends Controller
         return [$sections, !$pending, $warnings];
     }
 
-    /**
-     * Jalankan method export (TXT/PDF) controller lain lalu masukkan hasilnya ke ZIP.
-     * Controller di-init dengan Response baru agar $this->response tersedia dan tidak saling menimpa.
-     */
     private function addExport(\ZipArchive $zip, string $controller, string $method): void
     {
         $fqcn = 'App\\Controllers\\' . $controller;
@@ -102,7 +94,6 @@ class Showtahunan extends Controller
             }
 
             if ($result instanceof RedirectResponse) {
-                // Export menolak (data belum ada / belum disetujui): jangan bocorkan flash message-nya.
                 session()->remove(array_diff(array_keys(session()->getFlashdata() ?? []), $flashBefore));
                 log_message('warning', "Showtahunan ZIP: {$controller}::{$method} dilewati (redirect).");
                 return;
@@ -177,7 +168,7 @@ class Showtahunan extends Controller
                 ->with('err', 'ZIP belum dapat dibuat: masih ada bagian yang belum disetujui Direktur Utama.');
         }
 
-        // Render ±9 PDF (Dompdf) + ±20 TXT bisa melewati batas default 30 detik.
+        // Render ±9 PDF ±20 TXT bisa melewati batas default 30 detik.
         @set_time_limit(300);
         ignore_user_abort(true);
 
