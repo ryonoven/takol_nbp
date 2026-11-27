@@ -377,11 +377,6 @@ class Suratpernyataandireksi extends Controller
         return $this->json(200, ['ok' => true, 'message' => $wasReset ? 'Data berhasil disimpan. Status approval direset.' : 'Data berhasil disimpan.']);
     }
 
-    /**
-     * Lihat PDF:
-     *  - ada scan surat bertanda tangan yang diunggah -> tampilkan file tersebut apa adanya;
-     *  - tidak ada -> generate dari isian teks (Dompdf), seperti Laporanpdfsaf.
-     */
     public function pdf()
     {
         if ($redirect = $this->checkAuth()) {

@@ -181,8 +181,117 @@
     <script>
         const BASE_URL = '<?= $baseUrl ?>';
         const { PDFDocument, rgb, StandardFonts } = PDFLib;
+        // Mode tertanam (iframe tersembunyi di halaman Laporan Profil Risiko): progres & hasil dikirim ke halaman induk
+        const EMBED = window.parent !== window;
+        function notifyParent(msg) {
+            if (EMBED) window.parent.postMessage(Object.assign({ source: 'spr-pdf' }, msg), window.location.origin);
+        }
+
+        // ================= KOP & FOOTER SERAGAM (gaya PDF Laporan Tahunan) =================
+        // Logo kiri · nama BPR (tebal, kapital) + alamat + kontak rata kanan · garis tebal · judul di tengah.
+        const DOC_LOGO = new WeakMap();   // pdfDoc -> logo ter-embed (dipakai ulang di setiap halaman)
+        const DOC_FOOT = new WeakMap();   // pdfDoc -> teks footer kiri
+        const KOP_INK = rgb(0, 0, 0);
+        const KOP_MUTED = rgb(0.25, 0.25, 0.25);
+
+        /** Muat & simpan logo BPR untuk dokumen (aman dipanggil berulang). */
+        async function attachDocLogo(pdfDoc, bpr) {
+            if (DOC_LOGO.has(pdfDoc) || !bpr || !bpr.logo) return DOC_LOGO.get(pdfDoc) || null;
+            try {
+                const bytes = await fetch(bpr.logo).then(r => r.arrayBuffer());
+                const img = (bpr.logo.includes('image/png') || bpr.logo.endsWith('.png'))
+                    ? await pdfDoc.embedPng(bytes) : await pdfDoc.embedJpg(bytes);
+                DOC_LOGO.set(pdfDoc, img);
+                return img;
+            } catch (e) {
+                console.warn('Logo tidak dapat dimuat:', e);
+                return null;
+            }
+        }
+
+        /** Pecah teks menjadi baris sesuai lebar (pt). */
+        function kopWrap(text, font, size, maxWidth) {
+            const words = sanitizeText(String(text || '')).split(/\s+/).filter(Boolean);
+            const lines = [];
+            let line = '';
+            words.forEach(w => {
+                const t = line ? line + ' ' + w : w;
+                if (font.widthOfTextAtSize(t, size) > maxWidth && line) { lines.push(line); line = w; } else { line = t; }
+            });
+            if (line) lines.push(line);
+            return lines;
+        }
+
+        /**
+         * Kop surat gaya Laporan Tahunan. Mengembalikan posisi Y tepat di bawah garis kop.
+         * opts: { margin = 40, top = 24, logo }
+         */
+        function drawKop(page, fontBold, fontRegular, bpr, opts = {}) {
+            const { width, height } = page.getSize();
+            const m = opts.margin ?? 40;
+            const top = height - (opts.top ?? 24);
+            bpr = bpr || {};
+
+            let logo = opts.logo || DOC_LOGO.get(page.doc) || null;
+            if (opts.logo && page.doc) DOC_LOGO.set(page.doc, opts.logo);
+
+            let logoBottom = top;
+            let logoW = 0;
+            if (logo) {
+                try {
+                    const s = Math.min(120 / logo.width, 42 / logo.height);
+                    const w = logo.width * s, h = logo.height * s;
+                    page.drawImage(logo, { x: m, y: top - h, width: w, height: h });
+                    logoBottom = top - h;
+                    logoW = w;
+                } catch (e) { console.warn('Logo gagal digambar:', e); }
+            }
+
+            // Blok identitas rata kanan
+            const right = width - m;
+            const maxW = Math.max(180, width - m * 2 - logoW - 20);
+            let y = top - 9;
+            const drawRight = (txt, font, size, color) => {
+                page.drawText(txt, { x: right - font.widthOfTextAtSize(txt, size), y, size, font, color });
+                y -= size + 3;
+            };
+            kopWrap(String(bpr.namabpr || '').toUpperCase(), fontBold, 9.5, maxW).forEach(l => drawRight(l, fontBold, 9.5, KOP_INK));
+            if (bpr.alamat) kopWrap(bpr.alamat, fontRegular, 8, maxW).forEach(l => drawRight(l, fontRegular, 8, KOP_MUTED));
+            const kontak = [bpr.webbpr ? 'Web: ' + bpr.webbpr : '', bpr.email ? 'Email: ' + bpr.email : '', bpr.nomor || '']
+                .filter(Boolean).join(' | ');
+            if (kontak) kopWrap(kontak, fontRegular, 8, maxW).forEach(l => drawRight(l, fontRegular, 8, KOP_MUTED));
+
+            const ruleY = Math.min(y + 4, logoBottom) - 6;
+            page.drawLine({ start: { x: m, y: ruleY }, end: { x: width - m, y: ruleY }, thickness: 1.5, color: KOP_INK });
+            return ruleY;
+        }
+
+        /** Judul bertingkat di tengah (baris pertama lebih besar). Mengembalikan Y di bawah judul. */
+        function drawKopTitle(page, fontBold, lines, y, sizes = [12.5, 10]) {
+            const { width } = page.getSize();
+            lines.filter(Boolean).forEach((txt, i) => {
+                const size = i === 0 ? sizes[0] : sizes[1];
+                const t = sanitizeText(String(txt));
+                y -= size + 4;
+                page.drawText(t, { x: (width - fontBold.widthOfTextAtSize(t, size)) / 2, y, size, font: fontBold, color: KOP_INK });
+            });
+            return y - 6;
+        }
+
+        /** Kop + judul untuk halaman tabel risiko (lanskap); tabel tetap mulai di height - 120. */
+        function drawRiskPageHeader(page, fontBold, fontRegular, data, title, logoImage) {
+            const bpr = (data && data.bpr) || {};
+            const p = (data && data.periode) || {};
+            const ruleY = drawKop(page, fontBold, fontRegular, bpr, { margin: 50, top: 20, logo: logoImage });
+            drawKopTitle(page, fontBold, [title, String(bpr.namabpr || '').toUpperCase(), `SEMESTER ${p.semester || '-'} TAHUN ${p.tahun || '-'}`],
+                ruleY - 1, [11.5, 8.5]);
+            if (page.doc && !DOC_FOOT.has(page.doc)) DOC_FOOT.set(page.doc, 'Laporan Profil Risiko · ' + (bpr.namabpr || ''));
+        }
+
+        /** Footer seragam: garis tipis, keterangan kiri, nomor halaman kanan. */
 
         function updateProgress(percent, text) {
+            notifyParent({ ev: 'progress', pct: percent, text: text });
             const progressBar = document.getElementById('progressBar');
             progressBar.style.width = percent + '%';
             progressBar.textContent = percent + '%';
@@ -205,6 +314,7 @@
         }
 
         function showError(message) {
+            notifyParent({ ev: 'error', text: message });
             document.getElementById('spinner').style.display = 'none';
             document.getElementById('statusIcon').innerHTML = '<i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>';
             document.getElementById('loadingText').textContent = 'Terjadi Kesalahan';
@@ -369,27 +479,18 @@
             return colors[String(rating)] || rgb(1, 1, 1);
         }
 
+        /** Footer seragam: garis tipis, keterangan kiri, nomor halaman kanan. */
         function addPageNumbers(pdfDoc, font) {
-            const { rgb } = PDFLib;
             const pages = pdfDoc.getPages();
-            const totalPages = pages.length;
-
-            pages.forEach((page, index) => {
-                const { width, height } = page.getSize();
-                const pageNumber = index + 1;
-                const pageText = `Halaman ${pageNumber} dari ${totalPages}`;
-
-                const textWidth = font.widthOfTextAtSize(pageText, 10);
-                const x = (width / 2) - (textWidth / 2);
-                const y = 30;
-
-                page.drawText(pageText, {
-                    x: x,
-                    y: y,
-                    size: 10,
-                    font: font,
-                    color: rgb(0, 0, 0)
-                });
+            const total = pages.length;
+            const left = sanitizeText(DOC_FOOT.get(pdfDoc) || 'Laporan Profil Risiko');
+            pages.forEach((page, i) => {
+                const { width } = page.getSize();
+                const m = width > 700 ? 50 : 40;
+                page.drawLine({ start: { x: m, y: 32 }, end: { x: width - m, y: 32 }, thickness: 0.5, color: rgb(0.6, 0.6, 0.6) });
+                page.drawText(left, { x: m, y: 20, size: 7.5, font, color: KOP_MUTED });
+                const t = `Halaman ${i + 1} dari ${total}`;
+                page.drawText(t, { x: width - m - font.widthOfTextAtSize(t, 7.5), y: 20, size: 7.5, font, color: KOP_MUTED });
             });
         }
 
@@ -549,106 +650,10 @@
             const centerX = width / 2;
             let yPosition = height - margin;
 
-            // Logo
-            if (data.bpr.logo) {
-                try {
-                    const logoBytes = await fetch(data.bpr.logo).then(res => res.arrayBuffer());
-                    let logoImage;
-
-                    if (data.bpr.logo.includes('image/png')) {
-                        logoImage = await pdfDoc.embedPng(logoBytes);
-                    } else {
-                        logoImage = await pdfDoc.embedJpg(logoBytes);
-                    }
-
-                    const logoSize = 40;
-                    page.drawImage(logoImage, {
-                        x: margin,
-                        y: yPosition - logoSize,
-                        width: logoSize + 70,
-                        height: logoSize
-                    });
-                } catch (e) {
-                    console.warn('Logo tidak dapat dimuat:', e);
-                }
-            }
-
-            const namaBPRText = data.bpr.namabpr || 'PT BPR';
-            const namaBPRLines = wrapTextByCharLimit(namaBPRText, 40);
-
-            namaBPRLines.forEach((line, index) => {
-                const lineWidth = fontBold.widthOfTextAtSize(line, 12);
-                page.drawText(line, {
-                    x: centerX - (lineWidth / 2),
-                    y: yPosition - 10 - (index * 14),
-                    size: 12,
-                    font: fontBold,
-                    color: rgb(0, 0, 0)
-                });
-            });
-
-            yPosition -= 10 + (namaBPRLines.length * 14);
-
-            // Alamat (MAX 90 karakter per baris)
-            const alamatText = data.bpr.alamat || '';
-            const alamatLines = wrapTextByCharLimit(alamatText, 90);
-
-            alamatLines.forEach((line, index) => {
-                const lineWidth = fontRegular.widthOfTextAtSize(line, 8);
-                page.drawText(line, {
-                    x: centerX - (lineWidth / 2),
-                    y: yPosition - (index * 11),
-                    size: 8,
-                    font: fontRegular,
-                    color: rgb(0.2, 0.2, 0.2)
-                });
-            });
-
-            yPosition -= (alamatLines.length * 11) + 2;
-
-            // Telepon
-            const teleponText = `Telepon: ${data.bpr.nomor || '-'}`;
-            const teleponWidth = fontRegular.widthOfTextAtSize(teleponText, 8);
-            page.drawText(teleponText, {
-                x: centerX - (teleponWidth / 2),
-                y: yPosition,
-                size: 8,
-                font: fontRegular,
-                color: rgb(0.2, 0.2, 0.2)
-            });
-
-            yPosition -= 12;
-
-            // Website dan Email
-            const websiteEmailText = `Website: ${data.bpr.webbpr || '-'}. Email: ${data.bpr.email || '-'}`;
-            const websiteEmailLines = wrapTextByCharLimit(websiteEmailText, 90);
-
-            websiteEmailLines.forEach((line, index) => {
-                const lineWidth = fontRegular.widthOfTextAtSize(line, 8);
-                page.drawText(line, {
-                    x: centerX - (lineWidth / 2),
-                    y: yPosition - (index * 11),
-                    size: 8,
-                    font: fontRegular,
-                    color: rgb(0.2, 0.2, 0.2)
-                });
-            });
-
-            yPosition -= (websiteEmailLines.length * 11) + 5;
-
-            // Garis pemisah
-            page.drawLine({
-                start: {
-                    x: margin,
-                    y: yPosition
-                },
-                end: {
-                    x: width - margin,
-                    y: yPosition
-                },
-                thickness: 2,
-                color: rgb(0, 0, 0)
-            });
+            // Kop seragam (gaya PDF Laporan Tahunan)
+            await attachDocLogo(pdfDoc, data.bpr);
+            DOC_FOOT.set(pdfDoc, 'Lembar Pernyataan Profil Risiko · ' + (data.bpr.namabpr || ''));
+            yPosition = drawKop(page, fontBold, fontRegular, data.bpr, { margin: 40, top: 30 });
 
             updateProgress(70, 'Menambahkan konten...', '📝');
 
@@ -892,14 +897,14 @@
             const topTextY = yPosition - 12; // jarak teks pertama dari atas sel
 
             // --- Parameter Penilaian ---
-            page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.param], height: rowHeight, borderColor: rgb(0, 0, 0), borderWidth: 1 });
+            page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.param], height: rowHeight, borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
             const paramName = sanitizeText(cfg.getParamName(data.faktor1id));
             wrapTextToLines(paramName, cw[idx.param] - 10, font, fs)
                 .forEach((line, i) => page.drawText(line, { x: xPos + 5, y: topTextY - (i * lh), size: fs, font }));
             xPos += cw[idx.param];
 
             // --- Hasil Penilaian ---
-            page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.hasil], height: rowHeight, borderColor: rgb(0, 0, 0), borderWidth: 1 });
+            page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.hasil], height: rowHeight, borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
             const penjelasanText = sanitizeText(data.penjelasanpenilaian) || getRatingLabel(data.penilaiankredit);
             wrapTextToLines(penjelasanText, cw[idx.hasil] - 10, font, fs)
                 .forEach((line, i) => page.drawText(line, { x: xPos + 5, y: topTextY - (i * lh), size: fs, font }));
@@ -907,7 +912,7 @@
 
             // --- Rasio (opsional, hanya Kredit & Likuiditas Inheren) ---
             if (cfg.hasRasio) {
-                page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.rasio], height: rowHeight, borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.rasio], height: rowHeight, borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 const rasioText = data.rasiokredit ? data.rasiokredit + '%' : '-';
                 const rw = font.widthOfTextAtSize(rasioText, fs);
                 page.drawText(rasioText, { x: xPos + (cw[idx.rasio] / 2) - (rw / 2), y: yPosition - (rowHeight / 2) - 3, size: fs, font });
@@ -921,7 +926,7 @@
 
             page.drawRectangle({
                 x: xPos, y: yPosition - rowHeight, width: cw[idx.nilai], height: rowHeight,
-                color: getBackgroundColorByRating(penilaiankredit), borderColor: rgb(0, 0, 0), borderWidth: 1
+                color: getBackgroundColorByRating(penilaiankredit), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6
             });
             page.drawText(nilaiText, {
                 x: xPos + (cw[idx.nilai] / 2) - (font.widthOfTextAtSize(nilaiText, fs + 3) / 2),
@@ -934,7 +939,7 @@
             xPos += cw[idx.nilai];
 
             // --- Keterangan ---
-            page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.keterangan], height: rowHeight, borderColor: rgb(0, 0, 0), borderWidth: 1 });
+            page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.keterangan], height: rowHeight, borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
             const keteranganText = sanitizeText(data.keterangan) || '-';
             wrapTextToLines(keteranganText, cw[idx.keterangan] - 10, font, fs)
                 .forEach((line, i) => page.drawText(line, { x: xPos + 5, y: topTextY - (i * lh), size: fs, font }));
@@ -989,8 +994,8 @@
                 const boxHeight = startY - endY;
                 if (boxHeight <= 0) return;
 
-                page.drawRectangle({ x: margin, y: endY, width: cw[idx.no], height: boxHeight, color: rgb(0.95, 0.95, 0.8), borderColor: rgb(0, 0, 0), borderWidth: 1 });
-                page.drawRectangle({ x: margin + cw[idx.no], y: endY, width: cw[idx.pilar], height: boxHeight, color: rgb(0.95, 0.95, 0.8), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: endY, width: cw[idx.no], height: boxHeight, color: rgb(0.95, 0.95, 0.8), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
+                page.drawRectangle({ x: margin + cw[idx.no], y: endY, width: cw[idx.pilar], height: boxHeight, color: rgb(0.95, 0.95, 0.8), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
 
                 // Label No + Title HANYA di halaman pertama kategori ini, diposisikan
                 // di TENGAH box (bukan offset tetap dari startY), jadi selalu masuk
@@ -1043,7 +1048,7 @@
             }
 
             const totalWidth = cw.reduce((a, b) => a + b, 0);
-            page.drawRectangle({ x: margin, y: yPosition - rowHeight, width: totalWidth, height: rowHeight, color: rgb(0.98, 0.98, 0.98), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+            page.drawRectangle({ x: margin, y: yPosition - rowHeight, width: totalWidth, height: rowHeight, color: rgb(0.98, 0.98, 0.98), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
 
             let xPos = margin;
             const centerY = yPosition - (rowHeight / 2);
@@ -1072,7 +1077,7 @@
 
             // Rasio (opsional)
             if (cfg.hasRasio) {
-                page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.rasio], height: rowHeight, borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: xPos, y: yPosition - rowHeight, width: cw[idx.rasio], height: rowHeight, borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 page.drawText('-', { x: xPos + (cw[idx.rasio] / 2) - 3, y: centerY - 3, size: fs, font: fontRegular });
                 xPos += cw[idx.rasio];
             }
@@ -1083,7 +1088,7 @@
             const nilaiText = penilaiankredit || '-';
             page.drawRectangle({
                 x: xPos, y: yPosition - rowHeight, width: cw[idx.nilai], height: rowHeight,
-                color: getBackgroundColorByRating(penilaiankredit), borderColor: rgb(0, 0, 0), borderWidth: 1
+                color: getBackgroundColorByRating(penilaiankredit), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6
             });
             page.drawText(nilaiText, {
                 x: xPos + (cw[idx.nilai] / 2) - (fontRegular.widthOfTextAtSize(nilaiText, fs + 3) / 2),
@@ -1208,7 +1213,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 20, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -1306,135 +1311,15 @@
         }
 
         function drawHeader(page, fontBold, fontRegular, data, width, height, jenis, logoImage) {
-            const { rgb } = PDFLib;
-
-            // 1. BACKGROUND PUTIH UNTUK HEADER
-            page.drawRectangle({
-                x: 0,
-                y: height - 80,
-                width: width,
-                height: 80,
-                color: rgb(1, 1, 1),
-                borderColor: rgb(0, 0, 0),
-                borderWidth: 0
-            });
-
-            // 2. GARIS PEMBATAS DI BAWAH HEADER
-            page.drawLine({
-                start: { x: 80, y: height - 90 },
-                end: { x: width - 80, y: height - 90 },
-                thickness: 1,
-                color: rgb(0, 0, 0)
-            });
-
-            // 3. LOGO DI KIRI ATAS (jika ada)
-            if (logoImage) {
-                try {
-                    // Ukuran maksimal
-                    const MAX_WIDTH = 130;
-                    const MAX_HEIGHT = 50;
-
-                    // Ambil ukuran asli logo
-                    const originalWidth = logoImage.width;
-                    const originalHeight = logoImage.height;
-
-                    // Hitung rasio scaling
-                    const scale = Math.min(
-                        MAX_WIDTH / originalWidth,
-                        MAX_HEIGHT / originalHeight
-                    );
-
-                    const drawWidth = originalWidth * scale;
-                    const drawHeight = originalHeight * scale;
-
-                    page.drawImage(logoImage, {
-                        x: 20,
-                        y: height - drawHeight - 20,
-                        width: drawWidth,
-                        height: drawHeight
-                    });
-                } catch (e) {
-                    console.warn('Logo tidak dapat dimuat di header:', e);
-                }
-            }
-
-            // 4. JUDUL (warna hitam, di tengah)
-            let title = '';
-            switch (jenis) {
-                case 'INHEREN':
-                    title = 'LAPORAN PROFIL RISIKO KREDIT INHEREN';
-                    break;
-                case 'KPMR':
-                    title = 'LAPORAN PROFIL RISIKO KREDIT KPMR';
-                    break;
-                case 'OPERASIONAL_INHEREN':
-                    title = 'LAPORAN PROFIL RISIKO OPERASIONAL INHEREN';
-                    break;
-                case 'OPERASIONAL_KPMR':
-                    title = 'LAPORAN PROFIL RISIKO OPERASIONAL KPMR';
-                    break;
-                case 'KEPATUHAN_INHEREN':
-                    title = 'LAPORAN PROFIL RISIKO KEPATUHAN INHEREN';
-                    break;
-                case 'KEPATUHAN_KPMR':
-                    title = 'LAPORAN PROFIL RISIKO KEPATUHAN KPMR';
-                    break;
-                case 'LIKUIDITAS_INHEREN':
-                    title = 'LAPORAN PROFIL RISIKO LIKUIDITAS INHEREN';
-                    break;
-                case 'LIKUIDITAS_KPMR':
-                    title = 'LAPORAN PROFIL RISIKO LIKUIDITAS KPMR';
-                    break;
-                case 'REPUTASI_INHEREN':
-                    title = 'LAPORAN PROFIL RISIKO REPUTASI INHEREN';
-                    break;
-                case 'REPUTASI_KPMR':
-                    title = 'LAPORAN PROFIL RISIKO REPUTASI KPMR';
-                    break;
-                case 'STRATEJIK_INHEREN':
-                    title = 'LAPORAN PROFIL RISIKO STRATEJIK INHEREN';
-                    break;
-                case 'STRATEJIK_KPMR':
-                    title = 'LAPORAN PROFIL RISIKO STRATEJIK KPMR';
-                    break;
-                default:
-                    title = 'LAPORAN PROFIL RISIKO';
-            }
-
-            const titleSize = 18;
-            const textWidth = fontBold.widthOfTextAtSize(title, titleSize);
-
-            page.drawText(title, {
-                x: (width / 2) - (textWidth / 2),
-                y: height - 35,
-                size: titleSize,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
-
-            // 5. INFO BPR (warna hitam)
-            const infoBPR = data.bpr.namabpr || 'N/A';
-            const alamatBPR = data.bpr.alamat || 'N/A';
-            const infoPeriode = `Semester ${data.periode.semester} Tahun ${data.periode.tahun}`;
-
-            const bprWidth = fontRegular.widthOfTextAtSize(infoBPR, 12);
-            const periodeWidth = fontBold.widthOfTextAtSize(infoPeriode, 12);
-
-            page.drawText(infoBPR, {
-                x: (width - bprWidth) / 2,
-                y: height - 52,
-                size: 12,
-                font: fontRegular,
-                color: rgb(0, 0, 0)
-            });
-
-            page.drawText(infoPeriode, {
-                x: (width - periodeWidth) / 2,
-                y: height - 68,
-                size: 12,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
+            const titles = {
+                INHEREN: 'LAPORAN PROFIL RISIKO KREDIT INHEREN', KPMR: 'LAPORAN PROFIL RISIKO KREDIT KPMR',
+                OPERASIONAL_INHEREN: 'LAPORAN PROFIL RISIKO OPERASIONAL INHEREN', OPERASIONAL_KPMR: 'LAPORAN PROFIL RISIKO OPERASIONAL KPMR',
+                KEPATUHAN_INHEREN: 'LAPORAN PROFIL RISIKO KEPATUHAN INHEREN', KEPATUHAN_KPMR: 'LAPORAN PROFIL RISIKO KEPATUHAN KPMR',
+                LIKUIDITAS_INHEREN: 'LAPORAN PROFIL RISIKO LIKUIDITAS INHEREN', LIKUIDITAS_KPMR: 'LAPORAN PROFIL RISIKO LIKUIDITAS KPMR',
+                REPUTASI_INHEREN: 'LAPORAN PROFIL RISIKO REPUTASI INHEREN', REPUTASI_KPMR: 'LAPORAN PROFIL RISIKO REPUTASI KPMR',
+                STRATEJIK_INHEREN: 'LAPORAN PROFIL RISIKO STRATEJIK INHEREN', STRATEJIK_KPMR: 'LAPORAN PROFIL RISIKO STRATEJIK KPMR',
+            };
+            drawRiskPageHeader(page, fontBold, fontRegular, data, titles[jenis] || 'LAPORAN PROFIL RISIKO', logoImage);
         }
 
         async function drawTableKreditInheren(pdfDoc, currentPage, fontBold, fontRegular, dataInheren, periode, bpr, width, height, logoImage) {
@@ -1447,7 +1332,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Rasio', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 20, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -1523,7 +1408,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 20, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -1610,99 +1495,14 @@
             drawHeaderOperasional(currentPage, fontBold, fontRegular, data, width, height, 'KPMR', logoImage);
             await drawTableOperasionalKPMR(pdfDoc, currentPage, fontBold, fontRegular, data.kpmr, data.periode, data.bpr, width, height, logoImage);
 
+            addPageNumbers(pdfDoc, fontRegular);
+
             const pdfBytes = await pdfDoc.save();
             return pdfBytes;
         }
 
         function drawHeaderOperasional(page, fontBold, fontRegular, data, width, height, jenis, logoImage) {
-            const { rgb } = PDFLib;
-
-            page.drawRectangle({
-                x: 0,
-                y: height - 80,
-                width: width,
-                height: 80,
-                color: rgb(1, 1, 1),
-                borderColor: rgb(0, 0, 0),
-                borderWidth: 0
-            });
-
-            // 2. GARIS PEMBATAS DI BAWAH HEADER
-            page.drawLine({
-                start: { x: 40, y: height - 90 },
-                end: { x: width - 80, y: height - 90 },
-                thickness: 1,
-                color: rgb(0, 0, 0)
-            });
-
-
-            // 3. LOGO DI KIRI ATAS (jika ada)
-            if (logoImage) {
-                try {
-                    // Ukuran maksimal
-                    const MAX_WIDTH = 130;
-                    const MAX_HEIGHT = 50;
-
-                    // Ambil ukuran asli logo
-                    const originalWidth = logoImage.width;
-                    const originalHeight = logoImage.height;
-
-                    // Hitung rasio scaling
-                    const scale = Math.min(
-                        MAX_WIDTH / originalWidth,
-                        MAX_HEIGHT / originalHeight
-                    );
-
-                    const drawWidth = originalWidth * scale;
-                    const drawHeight = originalHeight * scale;
-
-                    page.drawImage(logoImage, {
-                        x: 20,
-                        y: height - drawHeight - 20, // posisi aman dari atas
-                        width: drawWidth,
-                        height: drawHeight
-                    });
-                } catch (e) {
-                    console.warn('Logo tidak dapat dimuat di header:', e);
-                }
-            }
-
-            const title = jenis === 'INHEREN'
-                ? 'LAPORAN PROFIL RISIKO OPERASIONAL INHEREN'
-                : 'LAPORAN PROFIL RISIKO OPERASIONAL KPMR';
-
-            const titleSize = 18;
-            const textWidth = fontBold.widthOfTextAtSize(title, titleSize);
-
-            page.drawText(title, {
-                x: (width / 2) - (textWidth / 2),
-                y: height - 35,
-                size: titleSize,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
-
-            const infoBPR = data.bpr.namabpr || 'N/A';
-            const infoPeriode = `Semester ${data.periode.semester} Tahun ${data.periode.tahun}`;
-
-            const bprWidth = fontRegular.widthOfTextAtSize(infoBPR, 12);
-            const periodeWidth = fontBold.widthOfTextAtSize(infoPeriode, 12);
-
-            page.drawText(infoBPR, {
-                x: (width - bprWidth) / 2,
-                y: height - 52,
-                size: 12,
-                font: fontRegular,
-                color: rgb(0, 0, 0)
-            });
-
-            page.drawText(infoPeriode, {
-                x: (width - periodeWidth) / 2,
-                y: height - 68,
-                size: 12,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
+            drawRiskPageHeader(page, fontBold, fontRegular, data, 'LAPORAN PROFIL RISIKO OPERASIONAL ' + (jenis === 'INHEREN' ? 'INHEREN' : 'KPMR'), logoImage);
         }
 
         async function drawTableOperasionalInheren(pdfDoc, currentPage, fontBold, fontRegular, dataInheren, periode, bpr, width, height, logoImage) {
@@ -1715,7 +1515,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 18, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -1797,7 +1597,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 18, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -1891,99 +1691,14 @@
             drawHeaderKepatuhan(currentPage, fontBold, fontRegular, data, width, height, 'KPMR', logoImage);
             await drawTableKepatuhanKPMR(pdfDoc, currentPage, fontBold, fontRegular, data.kpmr, data.periode, data.bpr, width, height, logoImage);
 
+            addPageNumbers(pdfDoc, fontRegular);
+
             const pdfBytes = await pdfDoc.save();
             return pdfBytes;
         }
 
         function drawHeaderKepatuhan(page, fontBold, fontRegular, data, width, height, jenis, logoImage) {
-            const { rgb } = PDFLib;
-
-            page.drawRectangle({
-                x: 0,
-                y: height - 80,
-                width: width,
-                height: 80,
-                color: rgb(1, 1, 1),  // ✅ UBAH: Putih (sebelumnya biru)
-                borderColor: rgb(0, 0, 0),
-                borderWidth: 0
-            });
-
-            // 2. GARIS PEMBATAS DI BAWAH HEADER
-            page.drawLine({
-                start: { x: 40, y: height - 90 },
-                end: { x: width - 80, y: height - 90 },
-                thickness: 1,
-                color: rgb(0, 0, 0)
-            });
-
-
-            // 3. LOGO DI KIRI ATAS (jika ada)
-            if (logoImage) {
-                try {
-                    // Ukuran maksimal
-                    const MAX_WIDTH = 130;
-                    const MAX_HEIGHT = 50;
-
-                    // Ambil ukuran asli logo
-                    const originalWidth = logoImage.width;
-                    const originalHeight = logoImage.height;
-
-                    // Hitung rasio scaling
-                    const scale = Math.min(
-                        MAX_WIDTH / originalWidth,
-                        MAX_HEIGHT / originalHeight
-                    );
-
-                    const drawWidth = originalWidth * scale;
-                    const drawHeight = originalHeight * scale;
-
-                    page.drawImage(logoImage, {
-                        x: 20,
-                        y: height - drawHeight - 20, // posisi aman dari atas
-                        width: drawWidth,
-                        height: drawHeight
-                    });
-                } catch (e) {
-                    console.warn('Logo tidak dapat dimuat di header:', e);
-                }
-            }
-
-            const title = jenis === 'INHEREN'
-                ? 'LAPORAN PROFIL RISIKO KEPATUHAN INHEREN'
-                : 'LAPORAN PROFIL RISIKO KEPATUHAN KPMR';
-
-            const titleSize = 18;
-            const textWidth = fontBold.widthOfTextAtSize(title, titleSize);
-
-            page.drawText(title, {
-                x: (width / 2) - (textWidth / 2),
-                y: height - 35,
-                size: titleSize,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
-
-            const infoBPR = data.bpr.namabpr || 'N/A';
-            const infoPeriode = `Semester ${data.periode.semester} Tahun ${data.periode.tahun}`;
-
-            const bprWidth = fontRegular.widthOfTextAtSize(infoBPR, 12);
-            const periodeWidth = fontBold.widthOfTextAtSize(infoPeriode, 12);
-
-            page.drawText(infoBPR, {
-                x: (width - bprWidth) / 2,
-                y: height - 52,
-                size: 12,
-                font: fontRegular,
-                color: rgb(0, 0, 0)
-            });
-
-            page.drawText(infoPeriode, {
-                x: (width - periodeWidth) / 2,
-                y: height - 68,
-                size: 12,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
+            drawRiskPageHeader(page, fontBold, fontRegular, data, 'LAPORAN PROFIL RISIKO KEPATUHAN ' + (jenis === 'INHEREN' ? 'INHEREN' : 'KPMR'), logoImage);
         }
 
         async function drawTableKepatuhanInheren(pdfDoc, currentPage, fontBold, fontRegular, dataInheren, periode, bpr, width, height, logoImage) {
@@ -1996,7 +1711,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 18, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -2060,7 +1775,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 25, width: tableWidth, height: 25, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 18, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -2147,99 +1862,14 @@
             drawHeaderLikuiditas(currentPage, fontBold, fontRegular, data, width, height, 'KPMR', logoImage);
             await drawTableLikuiditasKPMR(pdfDoc, currentPage, fontBold, fontRegular, data.kpmr, data.periode, data.bpr, width, height, logoImage);
 
+            addPageNumbers(pdfDoc, fontRegular);
+
             const pdfBytes = await pdfDoc.save();
             return pdfBytes;
         }
 
         function drawHeaderLikuiditas(page, fontBold, fontRegular, data, width, height, jenis, logoImage) {
-            const { rgb } = PDFLib;
-
-            page.drawRectangle({
-                x: 0,
-                y: height - 80,
-                width: width,
-                height: 80,
-                color: rgb(1, 1, 1),
-                borderColor: rgb(0, 0, 0),
-                borderWidth: 0
-            });
-
-            // 2. GARIS PEMBATAS DI BAWAH HEADER
-            page.drawLine({
-                start: { x: 80, y: height - 90 },
-                end: { x: width - 80, y: height - 90 },
-                thickness: 1,
-                color: rgb(0, 0, 0)
-            });
-
-
-            // 3. LOGO DI KIRI ATAS (jika ada)
-            if (logoImage) {
-                try {
-                    // Ukuran maksimal
-                    const MAX_WIDTH = 130;
-                    const MAX_HEIGHT = 50;
-
-                    // Ambil ukuran asli logo
-                    const originalWidth = logoImage.width;
-                    const originalHeight = logoImage.height;
-
-                    // Hitung rasio scaling
-                    const scale = Math.min(
-                        MAX_WIDTH / originalWidth,
-                        MAX_HEIGHT / originalHeight
-                    );
-
-                    const drawWidth = originalWidth * scale;
-                    const drawHeight = originalHeight * scale;
-
-                    page.drawImage(logoImage, {
-                        x: 20,
-                        y: height - drawHeight - 20,
-                        width: drawWidth,
-                        height: drawHeight
-                    });
-                } catch (e) {
-                    console.warn('Logo tidak dapat dimuat di header:', e);
-                }
-            }
-
-            const title = jenis === 'INHEREN'
-                ? 'LAPORAN PROFIL RISIKO LIKUIDITAS INHEREN'
-                : 'LAPORAN PROFIL RISIKO LIKUIDITAS KPMR';
-
-            const titleSize = 18;
-            const textWidth = fontBold.widthOfTextAtSize(title, titleSize);
-
-            page.drawText(title, {
-                x: (width / 2) - (textWidth / 2),
-                y: height - 35,
-                size: titleSize,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
-
-            const infoBPR = data.bpr.namabpr || 'N/A';
-            const infoPeriode = `Semester ${data.periode.semester} Tahun ${data.periode.tahun}`;
-
-            const bprWidth = fontRegular.widthOfTextAtSize(infoBPR, 12);
-            const periodeWidth = fontBold.widthOfTextAtSize(infoPeriode, 12);
-
-            page.drawText(infoBPR, {
-                x: (width - bprWidth) / 2,
-                y: height - 52,
-                size: 12,
-                font: fontRegular,
-                color: rgb(0, 0, 0)
-            });
-
-            page.drawText(infoPeriode, {
-                x: (width - periodeWidth) / 2,
-                y: height - 68,
-                size: 12,
-                font: fontBold,
-                color: rgb(0, 0, 0)
-            });
+            drawRiskPageHeader(page, fontBold, fontRegular, data, 'LAPORAN PROFIL RISIKO LIKUIDITAS ' + (jenis === 'INHEREN' ? 'INHEREN' : 'KPMR'), logoImage);
         }
 
         async function drawTableLikuiditasInheren(pdfDoc, currentPage, fontBold, fontRegular, dataInheren, periode, bpr, width, height, logoImage) {
@@ -2252,7 +1882,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Rasio', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 20, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -2317,7 +1947,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.9, 0.9, 0.9), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - 30, width: tableWidth, height: 30, color: rgb(0.886, 0.902, 0.973), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((h, i) => {
                     page.drawText(h, { x: xPos, y: y - 20, size: 9, font: fontBold, color: rgb(0, 0, 0) });
@@ -2479,7 +2109,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const _drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((header, i) => {
                     page.drawText(header, { x: xPos, y: y - HEADER_ROW_HEIGHT + 10, size: TABLE_HEADER_SIZE, font: fontBold, color: rgb(0, 0, 0) });
@@ -2587,6 +2217,7 @@
             const pdfDoc = await PDFDocument.create();
             const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
             const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            await attachDocLogo(pdfDoc, data.bpr);
 
             let currentPage = pdfDoc.addPage([842, 595]);
             let { width, height } = currentPage.getSize();
@@ -2597,6 +2228,8 @@
             ({ width, height } = currentPage.getSize());
             drawHeader(currentPage, fontBold, fontRegular, data, width, height, 'REPUTASI_KPMR');
             await drawTableReputasiKPMR(pdfDoc, currentPage, fontBold, fontRegular, data.kpmr, data.periode, data.bpr, width, height);
+
+            addPageNumbers(pdfDoc, fontRegular);
 
             return await pdfDoc.save();
         }
@@ -2611,7 +2244,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const _drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((header, i) => {
                     page.drawText(header, { x: xPos, y: y - HEADER_ROW_HEIGHT + 10, size: TABLE_HEADER_SIZE, font: fontBold, color: rgb(0, 0, 0) });
@@ -2814,7 +2447,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const _drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((header, i) => {
                     page.drawText(header, { x: xPos, y: y - HEADER_ROW_HEIGHT + 10, size: TABLE_HEADER_SIZE, font: fontBold, color: rgb(0, 0, 0) });
@@ -2914,6 +2547,7 @@
             const pdfDoc = await PDFDocument.create();
             const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
             const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            await attachDocLogo(pdfDoc, data.bpr);
 
             let currentPage = pdfDoc.addPage([842, 595]);
             let { width, height } = currentPage.getSize();
@@ -2924,6 +2558,8 @@
             ({ width, height } = currentPage.getSize());
             drawHeader(currentPage, fontBold, fontRegular, data, width, height, 'STRATEJIK_KPMR');
             await drawTableStratejikKPMR(pdfDoc, currentPage, fontBold, fontRegular, data.kpmr, data.periode, data.bpr, width, height);
+
+            addPageNumbers(pdfDoc, fontRegular);
 
             return await pdfDoc.save();
         }
@@ -2938,7 +2574,7 @@
             const headers = ['No', 'Pilar Penilaian', 'Parameter Penilaian', 'Hasil Penilaian', 'Nilai Pilar', 'Keterangan'];
 
             const _drawHeaderRow = (page, y) => {
-                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0, 0, 0), borderWidth: 1 });
+                page.drawRectangle({ x: margin, y: y - HEADER_ROW_HEIGHT, width: tableWidth, height: HEADER_ROW_HEIGHT, color: rgb(0.85, 0.85, 0.85), borderColor: rgb(0.55, 0.58, 0.66), borderWidth: 0.6 });
                 let xPos = margin + 5;
                 headers.forEach((header, i) => {
                     page.drawText(header, { x: xPos, y: y - HEADER_ROW_HEIGHT + 10, size: TABLE_HEADER_SIZE, font: fontBold, color: rgb(0, 0, 0) });
@@ -3062,75 +2698,9 @@
 
             // Helper function untuk menggambar header
             function drawPageHeader(page, yStart) {
-                let yPos = yStart;
-
-                if (logoImage) {
-                    const logoSize = 35;
-                    page.drawImage(logoImage, {
-                        x: margin,
-                        y: yPos - logoSize,
-                        width: logoSize + 60,
-                        height: logoSize
-                    });
-                }
-
-                const namaBPRLines = wrapTextByCharLimit(sanitizeText(data.bpr.namabpr || ''), 50);
-                namaBPRLines.forEach((line, index) => {
-                    const lineWidth = fontBold.widthOfTextAtSize(sanitizeText(line), 12);
-                    safeDrawText(page, line, {
-                        x: centerX - (lineWidth / 2),
-                        y: yPos - (index * 14),
-                        size: 12,
-                        font: fontBold,
-                        color: rgb(0, 0, 0)
-                    });
-                });
-                yPos -= (namaBPRLines.length * 14) + 2;
-
-                const alamatLines = wrapTextByCharLimit(sanitizeText(data.bpr.alamat || ''), 75);
-                alamatLines.forEach((line, index) => {
-                    const lineWidth = fontRegular.widthOfTextAtSize(sanitizeText(line), 8);
-                    safeDrawText(page, line, {
-                        x: centerX - (lineWidth / 2),
-                        y: yPos - (index * 10),
-                        size: 9,
-                        font: fontRegular,
-                        color: rgb(0.2, 0.2, 0.2)
-                    });
-                });
-                yPos -= (alamatLines.length * 10) + 2;
-
-                const telepon = `Telepon: ${sanitizeText(data.bpr.nomor || '')}`;
-                const teleponWidth = fontRegular.widthOfTextAtSize(telepon, 8);
-                safeDrawText(page, telepon, {
-                    x: centerX - (teleponWidth / 2),
-                    y: yPos,
-                    size: 8,
-                    font: fontRegular,
-                    color: rgb(0.2, 0.2, 0.2)
-                });
-                yPos -= 10;
-
-                const contact = `Website: ${sanitizeText(data.bpr.webbpr || '-')} Email: ${sanitizeText(data.bpr.email || '-')}`;
-                const contactWidth = fontRegular.widthOfTextAtSize(contact, 8);
-                safeDrawText(page, contact, {
-                    x: centerX - (contactWidth / 2),
-                    y: yPos,
-                    size: 8,
-                    font: fontRegular,
-                    color: rgb(0.2, 0.2, 0.2)
-                });
-                yPos -= 15;
-
-                page.drawLine({
-                    start: { x: margin, y: yPos },
-                    end: { x: width - margin, y: yPos },
-                    thickness: 2,
-                    color: rgb(0, 0, 0)
-                });
-                yPos -= 20;
-
-                return yPos;
+                if (logoImage) DOC_LOGO.set(pdfDoc, logoImage);
+                DOC_FOOT.set(pdfDoc, 'Laporan Profil Risiko · ' + (data.bpr.namabpr || ''));
+                return drawKop(page, fontBold, fontRegular, data.bpr, { margin, top: height - yStart }) - 22;
             }
 
             function getRiskText(value) {
@@ -4218,6 +3788,7 @@
 
                     try {
                         addFileToList(file.name, 'processing');
+                        notifyParent({ ev: 'file', name: file.name });
                         updateProgress(file.progress, `Membuat ${file.name}...`);
 
                         const response = await fetch(`${BASE_URL}/${file.endpoint}`, {
@@ -4236,6 +3807,8 @@
                             throw new Error(result.message || 'Gagal mengambil data');
                         }
 
+                        const fullBpr = periodeResult.data.bpr || {};
+                        if (result.data) result.data.bpr = Object.assign({}, fullBpr, result.data.bpr || {}, { logo: (result.data.bpr && result.data.bpr.logo) || fullBpr.logo });
                         const pdfBytes = await file.generator(result.data);
                         folder.file(file.name, pdfBytes);
 
@@ -4248,6 +3821,7 @@
 
                     } catch (error) {
                         console.error(`Error generating ${file.name}:`, error);
+                        notifyParent({ ev: 'file-error', name: file.name, text: error.message });
                         const items = document.querySelectorAll('.file-list-item');
                         items[items.length - 1].className = 'file-list-item error';
                         items[items.length - 1].innerHTML =
@@ -4265,9 +3839,14 @@
 
                 updateProgress(100, `Selesai! ${successCount} dari ${files.length} file berhasil dibuat.`);
 
+                const zipName = `Laporan Profil Risiko Semester ${semester} Tahun ${tahun}.zip`;
+                if (EMBED) {
+                    notifyParent({ ev: 'done', blob: zipBlob, name: zipName, ok: successCount, total: files.length });
+                    return;
+                }
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(zipBlob);
-                link.download = `Laporan Profil Risiko Semester ${semester} Tahun ${tahun}.zip`;
+                link.download = zipName;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);

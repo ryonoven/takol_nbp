@@ -1,6 +1,6 @@
 <?php
 $errors = session('errors') ?? [];
-$editId = (int) (session('edit_id') ?? 0);   // edit gagal validasi -> modal edit dibuka kembali
+$editId = (int) (session('edit_id') ?? 0);
 $hasOld = (bool) old('action');
 $oldFor = static fn(string $action, string $key, $default = '') => $hasOld && old('action') === $action ? old($key) : $default;
 $rupiah = static fn($n) => (string) $n !== '' && (float) $n > 0 ? number_format((float) $n, 0, ',', '.') : '';

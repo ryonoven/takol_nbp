@@ -1,8 +1,5 @@
 <?php
-/**
- * Laporan Transparansi 1 — Penjelasan Umum.
- * Variabel: $periode, $row, $form, $max, $peringkat, $namabpr, $canEdit, $canKomut, $canDirut, $isAdmin, $userId, $hasPrev
- */
+
 use App\Models\M_showtransparansi;
 
 $val = static fn(string $k): string => esc((string) ($form[$k] ?? ''));
@@ -12,13 +9,11 @@ $komutOk = (int) ($row['accdekom'] ?? 0) === 1;
 $dirutOk = (int) ($row['is_approved'] ?? 0) === 1;
 $fmt = static fn($at): string => $at ? ' · ' . esc(date('d/m/Y H:i', strtotime($at))) : '';
 
-// [type, label, disetujui, waktu, oleh(user id), nama penyetuju, boleh aksi]
 $approvals = [
     ['komut', 'Komisaris Utama', $komutOk, $row['accdekom_at'] ?? null, (int) ($row['accdekom_by'] ?? 0), $row['komut'] ?? '', $canKomut],
     ['dirut', 'Direktur Utama', $dirutOk, $row['approved_at'] ?? null, (int) ($row['approved_by'] ?? 0), $row['dirut'] ?? '', $canDirut],
 ];
 
-// [field, label, tipe, kolom]
 $fields = [
     ['namabpr', 'Nama BPR', 'text', 'col-md-7'],
     ['nomor', 'Nomor Telepon', 'text', 'col-md-5'],
@@ -213,7 +208,7 @@ $fields = [
                     });
             }
 
-            // ---------------- approval (juga untuk pengguna read-only)
+            // approval
             document.querySelectorAll('.pu-act').forEach(function (b) {
                 b.addEventListener('click', function () {
                     var cancel = b.dataset.act === 'cancel';
@@ -231,7 +226,7 @@ $fields = [
 
             if (!CAN_EDIT) return;
 
-            // ---------------- penghitung karakter + status perubahan
+            // penghitung karakter + status perubahan
             var saveBtn = document.getElementById('puSave');
             var dirtyEl = document.getElementById('puDirty');
             var snapshot = '';
@@ -272,7 +267,7 @@ $fields = [
                 if (!leaving && serialize() !== snapshot) { e.preventDefault(); e.returnValue = ''; }
             });
 
-            // ---------------- simpan
+            // simpan
             var busy = false;
             function save() {
                 if (busy) return;
@@ -309,7 +304,6 @@ $fields = [
                 if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); save(); }
             });
 
-            // ---------------- sinkronisasi dari tahun sebelumnya (langsung tersimpan di server)
             var syncBtn = document.getElementById('puSync');
             if (syncBtn && !syncBtn.disabled) {
                 syncBtn.addEventListener('click', function () {
@@ -322,7 +316,7 @@ $fields = [
                     post('syncFromPrevPeriode', new FormData()).then(function (j) {
                         toast(j.message || 'Selesai.', !j.ok);
                         if (j.ok && j.reload) {
-                            leaving = true;                  // reload tanpa peringatan "belum disimpan"
+                            leaving = true;
                             setTimeout(function () { location.reload(); }, 800);
                             return;
                         }

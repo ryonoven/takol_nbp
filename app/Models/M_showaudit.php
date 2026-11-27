@@ -21,6 +21,7 @@ class M_showaudit extends Model
     protected $table = 'showaudit';
     protected $primaryKey = 'id';
     protected $allowedFields = [
+        'user_id',
         'kodebpr',
         'periode_id',
         'tahun',

@@ -1,170 +1,65 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_tkspermodalan extends Model
+/** TKS — Faktor 4: Permodalan (bobot 30%): KPMM, MIAPB. */
+class M_tkspermodalan extends M_tksindikator
 {
     protected $table = 'tkspermodalan';
-    protected $primaryKey = 'id';
     protected $allowedFields = [
-        'user_id',
-        'kodebpr',
-        'periode_id',
-        // Data Periode Saat Ini
-        'modalinti',
-        'modalpelengkap',
-        'atmr',
-        'rasiokpmm',
-        'peringkatkpmm',
-        'penilaiankpmm',
-        'modalintiapb',
-        'totalasetbermasalah',
-        'rasiomiapb',
-        'peringkatmiapb',
-        'penilaianmiapb',
-        'rataratapermodalan',
-        'penilaianpermodalan',
-        'peringkatpermodalan',
-        // Data Periode Sebelumnya
-        'modalintibefore',
-        'modalpelengkapbefore',
-        'atmrbefore',
-        'rasiokpmmbefore',
-        'peringkatkpmmbefore',
-        'penilaiankpmmbefore',
-        'modalintiapbbefore',
-        'totalasetbermasalahbefore',
-        'rasiomiapbbefore',
-        'peringkatmiapbbefore',
-        'penilaianmiapbbefore',
-        'rataratapermodalanbefore',
-        'penilaianpermodalanbefore',
-        'peringkatpermodalanbefore',
-        'nilaifaktor',
-        'nilaifaktorbefore',
-        // Deskripsi & Analisis
-        'deskripsipermodalan',
-        'analisispermodalan',
-        'created_at',
-        'updated_at',
-        'is_approved',
-        'approved_by',
-        'approved_at'
+        'user_id', 'kodebpr', 'periode_id',
+        'modalinti', 'modalpelengkap', 'atmr', 'rasiokpmm', 'penilaiankpmm', 'peringkatkpmm',
+        'modalintibefore', 'modalpelengkapbefore', 'atmrbefore', 'rasiokpmmbefore', 'penilaiankpmmbefore', 'peringkatkpmmbefore',
+        'modalintiapb', 'totalasetbermasalah', 'rasiomiapb', 'penilaianmiapb', 'peringkatmiapb',
+        'modalintiapbbefore', 'totalasetbermasalahbefore', 'rasiomiapbbefore', 'penilaianmiapbbefore', 'peringkatmiapbbefore',
+        'rataratapermodalan', 'penilaianpermodalan', 'peringkatpermodalan', 'nilaifaktor',
+        'rataratapermodalanbefore', 'penilaianpermodalanbefore', 'peringkatpermodalanbefore', 'nilaifaktorbefore',
+        'deskripsipermodalan', 'analisispermodalan',
+        'is_approved', 'approved_by', 'approved_at', 'accdir2', 'accdir2_by', 'created_at', 'updated_at',
     ];
-    protected $useTimestamps = false;
-    protected $returnType = 'array';
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    public const BOBOT = 0.30;
+    /** Label sesuai data yang sudah tersimpan (penilaiankpmm / penilaianmiapb). */
+    public const LABELS = [1 => 'Sangat Rendah', 2 => 'Rendah', 3 => 'Sedang', 4 => 'Tinggi', 5 => 'Sangat Tinggi'];
 
-    public function getByKodebprAndPeriode($kodebpr, $periodeId)
-    {
-        return $this->where([
-            'kodebpr' => $kodebpr,
-            'periode_id' => $periodeId
-        ])->first();
-    }
+    public const INDIKATOR = [
+        'kpmm' => [
+            'title' => 'Kewajiban Penyediaan Modal Minimum (KPMM)',
+            'formula' => '(Modal inti + Modal pelengkap) ÷ ATMR × 100%',
+            'inputs' => [
+                ['Modal inti', 'modalinti', 'modalintibefore'],
+                ['Modal pelengkap', 'modalpelengkap', 'modalpelengkapbefore'],
+                ['Aset Tertimbang Menurut Risiko (ATMR)', 'atmr', 'atmrbefore'],
+            ],
+            'calc' => 'sum', 'den' => 'positive', 'dir' => 'high', 'limits' => [15, 13, 8, 6],
+            'ratio' => ['rasiokpmm', 'rasiokpmmbefore'],
+            'rank' => ['peringkatkpmm', 'peringkatkpmmbefore'],
+            'label' => ['penilaiankpmm', 'penilaiankpmmbefore'],
+        ],
+        'miapb' => [
+            'title' => 'Modal Inti terhadap Aset Produktif Bermasalah (MIAPB)',
+            'formula' => 'Modal inti ÷ Total aset produktif bermasalah (netto) × 100%',
+            'inputs' => [
+                ['Modal inti', 'modalintiapb', 'modalintiapbbefore'],
+                ['Total aset produktif bermasalah (netto)', 'totalasetbermasalah', 'totalasetbermasalahbefore'],
+            ],
+            'calc' => 'ratio', 'den' => 'positive', 'dir' => 'high', 'limits' => [200, 180, 150, 120],
+            'ratio' => ['rasiomiapb', 'rasiomiapbbefore'],
+            'rank' => ['peringkatmiapb', 'peringkatmiapbbefore'],
+            'label' => ['penilaianmiapb', 'penilaianmiapbbefore'],
+        ],
+    ];
 
-    public function saveData($data, $kodebpr, $periodeId)
-    {
-        $existing = $this->getByKodebprAndPeriode($kodebpr, $periodeId);
+    public const FAKTOR_COLS = [
+        ['rataratapermodalan', 'penilaianpermodalan', 'peringkatpermodalan', 'nilaifaktor'],
+        ['rataratapermodalanbefore', 'penilaianpermodalanbefore', 'peringkatpermodalanbefore', 'nilaifaktorbefore'],
+    ];
 
-        if ($existing) {
-            $data['updated_at'] = date('Y-m-d H:i:s');
-            return $this->update($existing['id'], $data);
-        } else {
-            $data['created_at'] = date('Y-m-d H:i:s');
-            $data['updated_at'] = date('Y-m-d H:i:s');
-            return $this->insert($data);
-        }
-    }
+    public const TEXT_COLS = ['deskripsipermodalan', 'analisispermodalan'];
 
-    public function hitungRataRataPermodalan($kodebpr, $periodeId)
-    {
-        $data = $this->getByKodebprAndPeriode($kodebpr, $periodeId);
+    /** is_approved & accdir2 = ENUM('1','0') → kirim sebagai string. */
+    protected const EXTRA_DEFAULTS = ['is_approved' => '0', 'accdir2' => '0', 'accdir2_by' => 0];
 
-        if (!$data)
-            return false;
-
-        $peringkatKPMM = $data['peringkatkpmm'] ?? 0;
-        $peringkatMIAPB = $data['peringkatmiapb'] ?? 0;
-
-        if ($peringkatKPMM > 0 && $peringkatMIAPB > 0) {
-            $rataRata = ($peringkatKPMM + $peringkatMIAPB) / 2;
-            $peringkatPermodalan = round($rataRata);
-            $nilaiFaktor = $peringkatPermodalan * 0.30;
-
-            // Simpan dengan immediate commit
-            $result = $this->update($data['id'], [
-                'rataratapermodalan' => $rataRata,
-                'penilaianpermodalan' => $peringkatPermodalan,
-                'peringkatpermodalan' => $peringkatPermodalan,
-                'nilaifaktor' => $nilaiFaktor,
-                'updated_at' => date('Y-m-d H:i:s')
-            ]);
-
-            // Force write to database
-            if ($this->db) {
-                $this->db->close();
-                $this->db->initialize();
-            }
-
-            return $result;
-        }
-
-        return false;
-    }
-
-    public function hitungRataRataPermodalanBefore($kodebpr, $periodeId)
-    {
-        $data = $this->getByKodebprAndPeriode($kodebpr, $periodeId);
-
-        if (!$data)
-            return false;
-
-        $peringkatKPMMBefore = $data['peringkatkpmmbefore'] ?? 0;
-        $peringkatMIAPBBefore = $data['peringkatmiapbbefore'] ?? 0;
-
-        if ($peringkatKPMMBefore > 0 && $peringkatMIAPBBefore > 0) {
-            $rataRataBefore = ($peringkatKPMMBefore + $peringkatMIAPBBefore) / 2;
-            $peringkatPermodalanBefore = round($rataRataBefore);
-            $nilaiFaktorBefore = $peringkatPermodalanBefore * 0.30;
-
-            // Simpan dengan immediate commit
-            $result = $this->update($data['id'], [
-                'rataratapermodalanbefore' => $rataRataBefore,
-                'penilaianpermodalanbefore' => $peringkatPermodalanBefore,
-                'peringkatpermodalanbefore' => $peringkatPermodalanBefore,
-                'nilaifaktorbefore' => $nilaiFaktorBefore,
-                'updated_at' => date('Y-m-d H:i:s')
-            ]);
-
-            // Force write to database
-            if ($this->db) {
-                $this->db->close();
-                $this->db->initialize();
-            }
-
-            return $result;
-        }
-
-        return false;
-    }
-
-    public function getKomentarByFaktorIdAndKodebpr($faktorId, $kodebpr)
-    {
-        return $this->db->table($this->table)
-            ->select('tkspermodalan.*, users.fullname')
-            ->join('users', 'users.id = tkspermodalan.user_id', 'left')
-            ->where([
-                'tkspermodalan.faktor1id' => $faktorId,
-                'tkspermodalan.kodebpr' => $kodebpr
-            ])
-            ->orderBy('tkspermodalan.created_at', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
+    /** Kolom "Modal inti" MIAPB mengikuti Modal inti KPMM bila belum diisi. */
+    public const COPY_IF_EMPTY = ['modalinti' => 'modalintiapb', 'modalintibefore' => 'modalintiapbbefore'];
 }

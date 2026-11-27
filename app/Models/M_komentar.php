@@ -59,6 +59,24 @@ class M_komentar extends Model
         // Strategi Anti Fraud
         'Penerapansafst' => ['Penerapan Strategi Anti Fraud', 'semesteran_comments', 'DIRYMF', 'PENERAPANSAFST'],
         'Laporanpdfsaf' => ['Deskripsi Fraud / Modus Operandi', 'semesteran_comments', 'DIRYMF', 'LAPORANPDFSAF'],
+        // Laporan Direktur YMF Kepatuhan
+        'Formasisdm' => ['Dir. YMF Kepatuhan · Formasi SDM', 'semesteran_comments', 'DIRYMF', 'FORMASISDM'],
+        'Ketentuanbpr' => ['Dir. YMF Kepatuhan · Ketentuan Internal', 'semesteran_comments', 'DIRYMF', 'KETENTUANBPR'],
+        'Sosialisasipelatihan' => ['Dir. YMF Kepatuhan · Sosialisasi & Pelatihan', 'semesteran_comments', 'DIRYMF', 'SOSIALISASIPELATIHAN'],
+        'Budayakepatuhan' => ['Dir. YMF Kepatuhan · Budaya Kepatuhan', 'semesteran_comments', 'DIRYMF', 'BUDAYAKEPATUHAN'],
+        'Penyimpangankepatuhan' => ['Dir. YMF Kepatuhan · Penyimpangan Kepatuhan', 'semesteran_comments', 'DIRYMF', 'PENYIMPANGANKEPATUHAN'],
+        'Komitmenotoritas' => ['Dir. YMF Kepatuhan · Komitmen terhadap Otoritas', 'semesteran_comments', 'DIRYMF', 'KOMITMENOTORITAS'],
+        // Laporan Audit Intern
+        'Lingkupaudit' => ['Audit Intern · Ruang Lingkup & Waktu Pelaksanaan', 'semesteran_comments', 'DIRYMF', 'LINGKUPAUDIT'],
+        'Temuanaudit' => ['Audit Intern · Temuan Audit', 'semesteran_comments', 'DIRYMF', 'TEMUANAUDIT'],
+        'Kesimpulanaudit' => ['Audit Intern · Kesimpulan & Pernyataan Auditor', 'semesteran_comments', 'DIRYMF', 'KESIMPULANAUDIT'],
+        'Rekomendasiaudit' => ['Audit Intern · Rekomendasi & Tindak Lanjut', 'semesteran_comments', 'DIRYMF', 'REKOMENDASIAUDIT'],
+        'Pemantauanaudit' => ['Audit Intern · Pemantauan Komitmen Auditee', 'semesteran_comments', 'DIRYMF', 'PEMANTAUANAUDIT'],
+        // TKS (tabel tks_comments: hanya kolom kategori, tanpa subkategori)
+        'Tksprofilrisiko' => ['TKS · Faktor Profil Risiko', 'tks_comments', 'PROFILRISIKO', null],
+        'Tkstatakelola' => ['TKS · Faktor Tata Kelola', 'tks_comments', 'TATAKELOLA', null],
+        'Tksrentabilitas' => ['TKS · Faktor Rentabilitas', 'tks_comments', 'RENTABILITAS', null],
+        'Tkspermodalan' => ['TKS · Faktor Permodalan', 'tks_comments', 'PERMODALAN', null],
     ];
 
     /** Kelompok halaman (untuk badge ringkasan, mis. kartu Showtahunan / Showsaf). */
@@ -85,8 +103,10 @@ class M_komentar extends Model
         [, $table, $kategori, $sub] = self::PAGES[$page];
         $b = $this->db->table($table . ' ' . $alias)
             ->where("{$alias}.kodebpr", $kodebpr)
-            ->where("{$alias}.periode_id", $periodeId)
-            ->where("{$alias}.subkategori", $sub);
+            ->where("{$alias}.periode_id", $periodeId);
+        if ($sub !== null) {
+            $b->where("{$alias}.subkategori", $sub);
+        }
         if ($kategori !== null) {
             $b->where("{$alias}.kategori", $kategori);
         }
@@ -108,7 +128,6 @@ class M_komentar extends Model
         [, $table, $kategori, $sub] = self::PAGES[$page];
         $now = date('Y-m-d H:i:s');
         $row = [
-            'subkategori' => $sub,
             'user_id' => $userId,
             'fullname' => $fullname,
             'komentar' => $komentar,
@@ -116,10 +135,13 @@ class M_komentar extends Model
             'periode_id' => $periodeId,
             'created_at' => $now,
         ];
+        if ($sub !== null) {
+            $row['subkategori'] = $sub;
+        }
         if ($kategori !== null) {
             $row['kategori'] = $kategori;
         }
-        if ($table === 'semesteran_comments') {
+        if ($table !== 'transparansi_comments') {
             $row['updated_at'] = $now;
         }
         $this->db->table($table)->insert($row);
@@ -147,7 +169,14 @@ class M_komentar extends Model
             $conds = [];
             foreach ($list as $page) {
                 [, , $kategori, $sub] = self::PAGES[$page];
-                $cond = 'c.subkategori = ' . $this->db->escape($sub) . ($kategori !== null ? ' AND c.kategori = ' . $this->db->escape($kategori) : '');
+                $parts = [];
+                if ($sub !== null) {
+                    $parts[] = 'c.subkategori = ' . $this->db->escape($sub);
+                }
+                if ($kategori !== null) {
+                    $parts[] = 'c.kategori = ' . $this->db->escape($kategori);
+                }
+                $cond = implode(' AND ', $parts);
                 $case .= " WHEN {$cond} THEN " . $this->db->escape($page);
                 $conds[] = "({$cond})";
             }

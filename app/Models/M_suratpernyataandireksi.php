@@ -4,11 +4,6 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-/**
- * Surat Pernyataan Direksi tentang Tanggung Jawab atas Laporan Keuangan (laporan tahunan).
- *  - header  (tabel ini)                     : satu baris per BPR + periode.
- *  - detail  (suratpernyataandireksi_detail) : penandatangan / direksi, jumlah bebas, urut `urutan`.
- */
 class M_suratpernyataandireksi extends Model
 {
     protected $table         = 'suratpernyataandireksi';
@@ -78,10 +73,6 @@ class M_suratpernyataandireksi extends Model
             ->get()->getResultArray();
     }
 
-    /**
-     * Simpan header + ganti seluruh daftar direksi dalam satu transaksi.
-     * $direksi: list of [nama, alamatkantor, alamatdomisili, telepon, jabatan].
-     */
     public function saveSurat(?int $id, array $header, array $direksi): bool
     {
         $this->db->transStart();

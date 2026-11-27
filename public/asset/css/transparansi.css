@@ -1,5 +1,6 @@
 /* Halaman Laporan Transparansi (Penjelasanumum, Tgjwbdir, ...) — gaya bersama, di-cache browser. */
-.pu { --c1: #141863; --c2: #1f2aa8; --ok: #059669; --okbg: #ecfdf5; --bd: #e2e8f0; --mut: #64748b; --txt: #0f172a; --err: #dc2626; padding-bottom: 90px; }
+.pu, .pu-dialog { --c1: #141863; --c2: #1f2aa8; --ok: #059669; --okbg: #ecfdf5; --bd: #e2e8f0; --mut: #64748b; --txt: #0f172a; --err: #dc2626; }
+.pu { padding-bottom: 90px; }
 .pu-toast { position: fixed; top: 18px; right: 18px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; max-width: calc(100vw - 36px); pointer-events: none; }
 .pu-toast div { background: #fff; border-left: 4px solid #059669; border-radius: 10px; padding: 12px 16px; box-shadow: 0 10px 25px rgba(0,0,0,.12); font-size: .88rem; animation: puIn .25s ease; }
 .pu-toast div.e { border-color: #dc2626; color: #991b1b; }

@@ -4,10 +4,6 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-/**
- * Laporan Transparansi 1 — Penjelasan Umum Penerapan Tata Kelola (form E0100).
- * Satu baris per BPR + periode tahunan. Approval: Komisaris Utama (accdekom) lalu Direktur Utama (is_approved).
- */
 class M_penjelasanumum extends Model
 {
     protected $table = 'penjelasanumum';
@@ -25,7 +21,6 @@ class M_penjelasanumum extends Model
 
     public const FORM_CODE = 'E0100';
 
-    /** Field isian => panjang maksimum (karakter). */
     public const MAX = [
         'namabpr' => 250,
         'alamat' => 500,
@@ -43,10 +38,6 @@ class M_penjelasanumum extends Model
         '5' => '5 — Tidak Baik',
     ];
 
-    /**
-     * Kolom NOT NULL tanpa default di tabel: wajib diisi saat insert agar tetap jalan
-     * di hosting dengan sql_mode STRICT_TRANS_TABLES.
-     */
     private const INSERT_DEFAULTS = [
         'keterangan' => '',
         'is_approved' => 0, 'approved_by' => 0, 'dirut' => '',
@@ -56,7 +47,6 @@ class M_penjelasanumum extends Model
         'accdir2' => 0, 'accdir2_by' => 0,
     ];
 
-    /** Dipakai Pdfgcg. */
     public function getAllData(): array
     {
         return $this->db->table($this->table)->get()->getResultArray();
@@ -94,17 +84,11 @@ class M_penjelasanumum extends Model
         return (bool) $this->insert($data + self::INSERT_DEFAULTS);
     }
 
-    /** Data reset kedua approval (kolom NOT NULL -> 0, bukan NULL). */
     public static function resetApprovalData(): array
     {
         return ['accdekom' => 0, 'accdekom_by' => 0, 'is_approved' => 0, 'approved_by' => 0];
     }
 
-    /**
-     * Set / batalkan approval.
-     *  komut : accdekom (membatalkan Komisaris Utama juga membatalkan Direktur Utama)
-     *  dirut : is_approved
-     */
     public function setApproval(int $id, string $type, bool $approve, int $userId, string $fullname): bool
     {
         $now = date('Y-m-d H:i:s');

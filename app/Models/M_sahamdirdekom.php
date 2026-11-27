@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-/**
- * Laporan Transparansi 6 — Kepemilikan Saham Anggota Direksi dan Dewan Komisaris pada BPR.
- * Satu baris per pemilik saham. Mendukung "Tidak Ada Data" (is_null_record = 1). Tidak memiliki export TXT.
- */
 class M_sahamdirdekom extends M_anggotatransparansi
 {
     protected $table = 'sahamdirdekom';

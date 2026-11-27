@@ -5,6 +5,8 @@ use setasign\Fpdi\Fpdi;
 
 class PdfSelfassessment extends Fpdi
 {
+    use CoverRenderTrait;
+
     protected $headerData = [];
     protected $isCoverPage = true;
     protected $isCoverFooterPage = true;
@@ -36,103 +38,24 @@ class PdfSelfassessment extends Fpdi
     }
 
 
+    /** Halaman cover — desain dipilih di Self Assessment Tata Kelola (lihat CoverDesign / CoverRenderTrait). */
     public function generateCoverPage(array $infoData)
     {
         $this->isCoverPage = true;
         $this->AddPage();
         $this->SetAutoPageBreak(false);
 
-        $bprName = $this->headerData['namabpr'] ?? 'Nama BPR Tidak Tersedia';
-        $cover = $this->headerData['cover'] ?? 'Cover Tidak Tersedia';
-        $bprNo = $this->headerData['nomor'] ?? 'Nomor telefon Tidak Tersedia';
-        $email = $this->headerData['email'] ?? 'Email Tidak Tersedia';
-        $webbpr = $this->headerData['webbpr'] ?? 'Website Tidak Tersedia';
-        $periodeYear = $this->headerData['tahun'] ?? date('Y');
-        $periodeSemester = $this->headerData['semester'] ?? 1;
-
-        // Handle cover image
-        $coverImagePath = FCPATH . 'assets/img/' . $cover;
-        if (file_exists($coverImagePath)) {
-            $this->Image($coverImagePath, 0, 0, 210, 297);
-        } else {
-            log_message('error', 'Cover image not found: ' . $coverImagePath);
-        }
-
-        $this->SetFont('Arial', 'B', 16);
-        $this->SetTextColor(255);
-        $this->SetY(25);
-        $this->SetXY(17, 59);
-        $this->Cell(0, 10, 'SEMESTER ' . $periodeSemester . ' TAHUN ' . $periodeYear, 0, 1, 'L');
-
-        // --- TAMBAHKAN JARAK ANTARA SEMESTER DAN NAMA BPR ---
-        $this->Ln(2); // Menambahkan jarak 15 unit setelah teks semester
-
-        // --- BAGIAN NAMA BPR DENGAN PEMBATASAN 25 KARAKTER ---
-        $this->SetX(17); // Pertahankan posisi X yang sama
-        $currentY = $this->GetY(); // Dapatkan posisi Y setelah Ln()
-        $this->SetXY(17, $currentY); // Set posisi baru dengan jarak yang telah ditambahkan
-        $this->SetFont('Arial', 'B', 14);
-
-        // Pisahkan nama BPR menjadi beberapa baris jika lebih dari 25 karakter
-        $maxCharPerLine = 25;
-        $nameLines = [];
-        $words = explode(' ', $bprName);
-        $currentLine = '';
-
-        foreach ($words as $word) {
-            if (strlen($currentLine) + strlen($word) + 1 <= $maxCharPerLine) {
-                $currentLine .= ($currentLine ? ' ' : '') . $word;
-            } else {
-                $nameLines[] = $currentLine;
-                $currentLine = $word;
-            }
-        }
-        if ($currentLine) {
-            $nameLines[] = $currentLine;
-        }
-
-        // Tampilkan setiap baris nama BPR
-        foreach ($nameLines as $line) {
-            $this->Cell(0, 7, $line, 0, 1, 'L');
-            $this->SetX(17); // Pertahankan posisi X untuk baris berikutnya
-        }
-        // --- AKHIR BAGIAN NAMA BPR ---
-
-        $this->SetXY(8, 228);
-        $this->SetFont('Arial', '', 10);
-        $this->Cell(0, 90, 'Kontak: ', 0, 1, 'L');
-        $this->SetXY(8, 233);
-        $this->SetFont('Arial', '', 10);
-        $this->Cell(0, 90, $bprNo, 0, 1, 'L');
-        $this->SetXY(8, 237);
-        $this->SetFont('Arial', '', 10);
-        $this->Cell(0, 90, $email, 0, 1, 'L');
-        $this->SetXY(8, 242);
-        $this->SetFont('Arial', '', 10);
-        $this->Cell(0, 90, $webbpr, 0, 1, 'L');
-
-        $this->SetTextColor(0, 0, 0);
-
-        // Handle logo
-        if (!empty($infoData['logo'])) {
-            $logoPath = FCPATH . 'asset/img/' . $infoData['logo'];
-
-            if (file_exists($logoPath)) {
-                $ext = strtolower(pathinfo($logoPath, PATHINFO_EXTENSION));
-
-                if (in_array($ext, ['png', 'jpg', 'jpeg'])) {
-                    list($origWidth, $origHeight) = getimagesize($logoPath);
-
-                    $maxWidth = 45;
-                    $maxHeight = 25;
-                    $ratio = min($maxWidth / $origWidth, $maxHeight / $origHeight);
-                    $newWidth = $origWidth * $ratio;
-                    $newHeight = $origHeight * $ratio;
-
-                    $this->Image($logoPath, 159, 5, $newWidth, $newHeight);
-                }
-            }
-        }
+        $logo = !empty($infoData['logo']) ? FCPATH . 'asset/img/' . basename((string) $infoData['logo']) : '';
+        $this->renderCover([
+            'namabpr' => $this->headerData['namabpr'] ?? ($infoData['namabpr'] ?? ''),
+            'semester' => $this->headerData['semester'] ?? 1,
+            'tahun' => $this->headerData['tahun'] ?? date('Y'),
+            'nomor' => $this->headerData['nomor'] ?? '',
+            'email' => $this->headerData['email'] ?? '',
+            'webbpr' => $this->headerData['webbpr'] ?? '',
+            'cover' => $this->headerData['cover'] ?? '',
+            'logo' => $logo,
+        ]);
 
         $this->isCoverPage = false;
     }

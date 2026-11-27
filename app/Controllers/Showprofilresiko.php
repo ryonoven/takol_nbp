@@ -21,6 +21,16 @@ use App\Models\M_stratejikinheren;
 use App\Models\M_stratejikkpmr;
 use Myth\Auth\Config\Services as AuthServices;
 
+/**
+ * Laporan Profil Risiko — halaman ringkasan.
+ *
+ *  - index      : peringkat 6 jenis risiko (inheren × KPMR → matriks) periode ini & sebelumnya, peringkat komposit,
+ *                 kesimpulan & lembar persetujuan. 1 query per tabel risiko; baris showprofilresiko hanya ditulis
+ *                 bila nilainya berubah.
+ *  - save       : simpan kesimpulan + lembar persetujuan (POST JSON). Hanya PE/Admin.
+ *  - setTotal   : override / reset peringkat komposit (POST JSON, act=set|reset). Hanya PE/Admin.
+ * Export TXT/PDF/JSON di bawah tidak diubah (dipakai ZIP Laporan Semesteran & halaman PDF).
+ */
 class Showprofilresiko extends Controller
 {
     protected $auth;
@@ -47,13 +57,23 @@ class Showprofilresiko extends Controller
     protected $stratejikinherenModel;
     protected $stratejikkpmrModel;
 
-
     protected $userModel;
     protected $infobprModel;
 
     protected $userGroups = [];
 
     private $riskModelsConfig = [];
+
+    /** Lembar persetujuan: kolom => [label, maks]. */
+    public const TTD_FIELDS = [
+        'dirut' => ['Nama Direktur Utama', 255],
+        'dirkep' => ['Nama Direktur yang membawahi fungsi kepatuhan', 255],
+        'pe' => ['Nama Pejabat Eksekutif Manajemen Risiko', 255],
+        'lokasi' => ['Lokasi', 255],
+    ];
+    public const MAX_KESIMPULAN = 10000;
+    public const LABELS = [1 => 'Sangat Rendah', 2 => 'Rendah', 3 => 'Sedang', 4 => 'Tinggi', 5 => 'Sangat Tinggi'];
+    public const KPMR_LABELS = [1 => 'Sangat Memadai', 2 => 'Memadai', 3 => 'Cukup Memadai', 4 => 'Kurang Memadai', 5 => 'Tidak Memadai'];
 
     public function __construct()
     {
@@ -89,92 +109,81 @@ class Showprofilresiko extends Controller
 
     private function initializeUser()
     {
+        $this->userGroups = array_fill_keys(['pe', 'admin', 'dekom', 'direksi'], false);
+        $this->userKodebpr = null;
         if ($this->auth->isLoggedIn()) {
             $this->userId = $this->auth->id();
             $user = $this->userModel->find($this->userId);
             $this->userKodebpr = $user['kodebpr'] ?? null;
 
             $authorize = AuthServices::authorization();
-            $groups = ['pe', 'admin', 'dekom', 'direksi'];
-            foreach ($groups as $group) {
-                $this->userGroups[$group] = $authorize->inGroup($group, $this->userId);
+            foreach (array_keys($this->userGroups) as $group) {
+                $this->userGroups[$group] = (bool) $authorize->inGroup($group, $this->userId);
             }
-        } else {
-            $this->userKodebpr = null;
-            $this->userGroups = array_fill_keys(['pe', 'admin', 'dekom', 'direksi'], false);
         }
 
-        $this->periodeId = session('active_periode');
+        // Periode wajib milik BPR user (cegah akses data BPR lain lewat session active_periode)
+        $this->periodeId = null;
+        $pid = (int) session('active_periode');
+        if ($pid > 0 && $this->userKodebpr) {
+            $p = $this->periodeModel->find($pid);
+            if ($p && (string) $p['kodebpr'] === (string) $this->userKodebpr) {
+                $this->periodeId = $pid;
+            }
+        }
     }
 
+    /** Model per jenis risiko: tabel inheren/KPMR + faktor ringkasan (saat ini & periode sebelumnya). */
     private function initializeRiskModels()
     {
         $this->riskModelsConfig = [
             'kredit' => [
-                'name' => 'Risiko Kredit',
-                'link' => 'Risikokredit',
-                'inheren' => ['model' => new M_nilairisikokredit(), 'faktor' => 13],
-                'kpmr' => ['model' => new M_risikokreditkpmr(), 'faktor' => 33],
-                'beluminheren' => ['model' => new M_nilairisikokredit(), 'faktor' => 14],
-                'belumkpmr' => ['model' => new M_risikokreditkpmr(), 'faktor' => 34],
-                'result_key' => 'nkredit',
-                'result_belumkey' => 'nbelumkredit',
-                'kesimpulan_key' => 'kesimpulan1'
+                'name' => 'Risiko Kredit', 'link' => 'Risikokredit', 'icon' => 'fa-hand-holding-usd',
+                'inheren' => ['model' => $this->kreditinherenModel, 'faktor' => 13],
+                'kpmr' => ['model' => $this->kreditkpmrModel, 'faktor' => 33],
+                'beluminheren' => ['model' => $this->kreditinherenModel, 'faktor' => 14],
+                'belumkpmr' => ['model' => $this->kreditkpmrModel, 'faktor' => 34],
+                'result_key' => 'nkredit', 'result_belumkey' => 'nbelumkredit', 'kesimpulan_key' => 'kesimpulan1',
             ],
             'operasional' => [
-                'name' => 'Risiko Operasional',
-                'link' => 'Risikooperasional',
-                'inheren' => ['model' => new M_risikooperasional(), 'faktor' => 48],
-                'kpmr' => ['model' => new M_risikooperasionalkpmr(), 'faktor' => 70],
-                'beluminheren' => ['model' => new M_risikooperasional(), 'faktor' => 49],
-                'belumkpmr' => ['model' => new M_risikooperasionalkpmr(), 'faktor' => 71],
-                'result_key' => 'noperasional',
-                'result_belumkey' => 'nbelumoperasional',
-                'kesimpulan_key' => 'kesimpulan2'
+                'name' => 'Risiko Operasional', 'link' => 'Risikooperasional', 'icon' => 'fa-cogs',
+                'inheren' => ['model' => $this->operasionalinherenModel, 'faktor' => 48],
+                'kpmr' => ['model' => $this->operasionalkpmrModel, 'faktor' => 70],
+                'beluminheren' => ['model' => $this->operasionalinherenModel, 'faktor' => 49],
+                'belumkpmr' => ['model' => $this->operasionalkpmrModel, 'faktor' => 71],
+                'result_key' => 'noperasional', 'result_belumkey' => 'nbelumoperasional', 'kesimpulan_key' => 'kesimpulan2',
             ],
             'kepatuhan' => [
-                'name' => 'Risiko Kepatuhan',
-                'link' => 'Risikokepatuhan',
-                'inheren' => ['model' => new M_risikokepatuhan(), 'faktor' => 81],
-                'kpmr' => ['model' => new M_kepatuhankpmr(), 'faktor' => 102],
-                'beluminheren' => ['model' => new M_risikokepatuhan(), 'faktor' => 82],
-                'belumkpmr' => ['model' => new M_kepatuhankpmr(), 'faktor' => 103],
-                'result_key' => 'nkepatuhan',
-                'result_belumkey' => 'nbelumkepatuhan',
-                'kesimpulan_key' => 'kesimpulan3'
+                'name' => 'Risiko Kepatuhan', 'link' => 'Risikokepatuhan', 'icon' => 'fa-balance-scale',
+                'inheren' => ['model' => $this->kepatuhaninherenModel, 'faktor' => 81],
+                'kpmr' => ['model' => $this->kepatuhankpmrModel, 'faktor' => 102],
+                'beluminheren' => ['model' => $this->kepatuhaninherenModel, 'faktor' => 82],
+                'belumkpmr' => ['model' => $this->kepatuhankpmrModel, 'faktor' => 103],
+                'result_key' => 'nkepatuhan', 'result_belumkey' => 'nbelumkepatuhan', 'kesimpulan_key' => 'kesimpulan3',
             ],
             'likuiditas' => [
-                'name' => 'Risiko Likuiditas',
-                'link' => 'Likuiditasinheren',
-                'inheren' => ['model' => new M_likuiditasinheren(), 'faktor' => 115],
-                'kpmr' => ['model' => new M_likuiditaskpmr(), 'faktor' => 135],
-                'beluminheren' => ['model' => new M_likuiditasinheren(), 'faktor' => 116],
-                'belumkpmr' => ['model' => new M_likuiditaskpmr(), 'faktor' => 136],
-                'result_key' => 'nlikuiditas',
-                'result_belumkey' => 'nbelumlikuiditas',
-                'kesimpulan_key' => 'kesimpulan4'
+                'name' => 'Risiko Likuiditas', 'link' => 'Likuiditasinheren', 'icon' => 'fa-tint',
+                'inheren' => ['model' => $this->likuiditasinherenModel, 'faktor' => 115],
+                'kpmr' => ['model' => $this->likuiditaskpmrModel, 'faktor' => 135],
+                'beluminheren' => ['model' => $this->likuiditasinherenModel, 'faktor' => 116],
+                'belumkpmr' => ['model' => $this->likuiditaskpmrModel, 'faktor' => 136],
+                'result_key' => 'nlikuiditas', 'result_belumkey' => 'nbelumlikuiditas', 'kesimpulan_key' => 'kesimpulan4',
             ],
             'reputasi' => [
-                'name' => 'Risiko Reputasi',
-                'link' => 'Reputasiinheren',
-                'inheren' => ['model' => new M_reputasiinheren(), 'faktor' => 148],
-                'kpmr' => ['model' => new M_reputasikpmr(), 'faktor' => 168],
-                'beluminheren' => ['model' => new M_reputasiinheren(), 'faktor' => 149],
-                'belumkpmr' => ['model' => new M_reputasikpmr(), 'faktor' => 169],
-                'result_key' => 'nreputasi',
-                'result_belumkey' => 'nbelumreputasi',
-                'kesimpulan_key' => 'kesimpulan5'
+                'name' => 'Risiko Reputasi', 'link' => 'Reputasiinheren', 'icon' => 'fa-bullhorn',
+                'inheren' => ['model' => $this->reputasiinherenModel, 'faktor' => 148],
+                'kpmr' => ['model' => $this->reputasikpmrModel, 'faktor' => 168],
+                'beluminheren' => ['model' => $this->reputasiinherenModel, 'faktor' => 149],
+                'belumkpmr' => ['model' => $this->reputasikpmrModel, 'faktor' => 169],
+                'result_key' => 'nreputasi', 'result_belumkey' => 'nbelumreputasi', 'kesimpulan_key' => 'kesimpulan5',
             ],
             'stratejik' => [
-                'name' => 'Risiko Stratejik',
-                'link' => 'Stratejikinheren',
-                'inheren' => ['model' => new M_stratejikinheren(), 'faktor' => 179],
-                'kpmr' => ['model' => new M_stratejikkpmr(), 'faktor' => 199],
-                'beluminheren' => ['model' => new M_stratejikinheren(), 'faktor' => 180],
-                'belumkpmr' => ['model' => new M_stratejikkpmr(), 'faktor' => 200],
-                'result_key' => 'nstratejik',
-                'result_belumkey' => 'nbelumstratejik',
-                'kesimpulan_key' => 'kesimpulan6'
+                'name' => 'Risiko Stratejik', 'link' => 'Stratejikinheren', 'icon' => 'fa-chess',
+                'inheren' => ['model' => $this->stratejikinherenModel, 'faktor' => 179],
+                'kpmr' => ['model' => $this->stratejikkpmrModel, 'faktor' => 199],
+                'beluminheren' => ['model' => $this->stratejikinherenModel, 'faktor' => 180],
+                'belumkpmr' => ['model' => $this->stratejikkpmrModel, 'faktor' => 200],
+                'result_key' => 'nstratejik', 'result_belumkey' => 'nbelumstratejik', 'kesimpulan_key' => 'kesimpulan6',
             ],
         ];
     }
@@ -197,6 +206,152 @@ class Showprofilresiko extends Controller
         return null;
     }
 
+    private function canEdit(): bool
+    {
+        return $this->userGroups['pe'] || $this->userGroups['admin'];
+    }
+
+    private function json(int $status, array $payload)
+    {
+        $payload['csrf'] = ['name' => csrf_token(), 'hash' => csrf_hash()];
+        return $this->response->setStatusCode($status)->setJSON($payload);
+    }
+
+    private function guardPost()
+    {
+        if (!$this->auth->check()) {
+            return $this->json(401, ['ok' => false, 'message' => 'Sesi berakhir, silakan login kembali.']);
+        }
+        if (strtolower((string) $this->request->getMethod()) !== 'post') {
+            return $this->json(405, ['ok' => false, 'message' => 'Metode tidak diizinkan.']);
+        }
+        if (!$this->periodeId) {
+            return $this->json(400, ['ok' => false, 'message' => 'Periode aktif tidak valid. Silakan pilih periode kembali.']);
+        }
+        if (!$this->canEdit()) {
+            return $this->json(403, ['ok' => false, 'message' => 'Anda tidak memiliki akses untuk mengubah data ini.']);
+        }
+        return null;
+    }
+
+    private static function isKategoriA(?array $periode): bool
+    {
+        return strtoupper((string) ($periode['kategori'] ?? '')) === 'A';
+    }
+
+    private static function rataBulat(array $vals): ?int
+    {
+        $vals = array_filter($vals, static fn($v) => is_numeric($v) && $v !== null);
+        if (!$vals) {
+            return null;
+        }
+        $avg = array_sum($vals) / count($vals);
+        return (int) (($avg - floor($avg) >= 0.5) ? ceil($avg) : floor($avg));
+    }
+
+    /**
+     * Seluruh nilai risiko periode aktif & sebelumnya — satu query per tabel risiko (12 tabel).
+     * @return array{rows: array, now: array, before: array} rows = data per jenis risiko untuk tampilan
+     */
+    private function computeAll(string $kodebpr, int $periodeId, ?array $periode): array
+    {
+        $vals = [];   // [jenis][inheren|kpmr|beluminheren|belumkpmr] => ['penilaiankredit','is_approved','accdekom']
+        $byModel = [];
+        foreach ($this->riskModelsConfig as $key => $c) {
+            foreach (['inheren' => 'beluminheren', 'kpmr' => 'belumkpmr'] as $now => $bef) {
+                $cls = get_class($c[$now]['model']);
+                $byModel[$cls]['model'] = $c[$now]['model'];
+                $byModel[$cls]['faktor'][$c[$now]['faktor']] = [$key, $now];
+                $byModel[$cls]['faktor'][$c[$bef]['faktor']] = [$key, $bef];
+            }
+        }
+        foreach ($byModel as $m) {
+            $rows = $m['model']->builder()->select('faktor1id, penilaiankredit, is_approved')
+                ->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)
+                ->whereIn('faktor1id', array_keys($m['faktor']))->get()->getResultArray();
+            foreach ($rows as $r) {
+                [$key, $slot] = $m['faktor'][(int) $r['faktor1id']];
+                $vals[$key][$slot] ??= $r; // baris pertama (sama seperti ->first())
+            }
+        }
+
+        $now = ['ntotalrisk' => null];
+        $before = ['nbelumtotalrisk' => null];
+        $display = [];
+        foreach ($this->riskModelsConfig as $key => $c) {
+            $in = $vals[$key]['inheren']['penilaiankredit'] ?? null;
+            $kp = $vals[$key]['kpmr']['penilaiankredit'] ?? null;
+            $bin = $vals[$key]['beluminheren']['penilaiankredit'] ?? null;
+            $bkp = $vals[$key]['belumkpmr']['penilaiankredit'] ?? null;
+            $m = (is_numeric($in) && is_numeric($kp)) ? $this->getRiskMatrix($in, $kp) : ['nilai' => null, 'kesimpulan' => null];
+            $mb = (is_numeric($bin) && is_numeric($bkp)) ? $this->getRiskMatrix($bin, $bkp) : ['nilai' => null, 'kesimpulan' => null];
+            $now[$c['result_key']] = $m['nilai'];
+            $now[$c['kesimpulan_key']] = $m['kesimpulan'];
+            $before[$c['result_belumkey']] = $mb['nilai'];
+            $display[$key] = [
+                'key' => $key, 'name' => $c['name'], 'link' => base_url($c['link']), 'icon' => $c['icon'],
+                'inheren' => $in, 'kpmr' => $kp, 'nilai' => $m['nilai'], 'kesimpulan' => $m['kesimpulan'],
+                'b_inheren' => $bin, 'b_kpmr' => $bkp, 'b_nilai' => $mb['nilai'],
+                'approved' => (int) ($vals[$key]['inheren']['is_approved'] ?? 0) === 1,
+                'filled' => isset($vals[$key]['inheren']) || isset($vals[$key]['kpmr']),
+            ];
+        }
+        $keys = ['kredit', 'operasional', 'kepatuhan', 'likuiditas'];
+        if (self::isKategoriA($periode)) {
+            $keys[] = 'reputasi';
+            $keys[] = 'stratejik';
+        }
+        $now['_auto_total'] = self::rataBulat(array_map(fn($k) => $now[$this->riskModelsConfig[$k]['result_key']], $keys));
+        $before['nbelumtotalrisk'] = self::rataBulat(array_map(fn($k) => $before[$this->riskModelsConfig[$k]['result_belumkey']], $keys));
+        return ['rows' => $display, 'now' => $now, 'before' => $before, 'keys' => $keys];
+    }
+
+    /**
+     * Sinkronkan nilai hasil hitung ke tabel showprofilresiko — hanya menulis bila ada perubahan.
+     * Peringkat komposit (ntotalrisk) yang di-override manual tetap dipertahankan selama nilai risiko tidak berubah.
+     */
+    private function syncRow(string $kodebpr, int $periodeId, ?array $periode, array $calc): array
+    {
+        $row = $this->showprofilresikoModel->getByKodebprAndPeriode($kodebpr, $periodeId);
+        $now = $calc['now'];
+        $auto = $now['_auto_total'];
+        unset($now['_auto_total']);
+
+        $riskKeys = ['nkredit', 'noperasional', 'nkepatuhan', 'nlikuiditas', 'nreputasi', 'nstratejik'];
+        $changed = !$row;
+        foreach ($riskKeys as $k) {
+            if ($row && (string) ($row[$k] ?? '') !== (string) ($now[$k] ?? '')) {
+                $changed = true;
+            }
+        }
+        $now['ntotalrisk'] = $changed ? $auto : ($row['ntotalrisk'] ?? $auto);
+
+        // Perbaikan: sebelumnya kesimpulan1–6 tertimpa kesimpulan periode sebelumnya (array_merge key sama)
+        $data = $now + $calc['before'] + ['tahun' => $periode['tahun'] ?? date('Y')];
+
+        if (!$row) {
+            $tahun = (int) ($periode['tahun'] ?? date('Y'));
+            $this->showprofilresikoModel->insert($data + [
+                'kodebpr' => $kodebpr, 'periode_id' => $periodeId,
+                'dirut' => '', 'dirkep' => '', 'pe' => '', 'lokasi' => '', 'kesimpulan' => '',
+                'pdf1_filename' => '', 'pdf2_filename' => '', 'cover' => '',
+                // tanggal NOT NULL tanpa default: tanggal akhir semester (dapat diubah user)
+                'tanggal' => ((string) ($periode['semester'] ?? '1') === '1') ? "{$tahun}-06-30" : "{$tahun}-12-31",
+            ]);
+        } else {
+            $diff = [];
+            foreach ($data as $k => $v) {
+                if ((string) ($row[$k] ?? '') !== (string) ($v ?? '')) {
+                    $diff[$k] = $v;
+                }
+            }
+            if ($diff) {
+                $this->showprofilresikoModel->update((int) $row['id'], $diff + ['updated_at' => date('Y-m-d H:i:s')]);
+            }
+        }
+        return $this->showprofilresikoModel->getByKodebprAndPeriode($kodebpr, $periodeId) ?? [];
+    }
+
     public function index()
     {
         if ($redirect = $this->checkAuth())
@@ -204,56 +359,22 @@ class Showprofilresiko extends Controller
         if ($redirect = $this->checkPeriode())
             return $redirect;
 
-        if (!$this->userKodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid.');
-        }
-
-        // Get data
-        $periodeDetail = $this->periodeModel->find($this->periodeId);
-        $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
-        $namaBpr = preg_replace('/[^A-Za-z0-9\-]/', '_', $bprData['namabpr']);
-
-        $riskCalculations = $this->calculateAllRiskValues($this->userKodebpr, $this->periodeId);
-        $riskbelumCalculations = $this->calculatebelumAllRiskValues($this->userKodebpr, $this->periodeId);
-
-        $dataToSave = array_merge(
-            [
-                'kodebpr' => $this->userKodebpr,
-                'periode_id' => $this->periodeId,
-                'tahun' => $periodeDetail['tahun'] ?? null,
-            ],
-            $this->extractCalculationResults($riskCalculations),
-            $this->extractCalculationbelumResults($riskbelumCalculations)
-        );
-
-        $this->showprofilresikoModel->simpanProfilRisiko($dataToSave);
-
-        $riskFactors = $this->getRiskFactorsForDisplay($this->userKodebpr, $this->periodeId, $riskCalculations);
-        $risbelumkFactors = $this->getbelumRiskFactorsForDisplay($this->userKodebpr, $this->periodeId, $riskbelumCalculations);
-        $showprofilresiko = $this->showprofilresikoModel->getByKodebprAndPeriode($this->userKodebpr, $this->periodeId);
-
-        if ($showprofilresiko && !empty($showprofilresiko['tanggal'])) {
-            $showprofilresiko['tanggal_display'] = $this->formatDateForDisplay($showprofilresiko['tanggal']);
-        } else {
-            $showprofilresiko['tanggal_display'] = '';
-        }
+        $periode = $this->periodeModel->find($this->periodeId);
+        $kodebpr = (string) $this->userKodebpr;
+        $calc = $this->computeAll($kodebpr, (int) $this->periodeId, $periode);
+        $row = $this->syncRow($kodebpr, (int) $this->periodeId, $periode, $calc);
+        $sem = (int) ($periode['semester'] ?? 1) === 2 ? 2 : 1;
 
         $data = [
             'judul' => 'Laporan Profil Risiko',
-            'bprData' => $bprData,
-            'periodeDetail' => $periodeDetail,
-            'showprofilresiko' => $showprofilresiko,
-            'periode_semester' => $periodeDetail['semester'] ?? 'N/A',
-            'periode_tahun' => $periodeDetail['tahun'] ?? 'N/A',
-            'namabpr' => $bprData['namabpr'] ?? 'Nama BPR Tidak Ditemukan',
-            'factors' => $riskFactors,
-            'belumfactors' => $risbelumkFactors,
-            'riskCalculations' => $riskCalculations,
-            'riskbelumCalculations' => $riskbelumCalculations,
-            'transparan' => [],
-            'nilaiData' => [],
-            'allShowProfilresiko' => [],
-            'kategori' => $periodeDetail['kategori'] ?? null,
+            'bprData' => $this->infobprModel->getBprByKode($kodebpr) ?? [],
+            'periodeLabel' => 'Semester ' . ($sem === 1 ? 'I' : 'II') . ' ' . ($periode['tahun'] ?? ''),
+            'prevLabel' => $sem === 1 ? 'Semester II ' . ((int) ($periode['tahun'] ?? 0) - 1) : 'Semester I ' . ($periode['tahun'] ?? ''),
+            'risks' => array_intersect_key($calc['rows'], array_flip($calc['keys'])),
+            'row' => $row,
+            'autoTotal' => $calc['now']['_auto_total'],
+            'beforeTotal' => $calc['before']['nbelumtotalrisk'],
+            'canEdit' => $this->canEdit(),
         ];
 
         return view('templates/v_header', $data)
@@ -263,42 +384,98 @@ class Showprofilresiko extends Controller
             . view('templates/v_footer');
     }
 
-    private function extractCalculationResults($calculations)
+    /** Simpan kesimpulan + lembar persetujuan (POST JSON). */
+    public function save()
     {
-        return [
-            'nkredit' => $calculations['nkredit'] ?? '',
-            'kesimpulan1' => $calculations['kesimpulan1'] ?? '',
-            'noperasional' => $calculations['noperasional'] ?? '',
-            'kesimpulan2' => $calculations['kesimpulan2'] ?? '',
-            'nkepatuhan' => $calculations['nkepatuhan'] ?? '',
-            'kesimpulan3' => $calculations['kesimpulan3'] ?? '',
-            'nlikuiditas' => $calculations['nlikuiditas'] ?? '',
-            'kesimpulan4' => $calculations['kesimpulan4'] ?? '',
-            'nreputasi' => $calculations['nreputasi'] ?? '',
-            'kesimpulan5' => $calculations['kesimpulan5'] ?? '',
-            'nstratejik' => $calculations['nstratejik'] ?? '',
-            'kesimpulan6' => $calculations['kesimpulan6'] ?? '',
-            'ntotalrisk' => $calculations['ntotalrisk'] ?? '',
-        ];
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $row = $this->showprofilresikoModel->getByKodebprAndPeriode((string) $this->userKodebpr, (int) $this->periodeId);
+        if (!$row) {
+            return $this->json(409, ['ok' => false, 'message' => 'Muat ulang halaman terlebih dahulu.']);
+        }
+        $errors = [];
+        $data = [];
+        $kes = trim(str_replace("\r\n", "\n", (string) $this->request->getPost('kesimpulan')));
+        if (mb_strlen($kes) > self::MAX_KESIMPULAN) {
+            $errors['kesimpulan'] = 'Maksimal ' . number_format(self::MAX_KESIMPULAN, 0, ',', '.') . ' karakter.';
+        }
+        $data['kesimpulan'] = $kes;
+        foreach (self::TTD_FIELDS as $f => [, $max]) {
+            $v = trim((string) $this->request->getPost($f));
+            if (mb_strlen($v) > $max) {
+                $errors[$f] = "Maksimal {$max} karakter.";
+            }
+            $data[$f] = $v;
+        }
+        $tgl = trim((string) $this->request->getPost('tanggal'));
+        if ($tgl !== '') {
+            $d = \DateTime::createFromFormat('!Y-m-d', $tgl);
+            if (!$d || $d->format('Y-m-d') !== $tgl) {
+                $errors['tanggal'] = 'Format tanggal tidak valid.';
+            }
+            $data['tanggal'] = $tgl; // kolom NOT NULL: tanggal kosong = tidak diubah
+        }
+        if ($errors) {
+            return $this->json(422, ['ok' => false, 'message' => 'Periksa kembali isian yang ditandai.', 'errors' => $errors]);
+        }
+        $diff = array_filter($data, static fn($v, $k) => str_replace("\r\n", "\n", (string) ($row[$k] ?? '')) !== (string) $v, ARRAY_FILTER_USE_BOTH);
+        if (!$diff) {
+            return $this->json(200, ['ok' => true, 'message' => 'Tidak ada perubahan.']);
+        }
+        try {
+            $this->showprofilresikoModel->update((int) $row['id'], $diff + ['updated_at' => date('Y-m-d H:i:s')]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Showprofilresiko::save ' . $e->getMessage());
+            return $this->json(500, ['ok' => false, 'message' => 'Data gagal disimpan.']);
+        }
+        return $this->json(200, ['ok' => true, 'reload' => true, 'message' => 'Kesimpulan & lembar persetujuan disimpan.']);
     }
 
-    private function extractCalculationbelumResults($belumcalculations)
+    /** Override (act=set, nilai 1–5) atau kembalikan ke hasil hitung (act=reset) peringkat komposit. */
+    public function setTotal()
     {
-        return [
-            'nbelumkredit' => $belumcalculations['nbelumkredit'] ?? '',
-            'kesimpulan1' => $belumcalculations['kesimpulan1'] ?? '',
-            'nbelumoperasional' => $belumcalculations['nbelumoperasional'] ?? '',
-            'kesimpulan2' => $belumcalculations['kesimpulan2'] ?? '',
-            'nbelumkepatuhan' => $belumcalculations['nbelumkepatuhan'] ?? '',
-            'kesimpulan3' => $belumcalculations['kesimpulan3'] ?? '',
-            'nbelumlikuiditas' => $belumcalculations['nbelumlikuiditas'] ?? '',
-            'kesimpulan4' => $belumcalculations['kesimpulan4'] ?? '',
-            'nbelumreputasi' => $belumcalculations['nbelumreputasi'] ?? '',
-            'kesimpulan5' => $belumcalculations['kesimpulan5'] ?? '',
-            'nbelumstratejik' => $belumcalculations['nbelumstratejik'] ?? '',
-            'kesimpulan6' => $belumcalculations['kesimpulan6'] ?? '',
-            'nbelumtotalrisk' => $belumcalculations['nbelumtotalrisk'] ?? '',
-        ];
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $kodebpr = (string) $this->userKodebpr;
+        $row = $this->showprofilresikoModel->getByKodebprAndPeriode($kodebpr, (int) $this->periodeId);
+        if (!$row) {
+            return $this->json(409, ['ok' => false, 'message' => 'Muat ulang halaman terlebih dahulu.']);
+        }
+        $act = (string) $this->request->getPost('act');
+        if ($act === 'reset') {
+            $periode = $this->periodeModel->find($this->periodeId);
+            $val = $this->computeAll($kodebpr, (int) $this->periodeId, $periode)['now']['_auto_total'];
+            $msg = 'Peringkat komposit dikembalikan ke hasil perhitungan' . ($val ? " ({$val})." : '.');
+        } elseif ($act === 'set') {
+            $val = (int) $this->request->getPost('ntotalrisk');
+            if ($val < 1 || $val > 5) {
+                return $this->json(422, ['ok' => false, 'message' => 'Peringkat harus antara 1–5.']);
+            }
+            $msg = "Peringkat komposit diubah menjadi {$val} (" . self::LABELS[$val] . ').';
+        } else {
+            return $this->json(400, ['ok' => false, 'message' => 'Aksi tidak dikenal.']);
+        }
+        try {
+            $this->showprofilresikoModel->update((int) $row['id'], ['ntotalrisk' => $val, 'updated_at' => date('Y-m-d H:i:s')]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Showprofilresiko::setTotal ' . $e->getMessage());
+            return $this->json(500, ['ok' => false, 'message' => 'Gagal menyimpan peringkat.']);
+        }
+        return $this->json(200, ['ok' => true, 'reload' => true, 'message' => $msg]);
+    }
+
+    /** Export/JSON: tolak bila periode aktif bukan milik BPR user (periodeId null). */
+    private function denyForeignPeriode()
+    {
+        if (!$this->auth->check()) {
+            return redirect()->to('/login');
+        }
+        if (!$this->periodeId) {
+            return service('response')->setStatusCode(403)->setBody('Periode aktif tidak valid.');
+        }
+        return null;
     }
 
     private function getRiskMatrix($inheren, $kpmr)
@@ -334,424 +511,23 @@ class Showprofilresiko extends Controller
         return $matrix[$inheren . '-' . $kpmr] ?? ['nilai' => null, 'kesimpulan' => ''];
     }
 
-    private function calculateAllRiskValues($kodebpr, $periodeId, $force = false)
-    {
-        $results = [
-            'nkredit' => null,
-            'kesimpulan1' => null,
-            'noperasional' => null,
-            'kesimpulan2' => null,
-            'nkepatuhan' => null,
-            'kesimpulan3' => null,
-            'nlikuiditas' => null,
-            'kesimpulan4' => null,
-            'nreputasi' => null,
-            'kesimpulan5' => null,
-            'nstratejik' => null,
-            'kesimpulan6' => null,
-            'ntotalrisk' => null,
-        ];
-
-        foreach ($this->riskModelsConfig as $config) {
-            $nilaiInheren = $this->getNilaiRisiko(
-                $config['inheren']['model'],
-                $config['inheren']['faktor'],
-                $kodebpr,
-                $periodeId
-            );
-
-            $nilaiKpmr = $this->getNilaiRisiko(
-                $config['kpmr']['model'],
-                $config['kpmr']['faktor'],
-                $kodebpr,
-                $periodeId
-            );
-
-            if (is_numeric($nilaiInheren) && is_numeric($nilaiKpmr)) {
-                $matrixResult = $this->getRiskMatrix($nilaiInheren, $nilaiKpmr);
-                $results[$config['result_key']] = $matrixResult['nilai'];
-                $results[$config['kesimpulan_key']] = $matrixResult['kesimpulan'];
-            }
-        }
-
-        $existing = $this->showprofilresikoModel->getByKodebprAndPeriode($kodebpr, $periodeId);
-
-        $riskKeys = ['nkredit', 'noperasional', 'nkepatuhan', 'nlikuiditas', 'nreputasi', 'nstratejik'];
-        $changed = false;
-
-        foreach ($riskKeys as $key) {
-            if (!isset($existing[$key]) || $existing[$key] != $results[$key]) {
-                $changed = true;
-                break;
-            }
-        }
-
-        if ($changed || $force) {
-            $results['ntotalrisk'] = $this->calculateTotalRisk($results);
-        } else {
-            $results['ntotalrisk'] = $existing['ntotalrisk'] ?? null;
-        }
-
-        return $results;
-    }
-
-    private function calculatebelumAllRiskValues($kodebpr, $periodeId)
-    {
-        $resultsbelum = [
-            'nbelumkredit' => null,
-            'kesimpulan1' => null,
-            'nbelumoperasional' => null,
-            'kesimpulan2' => null,
-            'nbelumkepatuhan' => null,
-            'kesimpulan3' => null,
-            'nbelumlikuiditas' => null,
-            'kesimpulan4' => null,
-            'nbelumreputasi' => null,
-            'kesimpulan5' => null,
-            'nbelumstratejik' => null,
-            'kesimpulan6' => null,
-            'nbelumtotalrisk' => null,
-        ];
-
-        foreach ($this->riskModelsConfig as $config) {
-            $nilaiInheren = $this->getNilaiRisiko(
-                $config['beluminheren']['model'],
-                $config['beluminheren']['faktor'],
-                $kodebpr,
-                $periodeId
-            );
-
-            $nilaiKpmr = $this->getNilaiRisiko(
-                $config['belumkpmr']['model'],
-                $config['belumkpmr']['faktor'],
-                $kodebpr,
-                $periodeId
-            );
-
-            if (is_numeric($nilaiInheren) && is_numeric($nilaiKpmr)) {
-                $matrixResult = $this->getRiskMatrix($nilaiInheren, $nilaiKpmr);
-                $resultsbelum[$config['result_belumkey']] = $matrixResult['nilai'];
-                $resultsbelum[$config['kesimpulan_key']] = $matrixResult['kesimpulan'];
-            }
-        }
-
-        $resultsbelum['nbelumtotalrisk'] = $this->calculatebelumTotalRisk($resultsbelum);
-
-        return $resultsbelum;
-    }
-
-    private function formatDateForDisplay($date)
-    {
-        if (empty($date) || $date === '0000-00-00') {
-            return '';
-        }
-
-        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
-            return $date;
-        }
-
-        $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
-        return $dateObj ? $dateObj->format('d/m/Y') : '';
-    }
-
     private function convertDateFormat($date)
     {
         if (empty($date)) {
             return null;
         }
-
         if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
             return $date;
         }
-
-        $dateObj = \DateTime::createFromFormat('d/m/Y', $date);
-
-        if ($dateObj === false) {
-            $dateObj = \DateTime::createFromFormat('Y-m-d', $date);
-        }
-
+        $dateObj = \DateTime::createFromFormat('d/m/Y', $date) ?: \DateTime::createFromFormat('Y-m-d', $date);
         return $dateObj ? $dateObj->format('Y-m-d') : null;
-    }
-
-    private function getNilaiRisiko($model, $faktorId, $kodebpr, $periodeId)
-    {
-        $data = $model->where('faktor1id', $faktorId)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
-
-        return $data['penilaiankredit'] ?? null;
-    }
-
-    private function calculateTotalRisk($results)
-    {
-        $periodeDetail = $this->periodeModel->find($this->periodeId);
-        $kategori = $periodeDetail['kategori'] ?? null;
-        $isKategoriA = strtoupper($kategori) === 'A';
-
-        $riskKeys = ['nkredit', 'noperasional', 'nkepatuhan', 'nlikuiditas'];
-
-        if ($isKategoriA) {
-            $riskKeys[] = 'nreputasi';
-            $riskKeys[] = 'nstratejik';
-        }
-
-        $sum = 0;
-        $count = 0;
-
-        foreach ($riskKeys as $risk) {
-            if (is_numeric($results[$risk]) && $results[$risk] !== null) {
-                $sum += $results[$risk];
-                $count++;
-            }
-        }
-
-        if ($count > 0) {
-            $average = $sum / $count;
-            return ($average - floor($average) >= 0.5) ? ceil($average) : floor($average);
-        }
-
-        return null;
-    }
-
-    private function calculatebelumTotalRisk($resultsbelum)
-    {
-        $periodeDetail = $this->periodeModel->find($this->periodeId);
-        $kategori = $periodeDetail['kategori'] ?? null;
-        $isKategoriA = strtoupper($kategori) === 'A';
-
-        $riskbelumKeys = ['nbelumkredit', 'nbelumoperasional', 'nbelumkepatuhan', 'nbelumlikuiditas'];
-
-        if ($isKategoriA) {
-            $riskbelumKeys[] = 'nbelumreputasi';
-            $riskbelumKeys[] = 'nbelumstratejik';
-        }
-
-        $sum = 0;
-        $count = 0;
-
-        foreach ($riskbelumKeys as $riskbelum) {
-            if (is_numeric($resultsbelum[$riskbelum]) && $resultsbelum[$riskbelum] !== null) {
-                $sum += $resultsbelum[$riskbelum];
-                $count++;
-            }
-        }
-
-        if ($count > 0) {
-            $average = $sum / $count;
-            return ($average - floor($average) >= 0.5) ? ceil($average) : floor($average);
-        }
-
-        return null;
-    }
-
-    private function getRiskFactorsForDisplay($kodebpr, $periodeId, $riskCalculations)
-    {
-        $factors = [];
-
-        foreach ($this->riskModelsConfig as $key => $config) {
-            $inherenData = $config['inheren']['model']
-                ->where('faktor1id', $config['inheren']['faktor'])
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->first();
-
-            $kpmrData = $config['kpmr']['model']
-                ->where('faktor1id', $config['kpmr']['faktor'])
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->first();
-
-            $factors[] = [
-                'name' => $config['name'],
-                'link' => base_url($config['link']),
-                'nfaktor' => $inherenData['penilaiankredit'] ?? 'N/A',
-                'nfaktor_kpmr' => $kpmrData['penilaiankredit'] ?? 'N/A',
-                'nkredit' => $riskCalculations[$config['result_key']] ?? 'N/A',
-                'kesimpulan' => $riskCalculations[$config['kesimpulan_key']] ?? '',
-                'accdekom' => $inherenData['accdekom'] ?? null,
-                'is_approved' => $inherenData['is_approved'] ?? null,
-                'risk_type' => $key,
-            ];
-        }
-
-        return $factors;
-    }
-
-    public function updateNtotalrisk()
-    {
-        if ($redirect = $this->checkAuth())
-            return $redirect;
-        if ($redirect = $this->checkPeriode())
-            return $redirect;
-
-        if ($this->request->getMethod() !== 'post') {
-            return redirect()->back()->with('err', 'Method tidak valid');
-        }
-
-        $id = $this->request->getPost('id');
-        $ntotalrisk = $this->request->getPost('ntotalrisk');
-
-        if (empty($id)) {
-            return redirect()->back()->with('err', 'ID tidak ditemukan');
-        }
-
-        if (!is_numeric($ntotalrisk) || $ntotalrisk < 1 || $ntotalrisk > 5) {
-            return redirect()->back()->with('err', 'Nilai total risiko harus antara 1-5');
-        }
-
-        try {
-            $existingData = $this->showprofilresikoModel->find($id);
-
-            if (!$existingData) {
-                return redirect()->back()->with('err', 'Data tidak ditemukan');
-            }
-
-            $data = [
-                'ntotalrisk' => (int) $ntotalrisk,
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-
-            $result = $this->showprofilresikoModel->builder()
-                ->where('id', $id)
-                ->update($data);
-
-            if ($result) {
-                return redirect()->to(base_url('Showprofilresiko'))
-                    ->with('message', 'Nilai Total Risiko berhasil diupdate menjadi ' . $ntotalrisk);
-            } else {
-                return redirect()->back()
-                    ->with('err', 'Gagal update data ke database');
-            }
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error updateNtotalrisk: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('err', 'Gagal update data: ' . $e->getMessage());
-        }
-    }
-
-    public function resetNtotalrisk()
-    {
-        if ($redirect = $this->checkAuth())
-            return $redirect;
-        if ($redirect = $this->checkPeriode())
-            return $redirect;
-
-        $id = $this->request->getPost('id');
-
-        if (empty($id)) {
-            return redirect()->back()->with('err', 'ID tidak ditemukan');
-        }
-
-        try {
-            $existingData = $this->showprofilresikoModel->find($id);
-
-            if (!$existingData) {
-                return redirect()->back()->with('err', 'Data tidak ditemukan');
-            }
-
-            $riskCalculations = $this->calculateAllRiskValues(
-                $existingData['kodebpr'],
-                $existingData['periode_id'],
-                true
-            );
-
-            $data = [
-                'ntotalrisk' => $riskCalculations['ntotalrisk'],
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-
-            $this->showprofilresikoModel->update($id, $data);
-
-            return redirect()->to(base_url('Showprofilresiko'))
-                ->with('message', 'Nilai Total Risiko berhasil direset ke perhitungan otomatis: ' . $riskCalculations['ntotalrisk']);
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('err', 'Gagal reset data: ' . $e->getMessage());
-        }
-    }
-
-    private function getbelumRiskFactorsForDisplay($kodebpr, $periodeId, $riskbelumCalculations)
-    {
-        $factors = [];
-
-        foreach ($this->riskModelsConfig as $key => $config) {
-            $inherenData = $config['beluminheren']['model']
-                ->where('faktor1id', $config['beluminheren']['faktor'])
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->first();
-
-            $kpmrData = $config['belumkpmr']['model']
-                ->where('faktor1id', $config['belumkpmr']['faktor'])
-                ->where('kodebpr', $kodebpr)
-                ->where('periode_id', $periodeId)
-                ->first();
-
-            $factors[] = [
-                'name' => $config['name'],
-                'link' => base_url($config['link']),
-                'nbelumfaktor' => $inherenData['penilaiankredit'] ?? 'N/A',
-                'nbelumfaktor_kpmr' => $kpmrData['penilaiankredit'] ?? 'N/A',
-                'nbelumtingkatrisk' => $riskbelumCalculations[$config['result_belumkey']] ?? 'N/A', // Gunakan dynamic key
-                'kesimpulan' => $riskbelumCalculations[$config['kesimpulan_key']] ?? '',
-                'accdekom' => $inherenData['accdekom'] ?? null,
-                'is_approved' => $inherenData['is_approved'] ?? null,
-                'risk_type' => $key,
-            ];
-        }
-
-        return $factors;
-    }
-
-    public function update()
-    {
-        $id = $this->request->getPost('id');
-        $data = [
-            'kesimpulan' => $this->request->getPost('kesimpulan'),
-            'positifstruktur' => $this->request->getPost('positifstruktur'),
-            'positifproses' => $this->request->getPost('positifproses'),
-            'positifhasil' => $this->request->getPost('positifhasil'),
-            'negatifstruktur' => $this->request->getPost('negatifstruktur'),
-            'negatifproses' => $this->request->getPost('negatifproses'),
-            'negatifhasil' => $this->request->getPost('negatifhasil')
-        ];
-
-        $this->showprofilresikoModel->update($id, $data);
-        return redirect()->to(base_url('Showprofilresiko'))->with('message', 'Data berhasil diupdate!');
-    }
-
-    public function updatettd()
-    {
-        $id = $this->request->getPost('id');
-        $data = [
-            'dirut' => $this->request->getPost('dirut'),
-            'dirkep' => $this->request->getPost('dirkep'),
-            'tanggal' => $this->request->getPost('tanggal'),
-            'lokasi' => $this->request->getPost('lokasi')
-        ];
-
-        $this->showprofilresikoModel->update($id, $data);
-        return redirect()->to(base_url('Showprofilresiko'))->with('message', 'Data berhasil diupdate!');
-    }
-
-    public function updatecover()
-    {
-        $id = $this->request->getPost('id');
-
-        if (empty($id)) {
-            return redirect()->to(base_url('Showprofilresiko'))->with('error', 'ID tidak ditemukan!');
-        }
-
-        $data = ['cover' => $this->request->getPost('cover')];
-        $this->showprofilresikoModel->update($id, $data);
-
-        return redirect()->to(base_url('Showprofilresiko'))->with('message', 'Data berhasil diupdate!');
     }
 
     public function exporttxtlapprofrisk()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
             unset($_SESSION['redirect_url']);
@@ -759,7 +535,7 @@ class Showprofilresiko extends Controller
         }
 
         $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
+        $periodeId = $this->periodeId;
 
         $profilResiko = $this->showprofilresikoModel
             ->where('kodebpr', $kodebpr)
@@ -1059,6 +835,9 @@ class Showprofilresiko extends Controller
 
     public function exporttxtriskinheren()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Authentication check
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
@@ -1068,7 +847,7 @@ class Showprofilresiko extends Controller
 
         // Get parameters
         $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
+        $periodeId = $this->periodeId;
 
         // Get periode detail
         $profilResiko = $this->showprofilresikoModel
@@ -1158,6 +937,9 @@ class Showprofilresiko extends Controller
 
     public function exporttxtoperasional()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Authentication check
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
@@ -1167,7 +949,7 @@ class Showprofilresiko extends Controller
 
         // Get parameters
         $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
+        $periodeId = $this->periodeId;
 
         // Get periode detail
         $profilResiko = $this->showprofilresikoModel
@@ -1257,6 +1039,9 @@ class Showprofilresiko extends Controller
 
     public function exporttxtkepatuhan()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Authentication check
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
@@ -1266,7 +1051,7 @@ class Showprofilresiko extends Controller
 
         // Get parameters
         $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
+        $periodeId = $this->periodeId;
 
         // Get periode detail
         $profilResiko = $this->showprofilresikoModel
@@ -1356,6 +1141,9 @@ class Showprofilresiko extends Controller
 
     public function exporttxtlikuiditas()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Authentication check
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
@@ -1365,7 +1153,7 @@ class Showprofilresiko extends Controller
 
         // Get parameters
         $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
+        $periodeId = $this->periodeId;
 
         // Get periode detail
         $profilResiko = $this->showprofilresikoModel
@@ -1455,6 +1243,9 @@ class Showprofilresiko extends Controller
 
     public function exporttxtreputasi()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Authentication check
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
@@ -1463,7 +1254,7 @@ class Showprofilresiko extends Controller
         }
 
         $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
+        $periodeId = $this->periodeId;
 
         $profilResiko = $this->showprofilresikoModel
             ->where('kodebpr', $kodebpr)
@@ -1559,6 +1350,9 @@ class Showprofilresiko extends Controller
 
     public function exporttxtstratejik()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Authentication check
         if (!$this->auth->check()) {
             $redirectURL = session('redirect_url') ?? '/login';
@@ -1567,7 +1361,7 @@ class Showprofilresiko extends Controller
         }
 
         $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
+        $periodeId = $this->periodeId;
 
         $profilResiko = $this->showprofilresikoModel
             ->where('kodebpr', $kodebpr)
@@ -1663,6 +1457,9 @@ class Showprofilresiko extends Controller
 
     public function exportAllPDFToZipView()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         if ($redirect = $this->checkAuth())
             return $redirect;
         if ($redirect = $this->checkPeriode())
@@ -1677,12 +1474,15 @@ class Showprofilresiko extends Controller
 
     public function exportAllToZip()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         if ($redirect = $this->checkAuth())
             return $redirect;
 
         $profilResiko = $this->showprofilresikoModel
             ->where('kodebpr', $this->userKodebpr)
-            ->where('periode_id', session('active_periode'))
+            ->where('periode_id', $this->periodeId)
             ->first();
 
         $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
@@ -1774,328 +1574,11 @@ class Showprofilresiko extends Controller
         $zip->addFromString($fileNameInZip, $txtContent);
     }
 
-    public function exportAllPDFToZipv2()
-    {
-        if ($redirect = $this->checkAuth())
-            return $redirect;
-        if ($redirect = $this->checkPeriode())
-            return $redirect;
-
-        if (!$this->userKodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid.');
-        }
-
-        set_time_limit(600);
-        ini_set('memory_limit', '1024M'); // 1GB
-
-        try {
-            $periodeDetail = $this->periodeModel->find($this->periodeId);
-            $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
-
-            $semester = $periodeDetail['semester'] ?? '';
-            $tahun = $periodeDetail['tahun'] ?? '';
-            $namaBpr = preg_replace('/[^A-Za-z0-9\-]/', '_', $bprData['namabpr']);
-
-            // Create ZIP filename
-            $zipFileName = "Profil_Risiko_PDF_{$namaBpr}_Semester_{$semester}_{$tahun}_" . date('YmdHis') . '.zip';
-            $zipFilePath = WRITEPATH . 'uploads/' . $zipFileName;
-
-            // Ensure directory exists
-            if (!is_dir(WRITEPATH . 'uploads/')) {
-                mkdir(WRITEPATH . 'uploads/', 0777, true);
-            }
-
-            $zip = new \ZipArchive();
-
-            if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== TRUE) {
-                return redirect()->back()->with('error', 'Gagal membuat file ZIP');
-            }
-
-            // List of PDF generators - HTML yang akan di-convert jadi PDF di client side
-            $pdfExports = [
-                [
-                    'type' => 'laporan',
-                    'filename' => "00_Laporan_Profil_Risiko_Semester_{$semester}_{$tahun}.html",
-                    'title' => 'Laporan Profil Risiko'
-                ],
-                [
-                    'type' => 'kredit',
-                    'filename' => "01_Kertas_Kerja_Risiko_Kredit_Semester_{$semester}_{$tahun}.html",
-                    'title' => 'Kertas Kerja Risiko Kredit'
-                ],
-                [
-                    'type' => 'operasional',
-                    'filename' => "02_Kertas_Kerja_Risiko_Operasional_Semester_{$semester}_{$tahun}.html",
-                    'title' => 'Kertas Kerja Risiko Operasional'
-                ],
-                [
-                    'type' => 'kepatuhan',
-                    'filename' => "03_Kertas_Kerja_Risiko_Kepatuhan_Semester_{$semester}_{$tahun}.html",
-                    'title' => 'Kertas Kerja Risiko Kepatuhan'
-                ],
-                [
-                    'type' => 'likuiditas',
-                    'filename' => "04_Kertas_Kerja_Risiko_Likuiditas_Semester_{$semester}_{$tahun}.html",
-                    'title' => 'Kertas Kerja Risiko Likuiditas'
-                ]
-            ];
-
-            // Add Reputasi & Stratejik jika kategori A
-            $kategori = $periodeDetail['kategori'] ?? '';
-            if (strtoupper($kategori) === 'A') {
-                $pdfExports[] = [
-                    'type' => 'reputasi',
-                    'filename' => "05_Kertas_Kerja_Risiko_Reputasi_Semester_{$semester}_{$tahun}.html",
-                    'title' => 'Kertas Kerja Risiko Reputasi'
-                ];
-                $pdfExports[] = [
-                    'type' => 'stratejik',
-                    'filename' => "06_Kertas_Kerja_Risiko_Stratejik_Semester_{$semester}_{$tahun}.html",
-                    'title' => 'Kertas Kerja Risiko Stratejik'
-                ];
-            }
-
-            // Add Lembar Pernyataan
-            $pdfExports[] = [
-                'type' => 'lembar',
-                'filename' => "07_Lembar_Pernyataan_Semester_{$semester}_{$tahun}.html",
-                'title' => 'Lembar Pernyataan'
-            ];
-
-            // Generate HTML files for each PDF
-            foreach ($pdfExports as $export) {
-                $htmlContent = $this->generatePDFGeneratorHTML($export['type'], $export['title']);
-
-                if ($htmlContent) {
-                    $zip->addFromString($export['filename'], $htmlContent);
-                }
-            }
-
-            $zip->close();
-
-            // Clean up old files (optional - hapus file ZIP yang lebih dari 1 hari)
-            $this->cleanupOldZipFiles();
-
-            // Send file
-            return $this->response
-                ->setHeader('Content-Type', 'application/zip')
-                ->setHeader('Content-Disposition', 'attachment; filename="' . $zipFileName . '"')
-                ->setHeader('Content-Length', filesize($zipFilePath))
-                ->setBody(file_get_contents($zipFilePath));
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error exportAllPDFToZipv2: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal membuat ZIP: ' . $e->getMessage());
-        }
-    }
-
-    public function ajaxUpdateTtd()
-    {
-        if (strtolower($this->request->getMethod()) !== 'post') {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Invalid request method'
-            ]);
-        }
-
-        if (!$this->auth->check()) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Unauthorized access'
-            ]);
-        }
-
-        if (!$this->periodeId) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Periode belum dipilih'
-            ]);
-        }
-
-        try {
-            $id = $this->request->getPost('id');
-
-            if (empty($id)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'ID tidak ditemukan'
-                ]);
-            }
-
-            $tanggal = $this->request->getPost('tanggal');
-            $tanggalConverted = $this->convertDateFormat($tanggal);
-
-            $data = [
-                'dirut' => $this->request->getPost('dirut'),
-                'dirkep' => $this->request->getPost('dirkep'),
-                'pe' => $this->request->getPost('pe'),
-                'tanggal' => $tanggalConverted,
-                'lokasi' => $this->request->getPost('lokasi'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-
-            $requiredFields = ['dirut', 'dirkep', 'pe', 'tanggal', 'lokasi'];
-            foreach ($requiredFields as $field) {
-                if (empty($data[$field])) {
-                    return $this->response->setJSON([
-                        'success' => false,
-                        'message' => "Field {$field} harus diisi"
-                    ]);
-                }
-            }
-
-            if ($tanggalConverted === null) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Format tanggal tidak valid. Gunakan format dd/mm/yyyy'
-                ]);
-            }
-
-            $this->showprofilresikoModel->update($id, $data);
-
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Data berhasil disimpan',
-                'data' => [
-                    'dirut' => $data['dirut'],
-                    'dirkep' => $data['dirkep'],
-                    'pe' => $data['pe'],
-                    'tanggal' => $tanggal,
-                    'tanggal_db' => $tanggalConverted,
-                    'lokasi' => $data['lokasi']
-                ]
-            ]);
-
-        } catch (\Exception $e) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    public function ajaxAutoSaveField()
-    {
-        if (strtolower($this->request->getMethod()) !== 'post') {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Invalid request method'
-            ]);
-        }
-
-        if (!$this->auth->check()) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Unauthorized access'
-            ]);
-        }
-
-        try {
-            $id = $this->request->getPost('id');
-            $field = $this->request->getPost('field');
-            $value = $this->request->getPost('value');
-
-            if (empty($id) || empty($field)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Parameter tidak lengkap'
-                ]);
-            }
-
-            $allowedFields = ['dirut', 'dirkep', 'pe', 'tanggal', 'lokasi'];
-            if (!in_array($field, $allowedFields)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Field tidak valid'
-                ]);
-            }
-
-            if ($field === 'tanggal') {
-                $value = $this->convertDateFormat($value);
-
-                if ($value === null) {
-                    return $this->response->setJSON([
-                        'success' => false,
-                        'message' => 'Format tanggal tidak valid. Gunakan format dd/mm/yyyy'
-                    ]);
-                }
-            }
-
-            $data = [
-                $field => $value,
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-
-            $this->showprofilresikoModel->update($id, $data);
-
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Data berhasil disimpan',
-                'field' => $field,
-                'value' => $value
-            ]);
-
-        } catch (\Exception $e) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    public function ajaxSaveKesimpulan()
-    {
-        if (strtolower($this->request->getMethod()) !== 'post') {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Invalid request method'
-            ]);
-        }
-
-        if (!$this->auth->check()) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Unauthorized access'
-            ]);
-        }
-
-        try {
-            $id = $this->request->getPost('id');
-            $kesimpulan = $this->request->getPost('kesimpulan');
-
-            if (empty($id)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'ID tidak ditemukan'
-                ]);
-            }
-
-            $data = [
-                'kesimpulan' => $kesimpulan,
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-
-            $this->showprofilresikoModel->update($id, $data);
-
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Kesimpulan berhasil disimpan',
-                'data' => [
-                    'kesimpulan' => $kesimpulan
-                ]
-            ]);
-
-        } catch (\Exception $e) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Gagal menyimpan kesimpulan: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    /// PDF
     public function viewLembarPernyataan()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if ($redirect = $this->checkAuth())
             return $redirect;
@@ -2129,6 +1612,9 @@ class Showprofilresiko extends Controller
 
     public function exportLembarPernyataanJSON()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if ($redirect = $this->checkAuth())
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
@@ -2217,6 +1703,9 @@ class Showprofilresiko extends Controller
 
     public function viewLaporanProfilRisiko()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if ($redirect = $this->checkAuth())
             return $redirect;
@@ -2233,6 +1722,9 @@ class Showprofilresiko extends Controller
 
     public function exportLaporanProfilRisikoJSON()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if ($redirect = $this->checkAuth())
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
@@ -2596,6 +2088,9 @@ class Showprofilresiko extends Controller
 
     public function getRiskKeterangan($riskType, $faktorId)
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth
         if (!$this->auth->check()) {
             return $this->response->setJSON([
@@ -2798,6 +2293,9 @@ class Showprofilresiko extends Controller
 
     public function exportPDFGabunganKreditJSON()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if (!$this->auth->check()) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
@@ -3025,6 +2523,9 @@ class Showprofilresiko extends Controller
 
     public function exportPDFGabunganOperasionalJSON()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if (!$this->auth->check()) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
@@ -3239,6 +2740,9 @@ class Showprofilresiko extends Controller
 
     public function exportPDFGabunganKepatuhanJSON()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if (!$this->auth->check()) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
@@ -3444,6 +2948,9 @@ class Showprofilresiko extends Controller
 
     public function exportPDFGabunganLikuiditasJSON()
     {
+        if ($deny = $this->denyForeignPeriode()) {
+            return $deny;
+        }
         // Validasi auth dan periode
         if (!$this->auth->check()) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);

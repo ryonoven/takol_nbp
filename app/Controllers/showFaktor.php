@@ -2,402 +2,471 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\Controller;
-use App\Models\M_faktor;
-use App\Models\M_nilaifaktor;
-use App\Models\M_faktor2;
-use App\Models\M_nilaifaktor2;
-use App\Models\M_faktor3;
-use App\Models\M_nilaifaktor3;
-use App\Models\M_faktor4;
-use App\Models\M_nilaifaktor4;
-use App\Models\M_faktor5;
-use App\Models\M_nilaifaktor5;
-use App\Models\M_faktor6;
-use App\Models\M_nilaifaktor6;
-use App\Models\M_faktor7;
-use App\Models\M_nilaifaktor7;
-use App\Models\M_faktor8;
-use App\Models\M_nilaifaktor8;
-use App\Models\M_faktor9;
-use App\Models\M_nilaifaktor9;
-use App\Models\M_faktor10;
-use App\Models\M_nilaifaktor10;
-use App\Models\M_faktor11;
-use App\Models\M_nilaifaktor11;
-use App\Models\M_faktor12;
-use App\Models\M_nilaifaktor12;
-use App\Models\M_infobpr;
-use App\Models\M_periode;
-use App\Models\M_user;
+use App\Libraries\CoverDesign;
+use App\Libraries\CoverPdf;
+use App\Libraries\PdfNormalizer;
+use App\Libraries\TksBaseController;
 use App\Models\M_showfaktor;
-use Myth\Auth\Config\Services as AuthServices;
 
-class ShowFaktor extends Controller
+/**
+ * Ringkasan Self Assessment Tata Kelola (12 faktor GCG) — nilai/peringkat komposit, kesimpulan,
+ * lembar persetujuan, dokumen pendukung, cover, dan tombol Generate Laporan (Pdfself::generateFullReport).
+ *
+ * Kolom & lokasi file tetap (dipakai Pdfself, Showsemesteran, Tkstatakelola):
+ *  - showfaktor.nilaikomposit/peringkatkomposit disinkronkan saat halaman dibuka;
+ *  - pdf1/pdf2 di writable/uploads/pdf_attachments/, pdf3 (lembar persetujuan bertanda tangan) di writable/uploads/.
+ */
+class ShowFaktor extends TksBaseController
 {
-    protected $faktorModel;
-    protected $nilaiModel;
-    protected $faktor2Model;
-    protected $nilai2Model;
-    protected $faktor3Model;
-    protected $nilai3Model;
-    protected $faktor4Model;
-    protected $nilai4Model;
-    protected $faktor5Model;
-    protected $nilai5Model;
-    protected $faktor6Model;
-    protected $nilai6Model;
-    protected $faktor7Model;
-    protected $nilai7Model;
-    protected $faktor8Model;
-    protected $nilai8Model;
-    protected $faktor9Model;
-    protected $nilai9Model;
-    protected $faktor10Model;
-    protected $nilai10Model;
-    protected $faktor11Model;
-    protected $nilai11Model;
-    protected $faktor12Model;
-    protected $nilai12Model;
-    protected $showfaktorModel;
-    protected $infobprModel;
-    protected $periodeModel;
-    protected $userModel;
-    protected $session;
-    protected $auth;
-    protected $userKodebpr;
-    protected $userInGroupPE;
-    protected $userInGroupAdmin;
-    protected $userInGroupDekom;
-    protected $userInGroupDireksi;
+    protected const PERIODE_URL = '/Periodesemesteran';
+
+    /** no => [judul, halaman, id faktor ringkasan] — tabel nilaifaktor{no}, kolom faktor{no}id & nfaktor{no}. */
+    public const FACTORS = [
+        1 => ['Aspek Pemegang Saham', 'faktor', 12],
+        2 => ['Pelaksanaan Tugas, Tanggung Jawab, dan Wewenang Direksi', 'faktor2', 29],
+        3 => ['Pelaksanaan Tugas, Tanggung Jawab, dan Wewenang Dewan Komisaris', 'faktor3', 27],
+        4 => ['Kelengkapan dan Pelaksanaan Tugas Komite', 'faktor4', 12],
+        5 => ['Penanganan Benturan Kepentingan', 'faktor5', 6],
+        6 => ['Penerapan Fungsi Kepatuhan', 'faktor6', 10],
+        7 => ['Penerapan Fungsi Audit Intern', 'faktor7', 12],
+        8 => ['Penerapan Fungsi Audit Ekstern', 'faktor8', 6],
+        9 => ['Penerapan Manajemen Risiko dan Strategi Anti Fraud', 'faktor9', 18],
+        10 => ['Batas Maksimum Pemberian Kredit', 'faktor10', 6],
+        11 => ['Integritas Pelaporan dan Sistem Teknologi Informasi', 'faktor11', 13],
+        12 => ['Rencana Bisnis BPR', 'faktor12', 8],
+    ];
+
+    public const PERINGKAT = [1 => 'Sangat Baik', 2 => 'Baik', 3 => 'Cukup', 4 => 'Kurang Baik', 5 => 'Buruk'];
+
+    /** kolom => [label, maks karakter] */
+    public const TEXTS = [
+        'kesimpulan' => ['Kesimpulan', 2000],
+        'positifstruktur' => ['Struktur', 650],
+        'positifproses' => ['Proses', 650],
+        'positifhasil' => ['Hasil', 650],
+        'negatifstruktur' => ['Struktur', 650],
+        'negatifproses' => ['Proses', 650],
+        'negatifhasil' => ['Hasil', 650],
+    ];
+
+    /** kolom => [label, tipe input, maks] */
+    public const TTD = [
+        'dirut' => ['Nama Direktur Utama', 'text', 255],
+        'komut' => ['Nama Komisaris Utama', 'text', 255],
+        'tanggal' => ['Tanggal pelaporan', 'date', 10],
+        'lokasi' => ['Lokasi', 'text', 255],
+    ];
+
+    /** slot => [kolom, subfolder writable/, judul, normalisasi PDF 1.4] */
+    public const PDFS = [
+        1 => ['pdf1_filename', 'uploads/pdf_attachments/', 'Laporan pokok pelaksanaan tugas anggota Direksi yang membawahkan fungsi kepatuhan', true],
+        2 => ['pdf2_filename', 'uploads/pdf_attachments/', 'Laporan pelaksanaan dan pokok hasil audit intern', true],
+        3 => ['pdf3_filename', 'uploads/', 'Lembar persetujuan yang telah ditandatangani', false],
+    ];
+    public const MAX_PDF_KB = 2048;
+
+    protected M_showfaktor $showfaktorModel;
 
     public function __construct()
     {
-        $this->faktorModel = new M_faktor();
-        $this->nilaiModel = new M_nilaifaktor();
-        $this->faktor2Model = new M_faktor2();
-        $this->nilai2Model = new M_nilaifaktor2();
-        $this->faktor3Model = new M_faktor3();
-        $this->nilai3Model = new M_nilaifaktor3();
-        $this->faktor4Model = new M_faktor4();
-        $this->nilai4Model = new M_nilaifaktor4();
-        $this->faktor5Model = new M_faktor5();
-        $this->nilai5Model = new M_nilaifaktor5();
-        $this->faktor6Model = new M_faktor6();
-        $this->nilai6Model = new M_nilaifaktor6();
-        $this->faktor7Model = new M_faktor7();
-        $this->nilai7Model = new M_nilaifaktor7();
-        $this->faktor8Model = new M_faktor8();
-        $this->nilai8Model = new M_nilaifaktor8();
-        $this->faktor9Model = new M_faktor9();
-        $this->nilai9Model = new M_nilaifaktor9();
-        $this->faktor10Model = new M_faktor10();
-        $this->nilai10Model = new M_nilaifaktor10();
-        $this->faktor11Model = new M_faktor11();
-        $this->nilai11Model = new M_nilaifaktor11();
-        $this->faktor12Model = new M_faktor12();
-        $this->nilai12Model = new M_nilaifaktor12();
-        $this->infobprModel = new M_infobpr();
-        $this->periodeModel = new M_periode();
-        $this->userModel = new M_user();
+        parent::__construct();
         $this->showfaktorModel = new M_showfaktor();
-        $this->session = service('session');
-        $this->auth = service('authentication');
-
-        helper('text');
-
-        if ($this->auth->isLoggedIn()) {
-            $userId = $this->auth->id();
-            $user = $this->userModel->find($userId);
-            $this->userKodebpr = $user['kodebpr'] ?? null;
-
-            $authorize = AuthServices::authorization();
-            $this->userInGroupPE = $authorize->inGroup('pe', $userId);
-            $this->userInGroupAdmin = $authorize->inGroup('admin', $userId);
-            $this->userInGroupDekom = $authorize->inGroup('dekom', $userId);
-            $this->userInGroupDireksi = $authorize->inGroup('direksi', $userId);
-        } else {
-            $this->userKodebpr = null;
-            $this->userInGroupPE = false;
-            $this->userInGroupAdmin = false;
-            $this->userInGroupDekom = false;
-            $this->userInGroupDireksi = false;
-        }
     }
+
+    // ───────────────────────── data ─────────────────────────
+
+    /** Nilai terbaru 12 faktor (1 query): [no => ['v' => int|null, 'komut' => bool, 'dirut' => bool]]. */
+    protected function factorValues(): array
+    {
+        $sql = [];
+        $bind = [];
+        foreach (self::FACTORS as $no => [, , $fid]) {
+            $s = $no === 1 ? '' : (string) $no;
+            $sql[] = "(SELECT {$no} AS no, nfaktor{$s} AS v, accdekom, is_approved FROM nilaifaktor{$s}"
+                . " WHERE faktor{$no}id = ? AND kodebpr = ? AND periode_id = ? ORDER BY created_at DESC, id DESC LIMIT 1)";
+            array_push($bind, $fid, (string) $this->userKodebpr, (int) $this->periodeId);
+        }
+        $out = array_fill_keys(array_keys(self::FACTORS), ['v' => null, 'komut' => false, 'dirut' => false]);
+        foreach (db_connect()->query(implode(' UNION ALL ', $sql), $bind)->getResultArray() as $r) {
+            $out[(int) $r['no']] = [
+                'v' => is_numeric($r['v']) ? (int) $r['v'] : null,
+                'komut' => (int) $r['accdekom'] === 1,
+                'dirut' => (int) $r['is_approved'] === 1,
+            ];
+        }
+        return $out;
+    }
+
+    /**
+     * Nilai komposit (rumus lama dipertahankan): faktor 4 hanya dihitung bila ≠ 0; pembagi 12 bila seluruh faktor
+     * bernilai, selain itu 11 (faktor 4/komite tidak wajib); dibulatkan ke atas mulai ,5.
+     */
+    public static function composite(array $vals): int
+    {
+        $total = 0;
+        $n = 0;
+        foreach ($vals as $no => $f) {
+            if ($f['v'] === null || ($no === 4 && $f['v'] === 0)) {
+                continue;
+            }
+            $total += $f['v'];
+            $n++;
+        }
+        if ($n === 0) {
+            return 0;
+        }
+        $avg = $total / ($n < 12 ? 11 : 12);
+        return (int) (($avg - floor($avg)) >= 0.5 ? ceil($avg) : floor($avg));
+    }
+
+    public static function peringkat(int $nilai): string
+    {
+        return self::PERINGKAT[$nilai] ?? 'Nilai komposit tidak valid';
+    }
+
+    protected function row(): ?array
+    {
+        return $this->showfaktorModel->where(['kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId])
+            ->orderBy('id', 'ASC')->first();
+    }
+
+    /** Pastikan baris showfaktor ada (kolom NOT NULL terisi — aman untuk MySQL strict). */
+    protected function ensureRow(?array $row, array $set = []): int
+    {
+        if ($row) {
+            if ($set) {
+                $this->showfaktorModel->update($row['id'], $set);
+            }
+            return (int) $row['id'];
+        }
+        $this->showfaktorModel->insert($set + [
+            'kodebpr' => $this->userKodebpr, 'periode_id' => $this->periodeId,
+            'semester' => (string) ($this->periode['semester'] ?? ''), 'tahun' => (int) ($this->periode['tahun'] ?? date('Y')),
+            'nilaikomposit' => '0', 'peringkatkomposit' => self::peringkat(0),
+            'dirut' => '', 'komut' => '', 'lokasi' => '', 'cover' => '', 'pdf3_filename' => '',
+        ]);
+        return (int) $this->showfaktorModel->getInsertID();
+    }
+
+    private function pdfPath(int $slot, ?string $name): ?string
+    {
+        $name = basename((string) $name);
+        if ($name === '' || !isset(self::PDFS[$slot])) {
+            return null;
+        }
+        $p = WRITEPATH . self::PDFS[$slot][1] . $name;
+        return is_file($p) ? $p : null;
+    }
+
+    // ───────────────────────── halaman ─────────────────────────
 
     public function index()
     {
-        if (!$this->auth->check()) {
-            session()->set('redirect_url', current_url());
-            return redirect()->to('/login');
+        if ($r = $this->guardPage()) {
+            return $r;
+        }
+        $vals = $this->factorValues();
+        $nilai = self::composite($vals);
+        $peringkat = self::peringkat($nilai);
+
+        // Sinkron nilai komposit ke showfaktor (dibaca laporan lain) — tulis hanya bila berubah
+        $row = $this->row();
+        if (!$row || (string) $row['nilaikomposit'] !== (string) $nilai || $row['peringkatkomposit'] !== $peringkat) {
+            $this->ensureRow($row, ['nilaikomposit' => (string) $nilai, 'peringkatkomposit' => $peringkat]);
+            $row = $this->row();
         }
 
-        if (!session('active_periode')) {
-            return redirect()->to('/periode')->with('error', 'Silakan pilih periode aktif terlebih dahulu.');
+        $files = [];
+        foreach (self::PDFS as $slot => [$col]) {
+            $p = $this->pdfPath($slot, $row[$col] ?? null);
+            $files[$slot] = $p ? ['size' => (int) filesize($p), 'time' => (int) filemtime($p)] : null;
         }
 
-        $periodeId = session('active_periode');
-        $kodebpr = $this->userKodebpr;
-
-        $showfaktor = $this->showfaktorModel
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
-
-        $id = $showfaktor['id'] ?? null;
-
-        $allShowFaktor = $this->showfaktorModel->findAll();
-
-        log_message('debug', 'ShowFaktor: User ID: ' . $this->auth->id() . ', Kode BPR: ' . $kodebpr . ', Periode ID: ' . $periodeId);
-
-        if (!$kodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid.');
-        }
-
-        $periodeDetail = $this->periodeModel->find($periodeId);
-        $bprData = $this->infobprModel->getBprByKode($kodebpr);
-
-        $factors = [
-            [
-                'name' => 'Faktor 1: Aspek Pemegang Saham',
-                'link' => base_url('faktor') . '?modal_nilai=' . 12,
-                'nfaktor' => $this->nilaiModel->where('faktor1id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor'] ?? 'N/A',
-                'accdekom' => $this->nilaiModel->where('faktor1id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilaiModel->where('faktor1id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 2: Pelaksanaan Tugas, Tanggung Jawab, dan Wewenang Direksi',
-                'link' => base_url('faktor2') . '?modal_nilai=' . 29,
-                'nfaktor2' => $this->nilai2Model->where('faktor2id', 29)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor2'] ?? 'N/A',
-                'accdekom' => $this->nilai2Model->where('faktor2id', 29)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai2Model->where('faktor2id', 29)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 3: Pelaksanaan Tugas, Tanggung Jawab, dan Wewenang Dewan Komisaris',
-                'link' => base_url('faktor3') . '?modal_nilai=' . 27,
-                'nfaktor3' => $this->nilai3Model->where('faktor3id', 27)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor3'] ?? 'N/A',
-                'accdekom' => $this->nilai3Model->where('faktor3id', 27)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai3Model->where('faktor3id', 27)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 4: Kelengkapan dan Pelaksanaan Tugas Komite',
-                'link' => base_url('faktor4') . '?modal_nilai=' . 12,
-                'nfaktor4' => $this->nilai4Model->where('faktor4id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor4'] ?? 'N/A',
-                'accdekom' => $this->nilai4Model->where('faktor4id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai4Model->where('faktor4id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 5: Penanganan Benturan Kepentingan',
-                'link' => base_url('faktor5') . '?modal_nilai=' . 6,
-                'nfaktor5' => $this->nilai5Model->where('faktor5id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor5'] ?? 'N/A',
-                'accdekom' => $this->nilai5Model->where('faktor5id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai5Model->where('faktor5id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 6: Penerapan Fungsi Kepatuhan',
-                'link' => base_url('faktor6') . '?modal_nilai=' . 10,
-                'nfaktor6' => $this->nilai6Model->where('faktor6id', 10)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor6'] ?? 'N/A',
-                'accdekom' => $this->nilai6Model->where('faktor6id', 10)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai6Model->where('faktor6id', 10)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 7: Penerapan Fungsi Audit Intern',
-                'link' => base_url('faktor7') . '?modal_nilai=' . 12,
-                'nfaktor7' => $this->nilai7Model->where('faktor7id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor7'] ?? 'N/A',
-                'accdekom' => $this->nilai7Model->where('faktor7id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai7Model->where('faktor7id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 8: Penerapan Fungsi Audit Ekstern',
-                'link' => base_url('faktor8') . '?modal_nilai=' . 6,
-                'nfaktor8' => $this->nilai8Model->where('faktor8id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor8'] ?? 'N/A',
-                'accdekom' => $this->nilai8Model->where('faktor8id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai8Model->where('faktor8id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 9: Penerapan Manajemen Risiko dan Strategi Anti Fraud',
-                'link' => base_url('faktor9') . '?modal_nilai=' . 18,
-                'nfaktor9' => $this->nilai9Model->where('faktor9id', 18)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor9'] ?? 'N/A',
-                'accdekom' => $this->nilai9Model->where('faktor9id', 18)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai9Model->where('faktor9id', 18)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 10: Batas Maksimum Pemberian Kredit',
-                'link' => base_url('faktor10') . '?modal_nilai=' . 6,
-                'nfaktor10' => $this->nilai10Model->where('faktor10id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor10'] ?? 'N/A',
-                'accdekom' => $this->nilai10Model->where('faktor10id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai10Model->where('faktor10id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 11: Integritas Pelaporan dan Sistem Teknologi Informasi',
-                'link' => base_url('faktor11') . '?modal_nilai=' . 13,
-                'nfaktor11' => $this->nilai11Model->where('faktor11id', 13)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor11'] ?? 'N/A',
-                'accdekom' => $this->nilai11Model->where('faktor11id', 13)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai11Model->where('faktor11id', 13)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-            [
-                'name' => 'Faktor 12: Rencana Bisnis BPR',
-                'link' => base_url('faktor12') . '?modal_nilai=' . 8,
-                'nfaktor12' => $this->nilai12Model->where('faktor12id', 8)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor12'] ?? 'N/A',
-                'accdekom' => $this->nilai12Model->where('faktor12id', 8)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['accdekom'] ?? null,
-                'is_approved' => $this->nilai12Model->where('faktor12id', 8)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['is_approved'] ?? null,
-            ],
-        ];
-
-        $totalNilai = 0;
-        $validCount = 0;
-        $validFactors = 12;
-
-        foreach ($factors as $factor) {
-            if (isset($factor['nfaktor4']) && is_numeric($factor['nfaktor4']) && $factor['nfaktor4'] != 'N/A' && $factor['nfaktor4'] != 0 && $factor['nfaktor4'] !== null) {
-                $totalNilai += $factor['nfaktor4'];
-                $validCount++;
-            }
-
-            if (isset($factor['nfaktor']) && is_numeric($factor['nfaktor']) && $factor['nfaktor'] != 'N/A') {
-                $totalNilai += $factor['nfaktor'];
-                $validCount++;
-            } elseif (isset($factor['nfaktor2']) && is_numeric($factor['nfaktor2']) && $factor['nfaktor2'] != 'N/A') {
-                $totalNilai += $factor['nfaktor2'];
-                $validCount++;
-            } else if (isset($factor['nfaktor3']) && is_numeric($factor['nfaktor3']) && $factor['nfaktor3'] != 'N/A') {
-                $totalNilai += $factor['nfaktor3'];
-                $validCount++;
-            } else if (isset($factor['nfaktor5']) && is_numeric($factor['nfaktor5']) && $factor['nfaktor5'] != 'N/A') {
-                $totalNilai += $factor['nfaktor5'];
-                $validCount++;
-            } else if (isset($factor['nfaktor6']) && is_numeric($factor['nfaktor6']) && $factor['nfaktor6'] != 'N/A') {
-                $totalNilai += $factor['nfaktor6'];
-                $validCount++;
-            } else if (isset($factor['nfaktor7']) && is_numeric($factor['nfaktor7']) && $factor['nfaktor7'] != 'N/A') {
-                $totalNilai += $factor['nfaktor7'];
-                $validCount++;
-            } else if (isset($factor['nfaktor8']) && is_numeric($factor['nfaktor8']) && $factor['nfaktor8'] != 'N/A') {
-                $totalNilai += $factor['nfaktor8'];
-                $validCount++;
-            } else if (isset($factor['nfaktor9']) && is_numeric($factor['nfaktor9']) && $factor['nfaktor9'] != 'N/A') {
-                $totalNilai += $factor['nfaktor9'];
-                $validCount++;
-            } else if (isset($factor['nfaktor10']) && is_numeric($factor['nfaktor10']) && $factor['nfaktor10'] != 'N/A') {
-                $totalNilai += $factor['nfaktor10'];
-                $validCount++;
-            } else if (isset($factor['nfaktor11']) && is_numeric($factor['nfaktor11']) && $factor['nfaktor11'] != 'N/A') {
-                $totalNilai += $factor['nfaktor11'];
-                $validCount++;
-            } else if (isset($factor['nfaktor12']) && is_numeric($factor['nfaktor12']) && $factor['nfaktor12'] != 'N/A') {
-                $totalNilai += $factor['nfaktor12'];
-                $validCount++;
-            }
-        }
-
-        $nilaikomposit = $validCount > 0 ? $totalNilai / ($validFactors - ($validFactors === 12 && $validCount < 12 ? 1 : 0)) : 0;
-
-        $nilaikomposit = ($nilaikomposit - floor($nilaikomposit)) >= 0.5 ? ceil($nilaikomposit) : floor($nilaikomposit);
-
-        $peringkatkomposit = $this->hitungPeringkatKomposit($nilaikomposit);
-
-        $colorClass = $this->getColorClassForPeringkat($peringkatkomposit);
-
-        foreach ($factors as $index => $factor) {
-            $factor['accdekom_status'] = isset($factor['accdekom']) && $factor['accdekom'] == 1 ? 'Telah disetujui oleh Komisaris Utama' : 'Belum disetujui oleh Komisaris Utama';
-            $factor['direksi_status'] = isset($factor['is_approved']) && $factor['is_approved'] == 1 ? 'Telah disetujui oleh Direktur Utama' : 'Belum disetujui oleh Direktur Utama';
-
-            $factors[$index] = $factor;
-        }
-
-        $data = [
+        $sem = (int) ($this->periode['semester'] ?? 0);
+        return $this->render('Laporansemester/Tatakelola/showfaktor', [
             'judul' => 'Self Assessment Tata Kelola',
-            'namabpr' => $bprData['namabpr'] ?? 'Nama BPR Tidak Ditemukan',
-            'periode_semester' => $periodeDetail['semester'] ?? 'N/A',
-            'periode_tahun' => $periodeDetail['tahun'] ?? 'N/A',
-            'factors' => $factors,
-            'nilaikomposit' => $nilaikomposit,
-            'peringkatkomposit' => $peringkatkomposit,
-            'colorClass' => $colorClass,
-            'showfaktor' => $showfaktor,
-            'allShowFaktor' => $allShowFaktor
-        ];
-
-        $showFaktorModel = new M_showfaktor();
-        $showFaktorModel->simpanShowFaktor([
-            'kodebpr' => $kodebpr,
-            'periode_id' => $periodeId,
-            'nilaikomposit' => $nilaikomposit,
-            'peringkatkomposit' => $peringkatkomposit,
-            'semester' => $periodeDetail['semester'] ?? 'N/A',
-            'tahun' => $periodeDetail['tahun'] ?? 'N/A',
+            'bprData' => $this->infobprModel->getBprByKode($this->userKodebpr) ?? [],
+            'periodeLabel' => 'Semester ' . ($sem ?: esc((string) ($this->periode['semester'] ?? '-'))) . ' Tahun ' . esc((string) ($this->periode['tahun'] ?? '')),
+            'vals' => $vals,
+            'nilai' => $nilai,
+            'peringkat' => $peringkat,
+            'row' => $row ?? [],
+            'files' => $files,
+            'covers' => CoverDesign::choices(),
+            'customCovers' => CoverDesign::customList((string) $this->userKodebpr),
+            'coverOk' => $this->validCover((string) ($row['cover'] ?? '')),
+            'canEdit' => $this->canEdit(),
         ]);
-
-        return view('templates/v_header', $data)
-            . view('templates/v_sidebar')
-            . view('templates/v_topbar')
-            . view('Laporansemester/Tatakelola/showfaktor', $data)
-            . view('templates/v_footer');
     }
 
-    private function hitungPeringkatKomposit($nilaikomposit)
+    // ───────────────────────── aksi (JSON) ─────────────────────────
+
+    private function text(string $key): string
     {
-        if ($nilaikomposit == 1) {
-            return 'Sangat Baik';
-        } elseif ($nilaikomposit == 2) {
-            return 'Baik';
-        } elseif ($nilaikomposit == 3) {
-            return 'Cukup';
-        } elseif ($nilaikomposit == 4) {
-            return 'Kurang Baik';
-        } elseif ($nilaikomposit == 5) {
-            return 'Buruk';
-        } else {
-            return 'Nilai komposit tidak valid';
+        return trim(str_replace("\r\n", "\n", (string) $this->request->getPost($key)));
+    }
+
+    public function saveText()
+    {
+        if ($r = $this->guardPost()) {
+            return $r;
         }
-    }
-
-    private function getColorClassForPeringkat($peringkatkomposit)
-    {
-        switch ($peringkatkomposit) {
-            case 'Sangat Baik':
-                return 'text-success';
-            case 'Baik':
-                return 'text-info';
-            case 'Cukup':
-                return 'text-warning';
-            case 'Kurang Baik':
-                return 'text-danger';
-            case 'Buruk':
-                return 'text-dark';
-            default:
-                return 'text-muted';
+        $set = $errors = [];
+        foreach (self::TEXTS as $k => [$lbl, $max]) {
+            $v = $this->text($k);
+            if (mb_strlen($v) > $max) {
+                $errors[$k] = "Maksimal {$max} karakter.";
+            }
+            $set[$k] = $v;
         }
+        if ($errors) {
+            return $this->json(422, ['ok' => false, 'message' => 'Periksa kembali isian.', 'errors' => $errors]);
+        }
+        $this->ensureRow($this->row(), $set);
+        return $this->json(200, ['ok' => true, 'message' => 'Kesimpulan tersimpan.']);
     }
 
-    public function update()
+    public function saveTtd()
     {
-        $id = $this->request->getPost('id');
-        $data = [
-            'kesimpulan' => $this->request->getPost('kesimpulan'),
-            'positifstruktur' => $this->request->getPost('positifstruktur'),
-            'positifproses' => $this->request->getPost('positifproses'),
-            'positifhasil' => $this->request->getPost('positifhasil'),
-            'negatifstruktur' => $this->request->getPost('negatifstruktur'),
-            'negatifproses' => $this->request->getPost('negatifproses'),
-            'negatifhasil' => $this->request->getPost('negatifhasil')
-        ];
-        $this->showfaktorModel->update($id, $data);
-        return redirect()->to(base_url('ShowFaktor'))->with('message', 'Data berhasil diupdate!');
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $set = $errors = [];
+        foreach (self::TTD as $k => [$lbl, $type, $max]) {
+            $v = $this->text($k);
+            if ($type === 'date') {
+                if ($v !== '' && !(preg_match('/^\d{4}-\d{2}-\d{2}$/', $v) && checkdate((int) substr($v, 5, 2), (int) substr($v, 8, 2), (int) substr($v, 0, 4)))) {
+                    $errors[$k] = 'Tanggal tidak valid.';
+                }
+                $set[$k] = $v === '' ? null : $v;
+                continue;
+            }
+            if (mb_strlen($v) > $max) {
+                $errors[$k] = "Maksimal {$max} karakter.";
+            }
+            $set[$k] = $v;
+        }
+        if ($errors) {
+            return $this->json(422, ['ok' => false, 'message' => 'Periksa kembali isian.', 'errors' => $errors]);
+        }
+        $this->ensureRow($this->row(), $set);
+        return $this->json(200, ['ok' => true, 'reload' => true, 'message' => 'Lembar persetujuan tersimpan.']);
     }
 
-    public function updatettd()
+    // ───────────────────────── cover laporan ─────────────────────────
+
+    /** Nilai cover sah untuk BPR ini: template bawaan atau desain unggahan milik BPR sendiri. */
+    private function validCover(string $cover): bool
     {
-        $id = $this->request->getPost('id');
-        $data = [
-            'dirut' => $this->request->getPost('dirut'),
-            'komut' => $this->request->getPost('komut'),
-            'tanggal' => $this->request->getPost('tanggal'),
-            'lokasi' => $this->request->getPost('lokasi')
-        ];
-        $this->showfaktorModel->update($id, $data);
-        return redirect()->to(base_url('ShowFaktor'))->with('message', 'Data berhasil diupdate!');
+        if (isset(CoverDesign::templates()[$cover])) {
+            return true;
+        }
+        $c = CoverDesign::parseCustom($cover);
+        return $c && $c[0] === (string) $this->userKodebpr && is_file(CoverDesign::customDir($c[0]) . $c[1]);
     }
+
+    public function saveCover()
+    {
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $cover = (string) $this->request->getPost('cover');
+        if (!$this->validCover($cover)) {
+            return $this->json(422, ['ok' => false, 'message' => 'Cover tidak valid.']);
+        }
+        if (($c = CoverDesign::parseCustom($cover)) && $this->request->getPost('settings') !== null) {
+            $s = CoverDesign::cleanSettings((array) $this->request->getPost('settings')
+                + ['name' => CoverDesign::customSettings($c[0], $c[1])['name']]);
+            file_put_contents(CoverDesign::customDir($c[0]) . $c[1] . '.json', json_encode($s));
+        }
+        $this->ensureRow($this->row(), ['cover' => $cover]);
+        return $this->json(200, ['ok' => true, 'message' => 'Cover laporan disimpan.']);
+    }
+
+    /** Unggah desain cover sendiri (JPG/PNG) — disimpan per BPR dan langsung dipilih. */
+    public function uploadCover()
+    {
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $file = $this->request->getFile('img');
+        if (!$file || !$file->isValid()) {
+            return $this->json(422, ['ok' => false, 'message' => 'File belum dipilih atau gagal diunggah.']);
+        }
+        if ($file->getSize() > CoverDesign::MAX_UPLOAD_KB * 1024) {
+            return $this->json(422, ['ok' => false, 'message' => 'Ukuran file maksimal ' . (CoverDesign::MAX_UPLOAD_KB / 1024) . ' MB.']);
+        }
+        if (count(CoverDesign::customList((string) $this->userKodebpr)) >= 12) {
+            return $this->json(422, ['ok' => false, 'message' => 'Maksimal 12 desain sendiri. Hapus desain yang tidak dipakai terlebih dahulu.']);
+        }
+        $name = CoverDesign::storeUpload($file->getTempName(), (string) $this->userKodebpr);
+        if ($name[0] === '!') {
+            return $this->json(422, ['ok' => false, 'message' => substr($name, 1)]);
+        }
+        $label = mb_substr(trim(pathinfo($file->getClientName(), PATHINFO_FILENAME)), 0, 60) ?: 'Desain sendiri';
+        $dir = CoverDesign::customDir((string) $this->userKodebpr);
+        file_put_contents($dir . $name . '.json', json_encode(CoverDesign::cleanSettings(['name' => $label])));
+        $this->ensureRow($this->row(), ['cover' => 'custom:' . $this->userKodebpr . '/' . $name]);
+        return $this->json(200, ['ok' => true, 'reload' => true, 'message' => 'Desain diunggah dan dipilih. Atur posisi teks & logo bila perlu.']);
+    }
+
+    /** Hapus desain sendiri — ditolak bila masih dipakai pada periode mana pun milik BPR ini. */
+    public function deleteCover()
+    {
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $cover = (string) $this->request->getPost('cover');
+        $c = CoverDesign::parseCustom($cover);
+        if (!$c || $c[0] !== (string) $this->userKodebpr) {
+            return $this->json(422, ['ok' => false, 'message' => 'Desain tidak valid.']);
+        }
+        $used = $this->showfaktorModel->select('periode_id')->where(['kodebpr' => $this->userKodebpr, 'cover' => $cover])->findAll();
+        if ($used) {
+            $sem = $this->periodeModel->select('semester, tahun')->whereIn('id', array_column($used, 'periode_id'))->findAll();
+            $lbl = implode(', ', array_map(static fn($p) => 'Semester ' . $p['semester'] . ' ' . $p['tahun'], $sem)) ?: 'periode lain';
+            return $this->json(422, ['ok' => false, 'message' => 'Desain masih dipakai pada laporan ' . $lbl . '. Pilih cover lain terlebih dahulu.']);
+        }
+        $base = CoverDesign::customDir($c[0]) . $c[1];
+        foreach ([$base, $base . '.json', substr($base, 0, -4) . '_t.jpg'] as $p) {
+            if (is_file($p)) {
+                @unlink($p);
+            }
+        }
+        return $this->json(200, ['ok' => true, 'reload' => true, 'message' => 'Desain dihapus.']);
+    }
+
+    /** Gambar desain sendiri milik BPR (thumbnail atau ukuran penuh). */
+    public function coverImage($file = '', $size = 't')
+    {
+        if (!$this->auth->check() || !$this->userKodebpr) {
+            return $this->response->setStatusCode(403);
+        }
+        $file = basename((string) $file);
+        if (!preg_match('/^[a-f0-9]{16}\.jpg$/', $file)) {
+            return $this->response->setStatusCode(404);
+        }
+        $p = CoverDesign::customDir((string) $this->userKodebpr) . ($size === 'full' ? $file : substr($file, 0, -4) . '_t.jpg');
+        if (!is_file($p)) {
+            return $this->response->setStatusCode(404);
+        }
+        return $this->response->setHeader('Content-Type', 'image/jpeg')->setHeader('Cache-Control', 'private, max-age=86400')
+            ->setBody(file_get_contents($p));
+    }
+
+    /** Pratinjau cover (1 halaman PDF) dengan data BPR & periode aktif; pengaturan desain sendiri dapat dicoba sebelum disimpan. */
+    public function coverPreview()
+    {
+        if ($r = $this->guardPage()) {
+            return $r;
+        }
+        $cover = (string) ($this->request->getGet('cover') ?? ($this->row()['cover'] ?? ''));
+        if (!$this->validCover($cover)) {
+            $cover = 'tpl:korporat';
+        }
+        $settings = CoverDesign::parseCustom($cover) && is_array($this->request->getGet('settings')) ? $this->request->getGet('settings') : null;
+        $bpr = $this->infobprModel->getBprByKode($this->userKodebpr) ?? [];
+        $pdf = new CoverPdf();
+        $pdf->SetTitle('Pratinjau Cover');
+        $pdf->AddPage();
+        $pdf->renderCover([
+            'namabpr' => $bpr['namabpr'] ?? '', 'nomor' => $bpr['nomor'] ?? '', 'email' => $bpr['email'] ?? '', 'webbpr' => $bpr['webbpr'] ?? '',
+            'semester' => $this->periode['semester'] ?? 1, 'tahun' => $this->periode['tahun'] ?? date('Y'),
+            'logo' => !empty($bpr['logo']) ? FCPATH . 'asset/img/' . basename($bpr['logo']) : '',
+            'cover' => $cover, 'cover_settings' => $settings,
+        ]);
+        return $this->response->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'inline; filename="Pratinjau-Cover.pdf"')
+            ->setBody($pdf->Output('S'));
+    }
+
+    public function uploadPdf()
+    {
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $slot = (int) $this->request->getPost('slot');
+        if (!isset(self::PDFS[$slot])) {
+            return $this->json(400, ['ok' => false, 'message' => 'Jenis dokumen tidak valid.']);
+        }
+        [$col, $sub, , $normalize] = self::PDFS[$slot];
+        $file = $this->request->getFile('pdf');
+        if (!$file || !$file->isValid()) {
+            return $this->json(422, ['ok' => false, 'message' => 'File belum dipilih atau gagal diunggah.']);
+        }
+        if ($file->getSize() > self::MAX_PDF_KB * 1024) {
+            return $this->json(422, ['ok' => false, 'message' => 'Ukuran file maksimal ' . (self::MAX_PDF_KB / 1024) . ' MB.']);
+        }
+        $fh = @fopen($file->getTempName(), 'rb');
+        $magic = $fh ? fread($fh, 5) : '';
+        if ($fh) {
+            fclose($fh);
+        }
+        if (strtolower($file->getClientExtension()) !== 'pdf' || $magic !== '%PDF-') {
+            return $this->json(422, ['ok' => false, 'message' => 'File harus berupa PDF.']);
+        }
+
+        $dir = WRITEPATH . $sub;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0775, true);
+        }
+        $name = $file->getRandomName();
+        $file->move($dir, $name);
+        if ($normalize) {
+            $norm = (new PdfNormalizer())->normalizeToV14($dir . $name);
+            if ($norm) {
+                rename($norm, $dir . $name);
+            }
+        }
+
+        $row = $this->row();
+        $old = $this->pdfPath($slot, $row[$col] ?? null);
+        $this->ensureRow($row, [$col => $name]);
+        if ($old) {
+            @unlink($old);
+        }
+        return $this->json(200, ['ok' => true, 'reload' => true, 'message' => 'Dokumen berhasil diunggah.']);
+    }
+
+    public function deletePdf()
+    {
+        if ($r = $this->guardPost()) {
+            return $r;
+        }
+        $slot = (int) $this->request->getPost('slot');
+        if (!isset(self::PDFS[$slot])) {
+            return $this->json(400, ['ok' => false, 'message' => 'Jenis dokumen tidak valid.']);
+        }
+        $col = self::PDFS[$slot][0];
+        $row = $this->row();
+        if ($row && ($p = $this->pdfPath($slot, $row[$col] ?? null))) {
+            @unlink($p);
+        }
+        if ($row) {
+            $this->showfaktorModel->update($row['id'], [$col => $slot === 3 ? '' : null]);
+        }
+        return $this->json(200, ['ok' => true, 'reload' => true, 'message' => 'Dokumen dihapus.']);
+    }
+
+    /** Tampilkan dokumen milik BPR & periode aktif (slot 1–3). */
+    public function downloadPdf($slot = 0)
+    {
+        if ($r = $this->guardPage()) {
+            return $r;
+        }
+        $slot = (int) $slot;
+        $row = isset(self::PDFS[$slot]) ? $this->row() : null;
+        $p = $row ? $this->pdfPath($slot, $row[self::PDFS[$slot][0]] ?? null) : null;
+        if (!$p) {
+            return $this->response->setStatusCode(404)->setBody('Dokumen tidak ditemukan.');
+        }
+        return $this->response->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'inline; filename="Dokumen-' . $slot . '.pdf"')
+            ->setHeader('X-Content-Type-Options', 'nosniff')
+            ->setBody(file_get_contents($p));
+    }
+
+    // ───────────────────────── cetak & ekspor ─────────────────────────
 
     private function wrapByWordCount(string $text, int $maxWords): array
     {
@@ -411,28 +480,12 @@ class ShowFaktor extends Controller
 
     public function cetakPengesahan()
     {
-        if (!$this->auth->check()) {
-            return redirect()->to('/login');
+        if ($r = $this->guardPage()) {
+            return $r;
         }
-
-        if (!session('active_periode')) {
-            return redirect()->to('/periode')->with('error', 'Silakan pilih periode aktif terlebih dahulu.');
-        }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        if (!$kodebpr) {
-            return redirect()->back()->with('error', 'User tidak memiliki kode BPR yang valid.');
-        }
-
-        $showfaktor = $this->showfaktorModel
-            ->select('dirut, komut, tanggal, lokasi')
-            ->where(['kodebpr' => $kodebpr, 'periode_id' => $periodeId])
-            ->first();
-
-        $bprData = $this->infobprModel->getBprByKode($kodebpr);
-        $periodeDetail = $this->periodeModel->find($periodeId);
+        $showfaktor = $this->row() ?? [];
+        $bprData = $this->infobprModel->getBprByKode($this->userKodebpr);
+        $periodeDetail = $this->periode;
 
         $namabpr = $bprData['namabpr'] ?? 'Nama BPR Tidak Ditemukan';
         $alamat = $bprData['alamat'] ?? '';
@@ -450,25 +503,12 @@ class ShowFaktor extends Controller
         $lokasi = $showfaktor['lokasi'] ?? '';
         $tanggalRaw = $showfaktor['tanggal'] ?? '';
 
-        $bulanIndo = [
-            1 => 'Januari',
-            2 => 'Februari',
-            3 => 'Maret',
-            4 => 'April',
-            5 => 'Mei',
-            6 => 'Juni',
-            7 => 'Juli',
-            8 => 'Agustus',
-            9 => 'September',
-            10 => 'Oktober',
-            11 => 'November',
-            12 => 'Desember',
-        ];
+        $bulanIndo = [1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni', 7 => 'Juli',
+            8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'];
 
         $tanggalFormatted = '';
-        if (!empty($tanggalRaw)) {
+        if (!empty($tanggalRaw) && $tanggalRaw !== '0000-00-00') {
             try {
-                // Data tanggal disimpan dengan format Y/m/d (lihat flatpickr di view)
                 $dt = \DateTime::createFromFormat('Y/m/d', $tanggalRaw) ?: new \DateTime($tanggalRaw);
                 $tanggalFormatted = $dt->format('d') . ' ' . $bulanIndo[(int) $dt->format('n')] . ' ' . $dt->format('Y');
             } catch (\Exception $e) {
@@ -484,7 +524,6 @@ class ShowFaktor extends Controller
         // ===== HEADER: logo kiri, info BPR kanan (rata kanan) =====
         $headerTop = $pdf->GetY();
         $logoSize = 18;
-
         $logoPath = $logo ? FCPATH . 'asset/img/' . $logo : null;
         if ($logoPath && file_exists($logoPath)) {
             $pdf->Image($logoPath, 15, $headerTop, $logoSize);
@@ -502,139 +541,55 @@ class ShowFaktor extends Controller
                 $pdf->Cell(180, 4.5, $alamatLine, 0, 2, 'R');
             }
         }
-
         $kontak = array_filter([$webbpr, $email, $nomor]);
         if ($kontak) {
             $pdf->SetX(15);
             $pdf->Cell(180, 4.5, implode(' | ', $kontak), 0, 1, 'R');
         }
 
-        $textBottom = $pdf->GetY();
-        $pdf->SetY(max($textBottom, $logoBottom) + 3);
+        $pdf->SetY(max($pdf->GetY(), $logoBottom) + 3);
         $pdf->SetDrawColor(0, 0, 0);
         $pdf->Line(15, $pdf->GetY(), 195, $pdf->GetY());
         $pdf->Ln(5);
 
         // ===== JUDUL =====
         $pdf->SetFont('Arial', 'B', 13);
-        $pdf->MultiCell(
-            0,
-            6,
-            "LEMBAR PERSETUJUAN DAN PENANDATANGANAN\nLAPORAN PELAKSANAAN SELF ASSESSMENT\nTATA KELOLA (GOOD CORPORATE GOVERNANCE)",
-            0,
-            'C'
-        );
+        $pdf->MultiCell(0, 6, "LEMBAR PERSETUJUAN DAN PENANDATANGANAN\nLAPORAN PELAKSANAAN SELF ASSESSMENT\nTATA KELOLA (GOOD CORPORATE GOVERNANCE)", 0, 'C');
         $pdf->Ln(8);
 
         // ===== PERNYATAAN =====
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(0, 6, 'Dengan ini kami menyatakan bahwa:', 0, 1, 'C');
         $pdf->Ln(4);
-
         $pdf->SetFont('Arial', 'B', 11);
-        $pdf->MultiCell(
-            0,
-            6,
-            "Laporan Pelaksanaan Self Assessment Tata Kelola\n{$namabpr} Semester {$semNum} Tahun {$tahun}",
-            0,
-            'C'
-        );
+        $pdf->MultiCell(0, 6, "Laporan Pelaksanaan Self Assessment Tata Kelola\n{$namabpr} Semester {$semNum} Tahun {$tahun}", 0, 'C');
         $pdf->Ln(6);
-
         $pdf->SetFont('Arial', '', 10);
-        $pdf->MultiCell(
-            0,
-            5.5,
-            "Telah disusun mengacu pada ketentuan Peraturan Otoritas Jasa Keuangan mengenai Penerapan Tata Kelola bagi Bank Perekonomian Rakyat.",
-            0,
-            'J'
-        );
+        $pdf->MultiCell(0, 5.5, 'Telah disusun mengacu pada ketentuan Peraturan Otoritas Jasa Keuangan mengenai Penerapan Tata Kelola bagi Bank Perekonomian Rakyat.', 0, 'J');
         $pdf->Ln(16);
 
         // ===== LOKASI, TANGGAL =====
         $pdf->SetFont('Arial', 'B', 10);
-        $lokasiTanggal = trim($lokasi . ($tanggalFormatted ? ', ' . $tanggalFormatted : ''));
-        $pdf->Cell(0, 6, $lokasiTanggal, 0, 1, 'C');
+        $pdf->Cell(0, 6, trim($lokasi . ($tanggalFormatted ? ', ' . $tanggalFormatted : '')), 0, 1, 'C');
         $pdf->Ln(20);
 
-        // ===== TANDA TANGAN: Direktur Utama (kiri) & Komisaris Utama (kanan) =====
+        // ===== TANDA TANGAN =====
         $colWidth = 90;
-
         $pdf->SetFont('Arial', 'BU', 10);
         $pdf->Cell($colWidth, 6, $dirut, 0, 0, 'C');
         $pdf->Cell($colWidth, 6, $komut, 0, 1, 'C');
-
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell($colWidth, 6, 'Direktur Utama', 0, 0, 'C');
         $pdf->Cell($colWidth, 6, 'Komisaris Utama', 0, 1, 'C');
 
-        $filenameSafe = preg_replace('/[^A-Za-z0-9_-]/', '_', $namabpr);
-        $filename = "Lembar-Pengesahan-GCG-{$filenameSafe}.pdf";
-
+        $filename = 'Lembar-Pengesahan-GCG-' . preg_replace('/[^A-Za-z0-9_-]/', '_', $namabpr) . '.pdf';
         return $this->response
             ->setHeader('Content-Type', 'application/pdf')
             ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
             ->setBody($pdf->Output('S'));
     }
 
-    public function updatecover()
-    {
-        $id = $this->request->getPost('id');
-        $data = [
-            'cover' => $this->request->getPost('cover')
-        ];
-
-        if (!empty($id)) {
-            $this->showfaktorModel->update($id, $data);
-
-            return redirect()->to(base_url('ShowFaktor'))->with('message', 'Data berhasil diupdate!');
-        } else {
-            return redirect()->to(base_url('ShowFaktor'))->with('error', 'ID tidak ditemukan!');
-        }
-    }
-
-    public function autosave()
-    {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Permintaan tidak valid']);
-        }
-
-        $id = $this->request->getPost('id');
-        $field = $this->request->getPost('field');
-        $value = $this->request->getPost('value');
-
-        $allowedFields = [
-            'kesimpulan',
-            'positifstruktur',
-            'positifproses',
-            'positifhasil',
-            'negatifstruktur',
-            'negatifproses',
-            'negatifhasil',
-            'dirut',
-            'komut',
-            'tanggal',
-            'lokasi'
-        ];
-
-        if (!in_array($field, $allowedFields, true)) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Field tidak diizinkan']);
-        }
-
-        if (empty($id)) {
-            return $this->response->setJSON(['success' => false, 'message' => 'ID tidak ditemukan']);
-        }
-
-        $existing = $this->showfaktorModel->find($id);
-        if (!$existing) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Data tidak ditemukan']);
-        }
-
-        $this->showfaktorModel->update($id, [$field => $value]);
-
-        return $this->response->setJSON(['success' => true]);
-    }
-
+    /** Ekspor TXT TKSBPRKS-1000 (dipakai Showsemesteran). Format keluaran tetap. */
     public function exporttxtshowfaktor()
     {
         if (!$this->auth->check()) {
@@ -642,124 +597,53 @@ class ShowFaktor extends Controller
             unset($_SESSION['redirect_url']);
             return redirect()->to($redirectURL);
         }
-
-        $kodebpr = $this->userKodebpr;
-        $periodeId = session('active_periode');
-
-        $periodeDetail = $this->periodeModel->find($periodeId);
-        $modalinti = $periodeDetail['modalinti'];
-        $kategori = $periodeDetail['kategori'];
-        $jenispelaporan = $periodeDetail['jenispelaporan'];
-        $tahun = $periodeDetail['tahun'] ?? date('Y');
-        $semester = $periodeDetail['semester'] ?? '';
-
-        if (strtolower($semester) === 'ganjil' || $semester === '1') {
-            $exportDate = "{$tahun}-06-30";
-        } else {
-            $exportDate = "{$tahun}-12-31";
+        // Periode aktif bukan milik BPR user → tidak ada berkas
+        if (!$this->periodeId || !$this->userKodebpr) {
+            return service('response')->setContentType('text/plain')->setBody('');
         }
+
+        $p = $this->periode;
+        $tahun = $p['tahun'] ?? date('Y');
+        $semester = $p['semester'] ?? '';
+        $exportDate = (strtolower($semester) === 'ganjil' || $semester === '1') ? "{$tahun}-06-30" : "{$tahun}-12-31";
         $titleDate = str_replace('-', '', $exportDate);
 
-        $showfaktor = $this->showfaktorModel
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->first();
+        $showfaktor = $this->row() ?? [];
+        $infobpr = $this->infobprModel->getDataByKodebpr($this->userKodebpr);
+        $sandibpr = $infobpr[0]['sandibpr'] ?? '';
+        $kodejenis = $infobpr[0]['kodejenis'] ?? '';
 
-        // Ambil info BPR
-        $data_infobpr = $this->infobprModel->getDataByKodebpr($kodebpr);
-        $sandibpr = '';
-        $kodejenis = '';
-        if (!empty($data_infobpr)) {
-            $sandibpr = $data_infobpr[0]['sandibpr'] ?? '';
-            $kodejenis = $data_infobpr[0]['kodejenis'] ?? '';
-        }
-
-        // Sanitizer
-        $sanitize = function ($text) {
-            $text = str_replace(["\r", "\n"], ' ', $text);
-            $text = str_replace(
-                ['"', '"', '%', '|'],
-                ['"', '"', "'", "'", ' persen ', ' '],
-                $text
-            );
+        // Sanitizer lama dipertahankan (daftar pengganti tidak sejajar: "%" → "'", "|" → "'")
+        $sanitize = static function ($text) {
+            $text = str_replace(["\r", "\n"], ' ', (string) $text);
+            $text = str_replace(['"', '"', '%', '|'], ['"', '"', "'", "'", ' persen ', ' '], $text);
             $text = preg_replace('/[^\x20-\x7E]/', ' ', $text);
             return trim(preg_replace('/\s+/', ' ', $text));
         };
 
-        // Ambil nilai masing-masing faktor
-        $nfaktor1 = $this->nilaiModel->where('faktor1id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor'] ?? '';
-        $nfaktor2 = $this->nilai2Model->where('faktor2id', 29)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor2'] ?? '';
-        $nfaktor3 = $this->nilai3Model->where('faktor3id', 27)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor3'] ?? '';
-        $nfaktor4 = $this->nilai4Model->where('faktor4id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor4'] ?? '';
-        $nfaktor5 = $this->nilai5Model->where('faktor5id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor5'] ?? '';
-        $nfaktor6 = $this->nilai6Model->where('faktor6id', 10)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor6'] ?? '';
-        $nfaktor7 = $this->nilai7Model->where('faktor7id', 12)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor7'] ?? '';
-        $nfaktor8 = $this->nilai8Model->where('faktor8id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor8'] ?? '';
-        $nfaktor9 = $this->nilai9Model->where('faktor9id', 18)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor9'] ?? '';
-        $nfaktor10 = $this->nilai10Model->where('faktor10id', 6)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor10'] ?? '';
-        $nfaktor11 = $this->nilai11Model->where('faktor11id', 13)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor11'] ?? '';
-        $nfaktor12 = $this->nilai12Model->where('faktor12id', 8)->where('kodebpr', $kodebpr)->where('periode_id', $periodeId)->orderBy('created_at', 'DESC')->first()['nfaktor12'] ?? '';
-
-        // Kalau nfaktor4 tidak ada data atau 0, paksa jadi 1 (baik untuk output F0400 maupun perhitungan komposit)
-        if (!is_numeric($nfaktor4) || $nfaktor4 == 0) {
-            $nfaktor4 = '';
+        $vals = $this->factorValues();
+        $nf = [];
+        foreach ($vals as $no => $f) {
+            $nf[$no] = $f['v'] === null || ($no === 4 && $f['v'] === 0) ? '' : (string) $f['v'];
         }
+        $nilaikomposit = self::composite($vals);
 
-        // Hitung ulang nilaikomposit langsung dari nfaktor1..12 (tidak bergantung pada tabel showfaktor)
-        $nfaktorList = [$nfaktor1, $nfaktor2, $nfaktor3, $nfaktor4, $nfaktor5, $nfaktor6, $nfaktor7, $nfaktor8, $nfaktor9, $nfaktor10, $nfaktor11, $nfaktor12];
+        $f1600 = trim($sanitize($showfaktor['positifstruktur'] ?? '') . ' ' . $sanitize($showfaktor['positifproses'] ?? '') . ' ' . $sanitize($showfaktor['positifhasil'] ?? ''));
+        $f1700 = trim($sanitize($showfaktor['negatifstruktur'] ?? '') . ' ' . $sanitize($showfaktor['negatifproses'] ?? '') . ' ' . $sanitize($showfaktor['negatifhasil'] ?? ''));
 
-        $totalNilai = 0;
-        $validCount = 0;
-        foreach ($nfaktorList as $nf) {
-            if (is_numeric($nf) && $nf !== '') {
-                $totalNilai += $nf;
-                $validCount++;
-            }
+        $output = "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|1000|{$p['modalinti']}|{$p['kategori']}||0\r\n";
+        foreach ($nf as $no => $v) {
+            $output .= sprintf("D01|F%02d00|%s\r\n", $no, $v);
         }
-
-        $divisor = 12 - ($validCount < 12 ? 1 : 0);
-        $nilaikomposit = $validCount > 0 ? $totalNilai / $divisor : 0;
-        $nilaikomposit = ($nilaikomposit - floor($nilaikomposit)) >= 0.5 ? ceil($nilaikomposit) : floor($nilaikomposit);
-
-        // Data kesimpulan dari showfaktor
-        $kesimpulan = $sanitize($showfaktor['kesimpulan'] ?? '');
-        $positifstruktur = $sanitize($showfaktor['positifstruktur'] ?? '');
-        $positifproses = $sanitize($showfaktor['positifproses'] ?? '');
-        $positifhasil = $sanitize($showfaktor['positifhasil'] ?? '');
-        $negatifstruktur = $sanitize($showfaktor['negatifstruktur'] ?? '');
-        $negatifproses = $sanitize($showfaktor['negatifproses'] ?? '');
-        $negatifhasil = $sanitize($showfaktor['negatifhasil'] ?? '');
-
-        // Gabungkan positif dan negatif
-        $f1600 = trim("{$positifstruktur} {$positifproses} {$positifhasil}");
-        $f1700 = trim("{$negatifstruktur} {$negatifproses} {$negatifhasil}");
-
-        // Build output
-        $output = "H01|{$kodejenis}|{$sandibpr}|{$exportDate}|TKSBPRKS|1000|{$modalinti}|{$kategori}||0\r\n";
-        $output .= "D01|F0100|{$nfaktor1}\r\n";
-        $output .= "D01|F0200|{$nfaktor2}\r\n";
-        $output .= "D01|F0300|{$nfaktor3}\r\n";
-        $output .= "D01|F0400|{$nfaktor4}\r\n";
-        $output .= "D01|F0500|{$nfaktor5}\r\n";
-        $output .= "D01|F0600|{$nfaktor6}\r\n";
-        $output .= "D01|F0700|{$nfaktor7}\r\n";
-        $output .= "D01|F0800|{$nfaktor8}\r\n";
-        $output .= "D01|F0900|{$nfaktor9}\r\n";
-        $output .= "D01|F1000|{$nfaktor10}\r\n";
-        $output .= "D01|F1100|{$nfaktor11}\r\n";
-        $output .= "D01|F1200|{$nfaktor12}\r\n";
         $output .= "D01|F1300|{$nilaikomposit}\r\n";
         $output .= "D01|F1400|\r\n";
-        $output .= "D01|F1500|{$kesimpulan}\r\n";
+        $output .= 'D01|F1500|' . $sanitize($showfaktor['kesimpulan'] ?? '') . "\r\n";
         $output .= "D01|F1600|{$f1600}\r\n";
         $output .= "D01|F1700|{$f1700}\r\n";
 
-        $filename = "TKSBPRKS-1000-{$jenispelaporan}-S-{$titleDate}-{$sandibpr}-01.txt";
-
         return service('response')
             ->setHeader('Content-Type', 'text/plain')
-            ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->setHeader('Content-Disposition', 'attachment; filename="TKSBPRKS-1000-' . $p['jenispelaporan'] . '-S-' . $titleDate . '-' . $sandibpr . '-01.txt"')
             ->setBody($output);
     }
-
 }

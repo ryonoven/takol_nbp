@@ -41,7 +41,7 @@ class Penjelasanumum extends Controller
         }
     }
 
-    // ------------------------------------------------------------------ helpers
+    // helpers
 
     private function checkAuth(): ?\CodeIgniter\HTTP\RedirectResponse
     {
@@ -99,7 +99,7 @@ class Penjelasanumum extends Controller
         return null;
     }
 
-    // ------------------------------------------------------------------ halaman
+    // halaman
 
     public function index()
     {
@@ -132,7 +132,6 @@ class Penjelasanumum extends Controller
             'canDirut' => $row && ($this->grp['admin'] || $this->grp['direksi']),
             'isAdmin' => $this->grp['admin'],
             'userId' => $this->userId,
-            // Tombol sinkronisasi (editor saja): aktif bila data tahun sebelumnya ada
             'hasPrev' => $canEdit && $this->model->getPrevYear($periode['kodebpr'], (int) $periode['tahun']) !== null,
         ];
 
@@ -184,7 +183,6 @@ class Penjelasanumum extends Controller
             return $this->json(200, ['ok' => true, 'message' => 'Tidak ada perubahan.', 'reload' => false]);
         }
 
-        // Mengubah isi me-reset kedua approval.
         $wasApproved = $row && ((int) $row['accdekom'] === 1 || (int) $row['is_approved'] === 1);
         $data += M_penjelasanumum::resetApprovalData() + [
             'user_id' => $this->userId,
@@ -206,15 +204,10 @@ class Penjelasanumum extends Controller
         return $this->json(200, [
             'ok' => true,
             'message' => $wasApproved ? 'Data tersimpan. Status approval direset.' : 'Data berhasil disimpan.',
-            // Muat ulang bila tampilan approval perlu berubah (data baru / approval direset)
             'reload' => !$row || $wasApproved,
         ]);
     }
 
-    /**
-     * Sinkronisasi: salin data Penjelasan Umum tahun sebelumnya (tahun - 1) ke periode aktif
-     * dan langsung disimpan (insert bila belum ada, update bila sudah ada). Approval di-reset.
-     */
     public function syncFromPrevPeriode()
     {
         if ($e = $this->guardPost()) {
@@ -327,8 +320,6 @@ class Penjelasanumum extends Controller
             : $this->json(500, ['ok' => false, 'message' => 'Gagal memproses approval.']);
     }
 
-    // ------------------------------------------------------------------ export TXT
-
     private static function txtClean($text): string
     {
         $text = str_replace(["\r", "\n", "\t", '|'], ' ', (string) $text);
@@ -336,10 +327,6 @@ class Penjelasanumum extends Controller
         return trim(preg_replace('/\s+/', ' ', $text));
     }
 
-    /**
-     * TXT LTBPRK E0100 (format tidak berubah dari versi sebelumnya).
-     * Memakai service('response') karena juga dipanggil langsung oleh controller ZIP.
-     */
     public function exporttxtpenjelasanumum()
     {
         if ($redirect = $this->checkAuth()) {

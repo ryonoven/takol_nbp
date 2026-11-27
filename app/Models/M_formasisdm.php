@@ -1,203 +1,63 @@
 <?php
+
 namespace App\Models;
 
-use CodeIgniter\Model;
-
-class M_formasisdm extends Model
+/**
+ * Laporan Direktur YMF Kepatuhan — 1. Formasi Sumber Daya Manusia (form K1300).
+ * Tabel tanpa kolom is_null_record (tidak ada fitur "Tidak ada data"); accdir2_at NOT NULL.
+ * Kolom `fullname` = nama user penginput; `nama` = nama pegawai.
+ */
+class M_formasisdm extends M_semesterlist
 {
     protected $table = 'formasisdm';
-    protected $primaryKey = 'id';
     protected $allowedFields = [
-        'user_id',
-        'kodebpr',
-        'periode_id',
-        'tahun',
-        'semester',
-        'nik',
-        'nama',
-        'jabatan',
-        'status',
-        'tingkatpendidikan',
-        'masajabatan',
-        'fullname',
-        'accdir2',
-        'accdir2_by',
-        'accdir2_at'
+        'user_id', 'kodebpr', 'periode_id', 'tahun', 'semester',
+        'nik', 'nama', 'jabatan', 'status', 'tingkatpendidikan', 'masajabatan',
+        'fullname', 'accdir2', 'accdir2_by', 'accdir2_at',
     ];
-    protected $useTimestamps = false;
 
+    public const JABATAN = [
+        '110' => 'Direktur Utama', '120' => 'Direktur yang membawahkan fungsi kepatuhan', '130' => 'Direktur',
+        '210' => 'Komisaris Utama', '220' => 'Komisaris', '230' => 'Komisaris Independen',
+        '310' => 'Komite Audit', '320' => 'Komite Pemantau Risiko', '330' => 'Komite Remunerasi dan Nominasi',
+        '340' => 'Komite Manajemen Risiko', '350' => 'Komite Lainnya',
+        '410' => 'Pejabat Eksekutif Kepatuhan', '420' => 'Pejabat Eksekutif Manajemen Risiko', '430' => 'Pejabat Eksekutif Audit Intern',
+        '440' => 'Pejabat Eksekutif APU PPT', '450' => 'Pejabat Eksekutif Lainnya',
+    ];
+    public const STATUS = ['01' => 'Pengangkatan Baru', '02' => 'Pengangkatan Kembali', '03' => 'Perubahan Jabatan', '04' => 'Tidak Berubah'];
+    public const PENDIDIKAN = ['01' => 'S3', '02' => 'S2', '03' => 'S1', '04' => 'D3', '05' => 'SLTA', '99' => 'Lainnya'];
+
+    public const FIELDS = [
+        'nama' => ['Nama lengkap', 'type' => 'text', 'max' => 255, 'col' => 'col-md-7', 'short' => 'Nama'],
+        'nik' => ['NIK', 'type' => 'text', 'max' => 20, 'digits' => true, 'col' => 'col-md-5', 'short' => 'NIK'],
+        'jabatan' => ['Jabatan', 'type' => 'select', 'options' => self::JABATAN, 'col' => 'col-md-7', 'short' => 'Jabatan',
+            // ejaan lama pada template impor
+            'aliases' => ['komite pemantau resiko' => '320', 'komite manajemen resiko' => '340', 'pejabat eksekutif manajemen resiko' => '420']],
+        'masajabatan' => ['Tanggal pengangkatan', 'type' => 'date', 'required' => false, 'col' => 'col-md-5', 'short' => 'Diangkat'],
+        'status' => ['Status kepegawaian', 'type' => 'select', 'options' => self::STATUS, 'required' => false, 'col' => 'col-md-7', 'short' => 'Status'],
+        'tingkatpendidikan' => ['Tingkat pendidikan', 'type' => 'select', 'options' => self::PENDIDIKAN, 'required' => false, 'col' => 'col-md-5', 'short' => 'Pendidikan'],
+    ];
+    /** Template: A nama · B NIK · C jabatan · D status · E pendidikan · F tanggal pengangkatan. */
+    public const IMPORT_COLS = ['nama', 'nik', 'jabatan', 'status', 'tingkatpendidikan', 'masajabatan'];
+
+    /** Kartu orang seperti halaman Tugas & Tanggung Jawab Direksi. */
+    public const CARD = [
+        'title' => 'nama',
+        'tag' => 'jabatan',
+        'sub' => ['nik', 'masajabatan'],
+        'chips' => ['status', 'tingkatpendidikan'],
+        'utama' => ['110', '120', '210'],
+    ];
+    /** Persetujuan Direktur Utama untuk seluruh formasi sekaligus. */
+    public const ROW_APPROVAL = false;
+
+    public const HAS_NODATA = false;
+    /** Sinkron periode sebelumnya: pegawai yang NIK-nya sudah ada dilewati. */
+    public const DUP_KEY = ['nik'];
+
+    /** Dipakai LaporanPdfGcg / laporan lain. */
     public function getDataByKodebprAndPeriode(string $kodebpr, int $periodeId): array
     {
-        return $this->db->table($this->table)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->orderBy('id', 'ASC')
-            ->get()->getResultArray();
-    }
-
-    public function tambah(array $data)
-    {
-        return $this->insert($data);
-    }
-
-    public function ubah(array $data, int $id, string $kodebpr, int $periodeId): bool
-    {
-        return $this->db->table($this->table)
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update($data);
-    }
-
-    // Delete dan resequence
-    public function hapusSpesifik(int $id, string $kodebpr, int $periodeId): bool
-    {
-        $deleted = $this->db->table($this->table)
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->delete();
-
-        if ($deleted) {
-            $this->resequenceIds();
-        }
-
-        return (bool) $deleted;
-    }
-
-    private function resequenceIds(): void
-    {
-        $rows = $this->db->table($this->table)
-            ->orderBy('id', 'ASC')
-            ->get()->getResultArray();
-
-        if (empty($rows)) {
-            $this->db->query('ALTER TABLE `' . $this->table . '` AUTO_INCREMENT = 1');
-            return;
-        }
-
-        $offset = count($rows) + 10000;
-        foreach ($rows as $i => $row) {
-            $this->db->table($this->table)
-                ->where('id', $row['id'])
-                ->update(['id' => $offset + $i + 1]);
-        }
-
-        // Pass 2: reassign sequential dari 1
-        $tempRows = $this->db->table($this->table)
-            ->orderBy('id', 'ASC')
-            ->get()->getResultArray();
-
-        foreach ($tempRows as $i => $row) {
-            $this->db->table($this->table)
-                ->where('id', $row['id'])
-                ->update(['id' => $i + 1]);
-        }
-
-        // Reset AUTO_INCREMENT
-        $maxRow = $this->db->table($this->table)->selectMax('id')->get()->getRow();
-        $next = $maxRow ? ((int) $maxRow->id + 1) : 1;
-        $this->db->query('ALTER TABLE `' . $this->table . '` AUTO_INCREMENT = ' . $next);
-    }
-
-    public function approveKomRow(int $id, string $kodebpr, int $periodeId, int $userId): bool
-    {
-        return $this->db->table($this->table)
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update([
-                'accdir2' => 1,
-                'accdir2_by' => $userId,
-                'accdir2_at' => date('Y-m-d H:i:s'),
-            ]);
-    }
-
-    public function unapproveKomRow(int $id, string $kodebpr, int $periodeId, int $userId): bool
-    {
-        return $this->db->table($this->table)
-            ->where('id', $id)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update([
-                'accdir2' => 0,
-                'accdir2_by' => $userId,
-                'accdir2_at' => date('Y-m-d H:i:s'),
-            ]);
-    }
-
-    public function approveSemuaKom(string $kodebpr, int $periodeId, int $userId): bool
-    {
-        return $this->db->table($this->table)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update([
-                'accdir2' => 1,
-                'accdir2_by' => $userId,
-                'accdir2_at' => date('Y-m-d H:i:s'),
-            ]);
-    }
-
-    public function unapproveSemuaKom(string $kodebpr, int $periodeId, int $userId): bool
-    {
-        return $this->db->table($this->table)
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->update([
-                'accdir2' => 0,
-                'accdir2_by' => $userId,
-                'accdir2_at' => date('Y-m-d H:i:s'),
-            ]);
-    }
-
-    public function getApprovalStatus(string $kodebpr, int $periodeId): array
-    {
-        $rows = $this->db->table($this->table)
-            ->select('accdir2, accdir2_at')
-            ->where('kodebpr', $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()->getResultArray();
-
-        if (empty($rows)) {
-            return [
-                'dekom_approved' => false,
-                'dekom_approved_at' => null,
-            ];
-        }
-
-        $dekomOk = true;
-        $dekomAt = null;
-
-        foreach ($rows as $r) {
-            if ((int) $r['accdir2'] !== 1)
-                $dekomOk = false;
-            if ($r['accdir2_at'])
-                $dekomAt = $r['accdir2_at'];
-        }
-
-        return [
-            'dekom_approved' => $dekomOk,
-            'dekom_approved_at' => $dekomAt,
-        ];
-    }
-
-    public function getNikByPeriode(string $kodebpr, int $periodeId): array
-    {
-        $rows = $this->db->table($this->table)
-            ->select('nik')
-            ->where('kodebpr',    $kodebpr)
-            ->where('periode_id', $periodeId)
-            ->get()->getResultArray();
- 
-        return array_column($rows, 'nik');
-    }
-
-    public function insertBatchSync(array $rows): bool
-    {
-        if (empty($rows)) return true;
- 
-        $result = $this->db->table($this->table)->insertBatch($rows);
- 
-        return $result !== false;
+        return $this->rows($kodebpr, $periodeId);
     }
 }
